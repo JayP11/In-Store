@@ -1,0 +1,103 @@
+/* .WeekPicker {
+    margin-left: 10px;
+}
+
+.rs-picker-date-menu .rs-calendar-table-cell-week-number {
+    background-color: black;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.rs-picker-date-menu .rs-calendar-table-row:not(.rs-calendar-table-header-row):hover .rs-calendar-table-cell-content {
+    background-color: rgba(204, 233, 255, .5);
+    background-color: var(--rs-listbox-option-hover-bg);
+    color: #1675e0;
+    color: var(--rs-listbox-option-hover-text);
+}
+
+.rs-picker-date-menu .rs-calendar-table-row:not(.rs-calendar-table-header-row):has(.rs-calendar-table-cell-selected) .rs-calendar-table-cell-content {
+    background-color: #3498ff;
+    background-color: var(--rs-bg-active);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    color: #fff;
+    color: var(--rs-calendar-date-selected-text);
+}
+
+.WeekPicker .weekInfos {
+    margin-top: 20px;
+}
+
+.WeekPicker .weekInfos>div {
+    margin-top: 10px;
+}
+
+.rs-picker-has-value.rs-picker-cleanable .rs-picker-toggle.rs-btn,
+.rs-picker-toggle-wrapper .rs-picker-toggle.rs-btn {
+    padding: 0px !important;
+    background: none !important;
+    border: none !important;
+}
+
+.rs-picker-toggle-textbox {
+    padding: 0px !important;
+}
+
+.rs-icon {
+    display: none !important;
+}
+
+
+.rs-picker-toggle-textbox {
+    border: none !important;
+}
+
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    border: none !important;
+} */
+
+.rs-calendar-table-cell-in-range:before {
+    background-color: var(--color-orange3) !important;
+}
+
+.rs-calendar-table-cell-selected .rs-calendar-table-cell-content {
+    background-color: var(--color-orange) !important;
+}
+
+.DateRangePicker_LeaderboardCard {
+    padding: 0px;
+}
+
+.rs-picker-default:not(.rs-picker-disabled) .rs-btn:hover,
+.rs-picker-default:not(.rs-picker-disabled) .rs-picker-toggle-active {
+    border-color: var(--color-orange2) !important;
+}
+
+.rs-calendar-table-cell-is-today .rs-calendar-table-cell-content {
+    box-shadow: inset 0 0 0 1px !important;
+}
+
+.rs-picker-toggle-read-only {
+    opacity: 1 !important;
+    color: "#000" !important;
+}
+
+.rs-picker-toggle-textbox {
+    background-color: var(--color-bg-gray) !important;
+
+}
+
+.rs-picker-default .rs-picker-toggle {
+    /* border-color: 1px solid var(--color-bg-gray) !important; */
+}
+
+/* .rs-stack-item{
+    font-size: 16px !important;
+}
+.rs-picker-daterange .rs-picker-toggle.rs-btn .rs-picker-toggle-caret{
+    font-size: 16px !important;
+} */

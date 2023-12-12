@@ -1,0 +1,27 @@
+.slick-prev {
+    left: 45px !important;
+    z-index: 111 !important;
+}
+
+.slick-next {
+    right: 85px !important;
+    z-index: 111 !important;
+}
+
+@media screen and (max-width: 685px) {
+    .slick-prev {
+        left: 45px !important;
+        z-index: 111 !important;
+    }
+
+    .slick-next {
+        right: 45px !important;
+        z-index: 111 !important;
+    }
+
+    .slick-prev:before,
+    .slick-next:before {
+        color: #fff !important;
+        font-size: 20px !important;
+    }
+}

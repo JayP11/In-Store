@@ -1,0 +1,43 @@
+.cbc_main_wrapp {
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+    text-align: center;
+}
+
+.cbc_img_wrapp {
+    position: relative;
+    width: 100%;
+    height: 200px;
+}
+
+.cbc_img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cbc_card_hart_icon {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.cbc_name {
+    font-size: 18px;
+    color: var(--color-black);
+    font-weight: 800;
+}
+
+.cbc_price {
+    font-size: 16px;
+    color: var(--color-black);
+}
+
+.cbc_des {
+    font-size: 14px;
+    color: #acacac;
+}

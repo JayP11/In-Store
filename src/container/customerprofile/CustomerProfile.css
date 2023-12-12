@@ -1,0 +1,9 @@
+.cust-profile-heading {
+    margin-bottom: 10px;
+}
+
+@media screen and (max-width: 500px) {
+    .cust-profile-heading {
+        text-align: center;
+    }
+}

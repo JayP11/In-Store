@@ -1,0 +1,144 @@
+.profilepage_main_wrapp {
+    display: flex;
+    align-items: flex-start;
+    /* justify-content: center; */
+    width: 100%;
+    /* max-width: var(--max-width); */
+    margin: 0 auto;
+    min-height: 80vh;
+    align-items: stretch;
+}
+
+.profile_sidebar_wrapp {
+    width: 25%;
+    min-height: 300px;
+    flex-grow: 1;
+    flex-basis: 300px;
+    align-self: start;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 5rem;
+    height: 100vh;
+    background-color: #E5E4E2;
+    transition: width 0.5s ease-in;
+}
+
+.profile_sidebar_wrapp_new {
+    width: 0% !important;
+    /* opacity: 0; */
+    /* You can use opacity instead of display */
+    min-height: 300px;
+    flex-grow: 1;
+    flex-basis: 300px;
+    align-self: start;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 5rem;
+    height: 100vh;
+    background-color: #e5e4e2;
+    transition: width 0.5s ease-out;
+    /* Only transitioning width */
+}
+
+.profile_main_sec_wrapp {
+    width: 100%;
+    min-height: 80vh;
+    transition: width 5s ease-out;
+}
+
+.profile_sidebar_sig_btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+    border: none;
+    background: var(--color-orange2);
+    padding: 1rem 0;
+    text-align: left;
+    padding-left: 30%;
+    /* border-bottom:1px solid #000 ; */
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 1px;
+    color: var(--color-white);
+    position: relative;
+    height: 70px;
+}
+
+.profile_sidebar_sig_btn_right_arrow {
+    position: absolute;
+    /* right: -29px; */
+    left: 100.5%;
+    top: 0px;
+    padding: 4px;
+    background: var(--color-orange);
+    font-size: 1rem;
+    color: var(--color-white);
+    font-weight: 500;
+    height: 70px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    z-index: 9999;
+    width: 30px;
+}
+
+.profile_sidebar_sig_btn .profile_sidebar_sig_btn_right_arrow {
+    visibility: initial;
+}
+
+.profile_sidebar_sig_btn:hover .profile_sidebar_sig_btn_right_arrow {
+    visibility: visible;
+}
+
+.profile_sidebar_sig_btn:hover {
+    font-weight: 700 !important;
+    background: var(--color-orange) !important;
+}
+
+.profilepage_slider_transition {
+    transition: all 10s ease-in-out;
+    transition: left 1s linear;
+}
+
+
+/* @media screen and (max-width: 1075px) {
+    .profilepage_sidebarr {
+        display: none !important;
+    }
+
+    .profile_main_sec_wrapp-mall-side {
+        width: 100% !important;
+    }
+} */
+
+
+.pro-transition {
+    transition: top 0.3s ease, left 0.3s ease !important;
+}
+
+.homehero_text_base_retailer {
+    z-index: 1 !important;
+}
+
+.my-acc-nav-flex {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-top: -5px;
+}
+
+
+@media (max-width: 900px) {
+    .profile_sidebar_wrapp {
+        display: none;
+    }
+
+    .profile_main_sec_wrapp {
+        width: 100%;
+    }
+
+    .pro-side-none-resp {
+        display: none !important;
+    }
+}

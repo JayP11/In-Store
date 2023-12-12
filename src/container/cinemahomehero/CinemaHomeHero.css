@@ -1,0 +1,14 @@
+.sociallogo_cinemahomehero_head {
+    /* margin-top: 1rem; */
+  }
+  
+  .logoimagesocial_cinemahomehero {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .apps_logos_wrapp_cinemahomehero {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }

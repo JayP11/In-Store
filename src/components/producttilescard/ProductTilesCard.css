@@ -1,0 +1,28 @@
+.product-tiles-card-main-wrapp {
+    width: 80%
+}
+
+@media screen and (max-width: 1230px) {
+    .product-tiles-card-main-wrapp {
+        width: 100%;
+    }
+
+    .product-tiles-card-sec-part {
+        width: 190px !important;
+    }
+}
+
+@media screen and (max-width: 1030px) {
+    .leaderboard-filter-main-wrapp {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .leaderboard-filter-part-first {
+        width: 100% !important;
+    }
+
+    .leaderboard-filter-part-sec {
+        width: 100% !important;
+    }
+}

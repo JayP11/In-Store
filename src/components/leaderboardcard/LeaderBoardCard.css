@@ -1,0 +1,226 @@
+.leaderboard-card-main-wrapp {
+    width: 100%;
+    border: 1px solid #c0c0c0;
+    margin-bottom: 1rem;
+}
+
+.leaderboard-card-flex-wrapp {
+    padding: 10px;
+    display: flex;
+    gap: 2%;
+}
+
+.leaderboard-card-part-first {
+    width: 39%;
+    /* background-color: red; */
+}
+
+.leaderboard-card-part-sec {
+    width: 39%;
+    /* width: 100%; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* border: 1px dashed var(--color-black); */
+    background: var(--color-white);
+
+}
+
+.leaderboard-card-part-sec2 {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #c0c0c0;
+    background: var(--color-white);
+    height: 202px;
+    justify-content: center;
+
+}
+
+.leaderboard-card-part-third {
+    width: 20%;
+    /* background-color: blue; */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.leaderboard-card-lbl {
+    min-width: 115px;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.leaderboard-card-inp {
+    background: #DADADA;
+    min-height: 30px;
+    width: 100%;
+    padding: 8px 1rem;
+    color: var(--color-black);
+    border: none;
+}
+
+.leaderboard-card-inpbox-wrapp {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.leaderboard-card-part-img-upl {
+    height: 185px;
+}
+
+.mall-lib-font {
+    font-size: 14px !important;
+}
+
+.leaderboard-delete-icon {
+    width: 35px;
+    height: 35px;
+}
+
+.leaderboard-delete-icon-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    align-self: flex-end;
+}
+
+.leaderboard-extend-txt {
+    color: #428cff;
+    font-weight: 800;
+    font-size: 20px;
+}
+
+.leaderboard-last-part-txt {
+    font-weight: 300;
+    font-size: 14px;
+    text-align: end;
+}
+
+.leaderboard-card-first-resp-main-wrapp {
+    display: flex;
+    justify-content: space-between;
+    display: none;
+    margin-bottom: 10px;
+}
+
+.leaderboard-card-sec-resp-main-wrapp {
+    display: flex;
+    justify-content: space-between;
+    display: none;
+    margin-bottom: 10px;
+}
+
+/* .red-border {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #c4c4c4;
+    border-radius: 6px;
+    padding: 5px 10px;
+    margin: 0 0 10px;
+} */
+
+/* date picker */
+
+.highlighted {
+    background-color: #f0f0f0;
+}
+
+.react-datepicker__day--highlighted,
+.react-datepicker__day--highlighted:hover {
+    background-color: #f0f0f0;
+    color: black;
+}
+
+.react-datepicker__day--in-range,
+.react-datepicker__day--in-selecting-range {
+    background-color: #f0f0f0;
+    color: black;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--selected:hover {
+    background-color: #0366d6;
+    color: white;
+}
+
+.img-fluidb {
+    object-fit: unset;
+}
+
+
+
+@media screen and (max-width: 1230px) {
+    .leaderboard-card-flex-wrapp {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .leaderboard-card-part-first {
+        width: 100%;
+        order: 1;
+    }
+
+    .leaderboard-card-part-sec {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .leaderboard-card-part-third {
+        width: 100%;
+    }
+
+    .leaderboard-card-part-third {
+        display: none;
+    }
+
+
+    .leaderboard-card-first-resp-main-wrapp {
+
+        display: flex;
+    }
+
+    .leaderboard-card-sec-resp-main-wrapp {
+
+        display: flex;
+        order: 1;
+    }
+
+    .leaderboard-last-part-txt {
+        font-size: 18px;
+    }
+
+    .leaderboard-last-part-txt {
+        text-align: start;
+    }
+
+    .product-tiles-card-sec-part {
+        width: 235px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .leaderboard-card-sec-resp-main-wrapp {
+
+
+        flex-direction: column;
+        flex-direction: column-reverse;
+        gap: 10px;
+
+    }
+}
+
+@media screen and (max-width: 778px) {
+    .leaderboard-card-inpbox-wrapp {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* Multiple select */
+
+.css-b62m3t-container {
+    width: 100% !important;
+    padding: 0px;
+}

@@ -1,0 +1,19 @@
+.edit-brand-back-iconbox {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.edit-brand-back-icon {
+    width: 15px;
+    height: 15px;
+    color: var(--color-orange);
+}
+
+.edit-brand-back-txt {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--color-orange);
+}

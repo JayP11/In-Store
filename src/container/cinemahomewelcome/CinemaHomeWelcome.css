@@ -1,0 +1,44 @@
+.CinemaHomeWelcome_desc_main {
+    margin: 0 auto;
+    max-width: 850px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2.5rem 0;
+  }
+  
+  .CinemaHomeWelcome_head_inner {
+    font-size: 45px;
+    font-weight: 600;
+  }
+  
+  .cinemahome_banner_main {
+    display: flex;
+    width: 100%;
+  }
+  .cinemahome_banner_img_main {
+    width: 100%;
+  }
+  
+  .cinemahome_banner_inner {
+    height: 100%;
+    width: 100%;
+  }
+  
+  @media screen and (max-width: 850px) {
+    .CinemaHomeWelcome_desc_main {
+      padding: 2.5rem;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .cinemahome_banner_main {
+      flex-direction: column;
+    }
+  
+    .CinemaHomeWelcome_head_inner {
+      font-size: 28px;
+    }
+  }
+  
+  /* cinemahomebanner */

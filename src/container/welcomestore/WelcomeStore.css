@@ -1,0 +1,126 @@
+/* .welcome_store_wrapp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 3rem auto;
+}
+
+.welcome_cards_warpp {
+    width: -webkit-fill-available;
+    margin: 4rem auto;
+
+}
+
+
+
+.slick-slide img {
+    margin: auto;
+}
+
+.home-wel-card-flex {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.wel-sec-gap {
+    margin-bottom: 1rem;
+} */
+
+/* .wel-store-txt {
+    font-size: 18px;
+    font-weight: 400;
+} */
+
+/* @media (max-width: 700px) {
+    .welcome_cards_warpp {
+        padding: 0rem 1rem;
+    }
+
+    .slick-prev {
+        left: 25px !important;
+        z-index: 10 !important;
+    }
+
+    .slick-next {
+        right: 25px !important;
+        z-index: 10 !important;
+    }
+
+    .slick-prev:before,
+    .slick-next:before {
+        color: gray !important;
+        font-size: 25px !important;
+    }
+} */
+
+
+/* New Added */
+
+.welcome_store_wrapp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 3rem auto;
+}
+
+.welcome_cards_warpp {
+    width: -webkit-fill-available;
+    margin: 4rem auto;
+    /* display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem; */
+    /* overflow-x: scroll; */
+}
+
+
+
+.slick-slide img {
+    margin: auto;
+}
+
+.home-wel-card-flex {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.wel-sec-gap {
+    margin-bottom: 1rem;
+}
+
+.wel-store-txt {
+    font-size: 18px;
+    font-weight: 400;
+}
+
+@media (max-width: 700px) {
+    .welcome_cards_warpp {
+        padding: 0rem 1rem;
+    }
+
+    .slick-prev {
+        left: 25px !important;
+        /* background: #0d89f6 !important; */
+        z-index: 10 !important;
+    }
+
+    .slick-next {
+        right: 25px !important;
+        /* background: #0d89f6 !important; */
+        z-index: 10 !important;
+    }
+
+    .slick-prev:before,
+    .slick-next:before {
+        color: gray !important;
+        font-size: 25px !important;
+    }
+}

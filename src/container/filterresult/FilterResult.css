@@ -1,0 +1,10 @@
+.search-prodct-head {
+    font-size: 36px;
+    color: var(--color-black);
+    font-weight: 800;
+}
+
+.search-result-name {
+    color: var(--color-gray);
+    font-weight: 400;
+}

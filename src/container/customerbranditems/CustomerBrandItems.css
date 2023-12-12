@@ -1,0 +1,80 @@
+.customer_brands_wrapp {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    grid-gap: 20px;
+    padding: 10px;
+}
+
+.single-brand-product-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.single-brand-product-head-search-txt {
+    font-size: 20px;
+    font-weight: 600;
+    width: 200px;
+}
+
+.single-brand-product-head-search-flex {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    width: 550px;
+}
+
+.find-my-way-btn {
+    color: var(--color-blue);
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.find-my-way-btn-arrow {
+    color: var(--color-blue);
+    width: 35px;
+    height: 30px;
+}
+
+.find-my-way-btn-flex {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+}
+
+.single-brand-product-searchbar {
+    width: 80%;
+}
+
+
+@media screen and (max-width:1080px) {
+    .single-brand-product-head {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .single-brand-product-head-search-txt {
+        display: none;
+    }
+
+    .single-brand-product-searchbar {
+        width: 100%;
+
+    }
+}
+
+@media screen and (max-width:515px) {
+    .single-brand-product-head-search-flex {
+        width: 100%;
+    }
+}
+
+
+@media screen and (max-width:410px) {
+    .cbc_img_wrapp {
+        height: 270px;
+        width: 75%;
+    }
+}

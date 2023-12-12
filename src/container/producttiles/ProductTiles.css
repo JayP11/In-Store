@@ -1,0 +1,26 @@
+.leaderboard-inner-namebox {
+    display: flex;
+    /* align-items: flex-start; */
+    /* justify-content: left; */
+    flex-wrap: wrap;
+    /* width: 100%; */
+    gap: 6px;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.leaderboard-span {
+    font-weight: 300;
+    font-size: 40px;
+    color: var(--color-black);
+}
+
+.mall_name_wrapp-spacebetween {
+    justify-content: space-between;
+}
+
+@media screen and (max-width:500px) {
+    .leaderboard-span {
+        font-size: 30px;
+    }
+}

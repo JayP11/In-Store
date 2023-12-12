@@ -1,0 +1,15 @@
+.leaderboard-card-part-first-cinema{
+    width: 45% !important;
+}
+
+@media screen and (max-width: 1230px){
+.leaderboard-card-part-first-cinema {
+    width: 100% !important;
+    order: 1;
+}
+
+.product-tiles-card-cinema-sec-part {
+    align-self: center;
+}
+}
+

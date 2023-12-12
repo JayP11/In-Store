@@ -1,0 +1,13 @@
+.rs-picker-has-value.rs-picker-cleanable .rs-picker-toggle.rs-btn,
+.rs-picker-toggle-wrapper .rs-picker-toggle.rs-btn {
+  padding-right: 0px !important;
+}
+
+.rs-picker-default .rs-picker-toggle.rs-btn {
+  margin-right: -30px;
+  border-radius: 0px;
+}
+
+.rs-picker-toggle-wrapper {
+    /* max-width: 58%; */
+}

@@ -1,0 +1,21 @@
+.product-tiles-hero-img {
+    object-fit: initial;
+}
+
+.producttiles-hero {
+    height: 250px;
+}
+
+.mall_hero_main_wrapp2{
+    width: 73%;
+}
+
+@media screen and (max-width:600px) {
+    .producttiles-hero {
+        max-height: 250px !important;
+    }
+
+    .producttiles-hero {
+        height: 30vh !important;
+    }
+}

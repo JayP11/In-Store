@@ -1,0 +1,17 @@
+.mall-near-me-main-wraapp {}
+
+.mall-near-me-searchbox {
+    width: 500px;
+    padding: 10px 15px;
+    border-radius: 500px;
+    border: 1px solid #707070;
+}
+
+.mall-near-me-sub-flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+    gap: 20px;
+}

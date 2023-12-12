@@ -1,0 +1,12 @@
+.align-self-btn {
+    align-self: flex-end;
+}
+
+.leaderboard-name-flex {
+    display: flex;
+    align-items: flex-start;
+    justify-content: left;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 6px;
+}

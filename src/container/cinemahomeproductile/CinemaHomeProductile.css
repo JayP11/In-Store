@@ -1,0 +1,25 @@
+.CinemaHomeProductile_main {
+    margin: 0 auto;
+    max-width: 1140px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 2rem;
+    padding: 80px 0;
+  }
+  
+  .CinemaHomeProductile_img_inner {
+    height: 100%;
+    width: 100%;
+  }
+  
+  @media screen and (max-width: 1140px) {
+    .CinemaHomeProductile_main {
+      max-width: 100%;
+      padding: 80px 2rem;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .CinemaHomeProductile_main {
+      grid-template-columns: 1fr 1fr;
+    }
+  }

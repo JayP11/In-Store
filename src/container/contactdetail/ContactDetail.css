@@ -1,0 +1,51 @@
+.cd_main_wrapp {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+    gap: 1rem;
+}
+
+.cd_heading {
+    font-size: 30px;
+    color: var(--color-orange);
+    font-weight: 700;
+}
+
+.cd_des {
+      font-size: 16px;
+    color: var(--color-black);
+    font-weight: 300;
+}
+
+.cd_address_wrapp {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.cd_address_wrapp_inner_part {
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.cd_address_wrapp_inner_part > h5 {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--color-black);
+    margin-bottom: 10px;
+}
+
+.cd_add_time_wrapp {
+    display: flex;
+        align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+    margin-bottom: 10px;
+}

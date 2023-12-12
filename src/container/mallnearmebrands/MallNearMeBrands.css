@@ -1,0 +1,131 @@
+.mall_nearme_brand_main_wrapp {
+    width: 100%;
+
+}
+
+.profile_head_center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.cus-brand-headd {}
+
+.mall_near_brand_filter_sec_wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+    margin: 1rem auto;
+}
+
+.mallnearme-brand-filter-width {
+    width: initial;
+}
+
+.mall_near_brand_searchbar {
+    width: 45%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 300px;
+    position: relative;
+    border: 1px solid gray;
+    padding: 12px 16px;
+    border-radius: 28px;
+}
+
+.mall_near_brand_searchbar>input {
+    border: none;
+    font-size: 14px;
+    color: var(--color-black);
+    width: 90%;
+}
+
+.mall_near_brand_select_wrapp {
+    width: 45%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    min-width: 300px;
+    gap: 12px;
+    /* flex-wrap: wrap; */
+}
+
+.mall_near_brand_select_wrapp>p {
+    font-size: 16px;
+    width: inherit;
+    min-width: 145px;
+}
+
+.mallnearme-brands-filter {
+    min-width: fit-content !important;
+}
+
+.mall_near_brand_selectbox {
+    width: 100%;
+    border-radius: 8px;
+    background: var(--color-bg-gray);
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px;
+    color: var(--color-black);
+    width: -webkit-fill-available;
+}
+
+.mall_near_brand_list_wrapp {
+    width: 100%;
+    margin: 1rem auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 30px;
+    padding: 10px;
+}
+
+@media screen and (max-width: 1075px) {
+    .mall_near_brand_filter_sec_wrap {
+        flex-direction: column;
+        gap: 35px;
+    }
+
+    .mall_near_brand_searchbar {
+        width: 100%;
+    }
+
+    .mall_near_brand_select_wrapp {
+        width: 45%;
+        align-self: flex-end;
+    }
+
+    .mall_near_brand_select_wrapp>p {
+        max-width: 100px;
+        min-width: 100px;
+    }
+}
+
+@media (max-width: 920px) {
+    .mall_near_brand_filter_sec_wrap {
+        flex-direction: column;
+        justify-content: center;
+        gap: 14px;
+    }
+
+    /* .mall_near_brand_searchbar,
+    .mall_near_brand_select_wrapp {
+        width: 90%;
+    } */
+
+    /* .mall_near_brand_select_wrapp {
+        align-self: center;
+    } */
+}
+
+@media screen and (max-width:450px) {
+    .profile_head_center {
+        flex-direction: column;
+        gap: 0px;
+        align-items: center;
+    }
+}

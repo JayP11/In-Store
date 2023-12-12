@@ -1,0 +1,481 @@
+.mm_main_wrapp {
+    margin: 2rem;
+}
+
+/* mall management name */
+
+.mall_name_wrapp {
+    display: flex;
+    align-items: baseline;
+    justify-content: left;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 6px;
+    padding-left: 5rem;
+
+}
+
+.mall_name_wrapp>span {
+    font-weight: 300;
+    font-size: 40px;
+    color: var(--color-black);
+}
+
+.mall_name_heading {
+    font-weight: 800;
+    font-size: 40px;
+    color: var(--color-black);
+}
+
+.mm_horizontal_line {
+    background: #ABABAB;
+    height: 1px;
+    width: 100%;
+    margin: 1rem auto;
+}
+
+/* mall manegement form */
+
+.mm_form_wrapp {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
+
+.mm_form_input_wrapp {
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 1rem;
+}
+
+.mm_form_single_input {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    text-align: left;
+    width: 100%;
+}
+
+.mm_form_single_input>label {
+    min-width: 145px;
+    font-size: 16px;
+    font-weight: 400;
+    /* text-align: end; */
+}
+
+/* tranding input start */
+
+.mm_tranding_wrapp {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-start;
+    gap: 10px;
+    width: 100%;
+    margin: 8px 0;
+}
+
+.tranding_times_wrapp {
+    display: flex;
+    /* flex-direction: column; */
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.tranding_times_wrapp_sec {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tranding_sigle_time_wrapp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.tranding_sigle_time_wrapp>select {
+    min-width: 160px;
+}
+
+.tranding_sigle_time_wrapp-mall-management {
+    gap: 0px;
+}
+
+.mall_upload_btn_wrapp {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 50%;
+    margin-top: 0.5rem;
+}
+
+.img-upl-border {
+    border: 1px solid #000;
+    max-width: 250px;
+}
+
+
+
+.mm_img_upload_wrapp {
+    /* width: 25%; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+/* upload box */
+
+.myprofile_inner_sec2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    min-width: 250px;
+    height: 100%;
+    padding: 14px;
+    border: 1px solid var(--color-black);
+}
+
+.myprofile_upload_img_card_name {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 1rem;
+}
+
+/* .click_upload_btn {
+    color: var(--color-orange);
+    font-weight: 600;
+} */
+
+.myprofile_inner_sec2_img_upload {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #c0c0c0;
+    background: var(--color-white);
+    /* padding: 10px; */
+    margin-bottom: 1rem;
+}
+
+.myprofile_inner_sec2_img_upload>h4 {
+    font-weight: 300;
+    font-size: 12px;
+    color: var(--color-black);
+    margin-bottom: 10px;
+}
+
+.myprofile_inner_sec2_img_upload>P {
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--color-gray);
+    margin-bottom: 10px;
+}
+
+.myprofile_inner_sec2_img_upload>a {
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--color-blue);
+}
+
+.myprofile_inner_sec2_img_upload>a:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.mall_acc-manager-flex {
+    display: flex;
+    align-items: flex-start;
+    /* justify-content: center; */
+    gap: 3%;
+    width: 100%;
+    padding-left: 5rem;
+}
+
+.cus-acc-man-live-map {
+    width: 140px;
+}
+
+
+
+.mall-acc-manager-upl-img-part {
+    /* width: 22% !important; */
+}
+
+.fs-des-resp2 {
+    display: none;
+}
+
+.mall_upload_btn_wrapp-resp {
+    display: none;
+}
+
+.mm_form_wrapp_add_brand_mall {
+    gap: 6% !important;
+}
+
+@media screen and (max-width:1500px) {
+    .mall_acc-manager-flex {
+        /* gap: 10%; */
+    }
+}
+
+@media screen and (max-width:1433px) {
+    .tranding_times_wrapp_sec {
+        flex-direction: column;
+        width: initial !important;
+        align-items: baseline;
+    }
+
+    .tranding_times_wrapp {
+        justify-content: space-between;
+    }
+}
+
+@media screen and (max-width:1335px) {
+    .mall-acc-manager-upl-img-part {
+        /* width: 30% !important; */
+    }
+}
+
+@media screen and (max-width:1220px) {
+    .mall_name_wrapp>span {
+        font-size: 34px;
+    }
+
+    .mall_name_heading{
+        font-size: 34px;
+    }
+
+}
+
+@media screen and (max-width:1150px) {
+    .mall_acc-manager-flex {
+        flex-direction: column;
+        align-items: center;
+        gap: 50px;
+    }
+
+    .mall-acc-manager-upl-img-part {
+        /* width: 40% !important; */
+    }
+
+    .mm_form_input_wrapp {
+        width: 100%;
+    }
+
+    .mall_upload_btn_wrapp {
+        display: none !important;
+    }
+
+    .mall_upload_btn_wrapp-resp {
+        display: flex;
+        width: 75%;
+        gap: 20px;
+    }
+
+    .fs-des-resp {
+        display: none;
+    }
+
+    .fs-des-resp2 {
+        display: flex;
+        width: 80%;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .mall_name_heading,
+    .mall_name_wrapp>span {
+        font-size: 2rem;
+    }
+
+    .mm_main_wrapp {
+        margin: 5.2rem 1rem 2rem 1rem;
+    }
+
+    .mm_form_wrapp {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .mm_form_input_wrapp,
+    .mm_img_upload_wrapp {
+        width: 100%;
+    }
+
+    .mm_tranding_wrapp,
+    .mm_form_single_input {
+        flex-wrap: wrap;
+    }
+
+    .mm_form_single_input>label {
+        min-width: auto;
+    }
+
+    .mall_upload_btn_wrapp {
+        width: 100%;
+    }
+
+    .tranding_times_wrapp_sec {
+        width: 48%;
+    }
+
+    .cus-acc-man-live-map {
+        width: 100% !important;
+    }
+
+
+    .mall_acc-manager-flex {
+        flex-direction: column;
+        gap: 35px;
+    }
+
+    .mall-acc-manager-upl-img-part {
+        /* width: 100% !important; */
+    }
+
+    .myprofile_inner_sec2 {
+        max-width: 300px;
+    }
+
+    .mm_form_wrapp_add_brand_mall {
+        gap: 50px !important;
+    }
+
+}
+
+@media (max-width: 500px) {
+    .tranding_times_wrapp_sec {
+        width: 60%;
+    }
+
+    .mall_name_wrapp {
+        flex-direction: column-reverse;
+        margin-top: 0px;
+
+    }
+
+    .leaderboard-btn {
+        align-self: flex-end !important;
+    }
+
+    .mall_upload_btn_wrapp {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .mall_upload_btn_wrapp-resp {
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width:900px) {
+    .mall_name_wrapp{
+        padding-left: 1rem;
+        
+    }
+
+    .mall_acc-manager-flex{
+        padding-left: 1rem;
+    }
+}
+
+.indep-side-show {
+    display: none;
+}
+
+.brand-resp-show-btn {
+    display: none;
+}
+
+
+
+/* add mall store */
+@media screen and (max-width:768px) {
+
+    .indep-side {
+        display: none;
+    }
+
+    .brand-resp-btn {
+        display: none;
+    }
+
+    .indep-side-show {
+        display: flex;
+        margin-bottom: 20px;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .brand-resp-show-btn {
+        display: flex;
+        justify-content: center;
+    }
+
+    .add-eatery-resp {
+        display: block !important;
+        /* margin-left: 50px; */
+    }
+}
+
+
+/* 12/12/23 update code */
+/* @media screen and (max-width:2685px) {
+    .mm_form_input_wrapp {
+        width: 80%;
+    }
+}
+
+
+@media screen and (max-width:2365px) {
+    .mm_form_input_wrapp {
+        width: 75%;
+    }
+}
+
+@media screen and (max-width:2150px) {
+    .mm_form_input_wrapp {
+        width: 72%;
+    }
+}
+
+@media screen and (max-width:1920px) {
+    .mm_form_input_wrapp {
+        width: 70%;
+    }
+}
+
+@media screen and (max-width:1800px) {
+    .mm_form_input_wrapp {
+        width: 66%;
+    }
+}
+
+@media screen and (max-width:1675px) {
+    .mm_form_input_wrapp {
+        width: 64%;
+    }
+} */

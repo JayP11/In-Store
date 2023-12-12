@@ -1,0 +1,38 @@
+.cus-mall-map {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.download-map-btn-part {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 10px;
+}
+
+.download-map-btn {
+    color: var(--color-orange);
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.download-map-icon {
+    width: 30px;
+    height: 30px;
+    color: var(--color-orange);
+}
+
+.cus-mall-map {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+@media screen and (max-width: 750px) {
+    .cus-mall-map {
+        width: 100%;
+    }
+}

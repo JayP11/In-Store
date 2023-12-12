@@ -1,0 +1,352 @@
+.homecards_grid {
+  width: 100%;
+  height: 100%;
+  /* max-width: var(--max-width); */
+  margin: 3rem auto 2rem auto;
+  background: var(--color-bg);
+  display: grid;
+  /* grid-gap: 1rem; */
+}
+
+.home_model_wrapp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 800px;
+  height: 420px;
+  border-radius: 0px !important;
+  background: var(--color-orange2);
+}
+
+.home_model_1sec {
+  width: 50%;
+  background: var(--color-orange2);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  padding: 1rem;
+  gap: 1rem;
+
+  color: var(--color-white);
+}
+
+.home_model_2sec {
+  width: 50%;
+  height: 100%;
+  object-fit: cover;
+  /* background: var(--color-bg); */
+}
+
+.home_signup_model_1sec {
+  width: 65%;
+  background: var(--color-orange2);
+
+  height: 100%;
+
+  padding: 1rem;
+}
+
+.home_signup_model_1sec_inner {
+  width: 100%;
+  height: 100%;
+  background: var(--color-bg);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  padding: 2rem;
+  gap: 1rem;
+
+  color: var(--color-black);
+  position: relative;
+}
+
+.home_signup_model_2sec {
+  width: 35%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.signup_modal_close {
+  background: none;
+  border: none;
+  position: absolute;
+  right: 25px;
+  top: 25px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.sign_input_wrapp {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.sign_input_wrapp>label {
+  font-size: 14px;
+  color: var(--color-black);
+  font-weight: 300;
+}
+
+.sign_input_wrapp>input {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  background: #dad9d8;
+  border: 1.5px solid #dad9d8;
+}
+
+/* modal 3 */
+
+.home_login_model_wrapp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 800px;
+  height: 500px;
+  border-radius: 0px !important;
+  background: var(--color-orange2);
+}
+
+.home_login_model_1sec_inner {
+  width: 100%;
+  height: 100%;
+  min-width: 470px;
+  max-width: 470px;
+  background: var(--color-bg);
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+
+  /* padding: 2rem; */
+  padding: 2rem 4rem 1rem 4rem;
+  /* gap: 1rem; */
+
+  color: var(--color-black);
+  position: relative;
+}
+
+.signup_model_forgate {
+  align-self: flex-end;
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: #989797;
+}
+
+.signup_headign {
+  align-self: center;
+  letter-spacing: 0.6px;
+}
+
+.signup_terms_wrapp {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.signup_terms_wrapp>p {
+  font-size: 13px;
+}
+
+.signup_terms_link {
+  cursor: pointer;
+  color: var(--color-orange);
+  font-weight: 600;
+}
+
+/* model 4 */
+
+.home_model_4wrapp {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding: 2rem;
+  color: var(--color-black);
+  padding-left: 74px;
+  width: 460px;
+  height: 580px;
+  background: var(--color-bg);
+  position: relative;
+}
+
+.home-page-sec-gap-wel {
+  margin-top: 1rem;
+}
+
+.model_sizing {
+  width: 100%;
+}
+
+.tab_btn_main {
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  padding-left: 10px;
+  /* padding-right: 15px; */
+  padding-right: 25px;
+}
+
+.tab_btn_styling {
+  border: 1px solid white;
+  padding: 5px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  font-size: 13px;
+}
+
+/* modal 4 media query */
+
+@media screen and (max-width: 500px) {
+  .home_model_4wrapp {
+    /* width: 335px; */
+    width: 100%;
+    max-height: 575px;
+    justify-content: flex-start;
+    padding-left: 2rem;
+  }
+}
+
+@media (max-width: 650px) {
+  .home_model_4wrapp {
+    padding-left: 2rem;
+    width: 100%;
+  }
+}
+
+@media (min-width: 667px) {
+  .homecards_grid {
+    grid-template-columns: repeat(2, 1fr);
+    /* margin: 3rem 1rem; */
+    /* max-width: 640px; */
+  }
+}
+
+@media (min-width: 970px) {
+  .homecards_grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: var(--max-width-md);
+  }
+}
+
+/* Screen larger than 900px? 3 columns */
+@media (min-width: 1200px) {
+  .homecards_grid {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: var(--max-width);
+  }
+}
+
+/* Screen larger than 900px? 3 columns */
+@media (min-width: 1440px) {
+  .homecards_grid {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 1400px;
+  }
+}
+
+/* Home Modal First Media Query */
+
+@media screen and (max-width: 850px) {
+  .home_model_wrapp {
+    width: 60vw;
+    flex-direction: column-reverse;
+    height: 100%;
+  }
+
+  .home_model_1sec {
+    width: 100%;
+  }
+
+  .home_model_2sec {
+    width: 100%;
+    height: 220px;
+  }
+}
+
+/* Second Modal Media Query */
+@media screen and (max-width: 850px) {
+  .home_signup_model_1sec {
+    width: 100%;
+  }
+
+  .home_signup_model_2sec {
+    width: 100%;
+    height: 200px;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .home_model_wrapp {
+    width: 100vw;
+  }
+}
+
+/* Login Modal Media Query */
+
+@media screen and (max-width: 850px) {
+  .home_login_model_wrapp {
+    flex-direction: column-reverse;
+    height: 100%;
+    width: 60vw;
+  }
+
+  .home_login_model_1sec_inner {
+    min-width: 90%;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .model_sizing {
+    width: 400px;
+  }
+}
+
+@media screen and (max-width: 530px) {
+  .home_login_model_1sec_inner {
+    max-width: 333px;
+    padding: 1rem 2rem;
+  }
+
+  .signup_headign {
+    margin-top: 20px;
+  }
+
+  .model_sizing {
+    width: 340px;
+  }
+
+  .tab_btn_main {
+
+    height: 45px;
+}
+}
+
+@media screen and (max-width: 420px) {
+  .home_login_model_wrapp {
+    width: 100vw;
+  }
+
+  /* Forgot Password */
+  .modal-social-btn {
+    gap: 5% !important;
+  }
+}

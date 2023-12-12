@@ -1,0 +1,12 @@
+.cus-black-nav-main {
+    width: 100%;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    background-color: var(--color-black);
+}
+
+.cus-black-nav-con {
+    max-width: 1140px;
+    margin: 0 auto;
+}

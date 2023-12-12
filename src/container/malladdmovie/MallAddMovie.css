@@ -1,0 +1,10 @@
+.btn-mall-movie {
+    max-width: 150px;
+    align-self: flex-start;
+}
+
+@media screen and (max-width:768px) {
+    .btn-mall-movie {
+        max-width: 100%;
+    }
+}

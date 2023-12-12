@@ -1,0 +1,9 @@
+.mm_main_wrapp_cinema_checkout{
+    margin-left: 4rem !important;
+}
+
+@media screen and (max-width: 900px) {
+    .mm_main_wrapp_cinema_checkout{
+        margin-left: 2rem !important;
+    }
+}

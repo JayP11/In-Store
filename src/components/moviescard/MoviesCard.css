@@ -1,0 +1,32 @@
+/* .movies-card-main {
+    width: 250px;
+    height: 300px;
+} */
+
+.movies-card-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.movies-card-img {
+    height: 300px;
+    width: 220px;
+}
+
+.movies-card-name {
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.movies-card-digit {
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.movies-card-btn {
+    padding-top: 16px;
+    padding-bottom: 16px;
+}

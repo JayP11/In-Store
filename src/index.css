@@ -1,0 +1,592 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap");
+
+:root {
+  --font-base: "Montserrat", sans-serif;
+  --font-alt: "Montserrat", sans-serif;
+  --color-orange: #ff8b00;
+  --color-green: #51B712;
+  --color-blue: #4397ff;
+  --color-dark-blue: #0080ff;
+  --color-pink: #d813a5;
+  --color-orange2: #ffb103;
+  --color-orange3: #FFE7B3;
+  --color-red: red;
+  --color-black: #000;
+  --color-white: #ffffff;
+  --color-bg: #ffffff;
+  --color-gray: #767676;
+  --color-bg-gray: #dadada;
+  --color-dark-gray: #3f3f3f;
+  --color-light-gray: #aaaaaa;
+  --max-width: 1170px;
+  --max-width-md: 940px;
+  --max-width-sm: 420px;
+  --fixed-width: 620px;
+  --number-step: rgba(26, 42, 52, 0.25);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  scroll-behavior: smooth;
+  font-family: var(--font-base) !important;
+  /* font-family: "Lato", sans-serif !important; */
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.main_wrapp {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100vw;
+}
+
+body {
+  font-family: var(--font-base);
+  background: var(--color-bg);
+}
+
+figure {
+  margin: 0px !important;
+}
+
+::selection {
+  color: #fff;
+  background: #ff8b00;
+}
+
+*,
+::after,
+::before {
+  box-sizing: border-box;
+}
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  /* font-family: sans-serif; */
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+a {
+  color: unset;
+  text-decoration: none;
+}
+
+.underline {
+  text-decoration: underline !important;
+}
+
+.underline:hover {
+  text-decoration: none !important;
+}
+
+strong,
+b {
+  font-weight: bold;
+}
+
+i {
+  font-style: italic;
+}
+
+hr {
+  box-sizing: content-box;
+  height: 0;
+  overflow: visible;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+input[type="checkbox"] {
+  transform: scale(1.3);
+}
+
+::-moz-selection {
+  text-shadow: none;
+}
+
+::selection {
+  text-shadow: none;
+}
+
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none !important;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+button[type="submit"] {
+  cursor: pointer;
+  border: none;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 80%;
+}
+
+textarea {
+  resize: none;
+}
+
+/* 
+img {
+  max-width: 100%;
+  height: auto;
+} */
+
+a {
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+a,
+a:hover,
+a:active,
+a:focus {
+  text-decoration: none;
+  outline: none;
+}
+
+/* texts */
+
+.h1 {
+  font-size: 50px;
+  font-weight: 900;
+  font-family: var(--font-base);
+  line-height: 130%;
+}
+
+.h2 {
+  font-size: 45px;
+  font-weight: 800;
+  font-family: var(--font-base);
+}
+
+.h3 {
+  font-size: 40px;
+  font-weight: 800;
+  font-family: var(--font-base);
+}
+
+.h4 {
+  font-size: 30px;
+  font-weight: 500;
+  font-family: var(--font-base);
+}
+
+.h5 {
+  font-size: 20px;
+  font-weight: 500;
+  font-family: var(--font-base);
+}
+
+p {
+  font-family: var(--font-base);
+  /* font-weight: 400; */
+  /* font-size: 1rem; */
+  /* margin-top: 0; */
+  /* margin-bottom: 0.3em; */
+}
+
+.fs-des {
+  font-size: 14px;
+  font-family: var(--font-base);
+  font-weight: 300;
+}
+
+.fs-18 {
+  font-size: 20px;
+}
+
+.fs-20 {
+  font-size: 20px;
+}
+
+.fs-22 {
+  font-size: 20px;
+}
+
+.f-b900 {
+  font-weight: 900 !important;
+}
+
+.f-bold {
+  font-weight: bold;
+}
+
+/* buttons */
+
+.btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  cursor: pointer;
+  border: none;
+  min-height: 3rem;
+
+  padding: 0.3rem 1rem;
+  line-height: 0px;
+  /* color: var(--color-orange2); */
+  letter-spacing: normal;
+}
+
+.btn-orange {
+  color: var(--color-white);
+  background: var(--color-orange);
+}
+
+.btn-green {
+  color: var(--color-white);
+  background: var(--color-green);
+}
+
+.btn-blue {
+  color: var(--color-white);
+  background: var(--color-blue);
+}
+
+.btn-black {
+  color: var(--color-white);
+  background: var(--color-black);
+}
+
+.btn2 {
+  background: var(--color-orange);
+  color: var(--color-bg);
+}
+
+.btn1 {
+  color: var(--color-orange2);
+  background: var(--color-bg);
+}
+
+.btn3 {
+  background: var(--color-orange2);
+  color: var(--color-bg);
+}
+
+.btn4 {
+  background: var(--color-black);
+  color: var(--color-bg);
+}
+
+.btn5 {
+  background: var(--color-light-gray);
+  color: var(--color-bg);
+}
+
+
+.homepage-black-btn {
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--color-white);
+  background: var(--color-black);
+  padding: 1rem;
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+/* input box */
+
+.input_box {
+  background: #dadada;
+  min-height: 30px;
+  width: 100%;
+  padding: 12px 1rem;
+  color: var(--color-black);
+  border: none;
+}
+
+/* colors */
+
+.bg-blue {
+  background: var(--color-blue) !important;
+}
+
+.bg-pink {
+  background: var(--color-pink) !important;
+}
+
+.bg-orange {
+  background: var(--color-orange) !important;
+}
+
+/* margins */
+
+.mt_16 {
+  margin-top: 16px;
+}
+
+.mt_10 {
+  margin-top: 10px;
+}
+
+.mb_16 {
+  margin-bottom: 16px;
+}
+
+.mb_10 {
+  margin-bottom: 10px;
+}
+
+.mb_8 {
+  margin-bottom: 8px;
+}
+
+.mb-20 {
+  margin-bottom: 20px !important;
+}
+
+/* flex design */
+
+.fd-rr {
+  flex-direction: row-reverse;
+}
+
+/* loader */
+.loader {
+  border: 16px solid var(--color-bg);
+  /* Light grey */
+  border-top: 16px solid var(--color-orange);
+  /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 720px) {
+  .h1 {
+    font-size: 33px;
+  }
+
+  .h2 {
+    font-size: 28px;
+  }
+
+  .h3 {
+    font-size: 28px;
+  }
+
+  .h4 {
+    font-size: 25px;
+  }
+
+  /* p{
+    font-size: 14px;
+  } */
+}
+
+
+/* React Datepicker css */
+
+.react-datepicker-wrapper {
+  width: 100% !important;
+}
+
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 300ms ease-in;
+}
+
+
+/* select library add css */
+
+.css-tj5bde-Svg {
+  color: #000000e8;
+}
+
+.css-1u9des2-indicatorSeparator {
+  width: 0px;
+}
+
+
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  border: 1px solid transparent;
+  -webkit-text-fill-color: #000;
+  -webkit-box-shadow: 0 0 0px 1000px rgb(218, 217, 216) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}

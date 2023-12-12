@@ -1,0 +1,73 @@
+.brand-hero-edit-main-wrapp {
+    /* position: relative; */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    height: fit-content;
+    max-height: 300px;
+    /* z-index: -1; */
+    background-color: #dedede;
+}
+
+.brand-hero-edit-icon {
+    width: 25px;
+    height: 25px;
+    /* position: absolute; */
+    right: 12%;
+    top: 5%;
+    justify-self: flex-end;
+    /* transform: translate(375px, -105px); */
+    transform: translate(390px, -60px);
+}
+
+.band-inn-logo-wrapp {
+    position: absolute;
+    left: 25%;
+    top: 14%;
+    width: 165px;
+    height: 165px;
+    background: var(--color-white);
+    border-radius: 165px;
+    overflow: hidden;
+}
+
+    {
+    transform: translate(132px, 30px);
+    width: 25px;
+    height: 25px;
+}
+
+@media screen and (max-width:1120px) {
+    .brand-hero-edit-icon {
+        transform: translate(325px, -60px);
+    }
+}
+
+@media screen and (max-width:975px) {
+    .brand-hero-edit-icon {
+        transform: translate(275px, -60px);
+    }
+}
+
+@media screen and (max-width:865px) {
+    .brand-hero-edit-icon {
+        transform: translate(220px, -60px);
+    }
+}
+
+@media screen and (max-width:768px) {
+    .brand-hero-edit-main-wrapp {
+        height: 20vh;
+    }
+
+    .edit-icon-positon-resp {
+        right: 50px !important;
+    }
+}
+
+@media screen and (max-width:470px) {
+    .brand-hero-edit-icon {
+        transform: translate(160px, -60px);
+    }
+}

@@ -1,0 +1,32 @@
+.wc_card_main_wrapp2 {
+    width: 278px !important;
+    min-width: 278px !important;
+    height: 300px;
+  }
+  
+  .h3res {
+    font-size: 30px;
+  }
+  
+  .h4res {
+    font-size: 20px;
+  }
+  @media screen and (max-width: 1180px) {
+    .CinemaWelcomeStoreCard_welcome_cards_warpp {
+      display: flex;
+      justify-content: center;
+    }
+  
+    .wc_card_main_wrapp2 {
+      min-width: 400px !important;
+      height: 400px !important;
+    }
+  
+    .h3res {
+      font-size: 40px;
+    }
+  
+    .h4res {
+      font-size:30px;
+    }
+  }

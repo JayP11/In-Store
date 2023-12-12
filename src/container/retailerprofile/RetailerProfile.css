@@ -1,0 +1,54 @@
+.band-inn-logo-wrapp-space-left {
+    left: 450px;
+}
+
+@media screen and (max-width:1490px) {
+    .mallpp_main_wrapp-resp {
+        width: 100% !important;
+    }
+}
+
+@media screen and (max-width:1195px) {
+    .mallpp_main_wrapp-resp {
+        width: 85% !important;
+    }
+}
+
+@media screen and (max-width:975px) {
+    .mallpp_main_wrapp-resp {
+        width: 90% !important;
+    }
+}
+
+@media screen and (max-width:900px) {
+    .band-inn-logo-wrapp-space-left {
+        left: 5%;
+    }
+}
+
+@media screen and (max-width:768px) {
+    .band-inn-logo-wrapp {
+        position: absolute;
+        left: 5%;
+        top: 19%;
+        width: 140px;
+        height: 140px;
+        background: var(--color-white);
+        border-radius: 165px;
+        overflow: hidden;
+    }
+}
+
+@media screen and (max-width:550px) {
+    .mall_part_1_heading {
+        font-size: 36px;
+
+    }
+}
+
+@media screen and (max-width:420px) {
+    .mall_part_1_heading {
+        font-size: 32px;
+
+    }
+}

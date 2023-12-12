@@ -1,0 +1,154 @@
+.brandcc_main_wrapp {
+  align-self: self-start;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1rem;
+  border: 1px solid var(--color-gray);
+  position: relative;
+  width: 100%;
+  margin: 8px auto;
+  flex-wrap: wrap;
+}
+
+.brandcc_sec1 {
+  width: 25%;
+  min-width: 200px;
+  min-height: 85px;
+  border: 1px solid var(--color-gray);
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brandcc_sec1>img {
+  width: 100%;
+  height: 100%;
+}
+
+.brandcc_sec2 {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  text-align: start;
+  min-height: 83px;
+}
+
+.brandcc_name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-black);
+}
+
+.brandcc_dates {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--color-red);
+}
+
+.brandcc_sec3 {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  min-height: 83px;
+  width: 15%;
+}
+
+.brandcc_sec3>p {
+  font-weight: 300;
+  font-size: 16px;
+  color: var(--color-black);
+}
+
+/* remove button */
+
+.brandcc_remove_btn_wrapp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  gap: 5px;
+}
+
+.brandcc_remove_btn_wrapp>p {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.brandcc_remove_btn_wrapp>img {
+  width: 24px;
+  height: 24px;
+}
+
+.cart-mall-name {
+  display: flex;
+  gap: 10px;
+  /* width: 100%; */
+  flex-wrap: wrap;
+}
+
+.select_mall_tag_btns_wrapp-cart {
+  min-width: -moz-fit-content;
+  min-width: fit-content;
+}
+
+@media (max-width: 640px) {
+  .brandcc_main_wrapp {
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 20px;
+  }
+
+  .brandcc_sec1 {
+    width: 70%;
+  }
+
+  .brandcc_sec2 {
+    min-height: none;
+    width: 100%;
+  }
+
+  .brandcc_sec3 {
+    min-height: unset;
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .brandcc_remove_btn_wrapp {
+    top: 10px;
+    right: 10px;
+  }
+}
+
+@media screen and (max-width:750px) {
+  .brandcc_main_wrapp {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .brandcc_sec3 {
+    justify-content: flex-start;
+    min-height: 0px;
+  }
+
+  .brandcc_sec1 {
+    width: 40%;
+  }
+}
+
+@media screen and (max-width:500px) {
+  .brandcc_sec1 {
+    width: 60%;
+  }
+
+  .cart-card-delete-icon {
+    width: 25px;
+    height: 25px;
+  }
+}

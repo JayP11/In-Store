@@ -1,0 +1,29 @@
+.cus-brand-details-flex-part3 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.find-my-way-btn-flex2 {
+    align-self: end;
+}
+
+@media screen and (max-width:530px) {
+    .cus-brand-details-cont {
+        flex-direction: column;
+    }
+
+    .cus-brand-details-flex-part3 {
+        align-items: end;
+    }
+}
+
+
+@media screen and (max-width:450px) {
+
+    .cus-brand-details-flex-part3 {
+        flex-direction: column;
+        align-items: start;
+        gap: 20px;
+    }
+}

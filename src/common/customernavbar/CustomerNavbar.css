@@ -1,0 +1,137 @@
+.cus-nav-search {
+    width: 180px !important;
+    border-radius: 50px;
+}
+
+
+.cus-nav-wishlist-icon-part {
+    background-color: var(--color-orange);
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cus-nav-wishlist-icon {
+    color: var(--color-white);
+    width: 25px;
+    height: 25px;
+    margin-top: 3px;
+}
+
+.cus-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding-right: 15px;
+}
+
+.sidebar_logoo {
+    display: none;
+}
+
+.cus-nav-logo-after {
+    gap: 125px;
+    padding-left: 8rem;
+    padding-right: 8rem;
+}
+
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper::after {
+    content: "┏";
+    font-size: 1rem;
+    top: 6px;
+    right: 10px;
+    position: absolute;
+    transform: rotate(-134deg);
+    font-weight: bold;
+    font-size: initial;
+    color: #000000e8;
+}
+
+select {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+
+@media screen and (max-width:1550px) {
+    .cus-nav-logo-after {
+        gap: 45px;
+        padding-right: 0px;
+    }
+}
+
+@media screen and (max-width:1340px) {
+    .cus-nav-links {
+        gap: 15px;
+    }
+}
+
+@media (max-width: 1260px) {
+
+    .cus-nav-logo-after {
+        justify-content: space-between;
+    }
+
+    .sidebar_logoo {
+        display: block;
+        padding-right: 20px;
+    }
+
+    .cus-nav-links {
+        display: none;
+    }
+
+    /* .nav_links {
+        display: none;
+
+    } */
+
+    .nav_sidebar_wrapp {
+        width: 100%;
+        background: var(--color-white);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        /* padding: 10px 0px; */
+        overflow-y: scroll;
+        max-height: 575px;
+    }
+
+    .nav_sidebar_wrapp>a {
+        padding: 1rem;
+        border-bottom: 1px solid #C1C1C1;
+        width: 100%;
+        font-size: 18px;
+        font-weight: 300;
+        text-align: right;
+        color: var(--color-black);
+        cursor: pointer;
+        /* background: var(--color-orange); */
+    }
+
+    .nav_sidebar_wrapp>a:hover {
+        font-weight: bold;
+        color: var(--color-white);
+        background: var(--color-orange);
+    }
+
+    @media screen and (max-width: 768px) {
+        .cus-nav-logo-after {
+            padding-left: 0px !important;
+        }
+    }
+
+    @media screen and (max-width:500px) {
+        .cus-nav-logo-after {
+            padding-left: 15px !important;
+        }
+    }
+}

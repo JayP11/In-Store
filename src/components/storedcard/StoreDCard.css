@@ -1,0 +1,54 @@
+.stored_card_wrapp {
+    width: 100%;
+    height: 180px;
+    padding: 14px 14px;
+    position: relative;
+    border: 1.8px solid #7C7C7C;
+}
+
+
+
+.stored_card_edit_wrapp {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.stored_card_edit_btn {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.stored_card_edit_btn>img {
+    width: 100%;
+    height: 100%;
+}
+
+.stored_card_img {
+    width: 100%;
+    height: 100%;
+    /* object-fit: contain; */
+    /* object-fit: none; */
+}
+
+.delete-modal-btn-box {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+    align-self: flex-end;
+}
+
+.sd_model_wrapp-delete {
+    min-width: 500px !important;
+    max-width: 500px !important;
+}
+
+.delete-modal-btn:hover {
+    color: var(--color-orange);
+    font-weight: 600;
+}

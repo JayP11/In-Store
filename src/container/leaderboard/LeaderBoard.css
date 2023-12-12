@@ -1,0 +1,199 @@
+.leaderboard-sub-wrapp {
+    display: flex;
+    flex-direction: column;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    /* gap: 25px; */
+}
+
+.leaderboard-sub-heading {
+    margin-bottom: 1rem;
+}
+
+.leaderboard-btn-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.leaderboard-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    font-size: 20px;
+    align-self: flex-end;
+}
+
+/* select mall modal start*/
+
+.select_mall_main_wrapp {
+    padding: 10px;
+    width: 70vw;
+    max-height: 98vh;
+    overflow-y: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background: none;
+}
+
+.select_mall_base_wrapp {
+    width: 68vw;
+    background: var(--color-white);
+    border-radius: 10px;
+    margin: 1rem auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.select_mall_heading {
+    color: var(--color-black);
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.select_mall_serch_wrapp {
+    width: 50%;
+    height: 35px;
+    position: relative;
+    display: flex;
+    background: #DADADA;
+    min-width: 300px;
+}
+
+.select_mall_search_icon {
+    position: absolute;
+    right: 10px;
+    top: 5px
+}
+
+.select_mall_tag_btns_wrapp {
+    width: initial;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.select_mall_tag_single_btn {
+    padding: 6px 16px 6px 16px;
+    background: var(--color-black);
+    color: var(--color-white);
+    font-size: 14px;
+    font-weight: 400;
+    border-radius: 4px;
+    position: relative;
+}
+
+.select_mall_tag_single_btn_close {
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    color: var(--color-white);
+    width: 12px;
+}
+
+.mall_Select_wrapp {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: start;
+    /* gap: 1rem; */
+}
+
+.leaderboard-sub-heading {
+    margin-bottom: 1rem;
+}
+
+.leaderboard-btn-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.leaderboard-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    font-size: 20px;
+    align-self: flex-end;
+}
+
+.leaderboard-filter-main-wrapp {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.leaderboard-filter-part-first {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 45%;
+}
+
+.leaderboard-filter-part-sec {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 45%;
+}
+
+/* Select Date Dropdown  */
+
+.css-b62m3t-container {
+    width: 50%;
+}
+
+@media screen and (max-width: px) {
+    .leaderboard-filter-main-wrapp {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .leaderboard-filter-part-first {
+        width: 100%;
+    }
+
+    .leaderboard-filter-part-sec {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 1385px) {
+    .leaderboard-inner-namebox {
+        flex-direction: column;
+    }
+
+    .leaderboard-btn {
+        align-self: flex-end;
+    }
+}
+
+@media screen and (max-width:900px) {
+    .leaderboard-sub-wrapp {
+        margin-left: 0rem;
+        margin-right: 0rem;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .select_mall_serch_wrapp {
+        max-width: 335px;
+    }
+
+    .select_mall_main_wrapp {
+        width: 85vw;
+    }
+
+    .select_mall_base_wrapp {
+        width: 80vw;
+    }
+}

@@ -1,0 +1,27 @@
+.cus-nav-black-main {
+    width: 100%;
+    height: 50px;
+    background-color: var(--color-black);
+    color: var(--color-white);
+}
+
+.cus-nav-black-con {
+    max-width: 1140px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    padding-top: 15px;
+    gap: 5px;
+}
+
+@media screen and (max-width:1140px) {
+    .cus-nav-black-con {
+        padding-left: 15px;
+    }
+}
+
+@media screen and (max-width:400px) {
+    .cus-nav-black-con {
+        font-size: 14px;
+    }
+}
