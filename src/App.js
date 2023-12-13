@@ -19,7 +19,6 @@ import CinemaDashboard from "./pages/cinemadashboard/CinemaDashboard";
 import FaqPage from "./pages/faqpage/FaqPage";
 import Newpage from "./pages/newpage";
 import CinemaaHome from "./pages/cinemaahome/CinemaaHome";
-// import CinemaPage from "./pages/cinemapage/CinemaPage";
 
 // const firebaseConfig = {
 //   apiKey: "AIzaSyAE-ph5NvfT0S2LgYmL-QmCX6Y2pCPA6gA",

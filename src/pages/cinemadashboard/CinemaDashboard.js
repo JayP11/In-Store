@@ -52,6 +52,7 @@ import CinemaTiles from "../../container/cinematiles/CinemaTiles";
 import CinemaTahankYou from "../../container/cinemathankyou/CinemaThankYou";
 import CinemaProRateCard from "../../container/cinemaproratecard/CinemaProRateCard";
 import FaqPage from "../faqpage/FaqPage";
+import MallCart from "../../container/mallCart/MallCart";
 
 const CinemaDashboard = () => {
   const {
@@ -519,11 +520,23 @@ const CinemaDashboard = () => {
                       }}
                       onClick={() => setTab(7)}
                       className="profile_sidebar_sig_btn cinema_sidebar_sig_btn">
-                      {/* &nbsp;&nbsp;&nbsp; - Events */}
                       &nbsp;&nbsp;&nbsp; - Thank You
-                      {/* <div className="profile_sidebar_sig_btn_right_arrow">
-                  <FiChevronLeft color="#fff" size={20} />
-                </div> */}
+                    </button>
+                    <button
+                      style={{
+                        background: gettab === 23 ? "#ff8b00" : "#fff",
+                        color: gettab === 23 ? "#fff" : "#000",
+                        fontWeight: gettab === 23 ? "700" : "500",
+                        width: sidebaropen ? "300px" : "0px",
+                        overflow: "hidden",
+                        transition: "width 1s ease",
+                        whiteSpace: "nowrap",
+                        borderRight: "1px solid",
+                        borderleft: "1px solid",
+                      }}
+                      onClick={() => setTab(23)}
+                      className="profile_sidebar_sig_btn cinema_sidebar_sig_btn">
+                      &nbsp;&nbsp;&nbsp; - Mall cart
                     </button>
                     {/* <button
                       style={{
@@ -607,6 +620,13 @@ const CinemaDashboard = () => {
               )}
               {gettab === 22 && (
                 <FaqPage
+                  get_mall_auth_data={get_mall_auth_data}
+                  sidebaropen={sidebaropen}
+                  setTab={setTab}
+                />
+              )}
+              {gettab === 23 && (
+                <MallCart
                   get_mall_auth_data={get_mall_auth_data}
                   sidebaropen={sidebaropen}
                   setTab={setTab}

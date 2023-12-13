@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "https://theapplified.com/In-store-front/",
-
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -20,6 +19,7 @@
     "react-helmet": "^6.1.0",
     "react-icons": "^4.8.0",
     "react-modal": "^3.16.1",
+    "react-player": "^2.13.0",
     "react-rating": "^2.0.5",
     "react-responsive-datepicker": "^1.0.6",
     "react-router-dom": "^6.10.0",

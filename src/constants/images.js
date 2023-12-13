@@ -191,7 +191,6 @@ import in_store_google_download from "../assets/images/in-store-google-download.
 import in_store_apple_download from "../assets/images/in-store-istore-download.png";
 import retailer_home_last_card from "../assets/images/retailer_home_last_card.png";
 
-
 //Cinema Home
 import cinemahomeimg1 from "../assets/images/cinemahomeimg1.png";
 import cinemahomeimg2 from "../assets/images/cinemahomeimg2.png";
@@ -201,12 +200,14 @@ import cinemashoes from "../assets/images/cinemashoes.png";
 import cinematrackpant from "../assets/images/cinematrackpant.png";
 import cinemahomebanner from "../assets/images/cinemahomebanner.png";
 
-
 // Cinema Images
 
-import cinema_logo from "../assets/images/cinema_logo.png"
-import cinema_banner from "../assets/images/cinema_banner.png"
+import cinema_logo from "../assets/images/cinema_logo.png";
+import cinema_banner from "../assets/images/cinema_banner.png";
+import demovideo from "../assets/images/demovideo.mp4";
+
 export default {
+  demovideo,
   // mainlogo,
   mall_img,
   introducebg,

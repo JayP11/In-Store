@@ -1,0 +1,31 @@
+.cartdelete-icon_inner {
+  height: 100%;
+  width: 100%;
+}
+.cartdelete_icon_main {
+  height: 30px;
+  width: 30px;
+}
+
+.MallCart_main {
+  padding: 5rem;
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.mallcart_items_main {
+  display: flex;
+  border: 1px solid;
+  justify-content: space-between;
+  padding: 1rem;
+  align-items: center;
+}
+
+.mallcart_carttotal_checkoutbtn {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 1rem;
+}
