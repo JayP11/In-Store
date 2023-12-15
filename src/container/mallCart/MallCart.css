@@ -20,6 +20,7 @@
   justify-content: space-between;
   padding: 1rem;
   align-items: center;
+  gap: 10px;
 }
 
 .mallcart_carttotal_checkoutbtn {
@@ -28,4 +29,20 @@
   align-items: flex-end;
   flex-direction: column;
   gap: 1rem;
+}
+
+.mallcart_items_inner {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+@media screen and (max-width: 550px) {
+  .mallcart_items_inner {
+    gap: 10px;
+  }
+
+  .MallCart_main {
+    padding: 1.4rem;
+  }
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./EditFacilities.css";
+import "./AddFacilities.css";
 import { useMallContext } from "../../context/mall_context";
 import Notification from "../../utils/Notification";
 import { IoChevronBack } from "react-icons/io5";
@@ -8,7 +8,7 @@ import Select from "react-select";
 import { Link } from "react-router-dom";
 import images from "../../constants/images";
 
-const EditFacilities = ({
+const AddFacilities = ({
   get_mall_auth_data,
   getfacility_id,
   getsinglefacilitydata,
@@ -224,17 +224,13 @@ const EditFacilities = ({
                 </div>
               </div>
               {/* upload btn end */}
-              <div
-                className="Editfacility_terms_addfac_side2"
-                onClick={() => {
-                  setTab(26);
-                }}>
+              <div className="Editfacility_terms_addfac_side2">
                 <b>Add another facility</b>
-                <img
+                {/* <img
                   src={images.add_new}
                   alt="add_new"
                   className="Editfacility_terms_addfac_side2_img"
-                />
+                /> */}
               </div>
             </div>
           </div>
@@ -246,6 +242,6 @@ const EditFacilities = ({
   );
 };
 
-export default EditFacilities;
+export default AddFacilities;
 
 // ⏷

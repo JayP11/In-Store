@@ -151,7 +151,7 @@ const AfterLoginPage = () => {
         if (res.data.success == 1) {
           SetMallArray(res.data.data);
         } else {
-          null;
+          // null;
         }
       })
       .catch((err) => {
@@ -351,7 +351,7 @@ const AfterLoginPage = () => {
           setRetailerHomeData(res.data.data[0]);
           setLoading(false);
         } else {
-          null;
+          // null;
         }
       })
       .catch((err) => {
@@ -567,8 +567,9 @@ const AfterLoginPage = () => {
             <div
               className="about_hero_wrapp"
               style={{
-                backgroundImage: `url(${getRetailerHomeData ? getRetailerHomeData.image_path : ""
-                  })`,
+                backgroundImage: `url(${
+                  getRetailerHomeData ? getRetailerHomeData.image_path : ""
+                })`,
                 backgroundPosition: "center",
                 backgroundSize: "cover",
               }}>
@@ -597,7 +598,7 @@ const AfterLoginPage = () => {
                     // onClick={() => setModalIsOpenBrand(true)}>
                     onClick={() => {
                       //  SetsignButn(2), SetboldButn(2);
-                      brandLoginModalOpen(true), SetsignButn(2), SetboldButn(2);
+                      brandLoginModalOpen(true); SetsignButn(2); SetboldButn(2);
                     }}>
                     Register your brand
                   </button>
@@ -909,7 +910,7 @@ const AfterLoginPage = () => {
               value={getemail}
               className="signup_input"
               autoFocus="true"
-            // style={{ background: "#DAD9D8", border: 'none' }}
+              // style={{ background: "#DAD9D8", border: 'none' }}
             />
             <label htmlFor="password">Password</label>
             <input
@@ -919,7 +920,7 @@ const AfterLoginPage = () => {
               name=""
               id=""
               className="signup_input"
-            // style={{ background: "#DAD9D8", border: 'none' }}
+              // style={{ background: "#DAD9D8", border: 'none' }}
             />
             <div className="signup_terms_wrapp">
               <input
@@ -1154,7 +1155,7 @@ const AfterLoginPage = () => {
                   id=""
                   className="signup_input"
                   autoFocus="true"
-                // style={{ background: "#DAD9D8", border: 'none' }}
+                  // style={{ background: "#DAD9D8", border: 'none' }}
                 />
                 <label htmlFor="password">Password</label>
                 <div
@@ -1361,7 +1362,7 @@ const AfterLoginPage = () => {
                   value={getemail}
                   className="signup_input"
                   autoFocus="true"
-                // style={{ background: "#DAD9D8", border: 'none' }}
+                  // style={{ background: "#DAD9D8", border: 'none' }}
                 />
                 <label htmlFor="password">Password</label>
                 <div
@@ -1568,7 +1569,7 @@ const AfterLoginPage = () => {
                   id=""
                   className="signup_input"
                   autoFocus="true"
-                // style={{ background: "#DAD9D8", border: 'none' }}
+                  // style={{ background: "#DAD9D8", border: 'none' }}
                 />
                 <label htmlFor="password">Password</label>
                 <div

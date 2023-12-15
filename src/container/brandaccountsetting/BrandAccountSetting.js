@@ -169,7 +169,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   const onHandleEmailChange = (e) => {
     let email = e.target.value;
     if (email === "" || regEx.test(email)) {
-      setEmail(email);
+      // setEmail(email);
     } else {
       return;
     }
@@ -178,7 +178,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   const onHandleMallEmailChange = (e) => {
     let mallEmail = e.target.value;
     if (mallEmail === "" || regEx.test(mallEmail)) {
-      setMallEmail(mallEmail);
+      // setMallEmail(mallEmail);
     } else {
       return;
     }
@@ -373,7 +373,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
         if (res.data.success == 1) {
           SetMallArray(res.data.data);
         } else {
-          null;
+          // null;
         }
       })
       .catch((err) => {
@@ -424,8 +424,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
         <div
           className="band-inn-logo-wrapp"
           style={{ left: sidebaropen === false ? "5%" : "" }}
-          {...getRootlogoProps()}
-        >
+          {...getRootlogoProps()}>
           {/* <div style={{ width: '100%' }} {...getRootlogoProps()}> */}
           <input
             {...getInputlogoProps()}
@@ -518,8 +517,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                     setRetailertype(e.target.value);
                     setRetailertypename(e.target.value);
                     getBrand(e.target.value);
-                  }}
-                >
+                  }}>
                   <option defaultValue value="">
                     {retailertypename}
                   </option>
@@ -593,8 +591,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                   onChange={(e) => {
                     console.log("rrr", e.target.value);
                     setMallname(e.target.value);
-                  }}
-                >
+                  }}>
                   <option value="">{getbrandname}</option>
                   {get_brand_data &&
                     get_brand_data.map((item, index) => {
@@ -820,14 +817,12 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
               <div className="mall_upload_btn_wrapp">
                 <button
                   className="btn btn-orange"
-                  onClick={() => UpdateMallData()}
-                >
+                  onClick={() => UpdateMallData()}>
                   Update
                 </button>
                 <button
                   className="btn"
-                  style={{ color: "#777", fontWeight: "600" }}
-                >
+                  style={{ color: "#777", fontWeight: "600" }}>
                   Reset
                 </button>
               </div>
@@ -846,8 +841,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                   border: "none",
                   paddingBottom: "0px",
                   maxWidth: "250px",
-                }}
-              >
+                }}>
                 {/* <input
                 {...getInputlogoProps()}
                 accept="image/jpeg, image/jpg, image/png, image/eps"
@@ -881,8 +875,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                           <button
                             type="button"
                             className="click_upload_btn"
-                            style={{ marginBottom: "10px" }}
-                          >
+                            style={{ marginBottom: "10px" }}>
                             click here
                           </button>
                           {/* <a href="">clicking here</a> */}
@@ -893,8 +886,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                             type="button"
                             onClick={() => {
                               // setFiles([]);
-                            }}
-                          >
+                            }}>
                             Upload File
                           </button>
                         </div>
@@ -924,8 +916,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                             <button
                               type="button"
                               className="click_upload_btn"
-                              style={{ marginBottom: "10px" }}
-                            >
+                              style={{ marginBottom: "10px" }}>
                               click here
                             </button>
                             {/* <a href="">clicking here</a> */}
@@ -936,16 +927,14 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                               type="button"
                               onClick={() => {
                                 // setFiles([]);
-                              }}
-                            >
+                              }}>
                               Upload File
                             </button>
                           </div>
                         </div>
                         <button
                           className="btn btn-blue"
-                          onClick={() => setFiles([])}
-                        >
+                          onClick={() => setFiles([])}>
                           Cancel
                         </button>
                       </>
@@ -964,8 +953,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                             type="button"
                             onClick={() => {
                               // setFiles([]);
-                            }}
-                          >
+                            }}>
                             Upload File
                           </button>
                         </div>
@@ -980,8 +968,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                   alingitem: "center",
                   paddingLeft: "5px",
                   paddingRight: "5px",
-                }}
-              >
+                }}>
                 <button
                   className="btn btn-blue"
                   onClick={() => setFiles([])}
@@ -989,8 +976,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                     marginBottom: "10px",
                     marginLeft: "10px",
                     marginRight: "10px",
-                  }}
-                >
+                  }}>
                   Cancel
                 </button>
               </div>
@@ -1004,8 +990,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                   border: "none",
                   paddingBottom: "0px",
                   maxWidth: "250px",
-                }}
-              >
+                }}>
                 {/* <input
                 {...getInputlogoProps()}
                 accept="image/jpeg, image/jpg, image/png, image/eps"
@@ -1039,8 +1024,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                           <button
                             type="button"
                             className="click_upload_btn"
-                            style={{ marginBottom: "10px" }}
-                          >
+                            style={{ marginBottom: "10px" }}>
                             click here
                           </button>
                           {/* <a href="">clicking here</a> */}
@@ -1051,8 +1035,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                             type="button"
                             onClick={() => {
                               // setFiles([]);
-                            }}
-                          >
+                            }}>
                             Upload File
                           </button>
                         </div>
@@ -1082,8 +1065,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                             <button
                               type="button"
                               className="click_upload_btn"
-                              style={{ marginBottom: "10px" }}
-                            >
+                              style={{ marginBottom: "10px" }}>
                               click here
                             </button>
                             {/* <a href="">clicking here</a> */}
@@ -1094,16 +1076,14 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                               type="button"
                               onClick={() => {
                                 // setFiles([]);
-                              }}
-                            >
+                              }}>
                               Upload File
                             </button>
                           </div>
                         </div>
                         <button
                           className="btn btn-blue"
-                          onClick={() => setFiles2([])}
-                        >
+                          onClick={() => setFiles2([])}>
                           Cancel
                         </button>
                       </>
@@ -1122,8 +1102,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                             type="button"
                             onClick={() => {
                               // setFiles([]);
-                            }}
-                          >
+                            }}>
                             Upload File
                           </button>
                         </div>
@@ -1138,8 +1117,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                   alingitem: "center",
                   paddingLeft: "5px",
                   paddingRight: "5px",
-                }}
-              >
+                }}>
                 <button
                   className="btn btn-blue"
                   onClick={() => setFiles2([])}
@@ -1147,8 +1125,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                     marginBottom: "10px",
                     marginLeft: "10px",
                     marginRight: "10px",
-                  }}
-                >
+                  }}>
                   Cancel
                 </button>
               </div>
@@ -1160,8 +1137,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                 // border: "none",
                 // paddingBottom: "0px",
                 maxWidth: "250px",
-              }}
-            >
+              }}>
               <h4 style={{ marginBottom: "10px" }}>
                 Upload the Brand in Mall (max 400kb)
               </h4>
@@ -1187,8 +1163,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                     <button
                       type="button"
                       className="click_upload_btn"
-                      style={{ marginBottom: "10px" }}
-                    >
+                      style={{ marginBottom: "10px" }}>
                       click here
                     </button>
                     {/* <a href="">clicking here</a> */}
@@ -1200,8 +1175,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                       onClick={() => {
                         // setFiles([]);
                       }}
-                      style={{ marginBottom: "10px" }}
-                    >
+                      style={{ marginBottom: "10px" }}>
                       Upload File
                     </button>
                   </div>
@@ -1220,8 +1194,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
 
         <div
           className="signup_terms_wrapp fs-des-resp2"
-          style={{ marginBottom: "20px", marginTop: "20px" }}
-        >
+          style={{ marginBottom: "20px", marginTop: "20px" }}>
           <input
             type="checkbox"
             value={isAcceptTerm}
@@ -1240,8 +1213,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
           <button
             className="btn btn-orange"
             disabled={isAcceptTerm == 1 ? false : true}
-            onClick={() => UpdateMallData()}
-          >
+            onClick={() => UpdateMallData()}>
             Update
           </button>
           <button className="btn" style={{ fontWeight: "600", color: "#777" }}>

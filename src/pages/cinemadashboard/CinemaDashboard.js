@@ -53,6 +53,8 @@ import CinemaTahankYou from "../../container/cinemathankyou/CinemaThankYou";
 import CinemaProRateCard from "../../container/cinemaproratecard/CinemaProRateCard";
 import FaqPage from "../faqpage/FaqPage";
 import MallCart from "../../container/mallCart/MallCart";
+import MallCart2 from "../../container/mallCart2/MallCart2";
+import MallCart3 from "../../container/mallCart3/MallCart3";
 
 const CinemaDashboard = () => {
   const {
@@ -538,6 +540,39 @@ const CinemaDashboard = () => {
                       className="profile_sidebar_sig_btn cinema_sidebar_sig_btn">
                       &nbsp;&nbsp;&nbsp; - Mall cart
                     </button>
+                    <button
+                      style={{
+                        background: gettab === 24 ? "#ff8b00" : "#fff",
+                        color: gettab === 24 ? "#fff" : "#000",
+                        fontWeight: gettab === 24 ? "700" : "500",
+                        width: sidebaropen ? "300px" : "0px",
+                        overflow: "hidden",
+                        transition: "width 1s ease",
+                        whiteSpace: "nowrap",
+                        borderRight: "1px solid",
+                        borderleft: "1px solid",
+                      }}
+                      onClick={() => setTab(24)}
+                      className="profile_sidebar_sig_btn cinema_sidebar_sig_btn">
+                      &nbsp;&nbsp;&nbsp; - Mall cart2
+                    </button>
+                    <button
+                      style={{
+                        background: gettab === 25 ? "#ff8b00" : "#fff",
+                        color: gettab === 25 ? "#fff" : "#000",
+                        fontWeight: gettab === 25 ? "700" : "500",
+                        width: sidebaropen ? "300px" : "0px",
+                        overflow: "hidden",
+                        transition: "width 1s ease",
+                        whiteSpace: "nowrap",
+                        borderRight: "1px solid",
+                        borderleft: "1px solid",
+                      }}
+                      onClick={() => setTab(25)}
+                      className="profile_sidebar_sig_btn cinema_sidebar_sig_btn">
+                      &nbsp;&nbsp;&nbsp; - Mall cart3
+                    </button>
+
                     {/* <button
                       style={{
                         background: gettab === 6 ? "#ff8b00" : "#fff",
@@ -627,6 +662,20 @@ const CinemaDashboard = () => {
               )}
               {gettab === 23 && (
                 <MallCart
+                  get_mall_auth_data={get_mall_auth_data}
+                  sidebaropen={sidebaropen}
+                  setTab={setTab}
+                />
+              )}
+              {gettab === 24 && (
+                <MallCart2
+                  get_mall_auth_data={get_mall_auth_data}
+                  sidebaropen={sidebaropen}
+                  setTab={setTab}
+                />
+              )}
+              {gettab === 25 && (
+                <MallCart3
                   get_mall_auth_data={get_mall_auth_data}
                   sidebaropen={sidebaropen}
                   setTab={setTab}

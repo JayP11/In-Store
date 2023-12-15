@@ -1,12 +1,18 @@
 import React from "react";
-import { CinemaHomeNavbar } from "../../common";
-import { CinemaHomeBanner_Container, CinemaHomeHero, CinemaHomeProductile, CinemaHomeWelcome } from "../../container";
+import { HomeNavbar } from "../../common";
+import {
+  CinemaHomeBanner_Container,
+  CinemaHomeHero,
+  CinemaHomeProductile,
+  CinemaHomeWelcome,
+} from "../../container";
 import CinemaWelcomeStoreCard from "../../components/cinemawelcomestorecard/CinemaWelcomeStoreCard";
 
 const CinemaaHome = () => {
   return (
     <div>
-      <CinemaHomeNavbar />
+      <HomeNavbar />
+      {/* <CinemaHomeNavbar /> */}
       <CinemaHomeHero />
       <CinemaHomeWelcome />
       <CinemaHomeProductile />

@@ -562,7 +562,7 @@ const CinemaHomeNavbar = ({ setTab, get_mall_auth_data }) => {
           SetMallArray(res.data.data);
           // Notification("success", "Success!", "Mall Registerated Successfully!");
         } else {
-          null;
+          // null;
         }
       })
       .catch((err) => {
@@ -586,7 +586,7 @@ const CinemaHomeNavbar = ({ setTab, get_mall_auth_data }) => {
           SetMallArray2(res.data.data);
           // Notification("success", "Success!", "Brand Registerated Successfully!");
         } else {
-          null;
+          // null;
         }
       })
       .catch((err) => {

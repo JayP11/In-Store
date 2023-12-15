@@ -3,8 +3,7 @@ import "./ProfilePage.css";
 import { Footer, Navbar } from "../../common";
 import { FiChevronLeft } from "react-icons/fi";
 import { MallHero, MallNavbar } from "../../components";
-import { CSSTransition } from 'react-transition-group';
-
+import { CSSTransition } from "react-transition-group";
 
 import {
   AddEateries,
@@ -41,6 +40,7 @@ import {
   get_store_mall_wise,
 } from "../../utils/Constant";
 import MallAddStore from "../../container/MallAddStore";
+import AddFacilities from "../../container/addFacilities/AddFacilities";
 
 const ProfilePage = () => {
   const {
@@ -63,15 +63,12 @@ const ProfilePage = () => {
   const [geteventdata1, SetEventData] = useState("");
   const [showElement, setShowElement] = useState(true);
 
-
-
   // store api start
   const storePerPage = 3;
   const [storetotalPages, setStoreTotalPages] = useState(1);
   const [storepage, setStorePage] = useState(1);
 
   // store api end
-
 
   const [eventList, setEventList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -91,7 +88,7 @@ const ProfilePage = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log('re754775775675', res.data);
+        console.log("re754775775675", res.data);
         setTotalPages(res.data.last_page);
         setEventList([...eventList, ...res.data.data]);
         setLoading(false);
@@ -105,11 +102,7 @@ const ProfilePage = () => {
     EventApi();
   }, [page]);
 
-
   // eatery api start
-
-
-
 
   const eateryPerPage = 3;
   const [eaterytotalPages, setEateryTotalPages] = useState(1);
@@ -286,14 +279,12 @@ const ProfilePage = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-            }}
-          >
+            }}>
             <div className="loader"></div>
           </div>
         ) : (
           <div className="profilepage_main_wrapp profilepage_slider_transition">
             {/* side-bar start  */}
-
 
             <div style={{ backgroundColor: "#E5E4E2", minHeight: "100vh" }}>
               {/* <CSSTransition
@@ -303,7 +294,8 @@ const ProfilePage = () => {
               // unmountOnExit
               > */}
 
-              <div className="pro-side-none-resp"
+              <div
+                className="pro-side-none-resp"
                 style={{
                   display: "flex",
                   gap: "5px",
@@ -315,30 +307,31 @@ const ProfilePage = () => {
                   // left: sidebaropen === true ? null : "-400px",
                   // transition: 'left 2s ease'
                 }}
-              // className="profilepage_sidebarr profilepage_slider_transition"
+                // className="profilepage_sidebarr profilepage_slider_transition"
               >
                 <div className="profile_sidebar_wrapp">
                   <div
-                    style={{ position: "relative", width: sidebaropen ? "275px" : "0px", transition: "width 1s ease", }}
-                    className=""
-                  >
+                    style={{
+                      position: "relative",
+                      width: sidebaropen ? "275px" : "0px",
+                      transition: "width 1s ease",
+                    }}
+                    className="">
                     <button
                       style={{
                         // background: gettab === 1 ? "#ff8b00" : "#ffb103",
                         background: gettab === 1 ? "#ff8b00" : "#fff",
-                        color:gettab === 1 ? "#fff" : "#000",
+                        color: gettab === 1 ? "#fff" : "#000",
                         fontWeight: gettab === 1 ? "700" : "500",
                         width: sidebaropen ? "275px" : "0px",
                         overflow: "hidden",
                         transition: "width 1s ease",
                         whiteSpace: "nowrap",
-                        borderBottom:"1px solid #000",
-                        borderRight:"1px solid #000"
-
+                        borderBottom: "1px solid #000",
+                        borderRight: "1px solid #000",
                       }}
                       onClick={() => setTab(1)}
-                      className="profile_sidebar_sig_btn"
-                    >
+                      className="profile_sidebar_sig_btn">
                       My Profile
                       {/* <div className="profile_sidebar_sig_btn_right_arrow">
                   <FiChevronLeft color="#fff" size={20} />
@@ -348,19 +341,17 @@ const ProfilePage = () => {
                       style={{
                         // background: gettab === 2 ? "#ff8b00" : "#ffb103",
                         background: gettab === 2 ? "#ff8b00" : "#fff",
-                      color: gettab === 2 ? "#fff" : "#000",
+                        color: gettab === 2 ? "#fff" : "#000",
                         fontWeight: gettab === 2 ? "700" : "500",
                         width: sidebaropen ? "275px" : "0px",
                         overflow: "hidden",
                         transition: "width 1s ease",
                         whiteSpace: "nowrap",
-                        borderBottom:"1px solid #000",
-                        borderRight:"1px solid #000"
-
+                        borderBottom: "1px solid #000",
+                        borderRight: "1px solid #000",
                       }}
                       onClick={() => setTab(2)}
-                      className="profile_sidebar_sig_btn"
-                    >
+                      className="profile_sidebar_sig_btn">
                       Account Setting
                       {/* <div className="profile_sidebar_sig_btn_right_arrow">
                   <FiChevronLeft color="#fff" size={20} />
@@ -388,14 +379,11 @@ const ProfilePage = () => {
                         overflow: "hidden",
                         transition: "width 1s ease",
                         whiteSpace: "nowrap",
-                        borderBottom:"1px solid #000",
-                        borderRight:"1px solid #000"
-
-
+                        borderBottom: "1px solid #000",
+                        borderRight: "1px solid #000",
                       }}
                       onClick={() => setTab(3)}
-                      className="profile_sidebar_sig_btn"
-                    >
+                      className="profile_sidebar_sig_btn">
                       &nbsp;&nbsp;&nbsp; - Brands
                       {/* <div className="profile_sidebar_sig_btn_right_arrow">
                   <FiChevronLeft color="#fff" size={20} />
@@ -405,22 +393,18 @@ const ProfilePage = () => {
                       style={{
                         background:
                           gettab === 4 || gettab === 8 ? "#ff8b00" : "#fff",
-                        color:
-                          gettab === 4 || gettab === 8 ? "#fff" : "#000",
+                        color: gettab === 4 || gettab === 8 ? "#fff" : "#000",
                         fontWeight:
                           gettab === 4 || gettab === 8 ? "700" : "500",
                         width: sidebaropen ? "275px" : "0px",
                         overflow: "hidden",
                         transition: "width 1s ease",
                         whiteSpace: "nowrap",
-                        borderBottom:"1px solid #000",
-                        borderRight:"1px solid #000",
-
-
+                        borderBottom: "1px solid #000",
+                        borderRight: "1px solid #000",
                       }}
                       onClick={() => setTab(4)}
-                      className="profile_sidebar_sig_btn"
-                    >
+                      className="profile_sidebar_sig_btn">
                       &nbsp;&nbsp;&nbsp; - Eateries
                       {/* <div className="profile_sidebar_sig_btn_right_arrow">
                   <FiChevronLeft color="#fff" size={20} />
@@ -436,14 +420,11 @@ const ProfilePage = () => {
                         overflow: "hidden",
                         transition: "width 1s ease",
                         whiteSpace: "nowrap",
-                        borderBottom:"1px solid #000",
-                        borderRight:"1px solid #000"
-
-
+                        borderBottom: "1px solid #000",
+                        borderRight: "1px solid #000",
                       }}
                       onClick={() => setTab(17)}
-                      className="profile_sidebar_sig_btn"
-                    >
+                      className="profile_sidebar_sig_btn">
                       &nbsp;&nbsp;&nbsp; - Movies
                       {/* <div className="profile_sidebar_sig_btn_right_arrow">
                   <FiChevronLeft color="#fff" size={20} />
@@ -458,14 +439,11 @@ const ProfilePage = () => {
                         overflow: "hidden",
                         transition: "width 1s ease",
                         whiteSpace: "nowrap",
-                        borderBottom:"1px solid #000",
-                        borderRight:"1px solid #000"
-
-
+                        borderBottom: "1px solid #000",
+                        borderRight: "1px solid #000",
                       }}
                       onClick={() => setTab(5)}
-                      className="profile_sidebar_sig_btn"
-                    >
+                      className="profile_sidebar_sig_btn">
                       &nbsp;&nbsp;&nbsp; - Events
                       {/* <div className="profile_sidebar_sig_btn_right_arrow">
                   <FiChevronLeft color="#fff" size={20} />
@@ -480,14 +458,11 @@ const ProfilePage = () => {
                         overflow: "hidden",
                         transition: "width 1s ease",
                         whiteSpace: "nowrap",
-                        borderBottom:"1px solid #000",
-                        borderRight:"1px solid #000"
-
-
+                        borderBottom: "1px solid #000",
+                        borderRight: "1px solid #000",
                       }}
                       onClick={() => setTab(6)}
-                      className="profile_sidebar_sig_btn"
-                    >
+                      className="profile_sidebar_sig_btn">
                       &nbsp;&nbsp;&nbsp; - Facilities
                       {/* <div className="profile_sidebar_sig_btn_right_arrow">
                   <FiChevronLeft color="#fff" size={20} />
@@ -502,13 +477,11 @@ const ProfilePage = () => {
                         overflow: "hidden",
                         transition: "width 1s ease",
                         whiteSpace: "nowrap",
-                        borderBottom:"1px solid #000",
-                        borderRight:"1px solid #000"
-
+                        borderBottom: "1px solid #000",
+                        borderRight: "1px solid #000",
                       }}
                       onClick={() => setTab(7)}
-                      className="profile_sidebar_sig_btn"
-                    >
+                      className="profile_sidebar_sig_btn">
                       Contact Details
                       {/* <div className="profile_sidebar_sig_btn_right_arrow">
                   <FiChevronLeft color="#fff" size={20} />
@@ -523,8 +496,7 @@ const ProfilePage = () => {
                           setShowElement(!showElement);
 
                           console.log("check", sidebaropen);
-                        }}
-                      >
+                        }}>
                         <FiChevronLeft color="#fff" size={20} />
                       </div>
                     </div>
@@ -623,7 +595,7 @@ const ProfilePage = () => {
                   getstore_is={getstore_is}
                   get_mall_auth_data={get_mall_auth_data}
                   setTab={setTab}
-                // getStoreList={getStoreList}
+                  // getStoreList={getStoreList}
                 />
               )}
               {gettab === 10 && (
@@ -656,7 +628,7 @@ const ProfilePage = () => {
                 <MallAddEvents
                   get_mall_auth_data={get_mall_auth_data}
                   setTab={setTab}
-                // EventApi={EventApi}
+                  // EventApi={EventApi}
                 />
               )}
               {gettab === 14 && (
@@ -677,7 +649,7 @@ const ProfilePage = () => {
                   getstore_is={getstore_is}
                   get_mall_auth_data={get_mall_auth_data}
                   setTab={setTab}
-                // getStoreList={getStoreList}
+                  // getStoreList={getStoreList}
                 />
               )}
 
@@ -734,6 +706,13 @@ const ProfilePage = () => {
                   get_mall_auth_data={get_mall_auth_data}
                   getstore_is={getstore_is}
                   setTab={setTab}
+                />
+              )}
+              {gettab === 26 && (
+                <AddFacilities
+                  get_mall_auth_data={get_mall_auth_data}
+                  setTab={setTab}
+                  // EventApi={EventApi}
                 />
               )}
             </div>

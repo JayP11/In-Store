@@ -1,22 +1,17 @@
 import React, { useEffect, useState } from "react";
-// import "./Navbar.css";
+import "./HomeNavbar.css";
 import images from "../../constants/images";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { IoClose } from "react-icons/io5";
 import { IoIosLogOut } from "react-icons/io";
 import { ImGoogle } from "react-icons/im";
-// import { AiOutlineClose, AiOutlineGoogle } from "react-icons/ai";
+import { AiOutlineClose } from "react-icons/ai";
 import FacebookLogin from "react-facebook-login";
 import ReactModal from "react-modal";
-import Notification from "../../utils/Notification"
+import Notification from "../../utils/Notification";
 
-import {
-  GrClose,
-  GrFacebook,
-  GrFacebookOption,
-  GrGoogle,
-} from "react-icons/gr";
+import { GrClose, GrGoogle } from "react-icons/gr";
 import {
   // AiOutlineClose,
   AiOutlineEye,
@@ -68,7 +63,7 @@ const HomeNavbar = (
   const regEx =
     /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [modalBrandLogIsOpen, setBrandLogIsOpen] = useState(false);
+  // const [modalBrandLogIsOpen, setBrandLogIsOpen] = useState(false);
   const [modalIsOpen2, setIsOpen2] = useState(false);
   const [modalIsOpen3, setIsOpen3] = useState(false);
   const [modalIsOpen4, setIsOpen4] = useState(false);
@@ -84,7 +79,7 @@ const HomeNavbar = (
   const [getmallname, setMallname] = useState("");
   const [getfirstname, setFirstname] = useState("");
   const [getlastname, setLastname] = useState("");
-  const [getRegion, setRegion] = useState("");
+  // const [getRegion, setRegion] = useState("");
   const [getemail, setEmail] = useState("");
   const [getpassword, setPassword] = useState("");
   const [getsidebarOpen, setSidebarOpen] = useState(false);
@@ -94,7 +89,6 @@ const HomeNavbar = (
   const [isAcceptTerm, setIsAcceptTerm] = useState(false);
   const [getmallmasterid, setmallmasterid] = useState("");
   const [retailertype, setRetailertype] = useState("");
-
 
   const [isAcceptTermRegisterCustomer, setIsAcceptTermRegisterCustomer] =
     useState(false);
@@ -111,7 +105,7 @@ const HomeNavbar = (
 
   const [passwordVisible, setPasswordVisible] = useState(false);
 
-  const [active, setActive] = useState(false);
+  // const [active, setActive] = useState(false);
   //
   //   const handleClick = () => {
   //     setActive(!active);
@@ -132,7 +126,7 @@ const HomeNavbar = (
   //   };
   // const [getregisterCustomerOpen, setRegisterCustomerOpen] = useState(false);
 
-  const { is_login, is_token, logoutUser, role } = useMallContext();
+  // const { is_login, is_token, logoutUser, role } = useMallContext();
   const { RegisterCustomer, setMallRegister } = useAuthContext();
 
   const { setLogin } = useAuthContext();
@@ -411,9 +405,8 @@ const HomeNavbar = (
         console.log("ggg", JSON.stringify(res.data, null, 2));
         if (res.data.success == 1) {
           SetMallArray(res.data.data);
-
         } else {
-          null;
+          // null;
         }
       })
       .catch((err) => {
@@ -436,9 +429,8 @@ const HomeNavbar = (
         if (res.data.success == 1) {
           SetMallArray2(res.data.data);
           // Notification("success", "Success!", "Brand Registerated Successfully!");
-
         } else {
-          null;
+          // null;
         }
       })
       .catch((err) => {
@@ -543,7 +535,11 @@ const HomeNavbar = (
       if (data) {
         if (data.success === 1) {
           console.log("register-data", data);
-          Notification("success", "Success!", "Mall Registerated Successfully!");
+          Notification(
+            "success",
+            "Success!",
+            "Mall Registerated Successfully!"
+          );
 
           setIsOpen(false);
           setEmail("");
@@ -729,7 +725,6 @@ const HomeNavbar = (
                 About In-store
               </NavLink>
               <Link
-                // onClick={() => setIsOpen(true)}
                 to={"/mall"}
                 style={{
                   color: location.pathname === "/mall" ? "#ff8b00" : "black",
@@ -739,7 +734,6 @@ const HomeNavbar = (
               </Link>
 
               <Link
-                // onClick={() => setModalIsOpenBrand(true)}
                 to={"/retailer"}
                 style={{
                   color:
@@ -763,26 +757,9 @@ const HomeNavbar = (
                   Account{" "}
                   {getcustomerDropdown ? <BsChevronUp /> : <BsChevronDown />}
                 </Link>
-                {/* {getcustomerDropdown ? <BsChevronUp style={{ marginTop: "1px" }} /> : <BsChevronDown style={{ marginTop: "1px" }} />} */}
                 {getcustomerDropdown ? (
                   <>
                     <div className="navbar-acc-menu-open-warapp">
-                      {/* <Link to="/mall" className="navbar-acc-menu-link">
-                        Mall Registration
-                      </Link>
-                      <Link to="/retailer" className="navbar-acc-menu-link">
-                        Brand Registration
-                      </Link> */}
-                      {/* {is_login === true || role === 4 ? <Link to="/customer"
-                        className="navbar-acc-menu-link"
-                      >
-                        Customer
-                      </Link> : <Link to="/"
-                        className="navbar-acc-menu-link"
-                      > */}
-                      {/* Customer */}
-                      {/* </Link>} */}
-
                       {login === "true" && getrole == 2 ? (
                         <Link
                           to="/profile-page"
@@ -809,25 +786,15 @@ const HomeNavbar = (
                         <Link
                           className="navbar-acc-menu-link"
                           onClick={() => {
-                            setIsOpen3(true), SetsignButn(1), SetboldButn(1);
+                            setIsOpen3(true);
+                            SetsignButn(1);
+                            SetboldButn(1);
                           }}>
                           Login / Sign Up
                         </Link>
                       ) : null}
-                      {/* {login === false || login === null ? (
-                                                <Link
-                                                    className="navbar-acc-menu-link"
-                                                    onClick={() => setIsOpen(true)}
-                                                >
-                                                    Sign Up
-                                                </Link>
-                                            ) : null} */}
-                      {/* <Link className="navbar-acc-menu-link">My profile</Link> */}
-                      {/* <Link to="/customer" className="navbar-acc-menu-link">
-                                                Customer Registration
-                                            </Link> */}
+
                       <Link className="navbar-acc-menu-link">Help</Link>
-                      {/* {is_login === true ? (<><Link onClick={logout}>Logout</Link></>) : (<></>)} */}
                       {login === "true" ? (
                         <button style={{ textAlign: "start" }} onClick={logout}>
                           Logout
@@ -837,68 +804,6 @@ const HomeNavbar = (
                   </>
                 ) : null}
               </div>
-              {/* {getcondation === false ? (
-                <Link onClick={() => setIsOpen3(true)}>
-                  Sign Up <BsChevronDown />
-                </Link>
-              ) : null}
-              {getcondation && (
-                <>
-                  <div className="nav_myacc_wrapp">
-                    <Link>
-                      <img
-                        src={images.profile_logo}
-                        alt=""
-                        className="nav_profile"
-                      />
-                    </Link>
-                    <Link
-                      to={"/profile-page"}
-                      onClick={() => setAccountOpen(!getaccountOpen)}
-                    >
-                      My Account
-                      {getaccountOpen ? <BsChevronUp /> : <BsChevronDown />}
-                    </Link>
-                    {getaccountOpen ? (
-                      <>
-                        <div className="navbar-acc-menu-open-warapp">
-                          <Link className="navbar-acc-menu-link">Login</Link>
-                          <Link className="navbar-acc-menu-link">Sign Up</Link>
-                          <Link className="navbar-acc-menu-link">
-                            My profile
-                          </Link>
-                          <Link className="navbar-acc-menu-link">
-                            Account Setting
-                          </Link>
-                          <Link className="navbar-acc-menu-link">
-                            -&nbsp;&nbsp;Leaderboard Banners
-                          </Link>
-                          <Link className="navbar-acc-menu-link">
-                            -&nbsp;&nbsp;Promotional Banners
-                          </Link>
-                          <Link className="navbar-acc-menu-link">
-                            -&nbsp;&nbsp;Product Banners
-                          </Link>
-                          <Link className="navbar-acc-menu-link">
-                            -&nbsp;&nbsp;Product Tiles
-                          </Link>
-                          <Link className="navbar-acc-menu-link">
-                            -&nbsp;&nbsp;Track Analytics
-                          </Link>
-                          <Link className="navbar-acc-menu-link">
-                            My Brand in malls
-                          </Link>
-                          <Link className="navbar-acc-menu-link">Help</Link>
-                          <Link className="navbar-acc-menu-link">Logout</Link>
-                        </div>
-                      </>
-                    ) : null}
-                  </div>
-                  <Link onClick={logout}>
-                    <IoIosLogOut size={20} />
-                  </Link>
-                </>
-              )} */}
             </div>
 
             <button
@@ -952,10 +857,6 @@ const HomeNavbar = (
                   {getaccountOpen ? <BsChevronUp /> : <BsChevronDown />}
                 </Link>
               </>
-              {/* ) : null} */}
-              {/* <Link onClick={logout}>
-                <IoIosLogOut size={20} />
-              </Link> */}
               {getaccountOpen && (
                 <div className="accunt_sec_wrapp">
                   {login === "true" ? (
@@ -996,46 +897,10 @@ const HomeNavbar = (
           )}
         </div>
       </nav>
-      {/* model 1 */}
-      {/* <ReactModal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        style={customStyles}
-        contentLabel="Example Modal"
-      >
-        <div className="home_model_wrapp">
-          <div className="home_model_1sec">
-            <h4 className="h4">Hi, nice to meet you!</h4>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum ut
-              quidem voluptatibus.
-            </p>
-            <button
-              className="btn btn1"
-              onClick={() => {
-                setIsOpen(false);
-                setIsOpen2(true);
-              }}
-            >
-              YES
-            </button>
-            <button className="btn btn1" style={{ opacity: "0.8" }}>
-              No
-            </button>
-            <a href="">Learn More</a>
-          </div>
-          <img
-            src="https://hips.hearstapps.com/hmg-prod/images/portrait-of-laughing-young-woman-royalty-free-image-1592844146.jpg?crop=0.668xw:1.00xh;0.167xw,0"
-            alt=""
-            className="home_model_2sec"
-          />
-        </div>
-      </ReactModal> */}
-
-      {/* Mall Login Modal start*/}
+   
+      {/* Login modal*/}
       <ReactModal
         isOpen={modalIsOpen3}
-        // onAfterOpen={afterOpenModal}
         onRequestClose={closeModal3}
         style={customStyles}>
         <div className="model_sizing">
@@ -1046,7 +911,6 @@ const HomeNavbar = (
                 style={{ right: "7px", top: "9px" }}
                 onClick={closeModal3}>
                 <span style={{ fontSize: "16px" }}></span>
-                {/* <AiOutlineClose /> */}
                 <IoClose />
               </button>
             </div>
@@ -1061,11 +925,10 @@ const HomeNavbar = (
                   fontWeight: boldButn == 1 ? "600" : "200",
                 }}
                 className="tab_btn_styling">
-                Mall login / sign up
+                Mall Login / Sign Up
               </button>
               <button
                 onClick={() => {
-                  // setbrandModalIsOpen3(true);
                   SetsignButn(2);
                   SetboldButn(2);
                 }}
@@ -1074,11 +937,10 @@ const HomeNavbar = (
                   fontWeight: boldButn == 2 ? "600" : "200",
                 }}
                 className="tab_btn_styling">
-                Brand login / sign up
+                Brand Login / Sign Up
               </button>
               <button
                 onClick={() => {
-                  //  setCustLoginModalIsOpen3(true);
                   SetsignButn(3);
                   SetboldButn(3);
                 }}
@@ -1087,7 +949,19 @@ const HomeNavbar = (
                   fontWeight: boldButn == 3 ? "600" : "200",
                 }}
                 className="tab_btn_styling">
-                Consumer login / sign up
+                Consumer Login / Sign Up
+              </button>
+              <button
+                onClick={() => {
+                  SetsignButn(4);
+                  SetboldButn(4);
+                }}
+                style={{
+                  backgroundColor: signButn == 4 ? "white" : "#dad9d8",
+                  fontWeight: boldButn == 4 ? "600" : "200",
+                }}
+                className="tab_btn_styling">
+                Cinema Login / Sign Up
               </button>
             </div>
           </div>
@@ -1095,30 +969,6 @@ const HomeNavbar = (
             <div
               className="home_login_model_1sec_inner"
               style={{ maxWidth: "none" }}>
-              {/* <div>
-            <button>Mall login / sign up</button>
-            <button>Brand login / sign up</button>
-            <button>Consumer login / sign up</button>
-          </div> */}
-              {/* <button className="signup_modal_close" onClick={closeModal3}>
-            <span
-              style={{ fontSize: "16px" }}
-              className="brand-lable-radio-btn-txt">
-              Cancel
-            </span>{" "}
-            <AiOutlineClose color="red" />
-          </button> */}
-              {/* <div style={{ backgroundColor: "gray", display: "flex" }}>
-            <button style={{ border: "1px solid white" }}>
-              Mall login / sign up
-            </button>
-            <button style={{ border: "1px solid white" }}>
-              Brand login / sign up
-            </button>
-            <button style={{ border: "1px solid white" }}>
-              Consumer login / sign up
-            </button>
-          </div> */}
               <div className="f-b900 fs-22 mb_16 signup_headign">
                 Welcome Back!
               </div>
@@ -1131,7 +981,6 @@ const HomeNavbar = (
                   id=""
                   className="signup_input"
                   autoFocus="true"
-                // style={{ background: "#DAD9D8", border: 'none' }}
                 />
                 <label htmlFor="password">Password</label>
                 <div
@@ -1170,15 +1019,6 @@ const HomeNavbar = (
                     </AiOutlineEyeInvisible>
                   )}
                 </div>
-                {/* <input
-                  type="password"
-                  value={getpassword}
-                  onChange={(e) => setPassword(e.target.value)}
-                  name=""
-                  id=""
-                  className="signup_input"
-                  // style={{ background: "#DAD9D8", border: 'none' }}
-                /> */}
                 <div className="signup_terms_wrapp">
                   <input
                     type="checkbox"
@@ -1197,7 +1037,7 @@ const HomeNavbar = (
                 </button>
               </div>
               <button
-                className="btn btn-orange mb_16"
+                className="btn btn-black mb_16"
                 onClick={() => LoginMall()}
                 disabled={isAcceptTerm ? false : true}>
                 Login
@@ -1212,21 +1052,16 @@ const HomeNavbar = (
               </p>
 
               <div style={{ width: "100%" }}>
-                {/* facebook button */}
-
                 <LoginSocialFacebook
                   appId="1377758369684897"
                   fieldsProfile={
                     "id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender"
                   }
-                  // version={3}
                   onLoginStart={(e) => console.log(e)}
                   onLogoutSuccess={(e) => console.log(e)}
                   redirect_uri={Urls.base_url}
                   onResolve={({ data }: IResolveParams) => {
-                    // setProfile(data);
                     console.log(data);
-                    SigninCustomerFacebook(data, "3");
                   }}
                   onReject={(err) => {
                     console.log(err);
@@ -1252,12 +1087,8 @@ const HomeNavbar = (
                   </button>
                 </LoginSocialFacebook>
 
-                {/* google button */}
-
                 <LoginSocialGoogle
-                  // client_id="775372553139-o2l7tmtgohlmu3q31o0ufsfne62g47tk.apps.googleusercontent.com"
                   client_id="826718979042-bhij4jt5s6p85n55hbuhh0v40i4b3ng4.apps.googleusercontent.com"
-                  // onLoginStart={onLoginStart}
                   redirect_uri={Urls.base_url}
                   scope="openid profile email"
                   discoveryDocs="claims_supported"
@@ -1265,9 +1096,6 @@ const HomeNavbar = (
                   onResolve={({ data }: IResolveParams) => {
                     setProfile(data);
                     console.log("gdata", data);
-                    // registerWithGoogle(data);
-                    // registerWithGoogle(data);
-                    SigninCustomerGoogle(data.email, "2", data);
                   }}
                   onReject={(err) => {
                     console.log(err);
@@ -1291,9 +1119,6 @@ const HomeNavbar = (
                     />
                     Continue with Google
                   </button>
-                  {/* <button onClick={() => {}} className="twitter-btn w-100">
-              <i className="fab fa-google"></i> Google
-            </button> */}
                 </LoginSocialGoogle>
               </div>
               <button
@@ -1301,30 +1126,20 @@ const HomeNavbar = (
                 style={{ alignSelf: "center" }}>
                 Not registered yet?
               </button>
-              <button
+              <h3
                 onClick={() => {
                   setIsOpen3(false);
                   setIsOpen(true);
                   SetregButn(1);
-                  // set(1)
-                  // SetregButn(1);
                 }}
-                className="btn btn-blue">
+                className="btn btn-orange">
                 Register Your Mall
-              </button>
+              </h3>
             </div>
           ) : signButn == 2 ? (
             <div
               className="home_login_model_1sec_inner"
               style={{ maxWidth: "none" }}>
-              {/* <button className="signup_modal_close" onClick={closeBrandModal}>
-                <span
-                  style={{ fontSize: "16px" }}
-                  className="brand-lable-radio-btn-txt">
-                  Cancel
-                </span>{" "}
-                <GrClose />
-              </button> */}
               <div className="f-b900 fs-22 mb_16 signup_headign">
                 Welcome Back!
               </div>
@@ -1338,7 +1153,6 @@ const HomeNavbar = (
                   value={getemail}
                   className="signup_input"
                   autoFocus="true"
-                // style={{ background: "#DAD9D8", border: 'none' }}
                 />
                 <label htmlFor="password">Password</label>
                 <div
@@ -1377,15 +1191,6 @@ const HomeNavbar = (
                     </AiOutlineEyeInvisible>
                   )}
                 </div>
-                {/* <input
-                  type="password"
-                  value={getpassword}
-                  onChange={(e) => setPassword(e.target.value)}
-                  name=""
-                  id=""
-                  className="signup_input"
-                  // style={{ background: "#DAD9D8", border: 'none' }}
-                /> */}
                 <div className="signup_terms_wrapp">
                   <input
                     type="checkbox"
@@ -1404,7 +1209,7 @@ const HomeNavbar = (
                 </button>
               </div>
               <button
-                className="btn btn-orange mb_16"
+                className="btn btn-black mb_16"
                 onClick={() => LoginBrand()}
                 disabled={isAcceptTerm ? false : true}>
                 Login
@@ -1419,21 +1224,17 @@ const HomeNavbar = (
               </p>
 
               <div style={{ width: "100%" }}>
-                {/* facebook button */}
 
                 <LoginSocialFacebook
                   appId="1377758369684897"
                   fieldsProfile={
                     "id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender"
                   }
-                  // version={3}
                   onLoginStart={(e) => console.log(e)}
                   onLogoutSuccess={(e) => console.log(e)}
                   redirect_uri={Urls.base_url}
                   onResolve={({ data }: IResolveParams) => {
-                    // setProfile(data);
                     console.log(data);
-                    SigninCustomerFacebook(data, "3");
                   }}
                   onReject={(err) => {
                     console.log(err);
@@ -1459,22 +1260,14 @@ const HomeNavbar = (
                   </button>
                 </LoginSocialFacebook>
 
-                {/* google button */}
-
                 <LoginSocialGoogle
-                  // client_id="775372553139-o2l7tmtgohlmu3q31o0ufsfne62g47tk.apps.googleusercontent.com"
                   client_id="826718979042-bhij4jt5s6p85n55hbuhh0v40i4b3ng4.apps.googleusercontent.com"
-                  // onLoginStart={onLoginStart}
                   redirect_uri={Urls.base_url}
                   scope="openid profile email"
                   discoveryDocs="claims_supported"
                   access_type="offline"
                   onResolve={({ data }: IResolveParams) => {
                     setProfile(data);
-                    console.log("gdata", data);
-                    // registerWithGoogle(data);
-                    // registerWithGoogle(data);
-                    SigninCustomerGoogle(data.email, "2", data);
                   }}
                   onReject={(err) => {
                     console.log(err);
@@ -1498,9 +1291,6 @@ const HomeNavbar = (
                     />
                     Continue with Google
                   </button>
-                  {/* <button onClick={() => {}} className="twitter-btn w-100">
-              <i className="fab fa-google"></i> Google
-            </button> */}
                 </LoginSocialGoogle>
               </div>
               <button
@@ -1513,11 +1303,8 @@ const HomeNavbar = (
                   setIsOpen3(false);
                   setIsOpen(true);
                   SetregButn(2);
-                  // setModalIsOpenBrand(true);
-                  // setbrandModalIsOpen3(false);
-                  // setRegisterModalIsOpenBrand(true);
                 }}
-                className="btn btn-blue">
+                className="btn btn-orange">
                 Register Your Brand
               </button>
             </div>
@@ -1525,14 +1312,6 @@ const HomeNavbar = (
             <div
               className="home_login_model_1sec_inner"
               style={{ maxWidth: "none" }}>
-              {/* <button className="signup_modal_close" onClick={closeModal3}>
-            <span
-              style={{ fontSize: "16px" }}
-              className="brand-lable-radio-btn-txt">
-              Cancel
-            </span>{" "}
-            <AiOutlineClose color="red" />
-          </button> */}
               <div className="f-b900 fs-22 mb_16 signup_headign">
                 Welcome Back!
               </div>
@@ -1545,7 +1324,6 @@ const HomeNavbar = (
                   id=""
                   className="signup_input"
                   autoFocus="true"
-                // style={{ background: "#DAD9D8", border: 'none' }}
                 />
                 <label htmlFor="password">Password</label>
                 <div
@@ -1602,7 +1380,7 @@ const HomeNavbar = (
                 </button>
               </div>
               <button
-                className="btn btn-orange mb_16"
+                className="btn btn-black mb_16"
                 onClick={() => LoginCustomer()}
                 disabled={isAcceptTerm ? false : true}>
                 Login
@@ -1617,21 +1395,16 @@ const HomeNavbar = (
               </p>
 
               <div style={{ width: "100%" }}>
-                {/* facebook button */}
-
                 <LoginSocialFacebook
                   appId="1377758369684897"
                   fieldsProfile={
                     "id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender"
                   }
-                  // version={3}
                   onLoginStart={(e) => console.log(e)}
                   onLogoutSuccess={(e) => console.log(e)}
                   redirect_uri={Urls.base_url}
                   onResolve={({ data }: IResolveParams) => {
-                    // setProfile(data);
                     console.log(data);
-                    SigninCustomerFacebook(data, "3");
                   }}
                   onReject={(err) => {
                     console.log(err);
@@ -1657,10 +1430,7 @@ const HomeNavbar = (
                   </button>
                 </LoginSocialFacebook>
 
-                {/* google button */}
-
                 <LoginSocialGoogle
-                  // client_id="775372553139-o2l7tmtgohlmu3q31o0ufsfne62g47tk.apps.googleusercontent.com"
                   client_id="826718979042-bhij4jt5s6p85n55hbuhh0v40i4b3ng4.apps.googleusercontent.com"
                   onLoginStart={onLoginStart}
                   redirect_uri={Urls.base_url}
@@ -1670,9 +1440,6 @@ const HomeNavbar = (
                   onResolve={({ data }: IResolveParams) => {
                     setProfile(data);
                     console.log("gdata", data);
-                    // registerWithGoogle(data);
-                    // registerWithGoogle(data);
-                    SigninCustomerGoogle(data.email, "2", data);
                   }}
                   onReject={(err) => {
                     console.log(err);
@@ -1696,9 +1463,6 @@ const HomeNavbar = (
                     />
                     Continue with Google
                   </button>
-                  {/* <button onClick={() => {}} className="twitter-btn w-100">
-              <i className="fab fa-google"></i> Google
-            </button> */}
                 </LoginSocialGoogle>
               </div>
               <button
@@ -1709,19 +1473,189 @@ const HomeNavbar = (
               <button
                 onClick={() => {
                   setIsOpen3(false);
-                  // setIsOpen(true)
-                  // setRegisterCustomerOpen(true);
                   setIsOpen(true);
                   SetregButn(3);
                 }}
-                className="btn btn-blue">
+                className="btn btn-orange">
                 Sign up
+              </button>
+            </div>
+          ) : signButn == 4 ? (
+            <div
+              className="home_login_model_1sec_inner"
+              style={{ maxWidth: "none" }}>
+              <div className="f-b900 fs-22 mb_16 signup_headign">
+                Welcome Back!
+              </div>
+              <div className="sign_input_wrapp">
+                <label htmlFor="email">Email Address</label>
+                <input
+                  type="email"
+                  onChange={(e) => onHandleEmailChange(e)}
+                  name=""
+                  id=""
+                  className="signup_input"
+                  autoFocus="true"
+                />
+                <label htmlFor="password">Password</label>
+                <div
+                  style={{
+                    background: "#DAD9D8",
+                    paddingTop: "0.4rem",
+                    paddingBottom: "0.4rem",
+                    paddingLeft: "1rem",
+                    paddingRight: "1rem",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                  className="input_box-cus-pass">
+                  <input
+                    type={passwordVisible ? "text" : "password"}
+                    value={getpassword}
+                    onChange={(e) => setPassword(e.target.value)}
+                    name=""
+                    id=""
+                    className="signup_input"
+                    style={{
+                      background: "#DAD9D8",
+                      border: "none",
+                      width: "100%",
+                    }}
+                  />
+                  {passwordVisible === true ? (
+                    <AiOutlineEye size={22} onClick={togglePasswordVisibility}>
+                      {passwordVisible ? "Hide" : "Show"}
+                    </AiOutlineEye>
+                  ) : (
+                    <AiOutlineEyeInvisible
+                      size={22}
+                      onClick={togglePasswordVisibility}>
+                      {passwordVisible ? "Hide" : "Show"}
+                    </AiOutlineEyeInvisible>
+                  )}
+                </div>
+                <div className="signup_terms_wrapp">
+                  <input
+                    type="checkbox"
+                    value={isAcceptTerm}
+                    onChange={handleTermChange}
+                    checked={isAcceptTerm}
+                  />
+                  <p className="fs-des">
+                    I have read and agree to the{" "}
+                    <a className="signup_terms_link">Terms and Conditions</a> &{" "}
+                    <a className="signup_terms_link">Privacy Policy</a>
+                  </p>
+                </div>
+                <button className="signup_model_forgate">
+                  Forgot your password?
+                </button>
+              </div>
+              <button
+                className="btn btn-black mb_16"
+                onClick={() => LoginCustomer()}
+                disabled={isAcceptTerm ? false : true}>
+                Login
+              </button>
+              <p
+                style={{
+                  alignSelf: "center",
+                  marginBottom: "8px",
+                  fontWeight: "bold",
+                }}>
+                or
+              </p>
+
+              <div style={{ width: "100%" }}>
+                <LoginSocialFacebook
+                  appId="1377758369684897"
+                  fieldsProfile={
+                    "id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender"
+                  }
+                  onLoginStart={(e) => console.log(e)}
+                  onLogoutSuccess={(e) => console.log(e)}
+                  redirect_uri={Urls.base_url}
+                  onResolve={({ data }: IResolveParams) => {
+                    console.log(data);
+                  }}
+                  onReject={(err) => {
+                    console.log(err);
+                  }}>
+                  <button
+                    className="mb_8 modal-social-btn "
+                    style={{
+                      justifyContent: "center",
+                      width: "100%",
+                      color: "var(--color-gray)",
+                      fontWeight: "600",
+                      fontSize: "16px",
+                    }}>
+                    <FaFacebookF
+                      color="var(--color-gray)"
+                      style={{
+                        marginRight: "8px",
+                        fontSize: "16px",
+                        marginBottom: "-2px",
+                      }}
+                    />
+                    Continue with Facebook
+                  </button>
+                </LoginSocialFacebook>
+
+                <LoginSocialGoogle
+                  client_id="826718979042-bhij4jt5s6p85n55hbuhh0v40i4b3ng4.apps.googleusercontent.com"
+                  onLoginStart={onLoginStart}
+                  redirect_uri={Urls.base_url}
+                  scope="openid profile email"
+                  discoveryDocs="claims_supported"
+                  access_type="offline"
+                  onResolve={({ data }: IResolveParams) => {
+                    setProfile(data);
+                    console.log("gdata", data);
+                  }}
+                  onReject={(err) => {
+                    console.log(err);
+                  }}>
+                  <button
+                    className="mb_8 modal-social-btn "
+                    style={{
+                      justifyContent: "center",
+                      width: "100%",
+                      color: "var(--color-gray)",
+                      fontWeight: "600",
+                      fontSize: "16px",
+                    }}>
+                    <ImGoogle
+                      color="var(--color-gray)"
+                      style={{
+                        marginRight: "8px",
+                        fontSize: "16px",
+                        marginBottom: "-2px",
+                      }}
+                    />
+                    Continue with Google
+                  </button>
+                </LoginSocialGoogle>
+              </div>
+              <button
+                className="h6 mb_10 mt_10"
+                style={{ alignSelf: "center" }}>
+                Not registered yet?
+              </button>
+              <button
+                onClick={() => {
+                  setIsOpen3(false);
+                  setIsOpen(true);
+                  SetregButn(4);
+                }}
+                className="btn btn-orange">
+                Register your Cinema{" "}
               </button>
             </div>
           ) : null}
         </div>
       </ReactModal>
-      {/*Mall Login Modal end*/}
+      {/*Login modal end*/}
 
       {/* model 4 */}
       <ReactModal
@@ -1764,7 +1698,7 @@ const HomeNavbar = (
             onResolve={({ data }: IResolveParams) => {
               // setProfile(data);
               console.log(data);
-              SigninCustomerFacebook(data, "3");
+              // SigninCustomerFacebook(data, "3");
             }}
             onReject={(err) => {
               console.log(err);
@@ -1799,7 +1733,7 @@ const HomeNavbar = (
               console.log("gdata", data);
               // registerWithGoogle(data);
               // registerWithGoogle(data);
-              SigninCustomerGoogle(data.email, "2", data);
+              // SigninCustomerGoogle(data.email, "2", data);
             }}
             onReject={(err) => {
               console.log(err);
@@ -1817,36 +1751,24 @@ const HomeNavbar = (
         </div>
       </ReactModal>
 
-      {/* Mall Register*/}
+      {/*  Register modal start*/}
       <ReactModal
         isOpen={modalIsOpen}
-        // onAfterOpen={afterOpenModal}
         onRequestClose={() => {
           setIsOpen(false);
         }}
         style={customStyles}>
         <div className="model_sizing">
           <div style={{ backgroundColor: "#dad9d8" }}>
-            {/* <div className="model_sizing"> */}
             <div style={{ height: "25px" }}>
               <button
                 className="signup_modal_close"
                 style={{ right: "7px", top: "9px" }}
-                // onClick={closeModal3}>
                 onClick={() => {
                   setIsOpen(false);
                 }}>
                 <span style={{ fontSize: "16px" }}></span>
-                {/* <GrClose /> */}
                 <IoClose />
-                {/* <button
-                className="signup_modal_close"
-                // onClick={closeModalRegisterNavbar}>
-                onClick={() => {
-                  setIsOpen(false);
-                }}>
-                <GrClose /> */}
-                {/* </button> */}
               </button>
             </div>
             <div className="tab_btn_main">
@@ -1860,7 +1782,7 @@ const HomeNavbar = (
                   fontWeight: boldButn == 1 ? "600" : "200",
                 }}
                 className="tab_btn_styling">
-                Mall login / sign up
+                Mall Login / Sign Up
               </button>
               <button
                 onClick={() => {
@@ -1873,7 +1795,7 @@ const HomeNavbar = (
                   fontWeight: boldButn == 2 ? "600" : "200",
                 }}
                 className="tab_btn_styling">
-                Brand login / sign up
+                Brand Login / Sign Up
               </button>
               <button
                 onClick={() => {
@@ -1887,7 +1809,21 @@ const HomeNavbar = (
                   fontWeight: boldButn == 3 ? "600" : "200",
                 }}
                 className="tab_btn_styling">
-                Consumer login / sign up
+                Consumer Login / Sign Up
+              </button>
+              <button
+                onClick={() => {
+                  //  setCustLoginModalIsOpen3(true);
+                  SetregButn(4);
+                  SetboldButn(4);
+                  // regButn(3);
+                }}
+                style={{
+                  backgroundColor: regButn == 4 ? "white" : "#dad9d8",
+                  fontWeight: boldButn == 4 ? "600" : "200",
+                }}
+                className="tab_btn_styling">
+                Cinema Login / Sign Up
               </button>
             </div>
           </div>
@@ -1901,9 +1837,9 @@ const HomeNavbar = (
                 }}>
                 <GrClose />
               </button> */}
-              <button className="f-b900 fs-22 mb_16 signup_headign">
+              <h3 className="f-b900 fs-22 mb_16 signup_headign">
                 Register Your Mall
-              </button>
+              </h3>
               <div className="sign_input_wrapp">
                 <label htmlFor="mall">Mall Name</label>
                 <select
@@ -2046,9 +1982,9 @@ const HomeNavbar = (
                   className="brand-lable-radio-btn-txt"></span>{" "}
                 {/* <GrClose /> */}
               </button>
-              <button className="f-b900 fs-22 mb_16 signup_headign">
+              <h3 className="f-b900 fs-22 mb_16 signup_headign">
                 Register to In-store
-              </button>
+              </h3>
 
               <div className="sign_input_wrapp sign_input_wrapp_padding_less">
                 <label htmlFor="mall">Mall Name</label>
@@ -2372,7 +2308,7 @@ const HomeNavbar = (
                   onResolve={({ data }: IResolveParams) => {
                     // setProfile(data);
                     console.log(data);
-                    SigninCustomerFacebook(data, "4");
+                    // SigninCustomerFacebook(data, "4");
                   }}
                   onReject={(err) => {
                     console.log(err);
@@ -2413,7 +2349,7 @@ const HomeNavbar = (
                     console.log("gdata", data);
                     // registerWithGoogle(data);
                     // registerWithGoogle(data);
-                    SigninCustomerGoogle(data.email, "4", data);
+                    // SigninCustomerGoogle(data.email, "4", data);
                   }}
                   onReject={(err) => {
                     console.log(err);
@@ -2464,10 +2400,226 @@ const HomeNavbar = (
                 </button>
               </div>
             </div>
+          ) : regButn == 4 ? (
+            <div className="home_model_4wrapp">
+              <button className="f-b900 fs-22 mb_16 signup_headign">
+                Cinema Registration to In-store{" "}
+              </button>
+
+              <div className="radio-btn-flex radiobtnflex_homenav sign_input_wrapp_padding_less">
+                <div className="radio-btn-inner-flex">
+                  <input
+                    type="radio"
+                    id="Online"
+                    name="gender"
+                    // defaultValue={retailer_data.type}
+                    onChange={(e) => {
+                      // setGender(1);
+                    }}
+                  />
+                  <label className="brand-lable-radio-btn-txt" for="male">
+                    Independent Retailer
+                  </label>
+                </div>
+
+                <div className="radio-btn-inner-flex">
+                  <input
+                    type="radio"
+                    id="In-Person"
+                    name="gender"
+                    // value={2}
+                    // onChange={(e) => setMode(e.target.value)}
+                    // value={getgender}
+                    // onChange={(e) => setGender(2)}
+                  />
+                  <label
+                    className="brand-lable-radio-btn-txt"
+                    for="specifyColor">
+                    Group Retailer
+                  </label>
+                </div>
+              </div>
+
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="mall">Cinema Name</label>
+                <select
+                  className="leaderboard-card-inp"
+                  onChange={(e) => {
+                    setmallmasterid(e.target.value);
+                    getRetailerApi(e.target.value);
+                    console.log(e.target.value);
+                  }}>
+                  {getmallarray &&
+                    getmallarray.map((item, index) => {
+                      return (
+                        <>
+                          <option selected disabled value=""></option>
+                          <option value={item.id} key={index}>
+                            {item.name} {item.id} &nbsp;&nbsp;&nbsp;{" "}
+                            {item.from_date} &nbsp;&nbsp;&nbsp; {item.to_date}
+                          </option>
+                        </>
+                      );
+                    })}
+                </select>
+
+                {/* <Select
+              value={mallsOption}
+              styles={{ width: "100%", padding: "0px" }}
+              className="leaderboard-card-inp"
+              closeMenuOnSelect={false}
+              components={animatedComponents}
+              // defaultValue={[colourOptions[4], colourOptions[5]]}
+              placeholder=""
+              isMulti
+              // options={multiple_week_data}
+              onChange={setMallsOption}
+            /> */}
+              </div>
+              {/* <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+            <label htmlFor="mall">Retailer Name</label>
+            <select
+              className="leaderboard-card-inp"
+              onChange={(e) => {
+                setRetailertype(e.target.value);
+                getBrand(e.target.value);
+                console.log(e.target.value);
+              }}>
+              <option defaultValue value=""></option>
+              {retailer_data &&
+                retailer_data.map((item, index) => {
+                  return (
+                    <>
+                
+                      <option value={item.id} key={index}>
+                        {item.name}
+                      </option>
+                    </>
+                  );
+                })}
+            </select>
+          </div> */}
+
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="first-name">Brands (if applicable)</label>
+                <select
+                  className="leaderboard-card-inp"
+                  onChange={(e) => {
+                    setMallname(e.target.value);
+                    console.log(e.target.value);
+                  }}>
+                  {get_brand_data &&
+                    get_brand_data.map((item, index) => {
+                      return (
+                        <>
+                          {/* <option selected disabled value="">
+                      Auto-fill from database
+                    </option> */}
+                          <option value={item.id} key={index}>
+                            {item.name}
+                          </option>
+                        </>
+                      );
+                    })}
+                </select>
+              </div>
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="last-name">Account Manager First Name</label>
+                <input
+                  type="text"
+                  value={getfirstname}
+                  onChange={(e) => setFirstname(e.target.value)}
+                  name=""
+                  id=""
+                />
+              </div>
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label>Account Manager Last Name</label>
+                <input
+                  type="text"
+                  value={getlastname}
+                  onChange={(e) => setLastname(e.target.value)}
+                  name=""
+                  id=""
+                />
+              </div>
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="email">Account Manager Email Address</label>
+                <input
+                  type="email"
+                  onChange={(e) => setEmail(e.target.value)}
+                  name=""
+                  id=""
+                  value={getemail}
+                />
+              </div>
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="password">Set a Password</label>
+                <input
+                  type="password"
+                  value={getpassword}
+                  onChange={(e) => setPassword(e.target.value)}
+                  name=""
+                  id=""
+                />
+              </div>
+              <div className="signup_terms_wrapp">
+                <input
+                  type="checkbox"
+                  value={isAcceptTerm}
+                  onChange={handleTermChange}
+                  checked={isAcceptTerm}
+                />
+                <p className="fs-des">
+                  I have read and agree to the
+                  <a className="signup_terms_link">Privacy Policy</a>
+                </p>
+              </div>
+              <div className="signup_terms_wrapp mb_16">
+                <input
+                  type="checkbox"
+                  value={isAcceptTerm}
+                  onChange={handleTermChange}
+                  checked={isAcceptTerm}
+                />
+
+                <p className="fs-des">
+                  I have read and agree to the
+                  <a className="signup_terms_link">Terms and Conditions</a>
+                </p>
+              </div>
+              <button
+                className="btn btn-orange mb_16"
+                disabled={isAcceptTerm ? false : true}
+                onClick={() => SigninCustomer()}>
+                Register Your Cinema
+              </button>
+              <p
+                style={{
+                  color: "black",
+                  fontWeight: "600",
+                  marginBottom: "5px",
+                }}>
+                OR
+              </p>
+              <p className="fs-des" style={{ paddingBottom: "20px" }}>
+                If you are already registered, then{" "}
+                <span
+                  onClick={() => {
+                    // brandLoginModalOpen();
+                    setIsOpen3(true);
+                    setIsOpen(false);
+                    SetsignButn(4);
+                  }}
+                  className="signup_terms_link">
+                  login here
+                </span>
+              </p>
+            </div>
           ) : null}
         </div>
       </ReactModal>
-      {/* Mall Register end */}
+      {/* Register modal end */}
 
       {/* Customer Register start */}
       <ReactModal
@@ -2603,7 +2755,7 @@ const HomeNavbar = (
               onResolve={({ data }: IResolveParams) => {
                 // setProfile(data);
                 console.log(data);
-                SigninCustomerFacebook(data, "4");
+                // SigninCustomerFacebook(data, "4");
               }}
               onReject={(err) => {
                 console.log(err);
@@ -2644,7 +2796,7 @@ const HomeNavbar = (
                 console.log("gdata", data);
                 // registerWithGoogle(data);
                 // registerWithGoogle(data);
-                SigninCustomerGoogle(data.email, "4", data);
+                // SigninCustomerGoogle(data.email, "4", data);
               }}
               onReject={(err) => {
                 console.log(err);
@@ -2709,7 +2861,8 @@ const HomeNavbar = (
               style={{ fontSize: "16px" }}
               className="brand-lable-radio-btn-txt">
               Cancel
-            </span>{" "}
+            </span>{
+              " "}
             <GrClose />
           </button> */}
           <div className="f-b900 fs-22 mb_16 signup_headign">Welcome Back!</div>
@@ -2723,7 +2876,7 @@ const HomeNavbar = (
               value={getemail}
               className="signup_input"
               autoFocus="true"
-            // style={{ background: "#DAD9D8", border: 'none' }}
+              // style={{ background: "#DAD9D8", border: 'none' }}
             />
             <label htmlFor="password">Password</label>
             <input
@@ -2733,7 +2886,7 @@ const HomeNavbar = (
               name=""
               id=""
               className="signup_input"
-            // style={{ background: "#DAD9D8", border: 'none' }}
+              // style={{ background: "#DAD9D8", border: 'none' }}
             />
             <div className="signup_terms_wrapp">
               <input
@@ -2782,7 +2935,7 @@ const HomeNavbar = (
               onResolve={({ data }: IResolveParams) => {
                 // setProfile(data);
                 console.log(data);
-                SigninCustomerFacebook(data, "3");
+                // SigninCustomerFacebook(data, "3");
               }}
               onReject={(err) => {
                 console.log(err);
@@ -2823,7 +2976,7 @@ const HomeNavbar = (
                 console.log("gdata", data);
                 // registerWithGoogle(data);
                 // registerWithGoogle(data);
-                SigninCustomerGoogle(data.email, "2", data);
+                // SigninCustomerGoogle(data.email, "2", data);
               }}
               onReject={(err) => {
                 console.log(err);
@@ -2862,7 +3015,7 @@ const HomeNavbar = (
               setbrandModalIsOpen3(false);
               setRegisterModalIsOpenBrand(true);
             }}
-            className="btn btn-blue">
+            className="btn btn-orange">
             Register Your Brand
           </button>
         </div>
@@ -2935,7 +3088,7 @@ const HomeNavbar = (
             </select>
           </div>
 
-          <div className="radio-btn-flex sign_input_wrapp_padding_less">
+          <div className="radio-btn-flex radiobtnflex_homenav sign_input_wrapp_padding_less">
             {/* <label className="course-form-txt course-form-margin-right">
               Mode Of Delivery:
             </label> */}
@@ -3098,7 +3251,7 @@ const HomeNavbar = (
               id=""
               className="signup_input"
               autoFocus="true"
-            // style={{ background: "#DAD9D8", border: 'none' }}
+              // style={{ background: "#DAD9D8", border: 'none' }}
             />
             <label htmlFor="password">Password</label>
             <div
@@ -3178,7 +3331,7 @@ const HomeNavbar = (
               onResolve={({ data }: IResolveParams) => {
                 // setProfile(data);
                 console.log(data);
-                SigninCustomerFacebook(data, "3");
+                // SigninCustomerFacebook(data, "3");
               }}
               onReject={(err) => {
                 console.log(err);
@@ -3219,7 +3372,7 @@ const HomeNavbar = (
                 console.log("gdata", data);
                 // registerWithGoogle(data);
                 // registerWithGoogle(data);
-                SigninCustomerGoogle(data.email, "2", data);
+                // SigninCustomerGoogle(data.email, "2", data);
               }}
               onReject={(err) => {
                 console.log(err);
@@ -3257,7 +3410,7 @@ const HomeNavbar = (
               // setIsOpen(true)
               setRegisterCustomerOpen(true);
             }}
-            className="btn btn-blue">
+            className="btn btn-orange">
             Sign up
           </button>
         </div>
@@ -3292,7 +3445,7 @@ const HomeNavbar = (
                 fontWeight: boldButn == 1 ? "600" : "200",
               }}
               className="tab_btn_styling">
-              Mall login / sign up
+              Mall Login / Sign Up
             </button>
             <button
               onClick={() => {
@@ -3305,7 +3458,7 @@ const HomeNavbar = (
                 fontWeight: boldButn == 2 ? "600" : "200",
               }}
               className="tab_btn_styling">
-              Brand login / sign up
+              Brand Login / Sign Up
             </button>
             <button
               onClick={() => {
@@ -3318,7 +3471,7 @@ const HomeNavbar = (
                 fontWeight: boldButn == 3 ? "600" : "200",
               }}
               className="tab_btn_styling">
-              Consumer login / sign up
+              Consumer Login / Sign Up
             </button>
           </div>
         </div>
@@ -3547,7 +3700,7 @@ const HomeNavbar = (
                 fontWeight: boldButn == 1 ? "600" : "200",
               }}
               className="tab_btn_styling">
-              Mall login / sign up
+              Mall Login / Sign Up
             </button>
             <button
               onClick={() => {
@@ -3560,7 +3713,7 @@ const HomeNavbar = (
                 fontWeight: boldButn == 2 ? "600" : "200",
               }}
               className="tab_btn_styling">
-              Brand login / sign up
+              Brand Login / Sign Up
             </button>
             <button
               onClick={() => {
@@ -3573,7 +3726,7 @@ const HomeNavbar = (
                 fontWeight: boldButn == 3 ? "600" : "200",
               }}
               className="tab_btn_styling">
-              Consumer login / sign up
+              Consumer Login / Sign Up
             </button>
           </div>
         </div>
@@ -3705,7 +3858,7 @@ const HomeNavbar = (
               onResolve={({ data }: IResolveParams) => {
                 // setProfile(data);
                 console.log(data);
-                SigninCustomerFacebook(data, "4");
+                // SigninCustomerFacebook(data, "4");
               }}
               onReject={(err) => {
                 console.log(err);
@@ -3746,7 +3899,7 @@ const HomeNavbar = (
                 console.log("gdata", data);
                 // registerWithGoogle(data);
                 // registerWithGoogle(data);
-                SigninCustomerGoogle(data.email, "4", data);
+                // SigninCustomerGoogle(data.email, "4", data);
               }}
               onReject={(err) => {
                 console.log(err);

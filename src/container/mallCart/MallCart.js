@@ -19,7 +19,7 @@ const MallCart = () => {
             V&A Warterfront Mall Analytics Bundle
           </h6>
         </div>
-        <div style={{ display: "flex", gap: "2rem", alignItems: "center" }}>
+        <div className="mallcart_items_inner">
           <div>
             <h6 className="h6" style={{ fontWeight: "600" }}>
               R 4800

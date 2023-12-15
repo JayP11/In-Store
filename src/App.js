@@ -19,6 +19,7 @@ import CinemaDashboard from "./pages/cinemadashboard/CinemaDashboard";
 import FaqPage from "./pages/faqpage/FaqPage";
 import Newpage from "./pages/newpage";
 import CinemaaHome from "./pages/cinemaahome/CinemaaHome";
+import CinemaPage from "./pages/cinemapage/CinemaPage";
 
 // const firebaseConfig = {
 //   apiKey: "AIzaSyAE-ph5NvfT0S2LgYmL-QmCX6Y2pCPA6gA",
@@ -37,13 +38,13 @@ function App() {
     <BrowserRouter basename="In-store-front">
       {/* <Navbar /> */}
       <Routes>
-        <Route path="/" element={<Homepage />} />
+        {/* <Route path="/" element={<Homepage />} /> */}
         <Route path="/about-instore" element={<AboutInStorePage />} />
         <Route path="/customer" element={<CustomerHomePage />} />
         <Route path="/retailer" element={<AfterLoginPage />} />
         <Route path="/mall" element={<MallHomePage />} />
-        <Route path="/CinemaaHome" element={<CinemaaHome />} />
-        {/* <Route path="/Cinema" element={<CinemaPage />} /> */}
+        <Route path="/" element={<CinemaaHome />} />
+        <Route path="/CinemaPage" element={<CinemaPage />} />
         <Route element={<PrivateRoutes />}>
           <Route path="/profile-page" element={<ProfilePage />} />
           <Route path="/branddashboard" element={<BrandDashboard />} />

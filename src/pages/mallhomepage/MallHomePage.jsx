@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./MallHomePage.css"
+import "./MallHomePage.css";
 import { IoClose } from "react-icons/io5";
 import images from "../../constants/images";
 import { HomeHero, WelcomeStore, WhayJoin } from "../../container";
@@ -102,10 +102,6 @@ const MallHomePage = () => {
   const [getmallmasterid, setmallmasterid] = useState("");
   const [retailertype, setRetailertype] = useState("");
 
-
-
-
-
   useEffect(() => {
     getMallHomeDataApi();
     // console.log("Get Home Data--->", getHomeData);
@@ -126,7 +122,7 @@ const MallHomePage = () => {
           setMallHomeData(res.data.data[0]);
           setLoading(false);
         } else {
-          null;
+          // null;
         }
       })
       .catch((err) => {
@@ -333,7 +329,6 @@ const MallHomePage = () => {
     }
   };
 
-
   // Customer Signup
 
   const SigninCustomer = async (type) => {
@@ -407,7 +402,7 @@ const MallHomePage = () => {
         if (res.data.success == 1) {
           SetMallArray(res.data.data);
         } else {
-          null;
+          // null;
         }
       })
       .catch((err) => {
@@ -430,7 +425,7 @@ const MallHomePage = () => {
         if (res.data.success == 1) {
           SetMallArray2(res.data.data);
         } else {
-          null;
+          // null;
         }
       })
       .catch((err) => {
@@ -586,8 +581,9 @@ const MallHomePage = () => {
             <div
               className="about_hero_wrapp"
               style={{
-                backgroundImage: `url(${getMallHomeData ? getMallHomeData.image_path : ""
-                  })`,
+                backgroundImage: `url(${
+                  getMallHomeData ? getMallHomeData.image_path : ""
+                })`,
                 backgroundPosition: "center",
                 backgroundSize: "cover",
               }}>
@@ -625,7 +621,7 @@ const MallHomePage = () => {
                 </div>
               </div>
             </div>
-          {/* hero end */}
+            {/* hero end */}
             <MallWelcomeStoreCard
               WcBtn={true}
               titie={getMallHomeData}
@@ -671,15 +667,16 @@ const MallHomePage = () => {
               </div>
             </div> */}
             <div className="mall-home-reg-btn">
-            <button className="btn btn2" style={{width:"200px",padding:"0px"}}
-                    onClick={() => {
-                      setIsOpen(true);
-                      // modalIsOpen3
-                      
-                    }}>
-                    Register your mall
-                  </button>
-                  </div>
+              <button
+                className="btn btn2"
+                style={{ width: "200px", padding: "0px" }}
+                onClick={() => {
+                  setIsOpen(true);
+                  // modalIsOpen3
+                }}>
+                Register your mall
+              </button>
+            </div>
             {/* about in store register part-1 end*/}
           </div>
         </>
@@ -688,33 +685,21 @@ const MallHomePage = () => {
       {/* Mall Register*/}
       <ReactModal
         isOpen={modalIsOpen}
-        // onAfterOpen={afterOpenModal}
         onRequestClose={() => {
           setIsOpen(false);
         }}
         style={customStyles}>
         <div className="model_sizing">
           <div style={{ backgroundColor: "#dad9d8" }}>
-            {/* <div className="model_sizing"> */}
             <div style={{ height: "25px" }}>
               <button
                 className="signup_modal_close"
                 style={{ right: "7px", top: "9px" }}
-                // onClick={closeModal3}>
                 onClick={() => {
                   setIsOpen(false);
                 }}>
                 <span style={{ fontSize: "16px" }}></span>
-                {/* <GrClose /> */}
                 <IoClose />
-                {/* <button
-                className="signup_modal_close"
-                // onClick={closeModalRegisterNavbar}>
-                onClick={() => {
-                  setIsOpen(false);
-                }}>
-                <GrClose /> */}
-                {/* </button> */}
               </button>
             </div>
             <div className="tab_btn_main">
@@ -728,7 +713,565 @@ const MallHomePage = () => {
                   fontWeight: boldButn == 1 ? "600" : "200",
                 }}
                 className="tab_btn_styling">
-                Mall login / sign up
+                login / sign up
+              </button>
+              <button
+                onClick={() => {
+                  SetregButn(2);
+                  SetboldButn(2);
+                }}
+                style={{
+                  backgroundColor: regButn == 2 ? "white" : "#dad9d8",
+                  fontWeight: boldButn == 2 ? "600" : "200",
+                }}
+                className="tab_btn_styling">
+                Brand login / sign up
+              </button>
+              <button
+                onClick={() => {
+                  SetregButn(3);
+                  SetboldButn(3);
+                }}
+                style={{
+                  backgroundColor: regButn == 3 ? "white" : "#dad9d8",
+                  fontWeight: boldButn == 3 ? "600" : "200",
+                }}
+                className="tab_btn_styling">
+                Consumer login / sign up
+              </button>
+            </div>
+          </div>
+          {regButn == 1 ? (
+            <div className="home_model_4wrapp">
+              <button className="f-b900 fs-22 mb_16 signup_headign">
+                Register Your Mall
+              </button>
+              <div className="sign_input_wrapp">
+                <label htmlFor="mall">Mall Name</label>
+                <select
+                  className="leaderboard-card-inp"
+                  onChange={(e) => {
+                    SetMall(e.target.value);
+                    console.log(e.target.value);
+                  }}>
+                  <option selected disabled value=""></option>
+                  {getmallarray &&
+                    getmallarray.map((item, index) => {
+                      return (
+                        <>
+                          <option value={item.id} key={index}>
+                            {item.name} &nbsp;&nbsp;&nbsp; {item.from_date}{" "}
+                            &nbsp;&nbsp;&nbsp; {item.to_date}
+                          </option>
+                        </>
+                      );
+                    })}
+                </select>
+              </div>
+              <div className="sign_input_wrapp">
+                <label htmlFor="mall">VAT Number</label>
+                <input
+                  type="text"
+                  value={getvat_no}
+                  onChange={(e) => setvat_no(e.target.value)}
+                  name=""
+                  id=""
+                />
+              </div>
+              <div className="sign_input_wrapp">
+                <label htmlFor="mall">Earh Number</label>
+                <input
+                  type="text"
+                  value={getearh_no}
+                  onChange={(e) => setearh_no(e.target.value)}
+                  name=""
+                  id=""
+                />
+              </div>
+              <div className="sign_input_wrapp">
+                <label htmlFor="first-name">First Name</label>
+                <input
+                  type="text"
+                  value={getfirstname}
+                  onChange={(e) => setFirstname(e.target.value)}
+                  name=""
+                  id=""
+                />
+              </div>
+              <div className="sign_input_wrapp">
+                <label htmlFor="last-name">Last Name</label>
+                <input
+                  type="text"
+                  value={getlastname}
+                  onChange={(e) => setLastname(e.target.value)}
+                  name=""
+                  id=""
+                />
+              </div>
+              <div className="sign_input_wrapp">
+                <label htmlFor="email">Email Address</label>
+                <input
+                  type="email"
+                  onChange={(e) => onHandleEmailChange(e)}
+                  name=""
+                  id=""
+                />
+              </div>
+              <div className="sign_input_wrapp">
+                <label htmlFor="password">Password</label>
+                <input
+                  type="password"
+                  value={getpassword}
+                  onChange={(e) => setPassword(e.target.value)}
+                  name=""
+                  id=""
+                />
+              </div>
+              <div className="signup_terms_wrapp mb_16">
+                <input
+                  type="checkbox"
+                  value={isAcceptTerm}
+                  onChange={handleTermChange}
+                  checked={isAcceptTerm === 1}
+                />
+                <p className="fs-des">
+                  I have read and agree to the{" "}
+                  <a className="signup_terms_link">Terms and Conditions</a> &{" "}
+                  <a className="signup_terms_link">Privacy Policy</a>
+                </p>
+              </div>
+              <button
+                className="btn btn-orange mb_16"
+                disabled={isAcceptTerm === 1 ? false : true}
+                onClick={() => SigninMall()}>
+                Register
+              </button>
+              <p
+                style={{
+                  color: "black",
+                  fontWeight: "600",
+                  marginBottom: "5px",
+                }}>
+                OR
+              </p>
+              <p className="fs-des" style={{ paddingBottom: "20px" }}>
+                If you are already registered, then{" "}
+                <span
+                  onClick={() => {
+                    mallLoginModalOpen();
+                    SetsignButn(1);
+                  }}
+                  className="signup_terms_link">
+                  login here
+                </span>
+              </p>
+            </div>
+          ) : regButn == 2 ? (
+            <div className="home_model_4wrapp">
+              <button
+                className="signup_modal_close"
+                onClick={() => {
+                  setRegisterModalIsOpenBrand(false);
+                }}>
+                <span
+                  style={{ fontSize: "16px" }}
+                  className="brand-lable-radio-btn-txt"></span>
+              </button>
+              <button className="f-b900 fs-22 mb_16 signup_headign">
+                Register to In-store
+              </button>
+
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="mall">Mall Name</label>
+                <select
+                  className="leaderboard-card-inp"
+                  onChange={(e) => {
+                    setmallmasterid(e.target.value);
+                    getRetailerApi(e.target.value);
+                    console.log(e.target.value);
+                  }}>
+                  {getmallarray2 &&
+                    getmallarray2.map((item, index) => {
+                      return (
+                        <>
+                          \{" "}
+                          <option value={item.id} key={index}>
+                            {item.name} {item.id} &nbsp;&nbsp;&nbsp;{" "}
+                            {item.from_date} &nbsp;&nbsp;&nbsp; {item.to_date}
+                          </option>
+                        </>
+                      );
+                    })}
+                </select>
+              </div>
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="mall">Retailer Name</label>
+                <select
+                  className="leaderboard-card-inp"
+                  onChange={(e) => {
+                    setRetailertype(e.target.value);
+                    console.log("retailertype is", retailertype);
+                    getBrand(e.target.value);
+                    console.log(e.target.value);
+                  }}>
+                  <option defaultValue value=""></option>
+                  {retailer_data &&
+                    retailer_data.map((item, index) => {
+                      return (
+                        <>
+                          <option value={item.id} key={index}>
+                            {item.name}
+                          </option>
+                        </>
+                      );
+                    })}
+                </select>
+              </div>
+
+              <div className="radio-btn-flex sign_input_wrapp_padding_less">
+                <div className="radio-btn-inner-flex">
+                  <input
+                    type="radio"
+                    id="Online"
+                    name="gender"
+                    defaultValue={retailer_data.type}
+                    onChange={(e) => {
+                      setGender(1);
+                    }}
+                  />
+                  <label className="brand-lable-radio-btn-txt" for="male">
+                    Independent Retailer
+                  </label>
+                </div>
+
+                <div className="radio-btn-inner-flex">
+                  <input
+                    type="radio"
+                    id="In-Person"
+                    name="gender"
+                    value={getgender}
+                    onChange={(e) => setGender(2)}
+                  />
+                  <label
+                    className="brand-lable-radio-btn-txt"
+                    for="specifyColor">
+                    Group Retailer
+                  </label>
+                </div>
+              </div>
+
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="first-name">Brands (if applicable)</label>
+                <select
+                  className="leaderboard-card-inp"
+                  onChange={(e) => {
+                    setMallname(e.target.value);
+                    console.log(e.target.value);
+                  }}>
+                  {get_brand_data &&
+                    get_brand_data.map((item, index) => {
+                      return (
+                        <>
+                          <option value={item.id} key={index}>
+                            {item.name}
+                          </option>
+                        </>
+                      );
+                    })}
+                </select>
+              </div>
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="last-name">Account Manager First Name</label>
+                <input
+                  type="text"
+                  value={getfirstname}
+                  onChange={(e) => setFirstname(e.target.value)}
+                  name=""
+                  id=""
+                />
+              </div>
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label>Account Manager Last Name</label>
+                <input
+                  type="text"
+                  value={getlastname}
+                  onChange={(e) => setLastname(e.target.value)}
+                  name=""
+                  id=""
+                />
+              </div>
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="email">Account Manager Email Address</label>
+                <input
+                  type="email"
+                  onChange={(e) => setEmail(e.target.value)}
+                  name=""
+                  id=""
+                  value={getemail}
+                />
+              </div>
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="password">Set a Password</label>
+                <input
+                  type="password"
+                  value={getpassword}
+                  onChange={(e) => setPassword(e.target.value)}
+                  name=""
+                  id=""
+                />
+              </div>
+              <div className="signup_terms_wrapp mb_16">
+                <input
+                  type="checkbox"
+                  value={isAcceptTerm}
+                  onChange={handleTermChange}
+                  checked={isAcceptTerm}
+                />
+                <p className="fs-des">
+                  I have read and agree to the{" "}
+                  <a className="signup_terms_link">Terms and Conditions</a> &{" "}
+                  <a className="signup_terms_link">Privacy Policy</a>
+                </p>
+              </div>
+              <button
+                className="btn btn-orange mb_16"
+                disabled={isAcceptTerm ? false : true}
+                onClick={() => SigninBrand()}>
+                Register
+              </button>
+              <p
+                style={{
+                  color: "black",
+                  fontWeight: "600",
+                  marginBottom: "5px",
+                }}>
+                OR
+              </p>
+              <p className="fs-des" style={{ paddingBottom: "20px" }}>
+                If you are already registered, then{" "}
+                <span
+                  onClick={() => {
+                    setIsOpen3(true);
+                    setIsOpen(false);
+                    SetsignButn(2);
+                  }}
+                  className="signup_terms_link">
+                  login here
+                </span>
+              </p>
+            </div>
+          ) : regButn == 3 ? (
+            <div className="home_model_4wrapp">
+              <button
+                className="signup_modal_close"
+                onClick={closeModalRegisterNavbar}></button>
+              <button className="f-b900 fs-22 mb_16 signup_headign">
+                Hi, nice to meet you!
+              </button>
+              <div className="sign_input_wrapp">
+                <label htmlFor="first-name">First Name</label>
+                <input
+                  type="text"
+                  value={getfirstname}
+                  onChange={(e) => setFirstname(e.target.value)}
+                  name=""
+                  id=""
+                  autoFocus="true"
+                />
+              </div>
+              <div className="sign_input_wrapp">
+                <label htmlFor="last-name">Last Name</label>
+                <input
+                  type="text"
+                  value={getlastname}
+                  onChange={(e) => setLastname(e.target.value)}
+                  name=""
+                  id=""
+                />
+              </div>
+              <div className="sign_input_wrapp">
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  onChange={(e) => onHandleEmailChange(e)}
+                  name=""
+                  id=""
+                />
+              </div>
+
+              <div className="sign_input_wrapp">
+                <label htmlFor="password">Set a password</label>
+                <input
+                  type="password"
+                  value={getpassword}
+                  onChange={(e) => setPassword(e.target.value)}
+                  name=""
+                  id=""
+                />
+              </div>
+              <div className="signup_terms_wrapp mb_16">
+                <input
+                  type="checkbox"
+                  value={isAcceptTerm}
+                  onChange={handleTermChange}
+                  checked={isAcceptTerm}
+                />
+                <p className="fs-des">
+                  I have read and agree to the{" "}
+                  <a className="signup_terms_link">Terms and Conditions</a> &{" "}
+                  <a className="signup_terms_link">Privacy Policy</a>
+                </p>
+              </div>
+              <button
+                className="btn btn-orange mb_16"
+                disabled={isAcceptTerm ? false : true}
+                onClick={() => SigninCustomer()}>
+                Register
+              </button>
+
+              <p
+                style={{
+                  alignSelf: "center",
+                  marginBottom: "8px",
+                  fontWeight: "bold",
+                }}>
+                or
+              </p>
+
+              <div style={{ width: "100%" }}>
+                <LoginSocialFacebook
+                  appId="1377758369684897"
+                  fieldsProfile={
+                    "id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender"
+                  }
+                  onLoginStart={(e) => console.log(e)}
+                  onLogoutSuccess={(e) => console.log(e)}
+                  redirect_uri={Urls.base_url}
+                  onResolve={({ data }: IResolveParams) => {
+                    console.log(data);
+                    SigninCustomerFacebook(data, "4");
+                  }}
+                  onReject={(err) => {
+                    console.log(err);
+                  }}>
+                  <button
+                    className="mb_8 modal-social-btn "
+                    style={{
+                      justifyContent: "center",
+                      width: "100%",
+                      color: "var(--color-gray)",
+                      fontWeight: "600",
+                      fontSize: "16px",
+                    }}>
+                    <FaFacebookF
+                      color="var(--color-gray)"
+                      style={{
+                        marginRight: "8px",
+                        fontSize: "16px",
+                        marginBottom: "-2px",
+                      }}
+                    />
+                    Continue with Facebook
+                  </button>
+                </LoginSocialFacebook>
+
+                {/* google button */}
+
+                <LoginSocialGoogle
+                  // client_id="775372553139-o2l7tmtgohlmu3q31o0ufsfne62g47tk.apps.googleusercontent.com"
+                  client_id="826718979042-bhij4jt5s6p85n55hbuhh0v40i4b3ng4.apps.googleusercontent.com"
+                  onLoginStart={onLoginStart}
+                  redirect_uri={Urls.base_url}
+                  scope="openid profile email"
+                  discoveryDocs="claims_supported"
+                  access_type="offline"
+                  onResolve={({ data }: IResolveParams) => {
+                    setProfile(data);
+                    console.log("gdata", data);
+
+                    SigninCustomerGoogle(data.email, "4", data);
+                  }}
+                  onReject={(err) => {
+                    console.log(err);
+                  }}>
+                  <button
+                    className="mb_8 modal-social-btn "
+                    style={{
+                      justifyContent: "center",
+                      width: "100%",
+                      color: "var(--color-gray)",
+                      fontWeight: "600",
+                      fontSize: "16px",
+                    }}>
+                    <ImGoogle
+                      color="var(--color-gray)"
+                      style={{
+                        marginRight: "8px",
+                        fontSize: "16px",
+                        marginBottom: "-2px",
+                      }}
+                    />
+                    Continue with Google
+                  </button>
+                </LoginSocialGoogle>
+
+                <p
+                  style={{
+                    marginTop: "10px",
+                    textAlign: "center",
+                    marginBottom: "20px",
+                  }}>
+                  Already have an account?
+                </p>
+
+                <button
+                  onClick={() => {
+                    setIsOpen3(true);
+                    setIsOpen(false);
+                    SetsignButn(3);
+                  }}
+                  className="btn btn-blue"
+                  style={{ marginBottom: "20px" }}>
+                  Sign in
+                </button>
+              </div>
+            </div>
+          ) : null}
+        </div>
+      </ReactModal>
+      {/* Mall Register end */}
+      {/*  Register modal start*/}
+      <ReactModal
+        isOpen={modalIsOpen}
+        onRequestClose={() => {
+          setIsOpen(false);
+        }}
+        style={customStyles}>
+        <div className="model_sizing">
+          <div style={{ backgroundColor: "#dad9d8" }}>
+            <div style={{ height: "25px" }}>
+              <button
+                className="signup_modal_close"
+                style={{ right: "7px", top: "9px" }}
+                onClick={() => {
+                  setIsOpen(false);
+                }}>
+                <span style={{ fontSize: "16px" }}></span>
+                <IoClose />
+              </button>
+            </div>
+            <div className="tab_btn_main">
+              <button
+                onClick={() => {
+                  SetregButn(1);
+                  SetboldButn(1);
+                }}
+                style={{
+                  backgroundColor: regButn == 1 ? "white" : "#dad9d8",
+                  fontWeight: boldButn == 1 ? "600" : "200",
+                }}
+                className="tab_btn_styling">
+                Mall Login / Sign Up
               </button>
               <button
                 onClick={() => {
@@ -741,7 +1284,7 @@ const MallHomePage = () => {
                   fontWeight: boldButn == 2 ? "600" : "200",
                 }}
                 className="tab_btn_styling">
-                Brand login / sign up
+                Brand Login / Sign Up
               </button>
               <button
                 onClick={() => {
@@ -755,7 +1298,21 @@ const MallHomePage = () => {
                   fontWeight: boldButn == 3 ? "600" : "200",
                 }}
                 className="tab_btn_styling">
-                Consumer login / sign up
+                Consumer Login / Sign Up
+              </button>
+              <button
+                onClick={() => {
+                  //  setCustLoginModalIsOpen3(true);
+                  SetregButn(4);
+                  SetboldButn(4);
+                  // regButn(3);
+                }}
+                style={{
+                  backgroundColor: regButn == 4 ? "white" : "#dad9d8",
+                  fontWeight: boldButn == 4 ? "600" : "200",
+                }}
+                className="tab_btn_styling">
+                Cinema Login / Sign Up
               </button>
             </div>
           </div>
@@ -769,9 +1326,9 @@ const MallHomePage = () => {
                 }}>
                 <GrClose />
               </button> */}
-              <button className="f-b900 fs-22 mb_16 signup_headign">
+              <h3 className="f-b900 fs-22 mb_16 signup_headign">
                 Register Your Mall
-              </button>
+              </h3>
               <div className="sign_input_wrapp">
                 <label htmlFor="mall">Mall Name</label>
                 <select
@@ -895,7 +1452,7 @@ const MallHomePage = () => {
                     mallLoginModalOpen();
                     SetsignButn(1);
                   }}
-                  // onClick={() => mallLoginModalOpen()}
+                  // onClick={() => setModalIsOpen4(true)}
                   className="signup_terms_link">
                   login here
                 </span>
@@ -914,9 +1471,9 @@ const MallHomePage = () => {
                   className="brand-lable-radio-btn-txt"></span>{" "}
                 {/* <GrClose /> */}
               </button>
-              <button className="f-b900 fs-22 mb_16 signup_headign">
+              <h3 className="f-b900 fs-22 mb_16 signup_headign">
                 Register to In-store
-              </button>
+              </h3>
 
               <div className="sign_input_wrapp sign_input_wrapp_padding_less">
                 <label htmlFor="mall">Mall Name</label>
@@ -1100,7 +1657,6 @@ const MallHomePage = () => {
                     setIsOpen3(true);
                     setIsOpen(false);
                     SetsignButn(2);
-
                     // brandLoginModalOpen(true);
                     // setRegisterModalIsOpenBrand(false);
                     // SetsignButn(2);
@@ -1241,7 +1797,7 @@ const MallHomePage = () => {
                   onResolve={({ data }: IResolveParams) => {
                     // setProfile(data);
                     console.log(data);
-                    SigninCustomerFacebook(data, "4");
+                    // SigninCustomerFacebook(data, "4");
                   }}
                   onReject={(err) => {
                     console.log(err);
@@ -1282,7 +1838,7 @@ const MallHomePage = () => {
                     console.log("gdata", data);
                     // registerWithGoogle(data);
                     // registerWithGoogle(data);
-                    SigninCustomerGoogle(data.email, "4", data);
+                    // SigninCustomerGoogle(data.email, "4", data);
                   }}
                   onReject={(err) => {
                     console.log(err);
@@ -1333,15 +1889,230 @@ const MallHomePage = () => {
                 </button>
               </div>
             </div>
+          ) : regButn == 4 ? (
+            <div className="home_model_4wrapp">
+              <button className="f-b900 fs-22 mb_16 signup_headign">
+                Cinema Registration to In-store{" "}
+              </button>
+
+              <div className="radio-btn-flex radiobtnflex_homenav sign_input_wrapp_padding_less">
+                <div className="radio-btn-inner-flex">
+                  <input
+                    type="radio"
+                    id="Online"
+                    name="gender"
+                    // defaultValue={retailer_data.type}
+                    onChange={(e) => {
+                      // setGender(1);
+                    }}
+                  />
+                  <label className="brand-lable-radio-btn-txt" for="male">
+                    Independent Retailer
+                  </label>
+                </div>
+
+                <div className="radio-btn-inner-flex">
+                  <input
+                    type="radio"
+                    id="In-Person"
+                    name="gender"
+                    // value={2}
+                    // onChange={(e) => setMode(e.target.value)}
+                    // value={getgender}
+                    // onChange={(e) => setGender(2)}
+                  />
+                  <label
+                    className="brand-lable-radio-btn-txt"
+                    for="specifyColor">
+                    Group Retailer
+                  </label>
+                </div>
+              </div>
+
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="mall">Cinema Name</label>
+                <select
+                  className="leaderboard-card-inp"
+                  onChange={(e) => {
+                    setmallmasterid(e.target.value);
+                    getRetailerApi(e.target.value);
+                    console.log(e.target.value);
+                  }}>
+                  {getmallarray &&
+                    getmallarray.map((item, index) => {
+                      return (
+                        <>
+                          <option selected disabled value=""></option>
+                          <option value={item.id} key={index}>
+                            {item.name} {item.id} &nbsp;&nbsp;&nbsp;{" "}
+                            {item.from_date} &nbsp;&nbsp;&nbsp; {item.to_date}
+                          </option>
+                        </>
+                      );
+                    })}
+                </select>
+
+                {/* <Select
+              value={mallsOption}
+              styles={{ width: "100%", padding: "0px" }}
+              className="leaderboard-card-inp"
+              closeMenuOnSelect={false}
+              components={animatedComponents}
+              // defaultValue={[colourOptions[4], colourOptions[5]]}
+              placeholder=""
+              isMulti
+              // options={multiple_week_data}
+              onChange={setMallsOption}
+            /> */}
+              </div>
+              {/* <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+            <label htmlFor="mall">Retailer Name</label>
+            <select
+              className="leaderboard-card-inp"
+              onChange={(e) => {
+                setRetailertype(e.target.value);
+                getBrand(e.target.value);
+                console.log(e.target.value);
+              }}>
+              <option defaultValue value=""></option>
+              {retailer_data &&
+                retailer_data.map((item, index) => {
+                  return (
+                    <>
+                
+                      <option value={item.id} key={index}>
+                        {item.name}
+                      </option>
+                    </>
+                  );
+                })}
+            </select>
+          </div> */}
+
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="first-name">Brands (if applicable)</label>
+                <select
+                  className="leaderboard-card-inp"
+                  onChange={(e) => {
+                    setMallname(e.target.value);
+                    console.log(e.target.value);
+                  }}>
+                  {get_brand_data &&
+                    get_brand_data.map((item, index) => {
+                      return (
+                        <>
+                          {/* <option selected disabled value="">
+                      Auto-fill from database
+                    </option> */}
+                          <option value={item.id} key={index}>
+                            {item.name}
+                          </option>
+                        </>
+                      );
+                    })}
+                </select>
+              </div>
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="last-name">Account Manager First Name</label>
+                <input
+                  type="text"
+                  value={getfirstname}
+                  onChange={(e) => setFirstname(e.target.value)}
+                  name=""
+                  id=""
+                />
+              </div>
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label>Account Manager Last Name</label>
+                <input
+                  type="text"
+                  value={getlastname}
+                  onChange={(e) => setLastname(e.target.value)}
+                  name=""
+                  id=""
+                />
+              </div>
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="email">Account Manager Email Address</label>
+                <input
+                  type="email"
+                  onChange={(e) => setEmail(e.target.value)}
+                  name=""
+                  id=""
+                  value={getemail}
+                />
+              </div>
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="password">Set a Password</label>
+                <input
+                  type="password"
+                  value={getpassword}
+                  onChange={(e) => setPassword(e.target.value)}
+                  name=""
+                  id=""
+                />
+              </div>
+              <div className="signup_terms_wrapp">
+                <input
+                  type="checkbox"
+                  value={isAcceptTerm}
+                  onChange={handleTermChange}
+                  checked={isAcceptTerm}
+                />
+                <p className="fs-des">
+                  I have read and agree to the
+                  <a className="signup_terms_link">Privacy Policy</a>
+                </p>
+              </div>
+              <div className="signup_terms_wrapp mb_16">
+                <input
+                  type="checkbox"
+                  value={isAcceptTerm}
+                  onChange={handleTermChange}
+                  checked={isAcceptTerm}
+                />
+
+                <p className="fs-des">
+                  I have read and agree to the
+                  <a className="signup_terms_link">Terms and Conditions</a>
+                </p>
+              </div>
+              <button
+                className="btn btn-orange mb_16"
+                disabled={isAcceptTerm ? false : true}
+                onClick={() => SigninCustomer()}>
+                Register Your Cinema
+              </button>
+              <p
+                style={{
+                  color: "black",
+                  fontWeight: "600",
+                  marginBottom: "5px",
+                }}>
+                OR
+              </p>
+              <p className="fs-des" style={{ paddingBottom: "20px" }}>
+                If you are already registered, then{" "}
+                <span
+                  onClick={() => {
+                    // brandLoginModalOpen();
+                    setIsOpen3(true);
+                    setIsOpen(false);
+                    SetsignButn(4);
+                  }}
+                  className="signup_terms_link">
+                  login here
+                </span>
+              </p>
+            </div>
           ) : null}
         </div>
       </ReactModal>
-      {/* Mall Register end */}
+      {/* Register modal end */}
 
-      {/* Mall Login start */}
+      {/* Login modal start*/}
       <ReactModal
         isOpen={modalIsOpen3}
-        // onAfterOpen={afterOpenModal}
         onRequestClose={closeModal3}
         style={customStyles}>
         <div className="model_sizing">
@@ -1352,7 +2123,6 @@ const MallHomePage = () => {
                 style={{ right: "7px", top: "9px" }}
                 onClick={closeModal3}>
                 <span style={{ fontSize: "16px" }}></span>
-                {/* <AiOutlineClose /> */}
                 <IoClose />
               </button>
             </div>
@@ -1367,11 +2137,10 @@ const MallHomePage = () => {
                   fontWeight: boldButn == 1 ? "600" : "200",
                 }}
                 className="tab_btn_styling">
-                Mall login / sign up
+                Mall Login / Sign Up
               </button>
               <button
                 onClick={() => {
-                  // setbrandModalIsOpen3(true);
                   SetsignButn(2);
                   SetboldButn(2);
                 }}
@@ -1380,11 +2149,10 @@ const MallHomePage = () => {
                   fontWeight: boldButn == 2 ? "600" : "200",
                 }}
                 className="tab_btn_styling">
-                Brand login / sign up
+                Brand Login / Sign Up
               </button>
               <button
                 onClick={() => {
-                  //  setCustLoginModalIsOpen3(true);
                   SetsignButn(3);
                   SetboldButn(3);
                 }}
@@ -1393,7 +2161,19 @@ const MallHomePage = () => {
                   fontWeight: boldButn == 3 ? "600" : "200",
                 }}
                 className="tab_btn_styling">
-                Consumer login / sign up
+                Consumer Login / Sign Up
+              </button>
+              <button
+                onClick={() => {
+                  SetsignButn(4);
+                  SetboldButn(4);
+                }}
+                style={{
+                  backgroundColor: signButn == 4 ? "white" : "#dad9d8",
+                  fontWeight: boldButn == 4 ? "600" : "200",
+                }}
+                className="tab_btn_styling">
+                Cinema Login / Sign Up
               </button>
             </div>
           </div>
@@ -1401,14 +2181,6 @@ const MallHomePage = () => {
             <div
               className="home_login_model_1sec_inner"
               style={{ maxWidth: "none" }}>
-              {/* <button className="signup_modal_close" onClick={closeModal3}>
-            <span
-              style={{ fontSize: "16px" }}
-              className="brand-lable-radio-btn-txt">
-              Cancel
-            </span>
-            <AiOutlineClose color="red" />
-          </button> */}
               <div className="f-b900 fs-22 mb_16 signup_headign">
                 Welcome Back!
               </div>
@@ -1421,7 +2193,6 @@ const MallHomePage = () => {
                   id=""
                   className="signup_input"
                   autoFocus="true"
-                // style={{ background: "#DAD9D8", border: 'none' }}
                 />
                 <label htmlFor="password">Password</label>
                 <div
@@ -1460,15 +2231,6 @@ const MallHomePage = () => {
                     </AiOutlineEyeInvisible>
                   )}
                 </div>
-                {/* <input
-                  type="password"
-                  value={getpassword}
-                  onChange={(e) => setPassword(e.target.value)}
-                  name=""
-                  id=""
-                  className="signup_input"
-                  // style={{ background: "#DAD9D8", border: 'none' }}
-                /> */}
                 <div className="signup_terms_wrapp">
                   <input
                     type="checkbox"
@@ -1502,21 +2264,16 @@ const MallHomePage = () => {
               </p>
 
               <div style={{ width: "100%" }}>
-                {/* facebook button */}
-
                 <LoginSocialFacebook
                   appId="1377758369684897"
                   fieldsProfile={
                     "id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender"
                   }
-                  // version={3}
                   onLoginStart={(e) => console.log(e)}
                   onLogoutSuccess={(e) => console.log(e)}
                   redirect_uri={Urls.base_url}
                   onResolve={({ data }: IResolveParams) => {
-                    // setProfile(data);
                     console.log(data);
-                    SigninCustomerFacebook(data, "3");
                   }}
                   onReject={(err) => {
                     console.log(err);
@@ -1542,12 +2299,8 @@ const MallHomePage = () => {
                   </button>
                 </LoginSocialFacebook>
 
-                {/* google button */}
-
                 <LoginSocialGoogle
-                  // client_id="775372553139-o2l7tmtgohlmu3q31o0ufsfne62g47tk.apps.googleusercontent.com"
                   client_id="826718979042-bhij4jt5s6p85n55hbuhh0v40i4b3ng4.apps.googleusercontent.com"
-                  // onLoginStart={onLoginStart}
                   redirect_uri={Urls.base_url}
                   scope="openid profile email"
                   discoveryDocs="claims_supported"
@@ -1555,9 +2308,6 @@ const MallHomePage = () => {
                   onResolve={({ data }: IResolveParams) => {
                     setProfile(data);
                     console.log("gdata", data);
-                    // registerWithGoogle(data);
-                    // registerWithGoogle(data);
-                    SigninCustomerGoogle(data.email, "2", data);
                   }}
                   onReject={(err) => {
                     console.log(err);
@@ -1581,9 +2331,6 @@ const MallHomePage = () => {
                     />
                     Continue with Google
                   </button>
-                  {/* <button onClick={() => {}} className="twitter-btn w-100">
-              <i className="fab fa-google"></i> Google
-            </button> */}
                 </LoginSocialGoogle>
               </div>
               <button
@@ -1591,7 +2338,7 @@ const MallHomePage = () => {
                 style={{ alignSelf: "center" }}>
                 Not registered yet?
               </button>
-              <button
+              <h3
                 onClick={() => {
                   setIsOpen3(false);
                   setIsOpen(true);
@@ -1599,20 +2346,12 @@ const MallHomePage = () => {
                 }}
                 className="btn btn-orange">
                 Register Your Mall
-              </button>
+              </h3>
             </div>
           ) : signButn == 2 ? (
             <div
               className="home_login_model_1sec_inner"
               style={{ maxWidth: "none" }}>
-              {/* <button className="signup_modal_close" onClick={closeBrandModal}>
-                <span
-                  style={{ fontSize: "16px" }}
-                  className="brand-lable-radio-btn-txt">
-                  Cancel
-                </span>{" "}
-                <GrClose />
-              </button> */}
               <div className="f-b900 fs-22 mb_16 signup_headign">
                 Welcome Back!
               </div>
@@ -1626,7 +2365,6 @@ const MallHomePage = () => {
                   value={getemail}
                   className="signup_input"
                   autoFocus="true"
-                // style={{ background: "#DAD9D8", border: 'none' }}
                 />
                 <label htmlFor="password">Password</label>
                 <div
@@ -1665,15 +2403,753 @@ const MallHomePage = () => {
                     </AiOutlineEyeInvisible>
                   )}
                 </div>
-                {/* <input
-                  type="password"
-                  value={getpassword}
-                  onChange={(e) => setPassword(e.target.value)}
+                <div className="signup_terms_wrapp">
+                  <input
+                    type="checkbox"
+                    value={isAcceptTerm}
+                    onChange={handleTermChange}
+                    checked={isAcceptTerm}
+                  />
+                  <p className="fs-des">
+                    I have read and agree to the{" "}
+                    <a className="signup_terms_link">Terms and Conditions</a> &{" "}
+                    <a className="signup_terms_link">Privacy Policy</a>
+                  </p>
+                </div>
+                <button className="signup_model_forgate">
+                  Forgot your password?
+                </button>
+              </div>
+              <button
+                className="btn btn-black mb_16"
+                onClick={() => LoginBrand()}
+                disabled={isAcceptTerm ? false : true}>
+                Login
+              </button>
+              <p
+                style={{
+                  alignSelf: "center",
+                  marginBottom: "8px",
+                  fontWeight: "bold",
+                }}>
+                or
+              </p>
+
+              <div style={{ width: "100%" }}>
+                <LoginSocialFacebook
+                  appId="1377758369684897"
+                  fieldsProfile={
+                    "id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender"
+                  }
+                  onLoginStart={(e) => console.log(e)}
+                  onLogoutSuccess={(e) => console.log(e)}
+                  redirect_uri={Urls.base_url}
+                  onResolve={({ data }: IResolveParams) => {
+                    console.log(data);
+                  }}
+                  onReject={(err) => {
+                    console.log(err);
+                  }}>
+                  <button
+                    className="mb_8 modal-social-btn "
+                    style={{
+                      justifyContent: "center",
+                      width: "100%",
+                      color: "var(--color-gray)",
+                      fontWeight: "600",
+                      fontSize: "16px",
+                    }}>
+                    <FaFacebookF
+                      color="var(--color-gray)"
+                      style={{
+                        marginRight: "8px",
+                        fontSize: "16px",
+                        marginBottom: "-2px",
+                      }}
+                    />
+                    Continue with Facebook
+                  </button>
+                </LoginSocialFacebook>
+
+                <LoginSocialGoogle
+                  client_id="826718979042-bhij4jt5s6p85n55hbuhh0v40i4b3ng4.apps.googleusercontent.com"
+                  redirect_uri={Urls.base_url}
+                  scope="openid profile email"
+                  discoveryDocs="claims_supported"
+                  access_type="offline"
+                  onResolve={({ data }: IResolveParams) => {
+                    setProfile(data);
+                  }}
+                  onReject={(err) => {
+                    console.log(err);
+                  }}>
+                  <button
+                    className="mb_8 modal-social-btn "
+                    style={{
+                      justifyContent: "center",
+                      width: "100%",
+                      color: "var(--color-gray)",
+                      fontWeight: "600",
+                      fontSize: "16px",
+                    }}>
+                    <ImGoogle
+                      color="var(--color-gray)"
+                      style={{
+                        marginRight: "8px",
+                        fontSize: "16px",
+                        marginBottom: "-2px",
+                      }}
+                    />
+                    Continue with Google
+                  </button>
+                </LoginSocialGoogle>
+              </div>
+              <button
+                className="h6 mb_10 mt_10"
+                style={{ alignSelf: "center" }}>
+                Not registered yet?
+              </button>
+              <button
+                onClick={() => {
+                  setIsOpen3(false);
+                  setIsOpen(true);
+                  SetregButn(2);
+                }}
+                className="btn btn-orange">
+                Register Your Brand
+              </button>
+            </div>
+          ) : signButn == 3 ? (
+            <div
+              className="home_login_model_1sec_inner"
+              style={{ maxWidth: "none" }}>
+              <div className="f-b900 fs-22 mb_16 signup_headign">
+                Welcome Back!
+              </div>
+              <div className="sign_input_wrapp">
+                <label htmlFor="email">Email Address</label>
+                <input
+                  type="email"
+                  onChange={(e) => onHandleEmailChange(e)}
                   name=""
                   id=""
                   className="signup_input"
-                  // style={{ background: "#DAD9D8", border: 'none' }}
-                /> */}
+                  autoFocus="true"
+                />
+                <label htmlFor="password">Password</label>
+                <div
+                  style={{
+                    background: "#DAD9D8",
+                    paddingTop: "0.4rem",
+                    paddingBottom: "0.4rem",
+                    paddingLeft: "1rem",
+                    paddingRight: "1rem",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                  className="input_box-cus-pass">
+                  <input
+                    type={passwordVisible ? "text" : "password"}
+                    value={getpassword}
+                    onChange={(e) => setPassword(e.target.value)}
+                    name=""
+                    id=""
+                    className="signup_input"
+                    style={{
+                      background: "#DAD9D8",
+                      border: "none",
+                      width: "100%",
+                    }}
+                  />
+                  {passwordVisible === true ? (
+                    <AiOutlineEye size={22} onClick={togglePasswordVisibility}>
+                      {passwordVisible ? "Hide" : "Show"}
+                    </AiOutlineEye>
+                  ) : (
+                    <AiOutlineEyeInvisible
+                      size={22}
+                      onClick={togglePasswordVisibility}>
+                      {passwordVisible ? "Hide" : "Show"}
+                    </AiOutlineEyeInvisible>
+                  )}
+                </div>
+                <div className="signup_terms_wrapp">
+                  <input
+                    type="checkbox"
+                    value={isAcceptTerm}
+                    onChange={handleTermChange}
+                    checked={isAcceptTerm}
+                  />
+                  <p className="fs-des">
+                    I have read and agree to the{" "}
+                    <a className="signup_terms_link">Terms and Conditions</a> &{" "}
+                    <a className="signup_terms_link">Privacy Policy</a>
+                  </p>
+                </div>
+                <button className="signup_model_forgate">
+                  Forgot your password?
+                </button>
+              </div>
+              <button
+                className="btn btn-black mb_16"
+                onClick={() => LoginCustomer()}
+                disabled={isAcceptTerm ? false : true}>
+                Login
+              </button>
+              <p
+                style={{
+                  alignSelf: "center",
+                  marginBottom: "8px",
+                  fontWeight: "bold",
+                }}>
+                or
+              </p>
+
+              <div style={{ width: "100%" }}>
+                <LoginSocialFacebook
+                  appId="1377758369684897"
+                  fieldsProfile={
+                    "id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender"
+                  }
+                  onLoginStart={(e) => console.log(e)}
+                  onLogoutSuccess={(e) => console.log(e)}
+                  redirect_uri={Urls.base_url}
+                  onResolve={({ data }: IResolveParams) => {
+                    console.log(data);
+                  }}
+                  onReject={(err) => {
+                    console.log(err);
+                  }}>
+                  <button
+                    className="mb_8 modal-social-btn "
+                    style={{
+                      justifyContent: "center",
+                      width: "100%",
+                      color: "var(--color-gray)",
+                      fontWeight: "600",
+                      fontSize: "16px",
+                    }}>
+                    <FaFacebookF
+                      color="var(--color-gray)"
+                      style={{
+                        marginRight: "8px",
+                        fontSize: "16px",
+                        marginBottom: "-2px",
+                      }}
+                    />
+                    Continue with Facebook
+                  </button>
+                </LoginSocialFacebook>
+
+                <LoginSocialGoogle
+                  client_id="826718979042-bhij4jt5s6p85n55hbuhh0v40i4b3ng4.apps.googleusercontent.com"
+                  onLoginStart={onLoginStart}
+                  redirect_uri={Urls.base_url}
+                  scope="openid profile email"
+                  discoveryDocs="claims_supported"
+                  access_type="offline"
+                  onResolve={({ data }: IResolveParams) => {
+                    setProfile(data);
+                    console.log("gdata", data);
+                  }}
+                  onReject={(err) => {
+                    console.log(err);
+                  }}>
+                  <button
+                    className="mb_8 modal-social-btn "
+                    style={{
+                      justifyContent: "center",
+                      width: "100%",
+                      color: "var(--color-gray)",
+                      fontWeight: "600",
+                      fontSize: "16px",
+                    }}>
+                    <ImGoogle
+                      color="var(--color-gray)"
+                      style={{
+                        marginRight: "8px",
+                        fontSize: "16px",
+                        marginBottom: "-2px",
+                      }}
+                    />
+                    Continue with Google
+                  </button>
+                </LoginSocialGoogle>
+              </div>
+              <button
+                className="h6 mb_10 mt_10"
+                style={{ alignSelf: "center" }}>
+                Not registered yet?
+              </button>
+              <button
+                onClick={() => {
+                  setIsOpen3(false);
+                  setIsOpen(true);
+                  SetregButn(3);
+                }}
+                className="btn btn-orange">
+                Sign up
+              </button>
+            </div>
+          ) : signButn == 4 ? (
+            <div
+              className="home_login_model_1sec_inner"
+              style={{ maxWidth: "none" }}>
+              <div className="f-b900 fs-22 mb_16 signup_headign">
+                Welcome Back!
+              </div>
+              <div className="sign_input_wrapp">
+                <label htmlFor="email">Email Address</label>
+                <input
+                  type="email"
+                  onChange={(e) => onHandleEmailChange(e)}
+                  name=""
+                  id=""
+                  className="signup_input"
+                  autoFocus="true"
+                />
+                <label htmlFor="password">Password</label>
+                <div
+                  style={{
+                    background: "#DAD9D8",
+                    paddingTop: "0.4rem",
+                    paddingBottom: "0.4rem",
+                    paddingLeft: "1rem",
+                    paddingRight: "1rem",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                  className="input_box-cus-pass">
+                  <input
+                    type={passwordVisible ? "text" : "password"}
+                    value={getpassword}
+                    onChange={(e) => setPassword(e.target.value)}
+                    name=""
+                    id=""
+                    className="signup_input"
+                    style={{
+                      background: "#DAD9D8",
+                      border: "none",
+                      width: "100%",
+                    }}
+                  />
+                  {passwordVisible === true ? (
+                    <AiOutlineEye size={22} onClick={togglePasswordVisibility}>
+                      {passwordVisible ? "Hide" : "Show"}
+                    </AiOutlineEye>
+                  ) : (
+                    <AiOutlineEyeInvisible
+                      size={22}
+                      onClick={togglePasswordVisibility}>
+                      {passwordVisible ? "Hide" : "Show"}
+                    </AiOutlineEyeInvisible>
+                  )}
+                </div>
+                <div className="signup_terms_wrapp">
+                  <input
+                    type="checkbox"
+                    value={isAcceptTerm}
+                    onChange={handleTermChange}
+                    checked={isAcceptTerm}
+                  />
+                  <p className="fs-des">
+                    I have read and agree to the{" "}
+                    <a className="signup_terms_link">Terms and Conditions</a> &{" "}
+                    <a className="signup_terms_link">Privacy Policy</a>
+                  </p>
+                </div>
+                <button className="signup_model_forgate">
+                  Forgot your password?
+                </button>
+              </div>
+              <button
+                className="btn btn-black mb_16"
+                onClick={() => LoginCustomer()}
+                disabled={isAcceptTerm ? false : true}>
+                Login
+              </button>
+              <p
+                style={{
+                  alignSelf: "center",
+                  marginBottom: "8px",
+                  fontWeight: "bold",
+                }}>
+                or
+              </p>
+
+              <div style={{ width: "100%" }}>
+                <LoginSocialFacebook
+                  appId="1377758369684897"
+                  fieldsProfile={
+                    "id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender"
+                  }
+                  onLoginStart={(e) => console.log(e)}
+                  onLogoutSuccess={(e) => console.log(e)}
+                  redirect_uri={Urls.base_url}
+                  onResolve={({ data }: IResolveParams) => {
+                    console.log(data);
+                  }}
+                  onReject={(err) => {
+                    console.log(err);
+                  }}>
+                  <button
+                    className="mb_8 modal-social-btn "
+                    style={{
+                      justifyContent: "center",
+                      width: "100%",
+                      color: "var(--color-gray)",
+                      fontWeight: "600",
+                      fontSize: "16px",
+                    }}>
+                    <FaFacebookF
+                      color="var(--color-gray)"
+                      style={{
+                        marginRight: "8px",
+                        fontSize: "16px",
+                        marginBottom: "-2px",
+                      }}
+                    />
+                    Continue with Facebook
+                  </button>
+                </LoginSocialFacebook>
+
+                <LoginSocialGoogle
+                  client_id="826718979042-bhij4jt5s6p85n55hbuhh0v40i4b3ng4.apps.googleusercontent.com"
+                  onLoginStart={onLoginStart}
+                  redirect_uri={Urls.base_url}
+                  scope="openid profile email"
+                  discoveryDocs="claims_supported"
+                  access_type="offline"
+                  onResolve={({ data }: IResolveParams) => {
+                    setProfile(data);
+                    console.log("gdata", data);
+                  }}
+                  onReject={(err) => {
+                    console.log(err);
+                  }}>
+                  <button
+                    className="mb_8 modal-social-btn "
+                    style={{
+                      justifyContent: "center",
+                      width: "100%",
+                      color: "var(--color-gray)",
+                      fontWeight: "600",
+                      fontSize: "16px",
+                    }}>
+                    <ImGoogle
+                      color="var(--color-gray)"
+                      style={{
+                        marginRight: "8px",
+                        fontSize: "16px",
+                        marginBottom: "-2px",
+                      }}
+                    />
+                    Continue with Google
+                  </button>
+                </LoginSocialGoogle>
+              </div>
+              <button
+                className="h6 mb_10 mt_10"
+                style={{ alignSelf: "center" }}>
+                Not registered yet?
+              </button>
+              <button
+                onClick={() => {
+                  setIsOpen3(false);
+                  setIsOpen(true);
+                  SetregButn(4);
+                }}
+                className="btn btn-orange">
+                Register your Cinema{" "}
+              </button>
+            </div>
+          ) : null}
+        </div>
+      </ReactModal>
+      {/*Login modal end*/}
+
+      {/* <ReactModal
+        isOpen={modalIsOpen3}
+        onRequestClose={closeModal3}
+        style={customStyles}>
+        <div className="model_sizing">
+          <div style={{ backgroundColor: "#dad9d8" }}>
+            <div style={{ height: "25px" }}>
+              <button
+                className="signup_modal_close"
+                style={{ right: "7px", top: "9px" }}
+                onClick={closeModal3}>
+                <span style={{ fontSize: "16px" }}></span>
+                <IoClose />
+              </button>
+            </div>
+            <div className="tab_btn_main">
+              <button
+                onClick={() => {
+                  SetsignButn(1);
+                  SetboldButn(1);
+                }}
+                style={{
+                  backgroundColor: signButn == 1 ? "white" : "#dad9d8",
+                  fontWeight: boldButn == 1 ? "600" : "200",
+                }}
+                className="tab_btn_styling">
+                Mall login / sign up
+              </button>
+              <button
+                onClick={() => {
+                  SetsignButn(2);
+                  SetboldButn(2);
+                }}
+                style={{
+                  backgroundColor: signButn == 2 ? "white" : "#dad9d8",
+                  fontWeight: boldButn == 2 ? "600" : "200",
+                }}
+                className="tab_btn_styling">
+                Brand login / sign up
+              </button>
+              <button
+                onClick={() => {
+                  SetsignButn(3);
+                  SetboldButn(3);
+                }}
+                style={{
+                  backgroundColor: signButn == 3 ? "white" : "#dad9d8",
+                  fontWeight: boldButn == 3 ? "600" : "200",
+                }}
+                className="tab_btn_styling">
+                Consumer login / sign up
+              </button>
+            </div>
+          </div>
+          {signButn == 1 ? (
+            <div
+              className="home_login_model_1sec_inner"
+              style={{ maxWidth: "none" }}>
+              <div className="f-b900 fs-22 mb_16 signup_headign">
+                Welcome Back!
+              </div>
+              <div className="sign_input_wrapp">
+                <label htmlFor="email">Email Address</label>
+                <input
+                  type="email"
+                  onChange={(e) => onHandleEmailChange(e)}
+                  name=""
+                  id=""
+                  className="signup_input"
+                  autoFocus="true"
+                />
+                <label htmlFor="password">Password</label>
+                <div
+                  style={{
+                    background: "#DAD9D8",
+                    paddingTop: "0.4rem",
+                    paddingBottom: "0.4rem",
+                    paddingLeft: "1rem",
+                    paddingRight: "1rem",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                  className="input_box-cus-pass">
+                  <input
+                    type={passwordVisible ? "text" : "password"}
+                    value={getpassword}
+                    onChange={(e) => setPassword(e.target.value)}
+                    name=""
+                    id=""
+                    className="signup_input"
+                    style={{
+                      background: "#DAD9D8",
+                      border: "none",
+                      width: "100%",
+                    }}
+                  />
+                  {passwordVisible === true ? (
+                    <AiOutlineEye size={22} onClick={togglePasswordVisibility}>
+                      {passwordVisible ? "Hide" : "Show"}
+                    </AiOutlineEye>
+                  ) : (
+                    <AiOutlineEyeInvisible
+                      size={22}
+                      onClick={togglePasswordVisibility}>
+                      {passwordVisible ? "Hide" : "Show"}
+                    </AiOutlineEyeInvisible>
+                  )}
+                </div>
+                <div className="signup_terms_wrapp">
+                  <input
+                    type="checkbox"
+                    value={isAcceptTerm}
+                    onChange={handleTermChange}
+                    checked={isAcceptTerm}
+                  />
+                  <p className="fs-des">
+                    I have read and agree to the{" "}
+                    <a className="signup_terms_link">Terms and Conditions</a> &{" "}
+                    <a className="signup_terms_link">Privacy Policy</a>
+                  </p>
+                </div>
+                <button className="signup_model_forgate">
+                  Forgot your password?
+                </button>
+              </div>
+              <button
+                className="btn btn-black mb_16"
+                onClick={() => LoginMall()}
+                disabled={isAcceptTerm ? false : true}>
+                Login
+              </button>
+              <p
+                style={{
+                  alignSelf: "center",
+                  marginBottom: "8px",
+                  fontWeight: "bold",
+                }}>
+                or
+              </p>
+
+              <div style={{ width: "100%" }}>
+                <LoginSocialFacebook
+                  appId="1377758369684897"
+                  fieldsProfile={
+                    "id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender"
+                  }
+                  onLoginStart={(e) => console.log(e)}
+                  onLogoutSuccess={(e) => console.log(e)}
+                  redirect_uri={Urls.base_url}
+                  onResolve={({ data }: IResolveParams) => {
+                    console.log(data);
+                    SigninCustomerFacebook(data, "3");
+                  }}
+                  onReject={(err) => {
+                    console.log(err);
+                  }}>
+                  <button
+                    className="mb_8 modal-social-btn "
+                    style={{
+                      justifyContent: "center",
+                      width: "100%",
+                      color: "var(--color-gray)",
+                      fontWeight: "600",
+                      fontSize: "16px",
+                    }}>
+                    <FaFacebookF
+                      color="var(--color-gray)"
+                      style={{
+                        marginRight: "8px",
+                        fontSize: "16px",
+                        marginBottom: "-2px",
+                      }}
+                    />
+                    Continue with Facebook
+                  </button>
+                </LoginSocialFacebook>
+
+
+                <LoginSocialGoogle
+                  client_id="826718979042-bhij4jt5s6p85n55hbuhh0v40i4b3ng4.apps.googleusercontent.com"
+                  redirect_uri={Urls.base_url}
+                  scope="openid profile email"
+                  discoveryDocs="claims_supported"
+                  access_type="offline"
+                  onResolve={({ data }: IResolveParams) => {
+                    setProfile(data);
+                    SigninCustomerGoogle(data.email, "2", data);
+                  }}
+                  onReject={(err) => {
+                    console.log(err);
+                  }}>
+                  <button
+                    className="mb_8 modal-social-btn "
+                    style={{
+                      justifyContent: "center",
+                      width: "100%",
+                      color: "var(--color-gray)",
+                      fontWeight: "600",
+                      fontSize: "16px",
+                    }}>
+                    <ImGoogle
+                      color="var(--color-gray)"
+                      style={{
+                        marginRight: "8px",
+                        fontSize: "16px",
+                        marginBottom: "-2px",
+                      }}
+                    />
+                    Continue with Google
+                  </button>
+                </LoginSocialGoogle>
+              </div>
+              <button
+                className="h6 mb_10 mt_10"
+                style={{ alignSelf: "center" }}>
+                Not registered yet?
+              </button>
+              <button
+                onClick={() => {
+                  setIsOpen3(false);
+                  setIsOpen(true);
+                  SetregButn(1);
+                }}
+                className="btn btn-orange">
+                Register Your Mall
+              </button>
+            </div>
+          ) : signButn == 2 ? (
+            <div
+              className="home_login_model_1sec_inner"
+              style={{ maxWidth: "none" }}>
+              <div className="f-b900 fs-22 mb_16 signup_headign">
+                Welcome Back!
+              </div>
+              <div className="sign_input_wrapp">
+                <label htmlFor="email">Email Address</label>
+                <input
+                  type="email"
+                  onChange={(e) => setEmail(e.target.value)}
+                  name=""
+                  id=""
+                  value={getemail}
+                  className="signup_input"
+                  autoFocus="true"
+                />
+                <label htmlFor="password">Password</label>
+                <div
+                  style={{
+                    background: "#DAD9D8",
+                    paddingTop: "0.4rem",
+                    paddingBottom: "0.4rem",
+                    paddingLeft: "1rem",
+                    paddingRight: "1rem",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                  className="input_box-cus-pass">
+                  <input
+                    type={passwordVisible ? "text" : "password"}
+                    value={getpassword}
+                    onChange={(e) => setPassword(e.target.value)}
+                    name=""
+                    id=""
+                    className="signup_input"
+                    style={{
+                      background: "#DAD9D8",
+                      border: "none",
+                      width: "100%",
+                    }}
+                  />
+                  {passwordVisible === true ? (
+                    <AiOutlineEye size={22} onClick={togglePasswordVisibility}>
+                      {passwordVisible ? "Hide" : "Show"}
+                    </AiOutlineEye>
+                  ) : (
+                    <AiOutlineEyeInvisible
+                      size={22}
+                      onClick={togglePasswordVisibility}>
+                      {passwordVisible ? "Hide" : "Show"}
+                    </AiOutlineEyeInvisible>
+                  )}
+                </div>
                 <div className="signup_terms_wrapp">
                   <input
                     type="checkbox"
@@ -1707,21 +3183,19 @@ const MallHomePage = () => {
               </p>
 
               <div style={{ width: "100%" }}>
-                {/* facebook button */}
 
                 <LoginSocialFacebook
                   appId="1377758369684897"
                   fieldsProfile={
                     "id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender"
                   }
-                  // version={3}
                   onLoginStart={(e) => console.log(e)}
                   onLogoutSuccess={(e) => console.log(e)}
                   redirect_uri={Urls.base_url}
                   onResolve={({ data }: IResolveParams) => {
                     // setProfile(data);
                     console.log(data);
-                    SigninCustomerFacebook(data, "3");
+                    // SigninCustomerFacebook(data, "3");
                   }}
                   onReject={(err) => {
                     console.log(err);
@@ -1747,21 +3221,15 @@ const MallHomePage = () => {
                   </button>
                 </LoginSocialFacebook>
 
-                {/* google button */}
 
                 <LoginSocialGoogle
-                  // client_id="775372553139-o2l7tmtgohlmu3q31o0ufsfne62g47tk.apps.googleusercontent.com"
                   client_id="826718979042-bhij4jt5s6p85n55hbuhh0v40i4b3ng4.apps.googleusercontent.com"
-                  // onLoginStart={onLoginStart}
                   redirect_uri={Urls.base_url}
                   scope="openid profile email"
                   discoveryDocs="claims_supported"
                   access_type="offline"
                   onResolve={({ data }: IResolveParams) => {
                     setProfile(data);
-                    console.log("gdata", data);
-                    // registerWithGoogle(data);
-                    // registerWithGoogle(data);
                     SigninCustomerGoogle(data.email, "2", data);
                   }}
                   onReject={(err) => {
@@ -1786,9 +3254,6 @@ const MallHomePage = () => {
                     />
                     Continue with Google
                   </button>
-                  {/* <button onClick={() => {}} className="twitter-btn w-100">
-              <i className="fab fa-google"></i> Google
-            </button> */}
                 </LoginSocialGoogle>
               </div>
               <button
@@ -1801,9 +3266,6 @@ const MallHomePage = () => {
                   setIsOpen3(false);
                   setIsOpen(true);
                   SetregButn(2);
-                  // setModalIsOpenBrand(true);
-                  // setbrandModalIsOpen3(false);
-                  // setRegisterModalIsOpenBrand(true);
                 }}
                 className="btn btn-blue">
                 Register Your Brand
@@ -1813,14 +3275,6 @@ const MallHomePage = () => {
             <div
               className="home_login_model_1sec_inner"
               style={{ maxWidth: "none" }}>
-              {/* <button className="signup_modal_close" onClick={closeModal3}>
-            <span
-              style={{ fontSize: "16px" }}
-              className="brand-lable-radio-btn-txt">
-              Cancel
-            </span>{" "}
-            <AiOutlineClose color="red" />
-          </button> */}
               <div className="f-b900 fs-22 mb_16 signup_headign">
                 Welcome Back!
               </div>
@@ -1833,7 +3287,6 @@ const MallHomePage = () => {
                   id=""
                   className="signup_input"
                   autoFocus="true"
-                // style={{ background: "#DAD9D8", border: 'none' }}
                 />
                 <label htmlFor="password">Password</label>
                 <div
@@ -1905,21 +3358,18 @@ const MallHomePage = () => {
               </p>
 
               <div style={{ width: "100%" }}>
-                {/* facebook button */}
 
                 <LoginSocialFacebook
                   appId="1377758369684897"
                   fieldsProfile={
                     "id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender"
                   }
-                  // version={3}
                   onLoginStart={(e) => console.log(e)}
                   onLogoutSuccess={(e) => console.log(e)}
                   redirect_uri={Urls.base_url}
                   onResolve={({ data }: IResolveParams) => {
-                    // setProfile(data);
                     console.log(data);
-                    SigninCustomerFacebook(data, "3");
+                    // SigninCustomerFacebook(data, "3");
                   }}
                   onReject={(err) => {
                     console.log(err);
@@ -1945,10 +3395,7 @@ const MallHomePage = () => {
                   </button>
                 </LoginSocialFacebook>
 
-                {/* google button */}
-
                 <LoginSocialGoogle
-                  // client_id="775372553139-o2l7tmtgohlmu3q31o0ufsfne62g47tk.apps.googleusercontent.com"
                   client_id="826718979042-bhij4jt5s6p85n55hbuhh0v40i4b3ng4.apps.googleusercontent.com"
                   onLoginStart={onLoginStart}
                   redirect_uri={Urls.base_url}
@@ -1957,9 +3404,6 @@ const MallHomePage = () => {
                   access_type="offline"
                   onResolve={({ data }: IResolveParams) => {
                     setProfile(data);
-                    console.log("gdata", data);
-                    // registerWithGoogle(data);
-                    // registerWithGoogle(data);
                     SigninCustomerGoogle(data.email, "2", data);
                   }}
                   onReject={(err) => {
@@ -1984,9 +3428,6 @@ const MallHomePage = () => {
                     />
                     Continue with Google
                   </button>
-                  {/* <button onClick={() => {}} className="twitter-btn w-100">
-              <i className="fab fa-google"></i> Google
-            </button> */}
                 </LoginSocialGoogle>
               </div>
               <button
@@ -1999,7 +3440,6 @@ const MallHomePage = () => {
                   setIsOpen3(false);
                   setIsOpen(true);
                   SetregButn(3);
-                  // setRegisterCustomerOpen(true);
                 }}
                 className="btn btn-blue">
                 Sign up
@@ -2007,7 +3447,7 @@ const MallHomePage = () => {
             </div>
           ) : null}
         </div>
-      </ReactModal>
+      </ReactModal> */}
       {/* Mall Login end*/}
       {/* Register Customer modal */}
       <ReactModal
@@ -2108,16 +3548,6 @@ const MallHomePage = () => {
             onClick={() => SigninCustomer()}>
             Register
           </button>
-          {/* <button
-            className="btn btn-orange mb_16"
-            disabled={isAcceptTerm === 1 ? false : true}
-            onClick={() => {
-              console.log("bsdjhfgsjfhjksdfg");
-              SigninCustomer();
-            }}
-          >
-            Register
-          </button> */}
 
           <p
             style={{

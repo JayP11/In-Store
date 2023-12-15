@@ -40,7 +40,7 @@ const Homepage = () => {
           setHomeData(res.data.data[0]);
           setLoading(false);
         } else {
-          null;
+          // null;
         }
       })
       .catch((err) => {
@@ -127,7 +127,7 @@ const Homepage = () => {
                 {/* <div className="registermall_sec2"> */}
                 {/* <img src={images.about_1} alt="" /> */}
                 {/* details_image_1_path
-                   */}
+                 */}
 
                 {/* </div> */}
 

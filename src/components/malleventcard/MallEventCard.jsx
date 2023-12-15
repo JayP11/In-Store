@@ -3,9 +3,8 @@ import "./MallEventCard.css";
 import moment from "moment";
 import images from "../../constants/images";
 import { useMallContext } from "../../context/mall_context";
-import Notification from "../../utils/Notification"
+import Notification from "../../utils/Notification";
 import ReactModal from "react-modal";
-
 
 const customStyles = {
   content: {
@@ -37,12 +36,11 @@ const MallEventCard = ({
   setTab,
   EventApi,
 }) => {
-
-  const { get_mall_auth_data, get_mall_store_data, DeleteEventApi } = useMallContext();
+  const { get_mall_auth_data, get_mall_store_data, DeleteEventApi } =
+    useMallContext();
 
   const [deletemodal, setDeleteModal] = useState(false);
   const [readMore, setReadMore] = useState(false);
-
 
   function closeModal() {
     setDeleteModal(false);
@@ -52,8 +50,7 @@ const MallEventCard = ({
   const DeleteMallEventData = async () => {
     {
       const formdata = await new FormData();
-      await formdata.append("event_id", id)
-
+      await formdata.append("event_id", id);
 
       console.log("-=-=-=->", formdata);
       const data = await DeleteEventApi(formdata);
@@ -73,66 +70,81 @@ const MallEventCard = ({
       <ul className="event_main_wrapp">
         {/* edit buttons start*/}
         {edit_btns && (
-          <div className="stored_card_edit_wrapp">
-            <button className="stored_card_edit_btn" onClick={() => { setTab(11) }}>
+          <div className="stored_card_edit_wrapp stored_card_edit_wrapp_position">
+            <button
+              className="stored_card_edit_btn"
+              onClick={() => {
+                setTab(11);
+              }}>
               <img src={images.card_edit} alt="" />
             </button>
             {/* <button className="stored_card_edit_btn" onClick={() => DeleteMallEventData()}>
               <img src={images.card_cancle} alt="" />
             </button> */}
-            <button className="stored_card_edit_btn" onClick={() => setDeleteModal(true)}>
+            <button
+              className="stored_card_edit_btn"
+              onClick={() => setDeleteModal(true)}>
               <img src={images.card_cancle} alt="" />
             </button>
-
           </div>
         )}
         {/* edit buttons end */}
         <div className="event_single_wrapp">
           <img src={img} alt="" />
           <div className="event_single_inner_text_wrapp">
-            <h4 style={{ textTransform: 'capitalize' }}>{name}</h4>
+            <div>
+              <h5 className="h5" style={{ textTransform: "capitalize" }}>
+                {name}
+              </h5>
+            </div>
             <h6>
               {moment(start_date).format("DD MMM YY")} &nbsp;-&nbsp;
               {end_date === "" ? "" : moment(end_date).format("DD MMM YY")}
             </h6>
-            {description.length > 200 ?
-              <p style={{ fontWeight: "400" }}>{description == "" || description == null || description == undefined ? null : (
-                <>
-                  {readMore ? description : `${description.substring(0, 200)}...`}
-                  <button
-                    className="btn-readmore"
-                    style={{
-                      background: "none",
-                      color: "#ff8b00",
-                      border: "none",
-                      cursor: "pointer",
-                      // marginTop: "10px",
-                      padding: "0px",
-                      fontWeight: "600",
-                    }}
-                    onClick={() => setReadMore(!readMore)}
-                  >
-                    {readMore ? "Show less" : "  Read more"}
-                  </button>
-                </>
-              )}</p> :
-
-              <p style={{ fontWeight: "400" }}>{description == "" || description == null || description == undefined ? null : (
-                <>
-                  {description}
-
-                </>
-              )}</p>
-
-            }
+            {description.length > 200 ? (
+              <p style={{ fontWeight: "400" }}>
+                {description == "" ||
+                description == null ||
+                description == undefined ? null : (
+                  <>
+                    {readMore
+                      ? description
+                      : `${description.substring(0, 200)}...`}
+                    <button
+                      className="btn-readmore"
+                      style={{
+                        background: "none",
+                        color: "#ff8b00",
+                        border: "none",
+                        cursor: "pointer",
+                        // marginTop: "10px",
+                        padding: "0px",
+                        fontWeight: "600",
+                      }}
+                      onClick={() => setReadMore(!readMore)}>
+                      {readMore ? "Show less" : "  Read more"}
+                    </button>
+                  </>
+                )}
+              </p>
+            ) : (
+              <p style={{ fontWeight: "400" }}>
+                {description == "" ||
+                description == null ||
+                description == undefined ? null : (
+                  <>{description}</>
+                )}
+              </p>
+            )}
             <div className="event_location_wrapp">
               <h5 className="event_single_span">Location:</h5>
-              <p className="event_location_name" style={{ fontWeight: "400" }}>{location}</p>
+              <p className="event_location_name" style={{ fontWeight: "400" }}>
+                {location}
+              </p>
             </div>
           </div>
-
         </div>
-      </ul >
+      </ul>
 
       {/* store delete model */}
 
@@ -141,29 +153,25 @@ const MallEventCard = ({
         // onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         style={customStyles}
-        contentLabel="Example Modal"
-      >
-        <div className="sd_model_wrapp sd_model_wrapp-delete" >
+        contentLabel="Example Modal">
+        <div className="sd_model_wrapp sd_model_wrapp-delete">
           {/* edit and delete orange btns start */}
           <div className="sd_model_edit_wrap">
-
-
-
-
             <button onClick={closeModal}>
               <img src={images.close} alt="" />
             </button>
-
           </div>
           {/* edit and delete orange btns end */}
 
           <p>Are you sure you want to delete ?</p>
           <div className="delete-modal-btn-box">
-            <button onClick={() => {
-              // setStore_id(itm.id);
-              DeleteMallEventData();
-              setDeleteModal(false);
-            }} className="delete-modal-btn">
+            <button
+              onClick={() => {
+                // setStore_id(itm.id);
+                DeleteMallEventData();
+                setDeleteModal(false);
+              }}
+              className="delete-modal-btn">
               Yes
             </button>
             {/* onClick={() => {
@@ -181,7 +189,6 @@ const MallEventCard = ({
       </ReactModal>
     </>
   );
-
 };
 
 export default MallEventCard;
