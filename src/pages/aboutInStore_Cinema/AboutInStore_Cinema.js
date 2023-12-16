@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./AboutInStorePage.css";
+import "./AboutInStore_Cinema.css";
 import { Footer, Navbar } from "../../common";
 import images from "../../constants/images";
 import { RegisterMall } from "../../container";
@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { ACCEPT_HEADER, get_about } from "../../utils/Constant";
 
-const AboutInStorePage = () => {
+const AboutInStore_Cinema = () => {
   const [getStoreData, setStoreData] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -31,7 +31,7 @@ const AboutInStorePage = () => {
           setStoreData(res.data.data[0]);
           setLoading(false);
         } else {
-          // null;
+        //   null;
         }
       })
       .catch((err) => {
@@ -177,10 +177,9 @@ const AboutInStorePage = () => {
             {/* about instore end */}
 
             {/* about in store register part-1 start*/}
-            <div className="main_wrapp">
-              {/* <div className="main_wrapp registermall_main_wrapp bg-blue"> */}
+            <div className="main_wrapp registermall_main_wrapp bg-blue">
               <div className="container registermall_base_wrapp">
-                <div className="registermall_sec1" style={{ color: "black" }}>
+                <div className="registermall_sec1">
                   <h2 className="h2">
                     {getStoreData ? getStoreData.details_title_1 : ""}
                     {/* Malls Have More
@@ -195,9 +194,9 @@ const AboutInStorePage = () => {
                 nostrud exerci tation ullamcorper suscipit lobortis nisl ut
                 aliquip ex ea commodo. */}
                   </p>
-                  {/* <Link to="/mall" className="homepage-black-btn">
+                  <Link to="/mall" className="homepage-black-btn">
                     Register your mall
-                  </Link> */}
+                  </Link>
                 </div>
                 <div className="registermall_sec2">
                   <img
@@ -210,10 +209,9 @@ const AboutInStorePage = () => {
             {/* about in store register part-1 end*/}
 
             {/* about in store register part-2 start*/}
-            {/* <div className="main_wrapp registermall_main_wrapp bg-pink"> */}
-            <div className="main_wrapp">
+            <div className="main_wrapp registermall_main_wrapp bg-pink">
               <div className="container registermall_base_wrapp fd-rr">
-                <div className="registermall_sec1" style={{ color: "black" }}>
+                <div className="registermall_sec1">
                   <h2 className="h2">
                     {getStoreData ? getStoreData.details_title_2 : ""}
                     {/* Stores Can Track
@@ -228,9 +226,9 @@ const AboutInStorePage = () => {
                 nostrud exerci tation ullamcorper suscipit lobortis nisl ut
                 aliquip ex ea commodo. */}
                   </p>
-                  {/* <Link to="/retailer" className="homepage-black-btn">
+                  <Link to="/retailer" className="homepage-black-btn">
                     Register your brand
-                  </Link> */}
+                  </Link>
                 </div>
                 <div className="registermall_sec2">
                   <img
@@ -250,4 +248,4 @@ const AboutInStorePage = () => {
   );
 };
 
-export default AboutInStorePage;
+export default AboutInStore_Cinema;

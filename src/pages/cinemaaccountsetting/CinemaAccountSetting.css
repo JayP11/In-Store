@@ -1,0 +1,29 @@
+.cinema_upload_btn_inner_resp {
+  width: 350px;
+  display: flex;
+}
+
+.cinemaaccsetting_main_wrapp {
+  margin: 4rem !important;
+}
+
+.cinemaaccsetting_form_single_input {
+  display: flex !important;
+  flex-direction: column-reverse;
+  align-items: flex-start !important;
+}
+
+@media screen and (max-width: 1335px) {
+  .cinemaaccsetting_main_wrapp {
+    margin: 2rem !important;
+  }
+}
+@media screen and (max-width: 1150px) {
+  .cinema_upload_btn_wrapp_resp {
+    flex-direction: column-reverse !important;
+  }
+
+  .cinemaaccsetting_terms_bigview {
+    display: none;
+  }
+}

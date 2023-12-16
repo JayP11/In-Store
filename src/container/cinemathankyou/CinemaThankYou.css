@@ -1,0 +1,22 @@
+.thankyou_main_wrapp {
+  margin: 4rem !important;
+}
+
+.Cinemathankyou_location {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+@media screen and (max-width: 450px) {
+  .thankyou_main_wrapp {
+    margin: 2rem !important;
+  }
+
+  .Cinemathankyou_location {
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    display: flex;
+    align-items: flex-start;
+    margin-left: 1rem;
+  }
+}

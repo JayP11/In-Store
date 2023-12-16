@@ -107,10 +107,12 @@ const CinemaProRateCard = ({ get_mall_auth_data, sidebaropen }) => {
                     <br />
                     <b className="">Product Tiles</b>
                   </div>
-                  <div style={{ display: "flex" }}>
+                  <div>
                     <p>Movie Tiles</p>
-                    <p>R50 per unit, per week</p>
-                    <MdKeyboardArrowRight style={{ fontSize: "20px" }} />
+                    <p style={{ display: "flex", alignItems: "center" }}>
+                      R50 per unit, per week
+                      <MdKeyboardArrowRight style={{ fontSize: "20px" }} />
+                    </p>
                   </div>
                 </div>
               </div>
@@ -139,7 +141,7 @@ const CinemaProRateCard = ({ get_mall_auth_data, sidebaropen }) => {
             </div>
           </div>
           <div style={{}}>
-            <div style={{ display: "flex", paddingBottom:"1rem" }}>
+            <div style={{ display: "flex", paddingBottom: "1rem" }}>
               <h6 className="" style={{ color: "var(--color-orange)" }}>
                 Terms and Conditions
               </h6>

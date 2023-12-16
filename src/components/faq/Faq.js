@@ -86,7 +86,7 @@ const Faq = () => {
                             <Button
                               className="faq-btn"
                               onClick={() => {
-                                setFaq1(item.id), SetCon(!getcon);
+                                // setFaq1(item.id), SetCon(!getcon);
                               }}>
                               <IoIosArrowDown className="faq-icon-up" />
                             </Button>

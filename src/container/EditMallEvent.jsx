@@ -7,7 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useMallContext } from "../context/mall_context";
 import moment from "moment";
 import { MallHero } from "../components";
-import Notification from "../utils/Notification"
+import Notification from "../utils/Notification";
 
 import { IoChevronBack } from "react-icons/io5";
 
@@ -113,8 +113,6 @@ const EditMallEvent = ({
           }
         }
       }
-
-
     }
   };
 
@@ -156,17 +154,18 @@ const EditMallEvent = ({
           <p className="edit-brand-back-txt">Back</p>
         </div>
         {/* mall management name start */}
-        <div className="mall_name_wrapp">
+        <div className="mall_name_wrapp mm_form_wrapp_padding">
           <p className="mall_name_heading">
             {get_mall_auth_data.name && get_mall_auth_data.name}:
           </p>
-          <span>Edit Events</span>
+          <span style={{ fontWeight: "700" }}>Edit Events</span>
         </div>
-        <div className="mm_horizontal_line"></div>
+        {/* <div className="mm_horizontal_line"></div> */}
+        <div className="" style={{ marginBottom: "2rem" }}></div>
         {/* mall management name end */}
 
         {/* mall management form start */}
-        <div className="mm_form_wrapp mm_form_wrapp_add_brand_mall">
+        <div className="mm_form_wrapp mm_form_wrapp_add_brand_mall  mm_form_wrapp_padding">
           {/* text-input wrapp start */}
           <div className="mm_form_input_wrapp">
             {/* single text-input */}
@@ -265,8 +264,7 @@ const EditMallEvent = ({
             {/* text-area sec start */}
             <div
               className="mm_form_single_input"
-              style={{ alignItems: "flex-start" }}
-            >
+              style={{ alignItems: "flex-start" }}>
               <label htmlFor="">Event Description</label>
               <textarea
                 type="text"
@@ -303,10 +301,9 @@ const EditMallEvent = ({
             <div className="mm_form_single_input brand-resp-btn">
               <label htmlFor=""></label>
               <button
-                className="btn btn-orange"
+                className="btn btn-black"
                 style={{ alignSelf: "start", maxWidth: "150px" }}
-                onClick={() => UpdateMallEventData()}
-              >
+                onClick={() => UpdateMallEventData()}>
                 Upload
               </button>
             </div>
@@ -318,22 +315,28 @@ const EditMallEvent = ({
           <div className="mm_img_upload_wrapp">
             {/* single upload image */}
             <div className="img-upl-border">
-
-              <div className="myprofile_inner_sec2" {...getRootProps()} style={{ border: "none", paddingBottom: "0px" }}>
+              <div
+                className="myprofile_inner_sec2"
+                {...getRootProps()}
+                style={{ border: "none", paddingBottom: "0px" }}>
                 {/* <input
                 {...getInputlogoProps()}
                 accept="image/jpeg, image/jpg, image/png, image/eps"
               /> */}
-                <h4 style={{ marginBottom: "10px" }} className="myprofile_upload_img_card_name">
+                <h4
+                  style={{ marginBottom: "10px" }}
+                  className="myprofile_upload_img_card_name">
                   Upload the Event image <br />
                   (200 x 150 pixels)
                 </h4>
-                {getcondation === true ?
-
+                {getcondation === true ? (
                   <>
-                    {files && files.length > 0 ? <div className="myprofile_inner_sec2_img_upload">{thumbs}</div> :
-
-                      <div style={{ width: "100%" }}  >
+                    {files && files.length > 0 ? (
+                      <div className="myprofile_inner_sec2_img_upload">
+                        {thumbs}
+                      </div>
+                    ) : (
+                      <div style={{ width: "100%" }}>
                         <div className="myprofile_inner_sec2_img_upload">
                           <AiOutlineCloudUpload
                             style={{
@@ -349,31 +352,32 @@ const EditMallEvent = ({
                             {...getRootProps()}
                             accept="image/jpeg, image/jpg, image/png, image/eps"
                           /> */}
-                          <button type="button" className="click_upload_btn" style={{ marginBottom: "10px" }}>
+                          <button
+                            type="button"
+                            className="click_upload_btn"
+                            style={{ marginBottom: "10px" }}>
                             click here
                           </button>
                           {/* <a href="">clicking here</a> */}
                         </div>
                         <div className="btnn-main">
                           <button
-                            className="btn btn-orange mb_8"
+                            className="btn btn-black mb_8"
                             type="button"
                             onClick={() => {
                               // setFiles([]);
-                            }}
-                          >
+                            }}>
                             Upload File
                           </button>
                         </div>
                       </div>
-                    }
-
+                    )}
                   </>
-                  :
+                ) : (
                   <>
-                    {geteventdata1.image_path === null ?
+                    {geteventdata1.image_path === null ? (
                       <>
-                        <div style={{ width: "100%" }}  {...getRootProps()}>
+                        <div style={{ width: "100%" }} {...getRootProps()}>
                           <div className="myprofile_inner_sec2_img_upload">
                             <AiOutlineCloudUpload
                               style={{
@@ -389,64 +393,68 @@ const EditMallEvent = ({
                               {...getRootProps()}
                               accept="image/jpeg, image/jpg, image/png, image/eps"
                             />
-                            <button type="button" className="click_upload_btn" style={{ marginBottom: "10px" }}>
+                            <button
+                              type="button"
+                              className="click_upload_btn"
+                              style={{ marginBottom: "10px" }}>
                               click here
                             </button>
                             {/* <a href="">clicking here</a> */}
                           </div>
                           <div className="btnn-main">
                             <button
-                              className="btn btn-orange mb_8"
+                              className="btn btn-black mb_8"
                               type="button"
                               onClick={() => {
                                 // setFiles([]);
-                              }}
-                            >
+                              }}>
                               Upload File
                             </button>
                           </div>
                         </div>
-                        <button className="btn btn-blue" onClick={() => setFiles([])}>
+                        <button className="btn" onClick={() => setFiles([])}>
                           Cancel
                         </button>
                       </>
-
-                      :
+                    ) : (
                       <>
                         <div className="myprofile_inner_sec2_img_upload">
-
-
                           <img
                             src={geteventdata1.image_path}
                             style={{ width: "100%", height: "100%" }}
                             className="img-fluidb"
                           />
-
-
                         </div>
                         <div className="btnn-main" style={{ width: "100%" }}>
                           <button
-                            className="btn btn-orange mb_8"
+                            className="btn btn-black mb_8"
                             type="button"
                             onClick={() => {
                               // setFiles([]);
-                            }}
-                          >
+                            }}>
                             Upload File
                           </button>
                         </div>
-
                       </>
-
-                    }
-
-
+                    )}
                   </>
-
-                }
+                )}
               </div>
-              <div style={{ display: "flex", alingitem: "center", paddingLeft: "5px", paddingRight: "5px" }}>
-                <button className="btn btn-blue" onClick={() => setFiles([])} style={{ marginBottom: "10px", marginLeft: "10px", marginRight: "10px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alingitem: "center",
+                  paddingLeft: "5px",
+                  paddingRight: "5px",
+                }}>
+                <button
+                  className="btn"
+                  onClick={() => setFiles([])}
+                  style={{
+                    marginBottom: "10px",
+                    marginLeft: "10px",
+                    marginRight: "10px",
+                  }}>
                   Cancel
                 </button>
               </div>
@@ -457,10 +465,7 @@ const EditMallEvent = ({
         <div className="mm_form_single_input mb_8">
           <label htmlFor=""></label>
           <div className="signup_terms_wrapp indep-side-show">
-            <input
-              type="checkbox"
-              onChange={(e) => setterms_condition(1)}
-            />
+            <input type="checkbox" onChange={(e) => setterms_condition(1)} />
 
             <p className="fs-des">
               I have read and agree to the{" "}
@@ -473,14 +478,12 @@ const EditMallEvent = ({
         <div className="mm_form_single_input brand-resp-show-btn">
           <label htmlFor=""></label>
           <button
-            className="btn btn-orange"
+            className="btn btn-black"
             style={{ alignSelf: "start", maxWidth: "150px" }}
-            onClick={() => UpdateMallEventData()}
-          >
+            onClick={() => UpdateMallEventData()}>
             Upload
           </button>
         </div>
-
 
         {/* mall management form end */}
       </div>

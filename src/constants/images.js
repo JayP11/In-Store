@@ -207,6 +207,8 @@ import cinema_banner from "../assets/images/cinema_banner.png";
 import demovideo from "../assets/images/demovideo.mp4";
 import basket_white from "../assets/images/basket_white.png";
 import tick from "../assets/images/tick.png";
+import locationicon from "../assets/images/locationicon.png";
+import arrows from "../assets/images/arrows.png";
 
 export default {
   demovideo,
@@ -391,4 +393,5 @@ export default {
 
   basket_white,
   tick,
+  locationicon,arrows,
 };

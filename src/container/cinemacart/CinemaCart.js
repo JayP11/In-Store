@@ -101,7 +101,7 @@ const CinemaCart = ({ setTab, get_mall_auth_data }) => {
       console.log("ffff", numDescending);
       SetSort_Array(numDescending);
     } else {
-      null;
+      // null;
     }
   };
 
@@ -115,8 +115,7 @@ const CinemaCart = ({ setTab, get_mall_auth_data }) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-          }}
-        >
+          }}>
           <div className="loader"></div>
         </div>
       ) : (
@@ -136,81 +135,74 @@ const CinemaCart = ({ setTab, get_mall_auth_data }) => {
           <div className="brand_cart_main_wrapp">
             {AccordionData && AccordionData.length > 0
               ? AccordionData.map((item, index) => {
-                return (
-                  <div className="brand_cart_single_itm" key={item.id}>
-                    <button
-                      className="brand_cart_itm_name_wrapp"
-                      onClick={() => {
-                        handleToggle(item.id);
-                        array_sort(item.id);
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          gap: "5px",
-                        }}
-                      >
-                        <p
+                  return (
+                    <div className="brand_cart_single_itm" key={item.id}>
+                      <button
+                        className="brand_cart_itm_name_wrapp"
+                        onClick={() => {
+                          handleToggle(item.id);
+                          array_sort(item.id);
+                        }}>
+                        <div
                           style={{
-                            color: item.id === toggle ? "#ff8b00" : "#000",
-                            fontWeight: item.id === toggle ? "800" : "500",
-                            fontSize: "22px",
-                            letterSpacing: "0.5px",
-                          }}
-                        >
-                          {item.name}
-                        </p>
-                        {item.id === toggle ? (
-                          <IoIosArrowUp size={28} color="#ff8b00" />
-                        ) : (
-                          <IoIosArrowDown size={28} />
-                        )}
-                      </div>
-                      {item.id == 1 ? (
-                        <p
-                          style={{
-                            fontWeight: item.id === toggle ? "800" : "600",
-                            fontSize: "22px",
-                          }}
-                        >
-                          R {totallead}
-                        </p>
-                      ) : item.id == 2 ? (
-                        <p
-                          style={{
-                            fontWeight: item.id === toggle ? "800" : "600",
-                            fontSize: "22px",
-                          }}
-                        >
-                          R {totalpro}
-                        </p>
-                      ) : item.id == 3 ? (
-                        <p
-                          style={{
-                            fontWeight: item.id === toggle ? "800" : "600",
-                            fontSize: "22px",
-                          }}
-                        >
-                          R {totalpduct}
-                        </p>
-                      ) : item.id == 4 ? (
-                        <p
-                          style={{
-                            fontWeight: item.id === toggle ? "800" : "600",
-                            fontSize: "22px",
-                          }}
-                        >
-                          R {totalpducttil}
-                        </p>
-                      ) : null}
-                    </button>
-                    {item.id === toggle ? null : (
-                      <div className="mm_horizontal_line"></div>
-                    )}
-                    {/* {item.id === toggle ? (
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "5px",
+                          }}>
+                          <p
+                            style={{
+                              color: item.id === toggle ? "#ff8b00" : "#000",
+                              fontWeight: item.id === toggle ? "800" : "500",
+                              fontSize: "22px",
+                              letterSpacing: "0.5px",
+                            }}>
+                            {item.name}
+                          </p>
+                          {item.id === toggle ? (
+                            <IoIosArrowUp size={28} color="#ff8b00" />
+                          ) : (
+                            <IoIosArrowDown size={28} />
+                          )}
+                        </div>
+                        {item.id == 1 ? (
+                          <p
+                            style={{
+                              fontWeight: item.id === toggle ? "800" : "600",
+                              fontSize: "22px",
+                            }}>
+                            R {totallead}
+                          </p>
+                        ) : item.id == 2 ? (
+                          <p
+                            style={{
+                              fontWeight: item.id === toggle ? "800" : "600",
+                              fontSize: "22px",
+                            }}>
+                            R {totalpro}
+                          </p>
+                        ) : item.id == 3 ? (
+                          <p
+                            style={{
+                              fontWeight: item.id === toggle ? "800" : "600",
+                              fontSize: "22px",
+                            }}>
+                            R {totalpduct}
+                          </p>
+                        ) : item.id == 4 ? (
+                          <p
+                            style={{
+                              fontWeight: item.id === toggle ? "800" : "600",
+                              fontSize: "22px",
+                            }}>
+                            R {totalpducttil}
+                          </p>
+                        ) : null}
+                      </button>
+                      {item.id === toggle ? null : (
+                        <div className="mm_horizontal_line"></div>
+                      )}
+                      {/* {item.id === toggle ? (
                       <p
                         style={{
                           fontSize: "14px",
@@ -224,25 +216,25 @@ const CinemaCart = ({ setTab, get_mall_auth_data }) => {
                         Western Cape
                       </p>
                     ) : null} */}
-                    {item.id === toggle ? (
-                      <>
-                        {sort_array && sort_array.length > 0
-                          ? sort_array.map((mall, mindx) => {
-                            return (
-                              <BrandCartCard
-                                item={mall}
-                                toggle={toggle}
-                                Get_cart={Get_cart}
-                                setToggle={setToggle}
-                              />
-                            );
-                          })
-                          : null}
-                      </>
-                    ) : null}
-                  </div>
-                );
-              })
+                      {item.id === toggle ? (
+                        <>
+                          {sort_array && sort_array.length > 0
+                            ? sort_array.map((mall, mindx) => {
+                                return (
+                                  <BrandCartCard
+                                    item={mall}
+                                    toggle={toggle}
+                                    Get_cart={Get_cart}
+                                    setToggle={setToggle}
+                                  />
+                                );
+                              })
+                            : null}
+                        </>
+                      ) : null}
+                    </div>
+                  );
+                })
               : null}
           </div>
 
@@ -254,8 +246,7 @@ const CinemaCart = ({ setTab, get_mall_auth_data }) => {
               onClick={() => {
                 setTab(12);
               }}
-              className="btn btn-orange"
-            >
+              className="btn btn-orange">
               Proceed to checkout
             </button>
           </div>

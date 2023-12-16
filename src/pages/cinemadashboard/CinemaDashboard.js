@@ -707,6 +707,7 @@ const CinemaDashboard = () => {
                   getTab={gettab}
                 />
               )}
+
               {gettab === 6 && (
                 <CinemaCheckout
                   setTab={setTab}

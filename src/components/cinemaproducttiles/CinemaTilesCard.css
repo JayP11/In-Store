@@ -1,15 +1,34 @@
-.leaderboard-card-part-first-cinema{
-    width: 45% !important;
+.leaderboard-card-part-first-cinema {
+  width: 45% !important;
 }
 
-@media screen and (max-width: 1230px){
-.leaderboard-card-part-first-cinema {
+.leaderboard-card {
+  width: 100%;
+}
+
+.cinema_card_part {
+  height: 285px !important;
+}
+@media screen and (max-width: 1230px) {
+  .leaderboard-card-part-first-cinema {
     width: 100% !important;
     order: 1;
-}
+  }
 
-.product-tiles-card-cinema-sec-part {
+  .product-tiles-card-cinema-sec-part {
     align-self: center;
-}
+  }
 }
 
+@media screen and (max-width: 1020px) {
+  .rs-picker-daterange-calendar-group {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    min-width: 100% !important;
+  }
+
+  .rs-picker-daterange-menu .rs-calendar:first-child {
+    border-right: 0px solid var(--rs-border-primary);
+  }
+}
