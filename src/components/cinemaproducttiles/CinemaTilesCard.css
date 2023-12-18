@@ -1,7 +1,11 @@
 .leaderboard-card-part-first-cinema {
-  width: 45% !important;
+  /* width: 45% !important; */
+  width: 64% !important;
 }
 
+.cinemaproduct-tiles-card-main-wrapp{
+  width: 86%;
+}
 .leaderboard-card {
   width: 100%;
 }

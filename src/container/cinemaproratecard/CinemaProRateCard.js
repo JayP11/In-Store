@@ -27,7 +27,7 @@ const CinemaProRateCard = ({ get_mall_auth_data, sidebaropen }) => {
             <div>
               <h5 className="h5">
                 <p>
-                  <b>Products:</b>&nbsp; In-store App landing page
+                  <b className="">Products:</b>&nbsp; In-store App landing page
                 </p>
               </h5>
             </div>
@@ -35,34 +35,34 @@ const CinemaProRateCard = ({ get_mall_auth_data, sidebaropen }) => {
               <div className="CinemaProRateCard_card_block_main">
                 <div className="CinemaProRateCard_card_black_main">
                   <div>
-                    <b className="">Landing Page </b>
+                    <b className="pro_card_head">Landing Page </b>
                     <br />
-                    <b>Products:</b> Per Mall
+                    <b className="">1/2 Tile</b>
                   </div>
-                  <div style={{ display: "flex" }}>
-                    <p>R1000 per unit, per week</p>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <p className="pro_card_text">R1000 per unit, per week</p>
                     <MdKeyboardArrowRight style={{ fontSize: "20px" }} />
                   </div>
                 </div>
                 <div className="CinemaProRateCard_card_black_main">
                   <div>
-                    <b className="">Landing Page </b>
+                    <b className="pro_card_head">Landing Page </b>
                     <br />
-                    <b className="">Square Tiles</b>
+                    <b className="pro_card_head">Square Tiles</b>
                   </div>
-                  <div style={{ display: "flex" }}>
-                    <p>R400 per unit, per week</p>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <p className="pro_card_text">R400 per unit, per week</p>
                     <MdKeyboardArrowRight style={{ fontSize: "20px" }} />
                   </div>
                 </div>
                 <div className="CinemaProRateCard_card_black_main">
                   <div>
-                    <b className="">Landing Page </b>
+                    <b className="pro_card_head">Landing Page </b>
                     <br />
-                    <b className="">Leaderboard Banner</b>
+                    <b className="pro_card_head">Leaderboard Banner</b>
                   </div>
-                  <div style={{ display: "flex" }}>
-                    <p>R1800 per unit, per week</p>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <p className="pro_card_text">R1800 per unit, per week</p>
                     <MdKeyboardArrowRight style={{ fontSize: "20px" }} />
                   </div>
                 </div>
@@ -73,7 +73,7 @@ const CinemaProRateCard = ({ get_mall_auth_data, sidebaropen }) => {
             <div>
               <h5 className="h5">
                 <p>
-                  <b>Products:</b>&nbsp; Per Mall
+                  <b className="">Products:</b>&nbsp; Per Mall
                 </p>
               </h5>
             </div>
@@ -81,35 +81,37 @@ const CinemaProRateCard = ({ get_mall_auth_data, sidebaropen }) => {
               <div className="CinemaProRateCard_card_block_main">
                 <div className="CinemaProRateCard_card_black_main">
                   <div>
-                    <b className="">Leaderboard</b>
+                    <b className="pro_card_head">Leaderboard</b>
                     <br />
-                    <b className="">Banner Mall</b>
+                    <b className="pro_card_head">Banner Mall</b>
                   </div>
-                  <div style={{ display: "flex" }}>
-                    <p>R250 per unit, per week</p>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <p className="pro_card_text">R250 per unit, per week</p>
                     <MdKeyboardArrowRight style={{ fontSize: "20px" }} />
                   </div>
                 </div>
                 <div className="CinemaProRateCard_card_black_main">
                   <div>
-                    <b className="">Promotional</b>
+                    <b className="pro_card_head">Promotional</b>
                     <br />
-                    <b className="">Banner</b>
+                    <b className="pro_card_head">Banner</b>
                   </div>
-                  <div style={{ display: "flex" }}>
-                    <p>R200 per unit, per week</p>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <p className="pro_card_text">R200 per unit, per week</p>
                     <MdKeyboardArrowRight style={{ fontSize: "20px" }} />
                   </div>
                 </div>
                 <div className="CinemaProRateCard_card_black_main">
                   <div>
-                    <b className="">Cinemas</b>
+                    <b className="pro_card_head">Cinemas</b>
                     <br />
-                    <b className="">Product Tiles</b>
+                    <b cclassName="pro_card_head">Product Tiles</b>
                   </div>
                   <div>
                     <p>Movie Tiles</p>
-                    <p style={{ display: "flex", alignItems: "center" }}>
+                    <p
+                      className="pro_card_text"
+                      style={{ display: "flex", alignItems: "center" }}>
                       R50 per unit, per week
                       <MdKeyboardArrowRight style={{ fontSize: "20px" }} />
                     </p>
@@ -121,38 +123,69 @@ const CinemaProRateCard = ({ get_mall_auth_data, sidebaropen }) => {
           <div className="CinemaProRateCard_card_block_line_inner">
             <div>
               <h5 className="h5">
-                <b>Analytics:</b>
+                <b className="">Analytics:</b>
               </h5>
             </div>
             <div>
               <div className="CinemaProRateCard_card_block_main">
                 <div className="CinemaProRateCard_card_black_main">
                   <div>
-                    <b className="">Cinema Analytics</b>
+                    <b className="pro_card_head">Cinema</b>
                     <br />
-                    <b className="">Bundles</b>
+                    <b className="pro_card_head">Analytics Bundles</b>
                   </div>
-                  <div style={{ display: "flex" }}>
-                    <p>R4800 per month</p>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <p className="pro_card_text">R4800 per month</p>
                     <MdKeyboardArrowRight style={{ fontSize: "20px" }} />
+                  </div>
+                </div>
+                <div
+                  className="CinemaProRateCard_card_black_main"
+                  style={{ background: "white" }}>
+                  <div>
+                    <b className="pro_card_head">Promotional</b>
+                    <br />
+                    <b className="pro_card_head">Banner</b>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <p className="pro_card_text">R200 per unit, per week</p>
+                    <MdKeyboardArrowRight style={{ fontSize: "20px" }} />
+                  </div>
+                </div>
+                <div
+                  className="CinemaProRateCard_card_black_main"
+                  style={{ background: "white" }}>
+                  <div>
+                    <b className="pro_card_head"></b>
+                    <br />
+                    <b cclassName="pro_card_head"></b>
+                  </div>
+                  <div>
+                    {/* <p>Movie Tiles</p> */}
+                    {/* <p
+                      className="pro_card_text"
+                      style={{ display: "flex", alignItems: "center" }}>
+                      R50 per unit, per week
+                      <MdKeyboardArrowRight style={{ fontSize: "20px" }} />
+                    </p> */}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div style={{}}>
-            <div style={{ display: "flex", paddingBottom: "1rem" }}>
-              <h6 className="" style={{ color: "var(--color-orange)" }}>
-                Terms and Conditions
-              </h6>
-              &nbsp; apply.
-            </div>
-            <button
-              className="btn btn-orange"
-              style={{ width: "210px", fontSize: "16px" }}>
-              Download Rate Card
-            </button>
+        </div>
+        <div style={{ paddingTop: "2rem" }}>
+          <div style={{ display: "flex", paddingBottom: "1rem" }}>
+            <h6 className="" style={{ color: "var(--color-orange)" }}>
+              Terms and Conditions
+            </h6>
+            &nbsp; apply.
           </div>
+          <button
+            className="btn btn-orange"
+            style={{ width: "210px", fontSize: "16px" }}>
+            Download Rate Card
+          </button>
         </div>
       </div>
     </div>

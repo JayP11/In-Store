@@ -420,7 +420,7 @@ const CinemaDashboard = () => {
                       onClick={() => setTab(3)}
                       className="profile_sidebar_sig_btn cinema_sidebar_sig_btn">
                       {/* &nbsp;&nbsp;&nbsp; - Brands */}
-                      &nbsp;&nbsp;&nbsp; - Product Tiles
+                      &nbsp;&nbsp;&nbsp; -Cinema Product Tiles
                       {/* <div className="profile_sidebar_sig_btn_right_arrow">
                   <FiChevronLeft color="#fff" size={20} />
                 </div> */}

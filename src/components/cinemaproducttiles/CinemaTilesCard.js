@@ -381,7 +381,7 @@ const CinemaTilesCard = () =>
 
     return (
       <>
-        <div className="leaderboard-card-main-wrapp product-tiles-card-main-wrapp">
+        <div className="leaderboard-card-main-wrapp product-tiles-card-main-wrapp  cinemaproduct-tiles-card-main-wrapp">
           {/* Leaderboard flex start */}
           <div className="leaderboard-card-flex-wrapp" style={{ gap: "4%" }}>
             {/* Leaderboard first part responsive side start */}
@@ -673,14 +673,14 @@ const CinemaTilesCard = () =>
                   {thumbs}
                 </div>
               ) : (
-                <div style={{ width: "100%" }} {...getRootlogoProps()}>
+                <div style={{ width: "112%" }} {...getRootlogoProps()}>
                   <div
                     className="leaderboard-card-part-sec2"
                     style={{
                       paddingLeft: "10px",
                       paddingRight: "10px",
                       textAlign: "center",
-                      height: "288px",
+                      height: "264px",
                     }}>
                     <AiOutlineCloudUpload
                       style={{
