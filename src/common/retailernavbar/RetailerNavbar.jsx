@@ -11,10 +11,12 @@ import ReactModal from "react-modal";
 import { AiOutlineClose } from "react-icons/ai";
 import { LoginSocialFacebook, LoginSocialGoogle } from "reactjs-social-login";
 import Urls from "../../utils/Urls";
-import { FaFacebookF } from "react-icons/fa";
+import { FaApple, FaFacebookF } from "react-icons/fa";
 import { ImGoogle } from "react-icons/im";
-import { ACCEPT_HEADER, get_mall, get_mall_master } from "../../utils/Constant";
+import { ACCEPT_HEADER, get_brand_multiple, get_mall, get_mall_master } from "../../utils/Constant";
 import axios from "axios";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 import {
   // AiOutlineClose,
   AiOutlineEye,
@@ -28,6 +30,8 @@ import {
   GrFacebookOption,
   GrGoogle,
 } from "react-icons/gr";
+import { useDropzone } from "react-dropzone";
+import { RxCross2 } from "react-icons/rx";
 
 const customStyles = {
   content: {
@@ -50,17 +54,40 @@ const customStyles = {
   },
 };
 
+const customStyles1 = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    padding: "1rem",
+    backgroundColor: "none",
+    border: "none",
+    borderRadius: "0px",
+    maxHeight: "670px",
+  },
+  overlay: {
+    zIndex: 1000,
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
+  },
+};
+
+const animatedComponents = makeAnimated();
+
+
 const RetailerNavbar = ({ setTab }) => {
   let navigate = useNavigate();
   const location = useLocation();
-  const { setLogin, setMallRegister, RegisterCustomer } = useAuthContext();
+  const { setLogin, setMallRegister, RegisterCustomer,region_data } = useAuthContext();
 
   const [getcustomerDropdown, setCustomerDropdown] = useState(false);
   const [getregisterCustomerOpen, setRegisterCustomerOpen] = useState(false);
   const [modalIsOpen3, setIsOpen3] = useState(false);
   const [modalIsOpenBrand, setModalIsOpenBrand] = useState(false);
 
-  const [getmallname, setMallname] = useState("");
+  const [getmallname, setMallname] = useState([]);
   const [getfirstname, setFirstname] = useState("");
   const [retailertype, setRetailertype] = useState("");
   const [getlastname, setLastname] = useState("");
@@ -71,11 +98,29 @@ const RetailerNavbar = ({ setTab }) => {
   const [getcondation, SetCondation] = useState(false);
   const [getgender, setGender] = useState("");
   const [getmallmasterid, setmallmasterid] = useState("");
+  const [getcusimg, setcusimg] = useState("");
+  const [getCartCount, setCartCount] = useState("");
 
   const [profile, setProfile] = useState("");
   const [isAcceptTerm, setIsAcceptTerm] = useState(false);
+  const [getMultipleBrand, setMultipleBrand] = useState([]);
+  const [mallsOption, setMallsOption] = useState([]);
 
-  const { setRegisterStore, retailer_data, getRetailerApi } = useStoreContext();
+  const [getregion, setRegion] = useState("");
+  const [getaddmallname, setAddMallName] = useState("");
+  const [getcompanyregnumber, setCompanyRegNumber] = useState("");
+
+
+
+  const {
+    setRegisterStore,
+    retailer_data,
+    getRetailerApi,
+    setRegisterCinema,
+    getCinemaNameApi,
+    cinema_mall_data,
+    store_cart_count
+  } = useStoreContext();
   const { get_brand_data, getBrand } = useMallContext();
 
   const [getrole, setrole] = useState();
@@ -92,6 +137,9 @@ const RetailerNavbar = ({ setTab }) => {
     useState(false);
   const [getvat_no, setvat_no] = useState("");
   const [getearh_no, setearh_no] = useState("");
+  const [getaddretailername , setAddRetailerName] = useState("");
+  const [getModal, setModal] = useState(false);
+
 
   const regEx =
     /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -105,15 +153,20 @@ const RetailerNavbar = ({ setTab }) => {
 
   useEffect(() => {
     token();
-    console.log("profile", profile);
+    // console.log("profile", profile);
     let role = localStorage.getItem("role");
     setrole(role);
     var islogin = localStorage.getItem("is_login");
+    const customerimg = localStorage.getItem("cusimg");
+    const getcartconttotal = localStorage.getItem("storecartcount");
+    setcusimg(JSON.parse(customerimg));
+    console.log("cart counttttt",getcartconttotal);
+    setCartCount(JSON.parse(getcartconttotal));
     SetLogin(islogin);
   }, []);
 
   const token = async () => {
-    console.log("is_token", await localStorage.getItem("is_token"));
+    // console.log("is_token", await localStorage.getItem("is_token"));
 
     const login = await localStorage.getItem("is_token");
     if (login) {
@@ -146,14 +199,19 @@ const RetailerNavbar = ({ setTab }) => {
 
   const handleTermChanged = (event) => {
     setIsAcceptTerm(1);
-    console.log("e.targate.value");
+    // console.log("e.targate.value");
   };
+
+  function closeModal() {
+    setModal(false);
+  }
 
   // get mall master
 
   useEffect(() => {
     getMallMaster();
     getMallMaster2();
+    getMutipleBrand();
   }, []);
 
   const [getmallarray, SetMallArray] = useState([]);
@@ -185,8 +243,6 @@ const RetailerNavbar = ({ setTab }) => {
 
   // Brand Google signin
 
-
-
   const getMallMaster = async () => {
     const token = JSON.parse(localStorage.getItem("is_token"));
 
@@ -198,11 +254,10 @@ const RetailerNavbar = ({ setTab }) => {
         },
       })
       .then((res) => {
-        console.log("ggg", JSON.stringify(res.data, null, 2));
+        // console.log("ggg", JSON.stringify(res.data, null, 2));
         if (res.data.success == 1) {
           SetMallArray(res.data.data);
         } else {
-          null;
         }
       })
       .catch((err) => {
@@ -221,17 +276,39 @@ const RetailerNavbar = ({ setTab }) => {
         },
       })
       .then((res) => {
-        console.log("ggg", JSON.stringify(res.data, null, 2));
+        // console.log("ggg", JSON.stringify(res.data, null, 2));
         if (res.data.success == 1) {
           SetMallArray2(res.data.data);
         } else {
-          null;
         }
       })
       .catch((err) => {
         console.log("err11", err);
       });
   };
+
+  const getMutipleBrand = async () => {
+    const token = JSON.parse(localStorage.getItem("is_token"));
+
+    axios
+        .get(get_brand_multiple, {
+            headers: {
+                Accept: ACCEPT_HEADER,
+                Authorization: "Bearer " + token,
+            },
+        })
+        .then((res) => {
+            console.log("get multiple brand data", JSON.stringify(res.data, null, 2));
+            if (res.data.success == 1) {
+                setMultipleBrand(res.data.data);
+            } else {
+                null;
+            }
+        })
+        .catch((err) => {
+            console.log("err11", err);
+        });
+};
   const SigninCustomerGoogle = async (gmail, type, data) => {
     if (gmail === "") {
       alert("Enter the Email......!");
@@ -247,7 +324,7 @@ const RetailerNavbar = ({ setTab }) => {
         type: type,
       };
 
-      console.log("-=-=-=->", params);
+      // console.log("-=-=-=->", params);
       const data = await setLogin(params);
       if (data) {
         if (data.success === 1) {
@@ -284,6 +361,21 @@ const RetailerNavbar = ({ setTab }) => {
     }
   };
 
+  const [position, setPosition] = useState({ latitude: null, longitude: null });
+
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        setPosition({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+      });
+    } else {
+      console.log("Geolocation is not available in your browser.");
+    }
+  }, []);
+
   const SigninMall = async (type) => {
     if (getvat_no === "") {
       alert("Enter the VAT No......!");
@@ -317,13 +409,15 @@ const RetailerNavbar = ({ setTab }) => {
         first_name: getfirstname,
         last_name: getlastname,
         terms_condition: isAcceptTerm,
+        lat: position.latitude,
+        long: position.longitude,
       };
 
-      console.log("-=-=-=->", params);
+      // console.log("-=-=-=->", params);
       const data = await setMallRegister(params);
       if (data) {
         if (data.success === 1) {
-          console.log("register-data", data);
+          // console.log("register-data", data);
 
           setIsOpen(false);
           setEmail("");
@@ -334,6 +428,7 @@ const RetailerNavbar = ({ setTab }) => {
     }
   };
 
+  console.log("getmallname",getmallname);
   // Signup Brand
 
   const SigninBrand = async (type) => {
@@ -341,6 +436,94 @@ const RetailerNavbar = ({ setTab }) => {
       alert("Enter the Retailer Name......!");
       return;
     } else if (getgender === "") {
+      alert("Select Retailer type......!");
+      return;
+    }  
+    // else if (getgender == 2 && mallsOption.length <=0) {
+    //   alert("Please Select any Brand otherwise select Independent Retailer");
+    //   return;
+    // }
+    else if (getfirstname === "") {
+      alert("Enter the FirstName No......!");
+      return;
+    } else if (getlastname === "") {
+      alert("Enter the LastName No......!");
+      return;
+    } else if (getemail === "") {
+      alert("Enter the Email......!");
+      return;
+    } else if (regEx.test(getemail) === false) {
+      alert("Enter the valid Email....!");
+      return;
+    } else if (getpassword === "") {
+      alert("Enter the password....!");
+      return;
+    } else {
+ 
+
+      const formdata = await new FormData();
+      
+      await formdata.append("mall_id", getmallmasterid);
+
+      // }else{}
+      await formdata.append("retailer_id", retailertype);
+      await formdata.append("store_type", getgender);
+      // await formdata.append("brand", getmallname);
+      for (var i = 0; i < getmallname.length; i++) {
+        await formdata.append("brand[" + i + "]", getmallname[i]);
+      }
+      await formdata.append("company_reg_no", getcompanyregnumber);
+      await formdata.append("vat_no", getvat_no);
+      
+      await formdata.append("role", 3);
+      await formdata.append("email", getemail);
+      await formdata.append("password", getpassword);
+      await formdata.append("first_name", getfirstname);
+      await formdata.append("last_name", getlastname);
+      await formdata.append("terms_condition", isAcceptTerm);
+    
+      await formdata.append("company_reg_document",files[0]);
+      await formdata.append("vat_document",files2[0]);
+      console.log("aaa",JSON.stringify(formdata,null,2));
+      const data = await setRegisterStore(formdata);
+      
+      if (data) {
+        if (data.success === 1) {
+          // console.log("register-data", data);
+          setModalIsOpenBrand(false);
+          setIsOpen3(false);
+          setIsOpen(false);
+          setFirstname("");
+          setLastname("");
+          setEmail("");
+          setPassword("");
+          // window.location.reload(false);
+        }
+      }
+    }
+  };
+
+
+       // var params = {
+      //   // mall_id: getmallname,
+        
+      //   mall_id: getmallmasterid,
+      //   retailer_id: retailertype,
+      //   store_type: getgender,
+      //   brand: getmallname,
+      //   first_name: getfirstname,
+      //   last_name: getlastname,
+      //   email: getemail,
+      //   role: 3,
+      //   password: getpassword,
+      //   terms_condition: isAcceptTerm,
+      // };
+
+
+  // Signup Cinema
+
+  const SigninCinema = async (type) => {
+    if (getgender === "") {
       alert("Select Retailer type......!");
       return;
     } else if (getfirstname === "") {
@@ -360,28 +543,38 @@ const RetailerNavbar = ({ setTab }) => {
       return;
     } else {
       var params = {
-        // mall_id: getmallname,
-        mall_master_id: getmallmasterid,
+        mall_id: getmallmasterid,
+        // mall_master_id: getmallmasterid,
         retailer_id: retailertype,
         store_type: getgender,
         brand: getmallname,
         first_name: getfirstname,
         last_name: getlastname,
         email: getemail,
-        role: 3,
+        // role: 3,
         password: getpassword,
-        terms_condition: isAcceptTerm,
+        privacy_policy: isAcceptTerm,
+        // terms_condition: isAcceptTerm2,
       };
 
-      console.log("-=-=-=->", params);
-      const data = await setRegisterStore(params);
+      // console.log("-=-=-=->", params);
+      const data = await setRegisterCinema(params);
       if (data) {
         if (data.success === 1) {
-          console.log("register-data", data);
+          // console.log("register-data", data);
           setModalIsOpenBrand(false);
-          setIsOpen3(false);
+          setmallmasterid("");
+          setRetailertype("");
+          setGender("");
+          setMallname("");
+          setFirstname("");
+          setLastname("");
           setEmail("");
           setPassword("");
+          setIsAcceptTerm("");
+          setIsAcceptTerm2("");
+          setIsOpen3(false);
+          setModal(true);
           // window.location.reload(false);
         }
       }
@@ -411,7 +604,7 @@ const RetailerNavbar = ({ setTab }) => {
       const data = await setLogin(params);
       if (data) {
         if (data.success === 1) {
-          console.log("brand-data", data);
+          // console.log("brand-data", data);
           setIsOpen3(false);
           setEmail("");
           setPassword("");
@@ -464,7 +657,7 @@ const RetailerNavbar = ({ setTab }) => {
     }
   };
   useEffect(() => {
-    console.log("brand registration mall", getmallarray);
+    // console.log("brand registration mall", getmallarray);
   }, []);
 
   const onLoginStart = () => {
@@ -498,6 +691,38 @@ const RetailerNavbar = ({ setTab }) => {
           setPassword("");
           // window.location.reload(false);
           navigate("/mallnearme");
+        }
+      }
+    }
+  };
+
+  const LoginCinema = async (e) => {
+    if (getemail === "") {
+      alert("Enter the Email......!");
+      return;
+    } else if (regEx.test(getemail) === false) {
+      alert("Enter the valid Email....!");
+      return;
+    } else if (getpassword === "") {
+      alert("Enter the password....!");
+    } else {
+      var params = {
+        role: 6,
+        email: getemail,
+        password: getpassword,
+        type: "1",
+      };
+
+      console.log("-=-=-=->", params);
+      const data = await setLogin(params);
+      if (data) {
+        if (data.success === 1) {
+          // console.log("cinema-data", data);
+          setIsOpen3(false);
+          setEmail("");
+          setPassword("");
+          // window.location.reload(false);
+          navigate("/CinemaDashboard");
         }
       }
     }
@@ -560,6 +785,61 @@ const RetailerNavbar = ({ setTab }) => {
       }
     }
   };
+
+  const [files, setFiles] = useState([]);
+  const [files2, setFiles2] = useState([]);
+  const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } =
+    useDropzone({
+      onDrop: (acceptedFiles) => {
+        console.log("acceptedFiles", acceptedFiles);
+        {
+          setFiles(
+            acceptedFiles.map((file) =>
+              Object.assign(file, {
+                preview: URL.createObjectURL(file),
+              })
+            )
+          );
+        }
+
+      },
+    });
+
+  const { getRootProps: getRootMapProps, getInputProps: getInputMapProps } =
+    useDropzone({
+      onDrop: (acceptedFiles) => {
+        console.log("acceptedFiles", acceptedFiles);
+        {
+          setFiles2(
+            acceptedFiles.map((file) =>
+              Object.assign(file, {
+                preview: URL.createObjectURL(file),
+              })
+            )
+          );
+        }
+        // SetCondation1(true);
+        // if (acceptedFiles.length === 0) {
+        //   window.location.reload(true);
+        // }
+      },
+    });
+
+    const handleOptionChange = (event) => {
+
+      const value = event.target.value;
+      console.log("value are", value);
+  
+      const [id, brand_id] = value.split("_");
+      console.log("ID:", id); // Output: ID: 39
+      console.log("Brand ID:", brand_id); // Output: Brand ID: 101
+      setRetailertype(id);
+      getBrand(id);
+      setMallname(brand_id);
+    };
+
+
+
   return (
     <>
       <nav className="nav_main_wrapp">
@@ -607,7 +887,7 @@ const RetailerNavbar = ({ setTab }) => {
               <div className="nav_myacc_wrapp">
                 <Link>
                   <img
-                    src={images.profile_logo}
+                    src={getcusimg ? getcusimg : images.profile_logo}
                     alt=""
                     className="nav_profile"
                   />
@@ -690,11 +970,20 @@ const RetailerNavbar = ({ setTab }) => {
                           >
                             Customer
                           </Link>
+
+                          <Link
+                            to="/CinemaPage"
+                            className="navbar-acc-menu-link"
+                          // onClick={() => { setTab(2) }}
+                          >
+                            Cinema
+                          </Link>
                           <Link
                             className="navbar-acc-menu-link"
-                            onClick={() => { setIsOpen3(true), SetsignButn(2), SetboldButn(2); }}>
+                            onClick={() => {
+                              setIsOpen3(true); SetsignButn(2); SetboldButn(2);
+                            }}>
                             {/* brandLoginModalOpen(true), SetsignButn(2), SetboldButn(2); */}
-
                             Login
                           </Link>
                           {/* {is_login === true || role === 4 ? <Link to="/customer"
@@ -794,15 +1083,13 @@ const RetailerNavbar = ({ setTab }) => {
                             }}>
                             Account Setting
                           </Link>
-                          <Link
+                          {/* <Link
                             to=""
                             className="navbar-acc-menu-link"
-                          // onClick={() => {
-                          //   setTab(2);
-                          // }}
+                       
                           >
                             Track Consumer Data
-                          </Link>
+                          </Link> */}
                           <Link className="navbar-acc-menu-link">Help</Link>
                           {/* {is_login === true ? (<><Link onClick={logout}>Logout</Link></>) : (<></>)} */}
                           {login === "true" ? (
@@ -832,7 +1119,7 @@ const RetailerNavbar = ({ setTab }) => {
                   <div className="nav_myacc_wrapp">
                     <Link>
                       <img
-                        src={images.profile_logo}
+                         src={getcusimg ? getcusimg : images.profile_logo}
                         alt=""
                         className="nav_profile"
                       />
@@ -884,6 +1171,15 @@ const RetailerNavbar = ({ setTab }) => {
                   </Link>
                 </>
               )} */}
+
+              {login === "true" && getrole == 3 ? (
+                  <div style={{ position: "relative" }}>
+                    <Link to="" onClick={()=>{setTab(9)}}>
+                      <img src={images.cart_black} className="cart-icon-img" />
+                    </Link>
+                    <div className="cart-digit-main">{store_cart_count ? store_cart_count : "0"}</div>
+                  </div>
+                ) : null}
             </div>
 
             <button
@@ -901,6 +1197,14 @@ const RetailerNavbar = ({ setTab }) => {
           </div>
           {getsidebarOpen && (
             <div className="nav_sidebar_wrapp">
+            {login === "true" && getrole == 3 ? (
+                  <div style={{ position: "relative",alignSelf:"flex-end",marginRight:"15px" }}>
+                    <Link to="" onClick={()=>{setTab(9);setSidebarOpen(!getsidebarOpen);}}>
+                      <img src={images.cart_black} className="cart-icon-img" />
+                    </Link>
+                    <div className="cart-digit-main">{store_cart_count ? store_cart_count : "0"}</div>
+                  </div>
+                ) : null}
               <Link to="/">Home</Link>
               {login === "true" && getrole == 2 ? (
                 <Link to="/profile-page" className="navbar-acc-menu-link">
@@ -920,9 +1224,16 @@ const RetailerNavbar = ({ setTab }) => {
                 </Link>
               ) : null}
 
+              {login === "true" && getrole == 6 ? (
+                <Link to="/CinemaDashboard" className="navbar-acc-menu-link">
+                  Cinema Dashboard
+                </Link>
+              ) : null}
+
               <Link to="/about-instore">About In-store</Link>
               <Link to="/Mall">Mall Registration</Link>
               <Link to="/customer">Customer Registraion</Link>
+              <Link to="/CinemaPage">Cinema Registraion</Link>
               {login === "true" || getrole === 2 ? (
                 <></>
               ) : (
@@ -977,45 +1288,85 @@ const RetailerNavbar = ({ setTab }) => {
                       </Link>
                       <Link
                         onClick={() => {
+                          setTab(13);
+                          setSidebarOpen(!getsidebarOpen);
+                        }}>
+                        Product Rate Card
+                      </Link>
+                      <Link
+                        onClick={() => {
+                          setTab(40);
+                          setSidebarOpen(!getsidebarOpen);
+                        }}>
+                        - Landing page 1/2 Page Tile
+                      </Link>
+
+                      <Link
+                        onClick={() => {
+                          setTab(46);
+                          setSidebarOpen(!getsidebarOpen);
+                        }}>
+                        - Landing Page Square Tiles
+                      </Link>
+                      <Link
+                        onClick={() => {
+                          setTab(42);
+                          setSidebarOpen(!getsidebarOpen);
+                        }}>
+                        - Landing Page Leaderboard Banner
+                      </Link>
+                      <Link
+                        onClick={() => {
                           setTab(3);
                           setSidebarOpen(!getsidebarOpen);
                         }}>
-                        Leaderboard Banners
+                        - In Mall Leaderboard Banners
                       </Link>
                       <Link
                         onClick={() => {
                           setTab(4);
                           setSidebarOpen(!getsidebarOpen);
                         }}>
-                        Promotional Banners
+                        - In Mall Promotional Banners
                       </Link>
                       <Link
                         onClick={() => {
                           setTab(5);
                           setSidebarOpen(!getsidebarOpen);
                         }}>
-                        Product Banners
+                        - In Mall Brand Banner Slider
                       </Link>
                       <Link
                         onClick={() => {
                           setTab(6);
                           setSidebarOpen(!getsidebarOpen);
                         }}>
-                        Product Tiles
+                        In Mall Product Tiles
                       </Link>
                       <Link
                         onClick={() => {
-                          setTab(7);
+                          setTab(9);
                           setSidebarOpen(!getsidebarOpen);
                         }}>
-                        Track analytics
+                        My Cart
                       </Link>
                       <Link
                         onClick={() => {
+                          setTab(14);
                           setSidebarOpen(!getsidebarOpen);
                         }}>
-                        My Brand in mall
+                        FAQ
                       </Link>
+                      {/* <Link
+                        onClick={() => {
+                          setTab(15);
+                          setSidebarOpen(!getsidebarOpen);
+                        }}>
+                        Table
+                      </Link> */}
+
+                      {/*  */}
+
                       <Link
                         onClick={() => {
                           setSidebarOpen(!getsidebarOpen);
@@ -1059,898 +1410,6 @@ const RetailerNavbar = ({ setTab }) => {
           )}
         </div>
       </nav>
-
-      {/* Brand Login Modal Start */}
-      <ReactModal
-        isOpen={modalIsOpen3}
-        // setModalIsOpenBrand
-        // onAfterOpen={afterOpenModal}
-        onRequestClose={closeModal3}
-        style={customStyles}>
-        <div className="model_sizing">
-          <div style={{ backgroundColor: "#dad9d8" }}>
-            <div style={{ height: "25px" }}>
-              <button
-                className="signup_modal_close"
-                style={{ right: "7px", top: "9px" }}
-                onClick={closeModal3}>
-                <span style={{ fontSize: "16px" }}></span>
-                {/* <AiOutlineClose /> */}
-                <IoClose />
-              </button>
-            </div>
-            <div className="tab_btn_main">
-              <button
-                onClick={() => {
-                  SetsignButn(1);
-                  SetboldButn(1);
-                }}
-                style={{
-                  backgroundColor: signButn == 1 ? "white" : "#dad9d8",
-                  fontWeight: boldButn == 1 ? "600" : "200",
-                }}
-                className="tab_btn_styling">
-                Mall login / sign up
-              </button>
-              <button
-                onClick={() => {
-                  // setbrandModalIsOpen3(true);
-                  SetsignButn(2);
-                  SetboldButn(2);
-                }}
-                style={{
-                  backgroundColor: signButn == 2 ? "white" : "#dad9d8",
-                  fontWeight: boldButn == 2 ? "600" : "200",
-                }}
-                className="tab_btn_styling">
-                Brand login / sign up
-              </button>
-              <button
-                onClick={() => {
-                  //  setCustLoginModalIsOpen3(true);
-                  SetsignButn(3);
-                  SetboldButn(3);
-                }}
-                style={{
-                  backgroundColor: signButn == 3 ? "white" : "#dad9d8",
-                  fontWeight: boldButn == 3 ? "600" : "200",
-                }}
-                className="tab_btn_styling">
-                Consumer login / sign up
-              </button>
-            </div>
-          </div>
-          {signButn == 1 ? (
-            <div
-              className="home_login_model_1sec_inner"
-              style={{ maxWidth: "none" }}>
-              {/* <button className="signup_modal_close" onClick={closeModal3}>
-            <span
-              style={{ fontSize: "16px" }}
-              className="brand-lable-radio-btn-txt">
-              Cancel
-            </span>
-            <AiOutlineClose color="red" />
-          </button> */}
-              <div className="f-b900 fs-22 mb_16 signup_headign">
-                Welcome Back!
-              </div>
-              <div className="sign_input_wrapp">
-                <label htmlFor="email">Email Address</label>
-                <input
-                  type="email"
-                  onChange={(e) => onHandleEmailChange(e)}
-                  name=""
-                  id=""
-                  className="signup_input"
-                  autoFocus="true"
-                // style={{ background: "#DAD9D8", border: 'none' }}
-                />
-                <label htmlFor="password">Password</label>
-                <div
-                  style={{
-                    background: "#DAD9D8",
-                    paddingTop: "0.4rem",
-                    paddingBottom: "0.4rem",
-                    paddingLeft: "1rem",
-                    paddingRight: "1rem",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                  className="input_box-cus-pass">
-                  <input
-                    type={passwordVisible ? "text" : "password"}
-                    value={getpassword}
-                    onChange={(e) => setPassword(e.target.value)}
-                    name=""
-                    id=""
-                    className="signup_input"
-                    style={{
-                      background: "#DAD9D8",
-                      border: "none",
-                      width: "100%",
-                    }}
-                  />
-                  {passwordVisible === true ? (
-                    <AiOutlineEye size={22} onClick={togglePasswordVisibility}>
-                      {passwordVisible ? "Hide" : "Show"}
-                    </AiOutlineEye>
-                  ) : (
-                    <AiOutlineEyeInvisible
-                      size={22}
-                      onClick={togglePasswordVisibility}>
-                      {passwordVisible ? "Hide" : "Show"}
-                    </AiOutlineEyeInvisible>
-                  )}
-                </div>
-                {/* <input
-                  type="password"
-                  value={getpassword}
-                  onChange={(e) => setPassword(e.target.value)}
-                  name=""
-                  id=""
-                  className="signup_input"
-                  // style={{ background: "#DAD9D8", border: 'none' }}
-                /> */}
-                <div className="signup_terms_wrapp">
-                  <input
-                    type="checkbox"
-                    value={isAcceptTerm}
-                    onChange={handleTermChange}
-                    checked={isAcceptTerm}
-                  />
-                  <p className="fs-des">
-                    I have read and agree to the{" "}
-                    <a className="signup_terms_link">Terms and Conditions</a> &{" "}
-                    <a className="signup_terms_link">Privacy Policy</a>
-                  </p>
-                </div>
-                <button className="signup_model_forgate">
-                  Forgot your password?
-                </button>
-              </div>
-              <button
-                className="btn btn-orange mb_16"
-                onClick={() => LoginMall()}
-                disabled={isAcceptTerm ? false : true}>
-                Login
-              </button>
-              <p
-                style={{
-                  alignSelf: "center",
-                  marginBottom: "8px",
-                  fontWeight: "bold",
-                }}>
-                or
-              </p>
-
-              <div style={{ width: "100%" }}>
-                {/* facebook button */}
-
-                <LoginSocialFacebook
-                  appId="1377758369684897"
-                  fieldsProfile={
-                    "id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender"
-                  }
-                  // version={3}
-                  onLoginStart={(e) => console.log(e)}
-                  onLogoutSuccess={(e) => console.log(e)}
-                  redirect_uri={Urls.base_url}
-                  onResolve={({ data }: IResolveParams) => {
-                    // setProfile(data);
-                    console.log(data);
-                    SigninCustomerFacebook(data, "3");
-                  }}
-                  onReject={(err) => {
-                    console.log(err);
-                  }}>
-                  <button
-                    className="mb_8 modal-social-btn "
-                    style={{
-                      justifyContent: "center",
-                      width: "100%",
-                      color: "var(--color-gray)",
-                      fontWeight: "600",
-                      fontSize: "16px",
-                    }}>
-                    <FaFacebookF
-                      color="var(--color-gray)"
-                      style={{
-                        marginRight: "8px",
-                        fontSize: "16px",
-                        marginBottom: "-2px",
-                      }}
-                    />
-                    Continue with Facebook
-                  </button>
-                </LoginSocialFacebook>
-
-                {/* google button */}
-
-                <LoginSocialGoogle
-                  // client_id="775372553139-o2l7tmtgohlmu3q31o0ufsfne62g47tk.apps.googleusercontent.com"
-                  client_id="826718979042-bhij4jt5s6p85n55hbuhh0v40i4b3ng4.apps.googleusercontent.com"
-                  // onLoginStart={onLoginStart}
-                  redirect_uri={Urls.base_url}
-                  scope="openid profile email"
-                  discoveryDocs="claims_supported"
-                  access_type="offline"
-                  onResolve={({ data }: IResolveParams) => {
-                    setProfile(data);
-                    console.log("gdata", data);
-                    // registerWithGoogle(data);
-                    // registerWithGoogle(data);
-                    SigninCustomerGoogle(data.email, "2", data);
-                  }}
-                  onReject={(err) => {
-                    console.log(err);
-                  }}>
-                  <button
-                    className="mb_8 modal-social-btn "
-                    style={{
-                      justifyContent: "center",
-                      width: "100%",
-                      color: "var(--color-gray)",
-                      fontWeight: "600",
-                      fontSize: "16px",
-                    }}>
-                    <ImGoogle
-                      color="var(--color-gray)"
-                      style={{
-                        marginRight: "8px",
-                        fontSize: "16px",
-                        marginBottom: "-2px",
-                      }}
-                    />
-                    Continue with Google
-                  </button>
-                  {/* <button onClick={() => {}} className="twitter-btn w-100">
-              <i className="fab fa-google"></i> Google
-            </button> */}
-                </LoginSocialGoogle>
-              </div>
-              <button
-                className="h6 mb_10 mt_10"
-                style={{ alignSelf: "center" }}>
-                Not registered yet?
-              </button>
-              <button
-                onClick={() => {
-                  setIsOpen3(false);
-                  setIsOpen(true);
-                }}
-                className="btn btn-blue">
-                Register Your Mall
-              </button>
-            </div>
-          ) : signButn == 2 ? (
-            <div
-              className="home_login_model_1sec_inner"
-              style={{ maxWidth: "none" }}>
-              {/* <button className="signup_modal_close" onClick={closeBrandModal}>
-                <span
-                  style={{ fontSize: "16px" }}
-                  className="brand-lable-radio-btn-txt">
-                  Cancel
-                </span>{" "}
-                <GrClose />
-              </button> */}
-              <div className="f-b900 fs-22 mb_16 signup_headign">
-                Welcome Back!
-              </div>
-              <div className="sign_input_wrapp">
-                <label htmlFor="email">Email Address</label>
-                <input
-                  type="email"
-                  onChange={(e) => setEmail(e.target.value)}
-                  name=""
-                  id=""
-                  value={getemail}
-                  className="signup_input"
-                  autoFocus="true"
-                // style={{ background: "#DAD9D8", border: 'none' }}
-                />
-                <label htmlFor="password">Password</label>
-                <div
-                  style={{
-                    background: "#DAD9D8",
-                    paddingTop: "0.4rem",
-                    paddingBottom: "0.4rem",
-                    paddingLeft: "1rem",
-                    paddingRight: "1rem",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                  className="input_box-cus-pass">
-                  <input
-                    type={passwordVisible ? "text" : "password"}
-                    value={getpassword}
-                    onChange={(e) => setPassword(e.target.value)}
-                    name=""
-                    id=""
-                    className="signup_input"
-                    style={{
-                      background: "#DAD9D8",
-                      border: "none",
-                      width: "100%",
-                    }}
-                  />
-                  {passwordVisible === true ? (
-                    <AiOutlineEye size={22} onClick={togglePasswordVisibility}>
-                      {passwordVisible ? "Hide" : "Show"}
-                    </AiOutlineEye>
-                  ) : (
-                    <AiOutlineEyeInvisible
-                      size={22}
-                      onClick={togglePasswordVisibility}>
-                      {passwordVisible ? "Hide" : "Show"}
-                    </AiOutlineEyeInvisible>
-                  )}
-                </div>
-                {/* <input
-                  type="password"
-                  value={getpassword}
-                  onChange={(e) => setPassword(e.target.value)}
-                  name=""
-                  id=""
-                  className="signup_input"
-                  // style={{ background: "#DAD9D8", border: 'none' }}
-                /> */}
-                <div className="signup_terms_wrapp">
-                  <input
-                    type="checkbox"
-                    value={isAcceptTerm}
-                    onChange={handleTermChange}
-                    checked={isAcceptTerm}
-                  />
-                  <p className="fs-des">
-                    I have read and agree to the{" "}
-                    <a className="signup_terms_link">Terms and Conditions</a> &{" "}
-                    <a className="signup_terms_link">Privacy Policy</a>
-                  </p>
-                </div>
-                <button className="signup_model_forgate">
-                  Forgot your password?
-                </button>
-              </div>
-              <button
-                className="btn btn-orange mb_16"
-                onClick={() => LoginBrand()}
-                disabled={isAcceptTerm ? false : true}>
-                Login
-              </button>
-              <p
-                style={{
-                  alignSelf: "center",
-                  marginBottom: "8px",
-                  fontWeight: "bold",
-                }}>
-                or
-              </p>
-
-              <div style={{ width: "100%" }}>
-                {/* facebook button */}
-
-                <LoginSocialFacebook
-                  appId="1377758369684897"
-                  fieldsProfile={
-                    "id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender"
-                  }
-                  // version={3}
-                  onLoginStart={(e) => console.log(e)}
-                  onLogoutSuccess={(e) => console.log(e)}
-                  redirect_uri={Urls.base_url}
-                  onResolve={({ data }: IResolveParams) => {
-                    // setProfile(data);
-                    console.log(data);
-                    SigninCustomerFacebook(data, "3");
-                  }}
-                  onReject={(err) => {
-                    console.log(err);
-                  }}>
-                  <button
-                    className="mb_8 modal-social-btn "
-                    style={{
-                      justifyContent: "center",
-                      width: "100%",
-                      color: "var(--color-gray)",
-                      fontWeight: "600",
-                      fontSize: "16px",
-                    }}>
-                    <FaFacebookF
-                      color="var(--color-gray)"
-                      style={{
-                        marginRight: "8px",
-                        fontSize: "16px",
-                        marginBottom: "-2px",
-                      }}
-                    />
-                    Continue with Facebook
-                  </button>
-                </LoginSocialFacebook>
-
-                {/* google button */}
-
-                <LoginSocialGoogle
-                  // client_id="775372553139-o2l7tmtgohlmu3q31o0ufsfne62g47tk.apps.googleusercontent.com"
-                  client_id="826718979042-bhij4jt5s6p85n55hbuhh0v40i4b3ng4.apps.googleusercontent.com"
-                  // onLoginStart={onLoginStart}
-                  redirect_uri={Urls.base_url}
-                  scope="openid profile email"
-                  discoveryDocs="claims_supported"
-                  access_type="offline"
-                  onResolve={({ data }: IResolveParams) => {
-                    setProfile(data);
-                    console.log("gdata", data);
-                    // registerWithGoogle(data);
-                    // registerWithGoogle(data);
-                    SigninCustomerGoogle(data.email, "2", data);
-                  }}
-                  onReject={(err) => {
-                    console.log(err);
-                  }}>
-                  <button
-                    className="mb_8 modal-social-btn "
-                    style={{
-                      justifyContent: "center",
-                      width: "100%",
-                      color: "var(--color-gray)",
-                      fontWeight: "600",
-                      fontSize: "16px",
-                    }}>
-                    <ImGoogle
-                      color="var(--color-gray)"
-                      style={{
-                        marginRight: "8px",
-                        fontSize: "16px",
-                        marginBottom: "-2px",
-                      }}
-                    />
-                    Continue with Google
-                  </button>
-                  {/* <button onClick={() => {}} className="twitter-btn w-100">
-              <i className="fab fa-google"></i> Google
-            </button> */}
-                </LoginSocialGoogle>
-              </div>
-              <button
-                className="h6 mb_10 mt_10"
-                style={{ alignSelf: "center" }}>
-                Not registered yet?
-              </button>
-              <button
-                onClick={() => {
-                  setIsOpen3(false);
-                  // setModalIsOpenBrand(true);
-                  setbrandModalIsOpen3(false);
-                  setIsOpen(true);
-                  // setRegisterModalIsOpenBrand(true);
-                }}
-                className="btn btn-blue">
-                Register Your Brand
-              </button>
-            </div>
-          ) : signButn == 3 ? (
-            <div
-              className="home_login_model_1sec_inner"
-              style={{ maxWidth: "none" }}>
-              {/* <button className="signup_modal_close" onClick={closeModal3}>
-            <span
-              style={{ fontSize: "16px" }}
-              className="brand-lable-radio-btn-txt">
-              Cancel
-            </span>{" "}
-            <AiOutlineClose color="red" />
-          </button> */}
-              <div className="f-b900 fs-22 mb_16 signup_headign">
-                Welcome Back!
-              </div>
-              <div className="sign_input_wrapp">
-                <label htmlFor="email">Email Address</label>
-                <input
-                  type="email"
-                  onChange={(e) => onHandleEmailChange(e)}
-                  name=""
-                  id=""
-                  className="signup_input"
-                  autoFocus="true"
-                // style={{ background: "#DAD9D8", border: 'none' }}
-                />
-                <label htmlFor="password">Password</label>
-                <div
-                  style={{
-                    background: "#DAD9D8",
-                    paddingTop: "0.4rem",
-                    paddingBottom: "0.4rem",
-                    paddingLeft: "1rem",
-                    paddingRight: "1rem",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                  className="input_box-cus-pass">
-                  <input
-                    type={passwordVisible ? "text" : "password"}
-                    value={getpassword}
-                    onChange={(e) => setPassword(e.target.value)}
-                    name=""
-                    id=""
-                    className="signup_input"
-                    style={{
-                      background: "#DAD9D8",
-                      border: "none",
-                      width: "100%",
-                    }}
-                  />
-                  {passwordVisible === true ? (
-                    <AiOutlineEye size={22} onClick={togglePasswordVisibility}>
-                      {passwordVisible ? "Hide" : "Show"}
-                    </AiOutlineEye>
-                  ) : (
-                    <AiOutlineEyeInvisible
-                      size={22}
-                      onClick={togglePasswordVisibility}>
-                      {passwordVisible ? "Hide" : "Show"}
-                    </AiOutlineEyeInvisible>
-                  )}
-                </div>
-                <div className="signup_terms_wrapp">
-                  <input
-                    type="checkbox"
-                    value={isAcceptTerm}
-                    onChange={handleTermChange}
-                    checked={isAcceptTerm}
-                  />
-                  <p className="fs-des">
-                    I have read and agree to the{" "}
-                    <a className="signup_terms_link">Terms and Conditions</a> &{" "}
-                    <a className="signup_terms_link">Privacy Policy</a>
-                  </p>
-                </div>
-                <button className="signup_model_forgate">
-                  Forgot your password?
-                </button>
-              </div>
-              <button
-                className="btn btn-orange mb_16"
-                onClick={() => LoginCustomer()}
-                disabled={isAcceptTerm ? false : true}>
-                Login
-              </button>
-              <p
-                style={{
-                  alignSelf: "center",
-                  marginBottom: "8px",
-                  fontWeight: "bold",
-                }}>
-                or
-              </p>
-
-              <div style={{ width: "100%" }}>
-                {/* facebook button */}
-
-                <LoginSocialFacebook
-                  appId="1377758369684897"
-                  fieldsProfile={
-                    "id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender"
-                  }
-                  // version={3}
-                  onLoginStart={(e) => console.log(e)}
-                  onLogoutSuccess={(e) => console.log(e)}
-                  redirect_uri={Urls.base_url}
-                  onResolve={({ data }: IResolveParams) => {
-                    // setProfile(data);
-                    console.log(data);
-                    SigninCustomerFacebook(data, "3");
-                  }}
-                  onReject={(err) => {
-                    console.log(err);
-                  }}>
-                  <button
-                    className="mb_8 modal-social-btn "
-                    style={{
-                      justifyContent: "center",
-                      width: "100%",
-                      color: "var(--color-gray)",
-                      fontWeight: "600",
-                      fontSize: "16px",
-                    }}>
-                    <FaFacebookF
-                      color="var(--color-gray)"
-                      style={{
-                        marginRight: "8px",
-                        fontSize: "16px",
-                        marginBottom: "-2px",
-                      }}
-                    />
-                    Continue with Facebook
-                  </button>
-                </LoginSocialFacebook>
-
-                {/* google button */}
-
-                <LoginSocialGoogle
-                  // client_id="775372553139-o2l7tmtgohlmu3q31o0ufsfne62g47tk.apps.googleusercontent.com"
-                  client_id="826718979042-bhij4jt5s6p85n55hbuhh0v40i4b3ng4.apps.googleusercontent.com"
-                  onLoginStart={onLoginStart}
-                  redirect_uri={Urls.base_url}
-                  scope="openid profile email"
-                  discoveryDocs="claims_supported"
-                  access_type="offline"
-                  onResolve={({ data }: IResolveParams) => {
-                    setProfile(data);
-                    console.log("gdata", data);
-                    // registerWithGoogle(data);
-                    // registerWithGoogle(data);
-                    SigninCustomerGoogle(data.email, "2", data);
-                  }}
-                  onReject={(err) => {
-                    console.log(err);
-                  }}>
-                  <button
-                    className="mb_8 modal-social-btn "
-                    style={{
-                      justifyContent: "center",
-                      width: "100%",
-                      color: "var(--color-gray)",
-                      fontWeight: "600",
-                      fontSize: "16px",
-                    }}>
-                    <ImGoogle
-                      color="var(--color-gray)"
-                      style={{
-                        marginRight: "8px",
-                        fontSize: "16px",
-                        marginBottom: "-2px",
-                      }}
-                    />
-                    Continue with Google
-                  </button>
-                  {/* <button onClick={() => {}} className="twitter-btn w-100">
-              <i className="fab fa-google"></i> Google
-            </button> */}
-                </LoginSocialGoogle>
-              </div>
-              <button
-                className="h6 mb_10 mt_10"
-                style={{ alignSelf: "center" }}>
-                Not registered yet?
-              </button>
-              <button
-                onClick={() => {
-                  setIsOpen3(false);
-                  setIsOpen(true);
-                  // setIsOpen(true)
-                  // setRegisterCustomerOpen(true);
-                }}
-                className="btn btn-blue">
-                Sign up
-              </button>
-            </div>
-          ) : null}
-        </div>
-      </ReactModal>
-      {/* Brand Login Modal End */}
-
-      {/* Brand register */}
-      <ReactModal
-        isOpen={modalIsOpenBrand}
-        // onAfterOpen={afterOpenModal}
-        onRequestClose={closeModalBrand}
-        style={customStyles}>
-        <div className="home_model_4wrapp">
-          <button className="signup_modal_close" onClick={closeModalBrand}>
-            <span
-              style={{ fontSize: "16px" }}
-              className="brand-lable-radio-btn-txt">
-              Cancel
-            </span>{" "}
-            <AiOutlineClose color="red" />
-          </button>
-          <button className="f-b900 fs-22 mb_16 signup_headign">
-            Register to In-store
-          </button>
-
-          <div className="sign_input_wrapp sign_input_wrapp_padding_less">
-            <label htmlFor="mall">Mall Name</label>
-            <select
-              className="leaderboard-card-inp"
-              onChange={(e) => {
-                setmallmasterid(e.target.value);
-                getRetailerApi(e.target.value);
-                console.log(e.target.value);
-              }}>
-              {getmallarray &&
-                getmallarray.map((item, index) => {
-                  return (
-                    <>
-                      {/* <option selected disabled value=""></option> */}
-                      <option value={item.id} key={index}>
-                        {item.name} {item.id} &nbsp;&nbsp;&nbsp;{" "}
-                        {item.from_date} &nbsp;&nbsp;&nbsp; {item.to_date}
-                      </option>
-                    </>
-                  );
-                })}
-            </select>
-          </div>
-          <div className="sign_input_wrapp sign_input_wrapp_padding_less">
-            <label htmlFor="mall">Retailer Name</label>
-            <select
-              className="leaderboard-card-inp"
-              onChange={(e) => {
-                setRetailertype(e.target.value);
-                console.log("retailertype is", retailertype);
-                getBrand(e.target.value);
-                console.log(e.target.value);
-              }}>
-              <option defaultValue value=""></option>
-              {retailer_data &&
-                retailer_data.map((item, index) => {
-                  return (
-                    <>
-                      {/* <option selected disabled value="">
-                      Auto-fill from database
-                    </option> */}
-                      <option value={item.id} key={index}>
-                        {item.name}
-                      </option>
-                    </>
-                  );
-                })}
-            </select>
-          </div>
-
-          {/* <div className="mm_form_single_input">
-            <label htmlFor="">Brand Name</label>
-            <select className="leaderboard-card-inp" onChange={(e) => {
-              setStoreName(e.target.value);
-              console.log(e.target.value);
-            }}>
-              {get_brand_data && get_brand_data.map((item, index) => {
-                return (
-                  <>
-                    <option selected disabled value="">
-                      Auto-fill from database
-                    </option>
-                    <option key={item.id} value={item.id}>{item.name}</option>
-                  </>
-                )
-              })}
-
-            </select>
-          </div> */}
-
-          <div className="radio-btn-flex sign_input_wrapp_padding_less">
-            {/* <label className="course-form-txt course-form-margin-right">
-              Mode Of Delivery:
-            </label> */}
-            <div className="radio-btn-inner-flex">
-              <input
-                type="radio"
-                id="Online"
-                name="gender"
-                defaultValue={retailer_data.type}
-                onChange={(e) => {
-                  setGender(1);
-                }}
-              />
-              <label className="brand-lable-radio-btn-txt" for="male">
-                Independent Retailer
-              </label>
-            </div>
-
-            <div className="radio-btn-inner-flex">
-              <input
-                type="radio"
-                id="In-Person"
-                name="gender"
-                // value={2}
-                // onChange={(e) => setMode(e.target.value)}
-                value={getgender}
-                onChange={(e) => setGender(2)}
-              />
-              <label className="brand-lable-radio-btn-txt" for="specifyColor">
-                Group Retailer
-              </label>
-            </div>
-          </div>
-
-          <div className="sign_input_wrapp sign_input_wrapp_padding_less">
-            <label htmlFor="first-name">Brands (if applicable)</label>
-            <select
-              className="leaderboard-card-inp"
-              onChange={(e) => {
-                setMallname(e.target.value);
-                console.log(e.target.value);
-              }}>
-              {get_brand_data &&
-                get_brand_data.map((item, index) => {
-                  return (
-                    <>
-                      {/* <option selected disabled value="">
-                      Auto-fill from database
-                    </option> */}
-                      <option value={item.id} key={index}>
-                        {item.name}
-                      </option>
-                    </>
-                  );
-                })}
-            </select>
-          </div>
-          <div className="sign_input_wrapp sign_input_wrapp_padding_less">
-            <label htmlFor="last-name">Account Manager First Name</label>
-            <input
-              type="text"
-              value={getfirstname}
-              onChange={(e) => setFirstname(e.target.value)}
-              name=""
-              id=""
-            />
-          </div>
-          <div className="sign_input_wrapp sign_input_wrapp_padding_less">
-            <label>Account Manager Last Name</label>
-            <input
-              type="text"
-              value={getlastname}
-              onChange={(e) => setLastname(e.target.value)}
-              name=""
-              id=""
-            />
-          </div>
-          <div className="sign_input_wrapp sign_input_wrapp_padding_less">
-            <label htmlFor="email">Account Manager Email Address</label>
-            <input
-              type="email"
-              onChange={(e) => setEmail(e.target.value)}
-              name=""
-              id=""
-              value={getemail}
-            />
-          </div>
-          <div className="sign_input_wrapp sign_input_wrapp_padding_less">
-            <label htmlFor="password">Set a Password</label>
-            <input
-              type="password"
-              value={getpassword}
-              onChange={(e) => setPassword(e.target.value)}
-              name=""
-              id=""
-            />
-          </div>
-          <div className="signup_terms_wrapp mb_16">
-            <input
-              type="checkbox"
-              value={isAcceptTerm}
-              onChange={handleTermChanged}
-              checked={isAcceptTerm}
-            />
-            <p className="fs-des">
-              I have read and agree to the{" "}
-              <a className="signup_terms_link">Terms and Conditions</a> &{" "}
-              <a className="signup_terms_link">Privacy Policy</a>
-            </p>
-          </div>
-          <button
-            className="btn btn-orange mb_16"
-            disabled={isAcceptTerm ? false : true}
-            onClick={() => SigninBrand()}>
-            Register
-          </button>
-          <p style={{ color: "black", fontWeight: "600", marginBottom: "5px" }}>
-            OR
-          </p>
-          <p className="fs-des" style={{ paddingBottom: "20px" }}>
-            If you are already registered, then{" "}
-            <span
-              onClick={() => brandLoginModalOpen()}
-              className="signup_terms_link">
-              login here
-            </span>
-          </p>
-        </div>
-      </ReactModal>
-      {/*  Brand reg*/}
 
       {/* Customer Register modal */}
       <ReactModal
@@ -2182,78 +1641,28 @@ const RetailerNavbar = ({ setTab }) => {
       {/* Brand Register Modal Start */}
       <ReactModal
         isOpen={registerModalIsOpenBrand}
-        // onAfterOpen={afterOpenModal}
+ 
         onRequestClose={closeModalBrand}
         style={customStyles}>
         <div className="home_model_4wrapp">
           <button
             className="signup_modal_close"
-            // onClick={closeModalBrand}>
+          
             onClick={() => {
               setRegisterModalIsOpenBrand(false);
             }}>
             <span
               style={{ fontSize: "16px" }}
               className="brand-lable-radio-btn-txt">
-              {/* Cancel */}
+           
             </span>{" "}
             <GrClose />
           </button>
           <button className="f-b900 fs-22 mb_16 signup_headign">
             Register to In-store
           </button>
-
-          <div className="sign_input_wrapp sign_input_wrapp_padding_less">
-            <label htmlFor="mall">Mall Name</label>
-            <select
-              className="leaderboard-card-inp"
-              onChange={(e) => {
-                setmallmasterid(e.target.value);
-                getRetailerApi(e.target.value);
-                console.log(e.target.value);
-              }}>
-              {getmallarray &&
-                getmallarray.map((item, index) => {
-                  return (
-                    <>
-                      {/* <option selected disabled value=""></option> */}
-                      <option value={item.id} key={index}>
-                        {item.name} {item.id} &nbsp;&nbsp;&nbsp;{" "}
-                        {item.from_date} &nbsp;&nbsp;&nbsp; {item.to_date}
-                      </option>
-                    </>
-                  );
-                })}
-            </select>
-          </div>
-          <div className="sign_input_wrapp sign_input_wrapp_padding_less">
-            <label htmlFor="mall">Retailer Name</label>
-            <select
-              className="leaderboard-card-inp"
-              onChange={(e) => {
-                setRetailertype(e.target.value);
-                console.log("retailertype is", retailertype);
-                getBrand(e.target.value);
-                console.log(e.target.value);
-              }}>
-              <option defaultValue value=""></option>
-              {retailer_data &&
-                retailer_data.map((item, index) => {
-                  return (
-                    <>
-                      <option value={item.id} key={index}>
-                        {item.name}
-                      </option>
-                    </>
-                  );
-                })}
-            </select>
-          </div>
-
           <div className="radio-btn-flex sign_input_wrapp_padding_less">
-            {/* <label className="course-form-txt course-form-margin-right">
-              Mode Of Delivery:
-            </label> */}
+        
             <div className="radio-btn-inner-flex">
               <input
                 type="radio"
@@ -2274,8 +1683,7 @@ const RetailerNavbar = ({ setTab }) => {
                 type="radio"
                 id="In-Person"
                 name="gender"
-                // value={2}
-                // onChange={(e) => setMode(e.target.value)}
+             
                 value={getgender}
                 onChange={(e) => setGender(2)}
               />
@@ -2284,8 +1692,59 @@ const RetailerNavbar = ({ setTab }) => {
               </label>
             </div>
           </div>
-
           <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+            <label htmlFor="mall">Mall Name</label>
+            
+            <select
+              className="leaderboard-card-inp "
+              onChange={(e) => {
+                setmallmasterid(e.target.value);
+                getRetailerApi(e.target.value);
+                console.log(e.target.value);
+              }}>
+              {getmallarray &&
+                getmallarray.map((item, index) => {
+                  return (
+                    <>
+                      
+                      <option value={item.id} key={index}>
+                        {item.name} {item.id} &nbsp;&nbsp;&nbsp;{" "}
+                        {item.from_date} &nbsp;&nbsp;&nbsp; {item.to_date}
+                      </option>
+                    </>
+                  );
+                })}
+            </select>
+          </div>
+          <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+            <label htmlFor="mall">Retailer Name</label>
+            <select
+              className="leaderboard-card-inp"
+              onChange={(e) => {
+                setRetailertype(e.target.value);
+                console.log("retailertype is", retailertype);
+                getBrand(e.target.value);
+                console.log(e.target.value);
+                // handleOptionChange(e);
+
+              }}>
+              <option defaultValue value=""></option>
+              {retailer_data &&
+                retailer_data.map((item, index) => {
+                  return (
+                    <>
+                      <option value={item.id} key={index}>
+                        {item.name}
+                      </option>
+                    </>
+                  );
+                })}
+            </select>
+          </div>
+
+    
+
+          {/* <div className="sign_input_wrapp sign_input_wrapp_padding_less">
             <label htmlFor="first-name">Brands (if applicable)</label>
             <select
               className="leaderboard-card-inp"
@@ -2297,9 +1756,7 @@ const RetailerNavbar = ({ setTab }) => {
                 get_brand_data.map((item, index) => {
                   return (
                     <>
-                      {/* <option selected disabled value="">
-                      Auto-fill from database
-                    </option> */}
+                     
                       <option value={item.id} key={index}>
                         {item.name}
                       </option>
@@ -2307,7 +1764,7 @@ const RetailerNavbar = ({ setTab }) => {
                   );
                 })}
             </select>
-          </div>
+          </div> */}
           <div className="sign_input_wrapp sign_input_wrapp_padding_less">
             <label htmlFor="last-name">Account Manager First Name</label>
             <input
@@ -2377,7 +1834,7 @@ const RetailerNavbar = ({ setTab }) => {
               onClick={() => {
                 brandLoginModalOpen(true);
                 setRegisterModalIsOpenBrand(false);
-                // setbrandModalIsOpen3(true);
+                
               }}
               className="signup_terms_link">
               login here
@@ -2387,40 +1844,31 @@ const RetailerNavbar = ({ setTab }) => {
       </ReactModal>
       {/* Brand Register Modal End */}
 
-      {/* Mall Register start */}
+      {/* Login / sign up modal start acive */}
+
+      {/* Register modal start */}
       <ReactModal
         isOpen={modalIsOpen}
-        // onAfterOpen={afterOpenModal}
         onRequestClose={() => {
           setIsOpen(false);
         }}
         style={customStyles}>
         <div className="model_sizing">
-          <div style={{ backgroundColor: "#dad9d8" }}>
-            {/* <div className="model_sizing"> */}
+          <div style={{ backgroundColor: "var(--color-bg)" }}>
             <div style={{ height: "25px" }}>
               <button
                 className="signup_modal_close"
                 style={{ right: "7px", top: "9px" }}
-                // onClick={closeModal3}>
                 onClick={() => {
                   setIsOpen(false);
                 }}>
                 <span style={{ fontSize: "16px" }}></span>
-                {/* <GrClose /> */}
                 <IoClose />
-                {/* <button
-                className="signup_modal_close"
-                // onClick={closeModalRegisterNavbar}>
-                onClick={() => {
-                  setIsOpen(false);
-                }}>
-                <GrClose /> */}
-                {/* </button> */}
               </button>
             </div>
-            <div className="tab_btn_main">
-              <button
+            <div className="tab_btn_main" style={{height:"0px"}}>
+            {signButn == 2 ? null :
+            <button
                 onClick={() => {
                   SetregButn(1);
                   SetboldButn(1);
@@ -2430,22 +1878,25 @@ const RetailerNavbar = ({ setTab }) => {
                   fontWeight: boldButn == 1 ? "600" : "200",
                 }}
                 className="tab_btn_styling">
-                Mall login / sign up
-              </button>
-              <button
-                onClick={() => {
-                  // setbrandModalIsOpen3(true);
-                  SetregButn(2);
-                  SetboldButn(2);
-                }}
-                style={{
-                  backgroundColor: regButn == 2 ? "white" : "#dad9d8",
-                  fontWeight: boldButn == 2 ? "600" : "200",
-                }}
-                className="tab_btn_styling">
-                Brand login / sign up
-              </button>
-              <button
+                Mall Login / Sign Up
+              </button> }
+                {/* {signButn == 2 ? 
+                  <button
+                  onClick={() => {
+                    // setbrandModalIsOpen3(true);
+                    SetregButn(2);
+                    SetboldButn(2);
+                  }}
+                  style={{
+                    backgroundColor: regButn == 2 ? "white" : "#dad9d8",
+                    fontWeight: boldButn == 2 ? "600" : "200",
+                  }}
+                  className="tab_btn_styling">
+                  Brand Login / Sign Up
+                </button> : null
+                } */}
+              
+              {signButn == 2 ? null : <button
                 onClick={() => {
                   //  setCustLoginModalIsOpen3(true);
                   SetregButn(3);
@@ -2457,8 +1908,24 @@ const RetailerNavbar = ({ setTab }) => {
                   fontWeight: boldButn == 3 ? "600" : "200",
                 }}
                 className="tab_btn_styling">
-                Consumer login / sign up
-              </button>
+                Consumer Login / Sign Up
+              </button>}
+              
+              {signButn == 2 ? null : <button
+                onClick={() => {
+                  //  setCustLoginModalIsOpen3(true);
+                  SetregButn(4);
+                  SetboldButn(4);
+                  // regButn(3);
+                }}
+                style={{
+                  backgroundColor: regButn == 4 ? "white" : "#dad9d8",
+                  fontWeight: boldButn == 4 ? "600" : "200",
+                }}
+                className="tab_btn_styling">
+                Cinema Login / Sign Up
+              </button>}
+              
             </div>
           </div>
           {regButn == 1 ? (
@@ -2471,9 +1938,9 @@ const RetailerNavbar = ({ setTab }) => {
                 }}>
                 <GrClose />
               </button> */}
-              <button className="f-b900 fs-22 mb_16 signup_headign">
+              <h3 className="f-b900 fs-22 mb_16 signup_headign">
                 Register Your Mall
-              </button>
+              </h3>
               <div className="sign_input_wrapp">
                 <label htmlFor="mall">Mall Name</label>
                 <select
@@ -2515,7 +1982,7 @@ const RetailerNavbar = ({ setTab }) => {
                 />
               </div>
               <div className="sign_input_wrapp">
-                <label htmlFor="mall">Earh Number</label>
+                <label htmlFor="mall">ERF Number</label>
                 <input
                   type="text"
                   value={getearh_no}
@@ -2563,11 +2030,31 @@ const RetailerNavbar = ({ setTab }) => {
                   id=""
                 />
               </div>
+              <div className="sign_input_wrapp">
+                <label htmlFor="password">Latitude</label>
+                <input disabled
+                  type=""
+                  value={position.latitude}
+                  // onChange={(e) => setPassword(e.target.value)}
+                  name=""
+                  id=""
+                />
+              </div>
+              <div className="sign_input_wrapp">
+                <label htmlFor="password">Longitude</label>
+                <input disabled
+                  type=""
+                  value={position.longitude}
+                  // onChange={(e) => setPassword(e.target.value)}
+                  name=""
+                  id=""
+                />
+              </div>
               <div className="signup_terms_wrapp mb_16">
                 <input
                   type="checkbox"
                   value={isAcceptTerm}
-                  onChange={handleTermChanged}
+                  onChange={handleTermChange}
                   checked={isAcceptTerm === 1}
                 />
                 <p className="fs-des">
@@ -2616,56 +2103,9 @@ const RetailerNavbar = ({ setTab }) => {
                   className="brand-lable-radio-btn-txt"></span>{" "}
                 {/* <GrClose /> */}
               </button>
-              <button className="f-b900 fs-22 mb_16 signup_headign">
-                Register to In-store
-              </button>
-
-              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
-                <label htmlFor="mall">Mall Name</label>
-                <select
-                  className="leaderboard-card-inp"
-                  onChange={(e) => {
-                    setmallmasterid(e.target.value);
-                    getRetailerApi(e.target.value);
-                    console.log(e.target.value);
-                  }}>
-                  {getmallarray2 &&
-                    getmallarray2.map((item, index) => {
-                      return (
-                        <>
-                          {/* <option selected disabled value=""></option> */}
-                          <option value={item.id} key={index}>
-                            {item.name} {item.id} &nbsp;&nbsp;&nbsp;{" "}
-                            {item.from_date} &nbsp;&nbsp;&nbsp; {item.to_date}
-                          </option>
-                        </>
-                      );
-                    })}
-                </select>
-              </div>
-              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
-                <label htmlFor="mall">Retailer Name</label>
-                <select
-                  className="leaderboard-card-inp"
-                  onChange={(e) => {
-                    setRetailertype(e.target.value);
-                    console.log("retailertype is", retailertype);
-                    getBrand(e.target.value);
-                    console.log(e.target.value);
-                  }}>
-                  <option defaultValue value=""></option>
-                  {retailer_data &&
-                    retailer_data.map((item, index) => {
-                      return (
-                        <>
-                          <option value={item.id} key={index}>
-                            {item.name}
-                          </option>
-                        </>
-                      );
-                    })}
-                </select>
-              </div>
+              <h3 className="f-b900 fs-22 mb_16 signup_headign">
+              Brand Registration to In-store for Retailers
+              </h3>
 
               <div className="radio-btn-flex sign_input_wrapp_padding_less">
                 {/* <label className="course-form-txt course-form-margin-right">
@@ -2703,11 +2143,67 @@ const RetailerNavbar = ({ setTab }) => {
                   </label>
                 </div>
               </div>
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="mall">Mall Name<span className="star_require">*</span></label>
+                <div className="select-wrapper" style={{width:"100%"}}>
+
+                <select
+                  className="leaderboard-card-inp cons_select_nav"
+                  onChange={(e) => {
+                    setmallmasterid(e.target.value);
+                    getRetailerApi(e.target.value);
+                    console.log(e.target.value);
+                  }}>
+                  {getmallarray2 &&
+                    getmallarray2.map((item, index) => {
+                      return (
+                        <>
+                          {/* <option selected disabled value=""></option> */}
+                          <option value={item.id} key={index}>
+                            {item.name} &nbsp;&nbsp;&nbsp;{" "}
+                            {item.from_date} &nbsp;&nbsp;&nbsp; {item.to_date}
+                          </option>
+                        </>
+                      );
+                    })}
+                </select>
+                </div>
+              </div>
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="mall">Retailer Name<span className="star_require">*</span></label>
+                <div className="select-wrapper" style={{width:"100%"}}>
+
+                <select
+                  className="leaderboard-card-inp cons_select_nav"
+                  onChange={(e) => {
+                    // setRetailertype(e.target.value);
+                    // console.log("retailertype is", retailertype);
+                    // getBrand(e.target.value);
+                    // console.log(e.target.value);
+                    handleOptionChange(e);
+
+                  }}>
+                  <option defaultValue value=""></option>
+                  {retailer_data &&
+                    retailer_data.map((item, index) => {
+                      return (
+                        <>
+                          <option value={`${item.id}_${item.brand_id}`} key={index}>
+                            {item.name}
+                          </option>
+                        </>
+                      );
+                    })}
+                </select>
+                </div>
+              </div>
 
               <div className="sign_input_wrapp sign_input_wrapp_padding_less">
-                <label htmlFor="first-name">Brands (if applicable)</label>
+                <label htmlFor="first-name">Brands (if applicable)<span className="star_require">*</span></label>
+                <div className="select-wrapper" style={{width:"100%"}}>
+
                 <select
-                  className="leaderboard-card-inp"
+                  className="leaderboard-card-inp cons_select_nav"
                   onChange={(e) => {
                     setMallname(e.target.value);
                     console.log(e.target.value);
@@ -2726,9 +2222,130 @@ const RetailerNavbar = ({ setTab }) => {
                       );
                     })}
                 </select>
+                </div>
               </div>
+              {/* <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="last-name">Add Retailer Name</label>
+                <input
+                  type="text"
+                  value={getaddretailername}
+                  onChange={(e) => setAddRetailerName(e.target.value)}
+                  name=""
+                  id=""
+                />
+              </div> */}
+
+              {/* <div className="sign_input_wrapp">
+                <label htmlFor="email">Select Your Region<span className="star_require">*</span></label>
+                <select
+                  className="leaderboard-card-inp"
+                  onChange={(e) => {
+                    setRegion(e.target.value);
+                    console.log(e.target.value);
+                  }}
+                >
+                  <option value="" selected disabled>
+                    Select Region
+                  </option>
+
+                  {region_data &&
+                    region_data.map((itm, ind) => {
+                      return (
+                        <option key={itm.id} value={itm.id}>
+                          {itm.name}
+                        </option>
+                      );
+                    })}
+                </select>
+              </div> */}
+
+              <div className="sign_input_wrapp">
+                <label htmlFor="mall">Company Registration Number<span className="star_require">*</span></label>
+                <input
+                  type="text"
+                  value={getcompanyregnumber}
+                  onChange={(e) => setCompanyRegNumber(e.target.value)}
+                  name=""
+                  id=""
+                />
+              </div>
+              <div className="sign_input_wrapp">
+                <label htmlFor="mall">VAT Number<span className="star_require">*</span></label>
+                <input
+                  type="text"
+                  value={getvat_no}
+                  onChange={(e) => setvat_no(e.target.value)}
+                  name=""
+                  id=""
+                />
+              </div>
+
+              {/* {getgender == 2 ? 
+        <>
+        <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+              <label htmlFor="" className="" style={{minWidth:"148px"}}>Brands (if applicable)</label>
+
+              <Select
+                value={mallsOption}
+                styles={{ width: "100%", padding: "0px" }}
+                className="leaderboard-card-inp"
+                closeMenuOnSelect={false}
+                components={animatedComponents}
+                // defaultValue={[colourOptions[4], colourOptions[5]]}
+          
+                isMulti
+                options={get_brand_data}
+                onChange={setMallsOption}
+              />
+            </div>
+        </> : <>
+      
+        </>} */}
+
+          {/* <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+            <label htmlFor="first-name">Brands (if applicable)</label>
+            <select
+              className="leaderboard-card-inp"
+              onChange={(e) => {
+                setMallname(e.target.value);
+                console.log(e.target.value);
+              }}>
+              {get_brand_data &&
+                get_brand_data.map((item, index) => {
+                  return (
+                    <> 
+                      <option value={item.id} key={index}>
+                        {item.name}
+                      </option>
+                    </>
+                  );
+                })}
+            </select>
+          </div> */}
+
+              {/* <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="first-name">Brands (if applicable)</label>
+                <select
+                  className="leaderboard-card-inp"
+                  onChange={(e) => {
+                    setMallname(e.target.value);
+                    console.log(e.target.value);
+                  }}>
+                  {get_brand_data &&
+                    get_brand_data.map((item, index) => {
+                      return (
+                        <>
+                        
+                          <option value={item.id} key={index}>
+                            {item.name}
+                          </option>
+                        </>
+                      );
+                    })}
+                </select>
+              </div> */}
               <div className="sign_input_wrapp sign_input_wrapp_padding_less">
-                <label htmlFor="last-name">Account Manager First Name</label>
+                <label htmlFor="last-name">Account Manager First Name<span className="star_require">*</span></label>
                 <input
                   type="text"
                   value={getfirstname}
@@ -2738,7 +2355,7 @@ const RetailerNavbar = ({ setTab }) => {
                 />
               </div>
               <div className="sign_input_wrapp sign_input_wrapp_padding_less">
-                <label>Account Manager Last Name</label>
+                <label>Account Manager Last Name<span className="star_require">*</span></label>
                 <input
                   type="text"
                   value={getlastname}
@@ -2748,7 +2365,7 @@ const RetailerNavbar = ({ setTab }) => {
                 />
               </div>
               <div className="sign_input_wrapp sign_input_wrapp_padding_less">
-                <label htmlFor="email">Account Manager Email Address</label>
+                <label htmlFor="email">Account Manager Email Address<span className="star_require">*</span></label>
                 <input
                   type="email"
                   onChange={(e) => setEmail(e.target.value)}
@@ -2758,7 +2375,7 @@ const RetailerNavbar = ({ setTab }) => {
                 />
               </div>
               <div className="sign_input_wrapp sign_input_wrapp_padding_less">
-                <label htmlFor="password">Set a Password</label>
+                <label htmlFor="password">Set a Password<span className="star_require">*</span></label>
                 <input
                   type="password"
                   value={getpassword}
@@ -2767,11 +2384,33 @@ const RetailerNavbar = ({ setTab }) => {
                   id=""
                 />
               </div>
+
+              <div className="sign_input_wrapp">
+                <label htmlFor="password">Company Registration Document<span className="star_require">*</span></label>
+                <button className="btn btn-gray" {...getRootlogoProps()}>Upload
+                  <input
+                    {...getInputlogoProps()}
+                    accept="image/jpeg, image/jpg, image/png, image/eps"
+                  />
+                </button>
+              </div>
+
+              <div className="sign_input_wrapp">
+                <label htmlFor="password">VAT Registration Document<span className="star_require">*</span></label>
+                <button className="btn btn-gray" {...getRootMapProps()}>Upload
+                  <input
+                    {...getInputMapProps()}
+                    accept="image/jpeg, image/jpg, image/png, image/eps"
+                  />
+                </button>
+              </div>
+
+              <span style={{fontSize:"14px",color:"#bbb",alignSelf:"flex-start",marginBottom:"0.7rem"}}>*Required Fields including all document uploads.</span>
               <div className="signup_terms_wrapp mb_16">
                 <input
                   type="checkbox"
                   value={isAcceptTerm}
-                  onChange={handleTermChange}
+                  onChange={handleTermChanged}
                   checked={isAcceptTerm}
                 />
                 <p className="fs-des">
@@ -2784,7 +2423,7 @@ const RetailerNavbar = ({ setTab }) => {
                 className="btn btn-orange mb_16"
                 disabled={isAcceptTerm ? false : true}
                 onClick={() => SigninBrand()}>
-                Register
+                Register Your Brandss
               </button>
               <p
                 style={{
@@ -2942,7 +2581,7 @@ const RetailerNavbar = ({ setTab }) => {
                   onResolve={({ data }: IResolveParams) => {
                     // setProfile(data);
                     console.log(data);
-                    SigninCustomerFacebook(data, "4");
+                    // SigninCustomerFacebook(data, "4");
                   }}
                   onReject={(err) => {
                     console.log(err);
@@ -2983,7 +2622,7 @@ const RetailerNavbar = ({ setTab }) => {
                     console.log("gdata", data);
                     // registerWithGoogle(data);
                     // registerWithGoogle(data);
-                    SigninCustomerGoogle(data.email, "4", data);
+                    // SigninCustomerGoogle(data.email, "4", data);
                   }}
                   onReject={(err) => {
                     console.log(err);
@@ -3034,31 +2673,256 @@ const RetailerNavbar = ({ setTab }) => {
                 </button>
               </div>
             </div>
+          ) : regButn == 4 ? (
+            <div className="home_model_4wrapp">
+              <button className="f-b900 fs-22 mb_16 signup_headign">
+                Cinema Registration to In-store{" "}
+              </button>
+              <div className="radio-btn-flex radiobtnflex_homenav sign_input_wrapp_padding_less">
+                <div className="radio-btn-inner-flex">
+                  <input
+                    type="radio"
+                    id="Online"
+                    name="gender"
+                    defaultValue={retailer_data.type}
+                    onChange={(e) => {
+                      setGender(1);
+                    }}
+                  />
+                  <label className="brand-lable-radio-btn-txt" for="male">
+                    Independent Retailer
+                  </label>
+                </div>
+
+                <div className="radio-btn-inner-flex">
+                  <input
+                    type="radio"
+                    id="In-Person"
+                    name="gender"
+                    // value={2}
+                    // onChange={(e) => setMode(e.target.value)}
+                    value={getgender}
+                    onChange={(e) => setGender(2)}
+                  />
+                  <label
+                    className="brand-lable-radio-btn-txt"
+                    for="specifyColor">
+                    Group Retailer
+                  </label>
+                </div>
+              </div>
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="mall">Mall Name</label>
+                <select
+                  className="leaderboard-card-inp"
+                  onChange={(e) => {
+                    setmallmasterid(e.target.value);
+                    getCinemaNameApi(e.target.value);
+                    console.log(e.target.value);
+                  }}>
+                  {getmallarray2 &&
+                    getmallarray2.map((item, index) => {
+                      return (
+                        <>
+                          <option value={item.id} key={index}>
+                            {item.name} {item.id} &nbsp;&nbsp;&nbsp;{" "}
+                            {item.from_date} &nbsp;&nbsp;&nbsp; {item.to_date}
+                          </option>
+                        </>
+                      );
+                    })}
+                </select>
+              </div>
+             
+
+              {/* <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="mall">Cinema Name</label>
+                <select
+                  className="leaderboard-card-inp"
+                  onChange={(e) => {
+                    setmallmasterid(e.target.value);
+                    getCinemaNameApi(e.target.value);
+                    console.log(e.target.value);
+                  }}
+                >
+                  {getmallarray &&
+                    getmallarray.map((item, index) => {
+                      return (
+                        <>
+                          <option selected disabled value=""></option>
+                          <option value={item.id} key={index}>
+                            {item.name} {item.id} &nbsp;&nbsp;&nbsp;{" "}
+                            {item.from_date} &nbsp;&nbsp;&nbsp; {item.to_date}
+                          </option>
+                        </>
+                      );
+                    })}
+                </select>
+
+
+              </div> */}
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="mall">Cinema Name</label>
+                <select
+                  className="leaderboard-card-inp"
+                  onChange={(e) => {
+                    setRetailertype(e.target.value);
+                    getBrand(e.target.value);
+                    console.log(e.target.value);
+                  }}>
+                  <option defaultValue value=""></option>
+                  {cinema_mall_data &&
+                    cinema_mall_data.map((item, index) => {
+                      return (
+                        <>
+                          <option value={item.id} key={index}>
+                            {item.name}
+                          </option>
+                        </>
+                      );
+                    })}
+                </select>
+              </div>
+
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="first-name">Brands (if applicable)</label>
+                <select
+                  className="leaderboard-card-inp"
+                  onChange={(e) => {
+                    setMallname(e.target.value);
+                    console.log(e.target.value);
+                  }}>
+                  {get_brand_data &&
+                    get_brand_data.map((item, index) => {
+                      return (
+                        <>
+                          {/* <option selected disabled value="">
+                      Auto-fill from database
+                    </option> */}
+                          <option value={item.id} key={index}>
+                            {item.name}
+                          </option>
+                        </>
+                      );
+                    })}
+                </select>
+              </div>
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="last-name">Account Manager First Name</label>
+                <input
+                  type="text"
+                  value={getfirstname}
+                  onChange={(e) => setFirstname(e.target.value)}
+                  name=""
+                  id=""
+                />
+              </div>
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label>Account Manager Last Name</label>
+                <input
+                  type="text"
+                  value={getlastname}
+                  onChange={(e) => setLastname(e.target.value)}
+                  name=""
+                  id=""
+                />
+              </div>
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="email">Account Manager Email Address</label>
+                <input
+                  type="email"
+                  onChange={(e) => setEmail(e.target.value)}
+                  name=""
+                  id=""
+                  value={getemail}
+                />
+              </div>
+              <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+                <label htmlFor="password">Set a Password</label>
+                <input
+                  type="password"
+                  value={getpassword}
+                  onChange={(e) => setPassword(e.target.value)}
+                  name=""
+                  id=""
+                />
+              </div>
+              <div className="signup_terms_wrapp">
+                <input
+                  type="checkbox"
+                  value={isAcceptTerm}
+                  onChange={handleTermChange}
+                  checked={isAcceptTerm}
+                />
+                <p className="fs-des">
+                  I have read and agree to the
+                  <a className="signup_terms_link">Privacy Policy</a>
+                </p>
+              </div>
+              <div className="signup_terms_wrapp mb_16">
+                <input
+                  type="checkbox"
+                  value={isAcceptTerm}
+                  onChange={handleTermChange}
+                  checked={isAcceptTerm}
+                />
+
+                <p className="fs-des">
+                  I have read and agree to the
+                  <a className="signup_terms_link">Terms and Conditions</a>
+                </p>
+              </div>
+              <button
+                className="btn btn-orange mb_16"
+                disabled={isAcceptTerm ? false : true}
+                onClick={() => SigninCinema()}>
+                Register Your Cinema
+              </button>
+              <p
+                style={{
+                  color: "black",
+                  fontWeight: "600",
+                  marginBottom: "5px",
+                }}>
+                OR
+              </p>
+              <p className="fs-des" style={{ paddingBottom: "20px" }}>
+                If you are already registered, then{" "}
+                <span
+                  onClick={() => {
+                    // brandLoginModalOpen();
+                    setIsOpen3(true);
+                    setIsOpen(false);
+                    SetsignButn(4);
+                  }}
+                  className="signup_terms_link">
+                  login here
+                </span>
+              </p>
+            </div>
           ) : null}
         </div>
       </ReactModal>
-      {/* Mall Register end */}
+      {/* Register modal end */}
 
-      {/* Mall Login start */}
+      {/* Login modal start*/}
       <ReactModal
         isOpen={modalIsOpen3}
-        // onAfterOpen={afterOpenModal}
         onRequestClose={closeModal3}
         style={customStyles}>
         <div className="model_sizing">
-          <div style={{ backgroundColor: "#dad9d8" }}>
+          <div style={{ backgroundColor: "var(--xolor-bg)" }}>
             <div style={{ height: "25px" }}>
               <button
                 className="signup_modal_close"
                 style={{ right: "7px", top: "9px" }}
                 onClick={closeModal3}>
                 <span style={{ fontSize: "16px" }}></span>
-                {/* <AiOutlineClose /> */}
                 <IoClose />
               </button>
             </div>
-            <div className="tab_btn_main">
-              <button
+            <div className="tab_btn_main" style={{height:"0px"}}>
+            {signButn == 2 ? null :  <button
                 onClick={() => {
                   SetsignButn(1);
                   SetboldButn(1);
@@ -3068,11 +2932,12 @@ const RetailerNavbar = ({ setTab }) => {
                   fontWeight: boldButn == 1 ? "600" : "200",
                 }}
                 className="tab_btn_styling">
-                Mall login / sign up
-              </button>
+                Mall Login / Sign Up
+              </button>}
+             
+              {/* {signButn == 2 ? 
               <button
                 onClick={() => {
-                  // setbrandModalIsOpen3(true);
                   SetsignButn(2);
                   SetboldButn(2);
                 }}
@@ -3081,11 +2946,12 @@ const RetailerNavbar = ({ setTab }) => {
                   fontWeight: boldButn == 2 ? "600" : "200",
                 }}
                 className="tab_btn_styling">
-                Brand login / sign up
-              </button>
+                Brand Login / Sign Up
+              </button> : null } */}
+              
+              {signButn == 2 ? null : 
               <button
                 onClick={() => {
-                  //  setCustLoginModalIsOpen3(true);
                   SetsignButn(3);
                   SetboldButn(3);
                 }}
@@ -3094,38 +2960,29 @@ const RetailerNavbar = ({ setTab }) => {
                   fontWeight: boldButn == 3 ? "600" : "200",
                 }}
                 className="tab_btn_styling">
-                Consumer login / sign up
-              </button>
+                Consumer Login / Sign Up
+              </button>}
+              
+              {signButn ==2 ? null :
+              <button
+                onClick={() => {
+                  SetsignButn(4);
+                  SetboldButn(4);
+                }}
+                style={{
+                  backgroundColor: signButn == 4 ? "white" : "#dad9d8",
+                  fontWeight: boldButn == 4 ? "600" : "200",
+                }}
+                className="tab_btn_styling">
+                Cinema Login / Sign Up
+              </button> }
+              
             </div>
           </div>
           {signButn == 1 ? (
             <div
               className="home_login_model_1sec_inner"
               style={{ maxWidth: "none" }}>
-              {/* <div>
-            <button>Mall login / sign up</button>
-            <button>Brand login / sign up</button>
-            <button>Consumer login / sign up</button>
-          </div> */}
-              {/* <button className="signup_modal_close" onClick={closeModal3}>
-            <span
-              style={{ fontSize: "16px" }}
-              className="brand-lable-radio-btn-txt">
-              Cancel
-            </span>{" "}
-            <AiOutlineClose color="red" />
-          </button> */}
-              {/* <div style={{ backgroundColor: "gray", display: "flex" }}>
-            <button style={{ border: "1px solid white" }}>
-              Mall login / sign up
-            </button>
-            <button style={{ border: "1px solid white" }}>
-              Brand login / sign up
-            </button>
-            <button style={{ border: "1px solid white" }}>
-              Consumer login / sign up
-            </button>
-          </div> */}
               <div className="f-b900 fs-22 mb_16 signup_headign">
                 Welcome Back!
               </div>
@@ -3138,7 +2995,6 @@ const RetailerNavbar = ({ setTab }) => {
                   id=""
                   className="signup_input"
                   autoFocus="true"
-                // style={{ background: "#DAD9D8", border: 'none' }}
                 />
                 <label htmlFor="password">Password</label>
                 <div
@@ -3177,15 +3033,6 @@ const RetailerNavbar = ({ setTab }) => {
                     </AiOutlineEyeInvisible>
                   )}
                 </div>
-                {/* <input
-                  type="password"
-                  value={getpassword}
-                  onChange={(e) => setPassword(e.target.value)}
-                  name=""
-                  id=""
-                  className="signup_input"
-                  // style={{ background: "#DAD9D8", border: 'none' }}
-                /> */}
                 <div className="signup_terms_wrapp">
                   <input
                     type="checkbox"
@@ -3204,7 +3051,7 @@ const RetailerNavbar = ({ setTab }) => {
                 </button>
               </div>
               <button
-                className="btn btn-orange mb_16"
+                className="btn btn-black mb_16"
                 onClick={() => LoginMall()}
                 disabled={isAcceptTerm ? false : true}>
                 Login
@@ -3219,21 +3066,16 @@ const RetailerNavbar = ({ setTab }) => {
               </p>
 
               <div style={{ width: "100%" }}>
-                {/* facebook button */}
-
                 <LoginSocialFacebook
                   appId="1377758369684897"
                   fieldsProfile={
                     "id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender"
                   }
-                  // version={3}
                   onLoginStart={(e) => console.log(e)}
                   onLogoutSuccess={(e) => console.log(e)}
                   redirect_uri={Urls.base_url}
                   onResolve={({ data }: IResolveParams) => {
-                    // setProfile(data);
                     console.log(data);
-                    SigninCustomerFacebook(data, "3");
                   }}
                   onReject={(err) => {
                     console.log(err);
@@ -3259,12 +3101,8 @@ const RetailerNavbar = ({ setTab }) => {
                   </button>
                 </LoginSocialFacebook>
 
-                {/* google button */}
-
                 <LoginSocialGoogle
-                  // client_id="775372553139-o2l7tmtgohlmu3q31o0ufsfne62g47tk.apps.googleusercontent.com"
                   client_id="826718979042-bhij4jt5s6p85n55hbuhh0v40i4b3ng4.apps.googleusercontent.com"
-                  // onLoginStart={onLoginStart}
                   redirect_uri={Urls.base_url}
                   scope="openid profile email"
                   discoveryDocs="claims_supported"
@@ -3272,9 +3110,6 @@ const RetailerNavbar = ({ setTab }) => {
                   onResolve={({ data }: IResolveParams) => {
                     setProfile(data);
                     console.log("gdata", data);
-                    // registerWithGoogle(data);
-                    // registerWithGoogle(data);
-                    SigninCustomerGoogle(data.email, "2", data);
                   }}
                   onReject={(err) => {
                     console.log(err);
@@ -3298,40 +3133,48 @@ const RetailerNavbar = ({ setTab }) => {
                     />
                     Continue with Google
                   </button>
-                  {/* <button onClick={() => {}} className="twitter-btn w-100">
-              <i className="fab fa-google"></i> Google
-            </button> */}
                 </LoginSocialGoogle>
+
+                <button
+                    className="mb_8 modal-social-btn "
+                    style={{
+                      justifyContent: "center",
+                      width: "100%",
+                      color: "var(--color-gray)",
+                      fontWeight: "600",
+                      fontSize: "16px",
+                    }}>
+                    <FaApple
+                      color="var(--color-gray)"
+                      style={{
+                        marginRight: "8px",
+                        fontSize: "18px",
+                        marginBottom: "-2px",
+                      }}
+                    />
+                    Continue with Apple
+                  </button>
+
               </div>
               <button
                 className="h6 mb_10 mt_10"
                 style={{ alignSelf: "center" }}>
-                Not registered yet?
+                Not Registered Yet?
               </button>
-              <button
+              <h3
                 onClick={() => {
                   setIsOpen3(false);
                   setIsOpen(true);
                   SetregButn(1);
-                  // set(1)
-                  // SetregButn(1);
                 }}
-                className="btn btn-blue">
+                className="btn btn-orange">
                 Register Your Mall
-              </button>
+              </h3>
             </div>
           ) : signButn == 2 ? (
             <div
               className="home_login_model_1sec_inner"
               style={{ maxWidth: "none" }}>
-              {/* <button className="signup_modal_close" onClick={closeBrandModal}>
-                <span
-                  style={{ fontSize: "16px" }}
-                  className="brand-lable-radio-btn-txt">
-                  Cancel
-                </span>{" "}
-                <GrClose />
-              </button> */}
               <div className="f-b900 fs-22 mb_16 signup_headign">
                 Welcome Back!
               </div>
@@ -3345,7 +3188,6 @@ const RetailerNavbar = ({ setTab }) => {
                   value={getemail}
                   className="signup_input"
                   autoFocus="true"
-                // style={{ background: "#DAD9D8", border: 'none' }}
                 />
                 <label htmlFor="password">Password</label>
                 <div
@@ -3384,15 +3226,6 @@ const RetailerNavbar = ({ setTab }) => {
                     </AiOutlineEyeInvisible>
                   )}
                 </div>
-                {/* <input
-                  type="password"
-                  value={getpassword}
-                  onChange={(e) => setPassword(e.target.value)}
-                  name=""
-                  id=""
-                  className="signup_input"
-                  // style={{ background: "#DAD9D8", border: 'none' }}
-                /> */}
                 <div className="signup_terms_wrapp">
                   <input
                     type="checkbox"
@@ -3411,7 +3244,7 @@ const RetailerNavbar = ({ setTab }) => {
                 </button>
               </div>
               <button
-                className="btn btn-orange mb_16"
+                className="btn btn-black mb_16"
                 onClick={() => LoginBrand()}
                 disabled={isAcceptTerm ? false : true}>
                 Login
@@ -3426,21 +3259,16 @@ const RetailerNavbar = ({ setTab }) => {
               </p>
 
               <div style={{ width: "100%" }}>
-                {/* facebook button */}
-
                 <LoginSocialFacebook
                   appId="1377758369684897"
                   fieldsProfile={
                     "id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender"
                   }
-                  // version={3}
                   onLoginStart={(e) => console.log(e)}
                   onLogoutSuccess={(e) => console.log(e)}
                   redirect_uri={Urls.base_url}
                   onResolve={({ data }: IResolveParams) => {
-                    // setProfile(data);
                     console.log(data);
-                    SigninCustomerFacebook(data, "3");
                   }}
                   onReject={(err) => {
                     console.log(err);
@@ -3466,22 +3294,14 @@ const RetailerNavbar = ({ setTab }) => {
                   </button>
                 </LoginSocialFacebook>
 
-                {/* google button */}
-
                 <LoginSocialGoogle
-                  // client_id="775372553139-o2l7tmtgohlmu3q31o0ufsfne62g47tk.apps.googleusercontent.com"
                   client_id="826718979042-bhij4jt5s6p85n55hbuhh0v40i4b3ng4.apps.googleusercontent.com"
-                  // onLoginStart={onLoginStart}
                   redirect_uri={Urls.base_url}
                   scope="openid profile email"
                   discoveryDocs="claims_supported"
                   access_type="offline"
                   onResolve={({ data }: IResolveParams) => {
                     setProfile(data);
-                    console.log("gdata", data);
-                    // registerWithGoogle(data);
-                    // registerWithGoogle(data);
-                    SigninCustomerGoogle(data.email, "2", data);
                   }}
                   onReject={(err) => {
                     console.log(err);
@@ -3505,26 +3325,41 @@ const RetailerNavbar = ({ setTab }) => {
                     />
                     Continue with Google
                   </button>
-                  {/* <button onClick={() => {}} className="twitter-btn w-100">
-              <i className="fab fa-google"></i> Google
-            </button> */}
                 </LoginSocialGoogle>
+
+                <button
+                    className="mb_8 modal-social-btn "
+                    style={{
+                      justifyContent: "center",
+                      width: "100%",
+                      color: "var(--color-gray)",
+                      fontWeight: "600",
+                      fontSize: "16px",
+                    }}>
+                    <FaApple
+                      color="var(--color-gray)"
+                      style={{
+                        marginRight: "8px",
+                        fontSize: "18px",
+                        marginBottom: "-2px",
+                      }}
+                    />
+                    Continue with Apple
+                  </button>
+
               </div>
-              <button
+              {/* <button
                 className="h6 mb_10 mt_10"
                 style={{ alignSelf: "center" }}>
-                Not registered yet?
-              </button>
-              <button
+                Not Registered Yet?
+              </button> */}
+              <button style={{marginTop:"1rem"}}
                 onClick={() => {
                   setIsOpen3(false);
                   setIsOpen(true);
                   SetregButn(2);
-                  // setModalIsOpenBrand(true);
-                  // setbrandModalIsOpen3(false);
-                  // setRegisterModalIsOpenBrand(true);
                 }}
-                className="btn btn-blue">
+                className="btn btn-orange">
                 Register Your Brand
               </button>
             </div>
@@ -3532,14 +3367,6 @@ const RetailerNavbar = ({ setTab }) => {
             <div
               className="home_login_model_1sec_inner"
               style={{ maxWidth: "none" }}>
-              {/* <button className="signup_modal_close" onClick={closeModal3}>
-            <span
-              style={{ fontSize: "16px" }}
-              className="brand-lable-radio-btn-txt">
-              Cancel
-            </span>{" "}
-            <AiOutlineClose color="red" />
-          </button> */}
               <div className="f-b900 fs-22 mb_16 signup_headign">
                 Welcome Back!
               </div>
@@ -3552,7 +3379,6 @@ const RetailerNavbar = ({ setTab }) => {
                   id=""
                   className="signup_input"
                   autoFocus="true"
-                // style={{ background: "#DAD9D8", border: 'none' }}
                 />
                 <label htmlFor="password">Password</label>
                 <div
@@ -3609,7 +3435,7 @@ const RetailerNavbar = ({ setTab }) => {
                 </button>
               </div>
               <button
-                className="btn btn-orange mb_16"
+                className="btn btn-black mb_16"
                 onClick={() => LoginCustomer()}
                 disabled={isAcceptTerm ? false : true}>
                 Login
@@ -3624,21 +3450,16 @@ const RetailerNavbar = ({ setTab }) => {
               </p>
 
               <div style={{ width: "100%" }}>
-                {/* facebook button */}
-
                 <LoginSocialFacebook
                   appId="1377758369684897"
                   fieldsProfile={
                     "id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender"
                   }
-                  // version={3}
                   onLoginStart={(e) => console.log(e)}
                   onLogoutSuccess={(e) => console.log(e)}
                   redirect_uri={Urls.base_url}
                   onResolve={({ data }: IResolveParams) => {
-                    // setProfile(data);
                     console.log(data);
-                    SigninCustomerFacebook(data, "3");
                   }}
                   onReject={(err) => {
                     console.log(err);
@@ -3664,10 +3485,7 @@ const RetailerNavbar = ({ setTab }) => {
                   </button>
                 </LoginSocialFacebook>
 
-                {/* google button */}
-
                 <LoginSocialGoogle
-                  // client_id="775372553139-o2l7tmtgohlmu3q31o0ufsfne62g47tk.apps.googleusercontent.com"
                   client_id="826718979042-bhij4jt5s6p85n55hbuhh0v40i4b3ng4.apps.googleusercontent.com"
                   onLoginStart={onLoginStart}
                   redirect_uri={Urls.base_url}
@@ -3677,9 +3495,6 @@ const RetailerNavbar = ({ setTab }) => {
                   onResolve={({ data }: IResolveParams) => {
                     setProfile(data);
                     console.log("gdata", data);
-                    // registerWithGoogle(data);
-                    // registerWithGoogle(data);
-                    SigninCustomerGoogle(data.email, "2", data);
                   }}
                   onReject={(err) => {
                     console.log(err);
@@ -3703,32 +3518,300 @@ const RetailerNavbar = ({ setTab }) => {
                     />
                     Continue with Google
                   </button>
-                  {/* <button onClick={() => {}} className="twitter-btn w-100">
-              <i className="fab fa-google"></i> Google
-            </button> */}
                 </LoginSocialGoogle>
+
+                <button
+                    className="mb_8 modal-social-btn "
+                    style={{
+                      justifyContent: "center",
+                      width: "100%",
+                      color: "var(--color-gray)",
+                      fontWeight: "600",
+                      fontSize: "16px",
+                    }}>
+                    <FaApple
+                      color="var(--color-gray)"
+                      style={{
+                        marginRight: "8px",
+                        fontSize: "18px",
+                        marginBottom: "-2px",
+                      }}
+                    />
+                    Continue with Apple
+                  </button>
+
               </div>
               <button
                 className="h6 mb_10 mt_10"
                 style={{ alignSelf: "center" }}>
-                Not registered yet?
+                Not Registered Yet?
               </button>
               <button
                 onClick={() => {
                   setIsOpen3(false);
-                  // setIsOpen(true)
-                  // setRegisterCustomerOpen(true);
                   setIsOpen(true);
                   SetregButn(3);
                 }}
-                className="btn btn-blue">
+                className="btn btn-orange">
                 Sign up
+              </button>
+            </div>
+          ) : signButn == 4 ? (
+            <div
+              className="home_login_model_1sec_inner"
+              style={{ maxWidth: "none" }}>
+              <div className="f-b900 fs-22 mb_16 signup_headign">
+                Welcome Back!
+              </div>
+              <div className="sign_input_wrapp">
+                <label htmlFor="email">Email Address</label>
+                <input
+                  type="email"
+                  onChange={(e) => onHandleEmailChange(e)}
+                  name=""
+                  id=""
+                  className="signup_input"
+                  autoFocus="true"
+                />
+                <label htmlFor="password">Password</label>
+                <div
+                  style={{
+                    background: "#DAD9D8",
+                    paddingTop: "0.4rem",
+                    paddingBottom: "0.4rem",
+                    paddingLeft: "1rem",
+                    paddingRight: "1rem",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                  className="input_box-cus-pass">
+                  <input
+                    type={passwordVisible ? "text" : "password"}
+                    value={getpassword}
+                    onChange={(e) => setPassword(e.target.value)}
+                    name=""
+                    id=""
+                    className="signup_input"
+                    style={{
+                      background: "#DAD9D8",
+                      border: "none",
+                      width: "100%",
+                    }}
+                  />
+                  {passwordVisible === true ? (
+                    <AiOutlineEye size={22} onClick={togglePasswordVisibility}>
+                      {passwordVisible ? "Hide" : "Show"}
+                    </AiOutlineEye>
+                  ) : (
+                    <AiOutlineEyeInvisible
+                      size={22}
+                      onClick={togglePasswordVisibility}>
+                      {passwordVisible ? "Hide" : "Show"}
+                    </AiOutlineEyeInvisible>
+                  )}
+                </div>
+                <div className="signup_terms_wrapp">
+                  <input
+                    type="checkbox"
+                    value={isAcceptTerm}
+                    onChange={handleTermChange}
+                    checked={isAcceptTerm}
+                  />
+                  <p className="fs-des">
+                    I have read and agree to the{" "}
+                    <a className="signup_terms_link">Terms and Conditions</a> &{" "}
+                    <a className="signup_terms_link">Privacy Policy</a>
+                  </p>
+                </div>
+                <button className="signup_model_forgate">
+                  Forgot your password?
+                </button>
+              </div>
+              <button
+                className="btn btn-black mb_16"
+                onClick={() => LoginCinema()}
+                disabled={isAcceptTerm ? false : true}>
+                Login
+              </button>
+              <p
+                style={{
+                  alignSelf: "center",
+                  marginBottom: "8px",
+                  fontWeight: "bold",
+                }}>
+                or
+              </p>
+
+              <div style={{ width: "100%" }}>
+                <LoginSocialFacebook
+                  appId="1377758369684897"
+                  fieldsProfile={
+                    "id,first_name,last_name,middle_name,name,name_format,picture,short_name,email,gender"
+                  }
+                  onLoginStart={(e) => console.log(e)}
+                  onLogoutSuccess={(e) => console.log(e)}
+                  redirect_uri={Urls.base_url}
+                  onResolve={({ data }: IResolveParams) => {
+                    console.log(data);
+                  }}
+                  onReject={(err) => {
+                    console.log(err);
+                  }}>
+                  <button
+                    className="mb_8 modal-social-btn "
+                    style={{
+                      justifyContent: "center",
+                      width: "100%",
+                      color: "var(--color-gray)",
+                      fontWeight: "600",
+                      fontSize: "16px",
+                    }}>
+                    <FaFacebookF
+                      color="var(--color-gray)"
+                      style={{
+                        marginRight: "8px",
+                        fontSize: "16px",
+                        marginBottom: "-2px",
+                      }}
+                    />
+                    Continue with Facebook
+                  </button>
+                </LoginSocialFacebook>
+
+                <LoginSocialGoogle
+                  client_id="826718979042-bhij4jt5s6p85n55hbuhh0v40i4b3ng4.apps.googleusercontent.com"
+                  onLoginStart={onLoginStart}
+                  redirect_uri={Urls.base_url}
+                  scope="openid profile email"
+                  discoveryDocs="claims_supported"
+                  access_type="offline"
+                  onResolve={({ data }: IResolveParams) => {
+                    setProfile(data);
+                    console.log("gdata", data);
+                  }}
+                  onReject={(err) => {
+                    console.log(err);
+                  }}>
+                  <button
+                    className="mb_8 modal-social-btn "
+                    style={{
+                      justifyContent: "center",
+                      width: "100%",
+                      color: "var(--color-gray)",
+                      fontWeight: "600",
+                      fontSize: "16px",
+                    }}>
+                    <ImGoogle
+                      color="var(--color-gray)"
+                      style={{
+                        marginRight: "8px",
+                        fontSize: "16px",
+                        marginBottom: "-2px",
+                      }}
+                    />
+                    Continue with Google
+                  </button>
+                </LoginSocialGoogle>
+
+                <button
+                    className="mb_8 modal-social-btn "
+                    style={{
+                      justifyContent: "center",
+                      width: "100%",
+                      color: "var(--color-gray)",
+                      fontWeight: "600",
+                      fontSize: "16px",
+                    }}>
+                    <FaApple
+                      color="var(--color-gray)"
+                      style={{
+                        marginRight: "8px",
+                        fontSize: "18px",
+                        marginBottom: "-2px",
+                      }}
+                    />
+                    Continue with Apple
+                  </button>
+
+              </div>
+              <button
+                className="h6 mb_10 mt_10"
+                style={{ alignSelf: "center" }}>
+                Not Registered Yet?
+              </button>
+              <button
+                onClick={() => {
+                  setIsOpen3(false);
+                  setIsOpen(true);
+                  SetregButn(4);
+                }}
+                className="btn btn-orange">
+                Register your brand
               </button>
             </div>
           ) : null}
         </div>
       </ReactModal>
-      {/* Mall Login end */}
+      {/* Login modal end */}
+
+      {/* Login / sign up modal active acive */}
+
+
+      <ReactModal
+        isOpen={getModal}
+        onRequestClose={closeModal}
+        style={customStyles1}
+      >
+        <div className="modal_thankyou">
+          <div
+            style={{
+              cursor: "pointer",
+              display: "flex",
+              justifyContent: "flex-end",
+              marginBottom: "1rem",
+            }}
+          >
+            <RxCross2
+              onClick={() => {
+                closeModal();
+              }}
+            />
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "1.5rem",
+              padding: "1rem",
+              alignItems: "center",
+            }}
+          >
+            <div
+              style={{
+                fontSize: "20px",
+                fontWeight: "700",
+                maxWidth: "400px",
+                textAlign: "center",
+              }}
+            >
+              <h2>Thank you for registering your Mall with In-store.</h2>
+            </div>
+            <div style={{ maxWidth: "250px", textAlign: "center" }}>
+              <h2>Please allow up to 48 hours for registration approval...</h2>
+            </div>
+            <div style={{ width: "100%" }}>
+              <button
+                className="btn btn-orange"
+                onClick={() => {
+                  closeModal();
+                }}
+              >
+                Back to Home
+              </button>
+            </div>
+          </div>
+        </div>
+      </ReactModal>
     </>
   );
 };

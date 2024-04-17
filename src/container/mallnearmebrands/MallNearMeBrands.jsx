@@ -159,11 +159,11 @@ const MallNearMeBrands = ({ getsingalmalldata, setTab, setBDetalis }) => {
           <CustomerHeroSecond getsingalmalldata={getsingalmalldata} />
           <div className="mm_main_wrapp" style={{ marginTop: "3.2rem" }}>
             {/* heading */}
-            <div className="profile_head_center cus-brand-headd">
-              <h4 className="h3" style={{ textTransform: "capitalize" }}>
+            <div className="profile_head_center cus-brand-headd" >
+              <h4 className="h3" style={{ textTransform: "capitalize",fontWeight:"600" }}>
                 {getsingalmalldata.name}
               </h4>{" "}
-              <span className="h3">Brands</span>
+              <span className="h3" style={{fontWeight:"600"}}>Brands</span>
             </div>
             {/* filter */}
             <div className="mall_near_brand_filter_sec_wrap" style={{ marginTop: "40px" }}>

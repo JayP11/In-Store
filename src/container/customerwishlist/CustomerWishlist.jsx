@@ -37,7 +37,7 @@ const AccordionData = [
   },
 ];
 
-const CustomerWishlist = () => {
+const CustomerWishlist = ({setTab}) => {
   const [getDropDownOpen, setDropDownOoen] = useState(false);
   const [toggle, setToggle] = useState(null);
   let handleToggle = (id) => {
@@ -81,15 +81,16 @@ const CustomerWishlist = () => {
 
   return (
     <div className="mm_main_wrapp wishlist-page-padding">
-      <div className="mall_name_wrapp">
+      <div className="mall_name_wrapp mall_name_wrapp_cus_wishlist" style={{paddingLeft:"0rem"}}>
         <p className="mall_name_heading">My wishlist</p>
       </div>
       <span></span>
       {/* </div> */}
       {/* <div className="mm_horizontal_line"></div> */}
       <p className="cus-wishlist-sub-heading">
-        You can only purchase these products in store
+        You can only purchase these products in store.
       </p>
+      <p style={{marginBottom:"0rem", marginTop:"1rem", color:"#bbb",fontSize:"16px"}}>Please note: Products will be removed from the Wishlist page when the brand promotion has expired.</p>
       {/* First DropDown Start */}
       {getlist && getlist.length > 0
         ? getlist.map((item, index) => {
@@ -103,7 +104,7 @@ const CustomerWishlist = () => {
                   //   alignItems: "flex-end",
                   // }}
                 >
-                  <div>
+                  <div style={{width:"100%"}}>
                     <div className="cus-wishlist-dropdown-erapp">
                       {/* {item.products && item.products.length > 0
                         ? item.products.map((itm, inx) => {
@@ -125,8 +126,8 @@ const CustomerWishlist = () => {
                         to={""}
                         onClick={() => {
                           handleToggle(item.id);
-                          SetsecList(item.stores);
-                          SetItem(item);
+                          // SetsecList(item.stores);
+                          // SetItem(item);
                         }}>
                         {item.id === toggle ? (
                           <BsChevronUp />
@@ -137,25 +138,62 @@ const CustomerWishlist = () => {
                     </div>
 
                     {/* </div> */}
+                    
                     {item.stores && item.stores.length > 0
                       ? item.stores.map((itm2, inx) => {
                           return (
+
+                            <>
+                            {item.id === toggle ? (
+                              <>
+                            <div className="wish_find_way_flex" style={{display:"flex",alignItems:"center",justifyContent:"space-between",width:"100%"}}>
                             <p className="cus-wishlist-dropdown-sub-heading">
                               {itm2.name ? itm2.name : ""}
                             </p>
+
+                            <div className="find-my-way-btn-flex">
+                    <button className="find-my-way-btn wish_btn_find_way">Find my way</button>
+                    <BsArrowRight className="find-my-way-btn-arrow find-my-way-btn-arrow_wish" />
+                  </div>
+                  </div>
+
+                  <div
+                  style={{
+                    height: "2px",
+                    width: "100%",
+                    backgroundColor: "#ddd",
+                    marginTop: "10px",
+                  }}></div>
+                  <div className="cus-wishlist-dropdown-prod-wrapp">
+                              {itm2.wishlists && itm2.wishlists.length > 0
+                                ? itm2.wishlists.map((itm1, inx1) => {
+                                    return (
+                                      <div className="cus-wishlist-dropdown-prod-wrapp">
+                                        <CustomerBrandCardWishlist
+                                          data={itm1}
+                                          replce={2}
+                                          mainitem={item}
+                                          getWishlist={getWishlist}
+                                          setTab={setTab}
+                                        />
+                                      </div>
+                                    );
+                                  })
+                                : null}
+                            </div>
+                            </>
+                            ) : null}
+                            </>
                           );
                         })
                       : null}
                   </div>
                   {/* <p className="cus-wishlist-dropdown-sub-heading">GUESS</p> */}
-                  <div className="find-my-way-btn-flex">
-                    <button className="find-my-way-btn">Find my way</button>
-                    <BsArrowRight className="find-my-way-btn-arrow" />
-                  </div>
+                 
                 </div>
                 <div
                   style={{
-                    height: "1px",
+                    height: "2px",
                     width: "100%",
                     backgroundColor: "#ddd",
                     marginTop: "10px",
@@ -165,7 +203,7 @@ const CustomerWishlist = () => {
                     {getseclist && getseclist.length > 0
                       ? getseclist.map((itm2, inx2) => {
                           return (
-                            <>
+                            {/* <>
                               {itm2.wishlists && itm2.wishlists.length > 0
                                 ? itm2.wishlists.map((itm1, inx1) => {
                                     return (
@@ -180,7 +218,7 @@ const CustomerWishlist = () => {
                                     );
                                   })
                                 : null}
-                            </>
+                            </> */}
                           );
                         })
                       : null}

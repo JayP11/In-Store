@@ -9,7 +9,7 @@ const WhyjoinCustomerHome = ({ getCustData }) => {
     return (
         <div className="main_wrapp">
             <div className="container whayjoin_wrapp why-sec-gap">
-                <h2 className="h2" style={{ marginBottom: "15px" }}>
+                <h2 className="h2" style={{ marginBottom: "15px",fontWeight:"600" }}>
                     {/* Why Join In-store? */}
                     {getCustData ? getCustData.benifit_title : ""}
                 </h2>

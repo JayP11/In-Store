@@ -1,23 +1,42 @@
 .mallevents_filter {
-  display: flex;
-  background: black;
-  color: white;
-  padding: 0.5rem;
-  width: 200px;
-  justify-content: center;
-  border-top-right-radius: 10px;
-  border-top-left-radius: 10px;
-  border: 1px solid;
-}
-
-.mallevents_filter_main {
-  display: flex;
-  padding-top: 3rem;
-  gap: 1px;
-}
-
-@media screen and (max-width: 435px) {
-  .h5size_event {
-    font-size: 16px;
+    display: flex;
+    background: black;
+    color: white;
+    padding: 0.5rem;
+    width: 200px;
+    justify-content: center;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    border: 1px solid #aaa;
   }
-}
+  
+  .mallevents_filter_main {
+    display: flex;
+    padding-top: 3rem;
+    gap: 1px;
+  }
+
+  .mm_main_wrapp_padding_event{
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+
+  @media screen and (max-width:1050px) {
+    .mm_main_wrapp_padding_event{
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+
+  @media screen and (max-width:900px) {
+    .mm_main_wrapp_padding_event{
+      padding-left: 1rem !important;
+      padding-right: 1rem !important;
+    }
+  }
+  
+  @media screen and (max-width: 435px) {
+    .h5size_event {
+      font-size: 12px;
+    }
+  }

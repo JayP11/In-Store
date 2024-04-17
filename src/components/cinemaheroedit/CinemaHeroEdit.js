@@ -7,7 +7,7 @@ import images from "../../constants/images";
 import { useMallContext } from "../../context/mall_context";
 import { useEffect } from "react";
 
-const CinemaHeroEdit = ({ get_mall_auth_data, sidebaropen }) => {
+const CinemaHeroEdit = ({ get_mall_auth_data, sidebaropen,setTab }) => {
   const [files, setFiles] = useState([]);
   const [files2, setFiles2] = useState([]);
   const [getcondation, SetCondation] = useState(false);
@@ -126,12 +126,14 @@ const CinemaHeroEdit = ({ get_mall_auth_data, sidebaropen }) => {
   return (
     <div>
       <div>
-        <div className="brand-hero-edit-main-wrapp" {...getRootbannerProps()}>
-          <input
+        <div className="brand-hero-edit-main-wrapp" onClick={()=>{setTab(2)}}
+        // {...getRootbannerProps()}
+        >
+          {/* <input
             {...getInputbannerProps()}
             accept="image/jpeg, image/jpg, image/png, image/eps"
-          // style={{ position: "relative" }}
-          />
+            
+          /> */}
 
           {/* banner img */}
           {getcondation1 === true ? (
@@ -150,49 +152,63 @@ const CinemaHeroEdit = ({ get_mall_auth_data, sidebaropen }) => {
           ) : (
             <>
               <img
-                src={get_mall_auth_data.banner_mall_path}
+                src={get_mall_auth_data?.store_banner_path}
                 style={{ width: "100%", height: "100%" }}
                 className="img-fluid"
               />
 
-              <img src={images.card_edit} alt="" style={{ position: "absolute", top: "105px", right: "100px" }} className="mall-hero-edit-icon edit-icon-positon-resp" />
+              <img
+                src={images.card_edit}
+                alt=""
+                style={{ position: "absolute", top: "105px", right: "100px" }}
+                className="mall-hero-edit-icon edit-icon-positon-resp"
+              />
             </>
           )}
         </div>
 
         {/* logo wrapp */}
         <div
-          className="band-inn-logo-wrapp"
+          className="band-inn-logo-wrapp" onClick={()=>{setTab(2)}}
           style={{ left: sidebaropen === false ? "5%" : "" }}
-          {...getRootlogoProps()}
+
+          // {...getRootlogoProps()}
         >
           {/* <div style={{ width: '100%' }} {...getRootlogoProps()}> */}
           {/* <div style={{ position: 'relative' }}> */}
-          <input
+          {/* <input
             {...getInputlogoProps()}
             accept="image/jpeg, image/jpg, image/png, image/eps"
-          />
+          /> */}
           {getcondation === true ? (
             <>
               {files2 && files2.length > 0 ? (
                 thumbs2
               ) : (
-                <button type="button">
+                {/* <button type="button">
                   <img
                     src={images.card_edit}
                     className="brand-hero-logo-edit-icon"
                   />
-                </button>
+                </button> */}
               )}
             </>
           ) : (
             <>
               <img
-                src={get_mall_auth_data.shopping_center_logo_mall_path}
+                src={
+                  get_mall_auth_data
+                    ? get_mall_auth_data.store_logo_path
+                    : images.card_edit
+                }
                 style={{ width: "100%", height: "100%", maxHeight: "175px" }}
-              // className="img-fluid"
+                // className="img-fluid"
               />
-              <img src={images.card_edit} alt="" style={{ position: "absolute", top: "25px", right: "20px" }} />
+              <img
+                src={images.card_edit}
+                alt=""
+                style={{ position: "absolute", top: "25px", right: "20px" }}
+              />
             </>
           )}
           {/* </div> */}

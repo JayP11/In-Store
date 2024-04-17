@@ -1,0 +1,10 @@
+.leaderboard-card-part-sec-analytics{
+    align-items: start;
+}
+
+@media screen and (max-width:1230px) {
+    .leaderboard-card-part-sec-analytics{
+        align-items: start;
+    }
+}
+

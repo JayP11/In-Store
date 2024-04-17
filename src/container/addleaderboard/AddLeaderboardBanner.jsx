@@ -120,6 +120,8 @@ const AccordionData = [
 const AddLeaderboardBanner = ({ get_mall_auth_data, setTab }) => {
   const [mallMolalOpen, setMallModalIsOpen] = useState(false);
   const [gatweek, setWeek] = useState("");
+  const { getCategoryApi, getWeekApi,getCinemaCategoryApi } = useStoreContext();
+
 
   const { week_data } = useStoreContext();
 
@@ -171,6 +173,8 @@ const AddLeaderboardBanner = ({ get_mall_auth_data, setTab }) => {
 
   useEffect(() => {
     GetRegion();
+    getCinemaCategoryApi();
+    getCategoryApi();
   }, []);
 
   const [getregion_array, SetRigion_Array] = useState([]);
@@ -249,10 +253,10 @@ const AddLeaderboardBanner = ({ get_mall_auth_data, setTab }) => {
           <p className="edit-brand-back-txt">Back</p>
         </div>
 
-        <div className="mall_name_wrapp mall_name_wrapp-spacebetween">
+        <div className="mall_name_wrapp mall_name_wrapp-spacebetween"  style={{paddingLeft:"0px"}}>
           <div className="leaderboard-inner-namebox">
             <p className="mall_name_heading">{mainName}:</p>
-            <span className="leaderboard-span">Add Leaderboard Banners</span>
+            <span className="leaderboard-span" style={{fontWeight:"600"}}>Add Leaderboard Banners</span>
           </div>
           {/* <button onClick={() => setTab(20)} className="leaderboard-btn">
                         Add new{" "}
@@ -281,6 +285,8 @@ const AddLeaderboardBanner = ({ get_mall_auth_data, setTab }) => {
         mallidarray={mallidarray}
         selectedMalls={selectedMalls}
       />
+        <span style={{fontSize:"14px",color:"#bbb",alignSelf:"flex-start",marginBottom:"0.7rem"}}>*Required Fields including all image uploads.</span>
+
       {/* <CalenderTesting /> */}
       {/* Add Leaderboard card end */}
       {/* select mall modal start */}

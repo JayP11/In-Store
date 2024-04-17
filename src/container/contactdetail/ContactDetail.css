@@ -5,11 +5,13 @@
     justify-content: flex-start;
     text-align: left;
     gap: 1rem;
+    margin-left: 5rem;
+    margin-right: 5rem;
 }
 
 .cd_heading {
     font-size: 30px;
-    color: var(--color-orange);
+    color: var(--color-black);
     font-weight: 700;
 }
 
@@ -27,19 +29,26 @@
 }
 
 .cd_address_wrapp_inner_part {
-    width: 48%;
+    width: 50%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-between;
-    width: 100%;
+    /* width: 100%; */
 }
 
 .cd_address_wrapp_inner_part > h5 {
     font-size: 20px;
+    font-weight: 700;
+    color: var(--color-black);
+    margin-bottom: 15px;
+}
+
+.mall_con_lease{
     font-weight: 800;
     color: var(--color-black);
-    margin-bottom: 10px;
+    font-size: 20px;
+    margin-bottom: 15px;
 }
 
 .cd_add_time_wrapp {
@@ -47,5 +56,59 @@
         align-items: center;
     justify-content: flex-start;
     gap: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 0.8rem;
+}
+
+.cd_main_wrapp_mall_head1{
+    font-size: 28px;
+}
+
+.cd_main_wrapp_mall_head2{
+    font-size: 28px;
+}
+
+.mall_cad_headdd{
+    font-size: 36px;
+}
+.mall_cad_headdd2{
+    font-size: 36px !important;
+}
+
+@media screen and (max-width:940px) {
+    .cd_main_wrapp{
+        margin-left: 0rem;
+        margin-right: 0rem;
+    }
+
+    .mall_con_wrapp{
+        padding-left: 0rem;
+    }
+}
+
+@media screen and (max-width:1075px) {
+    .cd_address_wrapp_inner_part{
+        width: 58%;
+    }
+
+    .mall_cad_headdd{
+        font-size: 32px;
+    }
+    .mall_cad_headdd2{
+        font-size: 32px !important;
+    }
+}
+
+@media screen and (max-width:550px) {
+    .cd_address_wrapp_inner_part{
+        width: 100%; 
+    }
+
+    .mall_con_detailss_main{
+        flex-direction: column;
+        gap: 2rem !important;
+    }
+
+    .cd_heading{
+        font-size: 20px;
+    }
 }

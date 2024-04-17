@@ -109,7 +109,7 @@ const MallsNearMeCard = ({ setTab, item, SetSingalMallData, getMallList }) => {
             <img
               src={
                 item.shopping_center_thumbnail_mall_path === null
-                  ? images.shopping_center_thumbnail_mall_path
+                  ? images.mall_hero_banner
                   : item.shopping_center_thumbnail_mall_path
               }
               className="mallnearme-card-img"
@@ -155,20 +155,19 @@ const MallsNearMeCard = ({ setTab, item, SetSingalMallData, getMallList }) => {
         onRequestClose={closeModal3}
         style={customStyles}
       >
-        <div className="home_login_model_1sec_inner">
+        <div className="home_login_model_1sec_inner home_login_model_1sec_inner_cus_rating" style={{padding:"2rem"}}>
           <button className="signup_modal_close" onClick={closeModal3}>
-            <span
+            {/* <span
               style={{ fontSize: "16px" }}
               className="brand-lable-radio-btn-txt"
             >
               Cancel
-            </span>{" "}
-            <AiOutlineClose color="red" />
+            </span>{" "} */}
+            <AiOutlineClose color="black" />
           </button>
-          <div className="f-b900 fs-22 mb_16 signup_headign" style={{ marginTop: "40px" }}>How was the {item.name}?</div>
-          <p style={{ textAlign: "center", width: "100%" }}>We would really appreciate your feedback!</p>
+          <div className="f-b900 fs-22 mb_16 signup_headign" style={{ marginTop: "40px",fontSize:"23px",textAlign:"center" }}>How was the {item.name}?</div>
+          <p style={{ textAlign: "center", width: "100%",fontSize:"17px" }}>We would really appreciate your feedback!</p>
 
-          <div style={{ height: "1px", background: "#ddd", width: '100%', marginTop: "20px", marginBottom: "20px" }}></div>
 
           <div className="rating-star-box">
             {/* <AiFillStar className="rating-star-icon" key={index}
@@ -179,8 +178,8 @@ const MallsNearMeCard = ({ setTab, item, SetSingalMallData, getMallList }) => {
             <AiFillStar className="rating-star-icon" />
             <AiFillStar className="rating-star-iconn" /> */}
             <Rating
-              emptySymbol={<img src={images.graystar} className="icon" />}
-              fullSymbol={<img src={images.orangestar} className="icon" />}
+              emptySymbol={<img src={images.graystar} className="icon" style={{marginRight:"20px"}} />}
+              fullSymbol={<img src={images.orangestar} className="icon" style={{marginRight:"20px"}}/>}
               onClick={(e) => {
                 console.log('hhh', e);
                 setRating(e)
@@ -189,7 +188,7 @@ const MallsNearMeCard = ({ setTab, item, SetSingalMallData, getMallList }) => {
           </div>
           <div className="sign_input_wrapp">
 
-            <div className="signup_terms_wrapp">
+            {/* <div className="signup_terms_wrapp">
               <input
                 type="checkbox"
                 value={isAcceptTerm}
@@ -201,8 +200,10 @@ const MallsNearMeCard = ({ setTab, item, SetSingalMallData, getMallList }) => {
                 <a className="signup_terms_link">Terms and Conditions</a> &{" "}
                 <a className="signup_terms_link">Privacy Policy</a>
               </p>
-            </div>
-            <button className="signup_model_forgate">Forgot password?</button>
+            </div> */}
+            <div style={{ height: "1px", background: "#aaa", width: '100%', marginTop: "20px", marginBottom: "20px" }}></div>
+
+            {/* <button className="signup_model_forgate">Forgot password?</button> */}
           </div>
           <button
             className="btn btn-orange mb_16"

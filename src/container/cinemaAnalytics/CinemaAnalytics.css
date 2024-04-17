@@ -1,0 +1,10 @@
+.MallCart2_main_styling {
+  padding-top: 3rem;
+  padding-left: 7rem;
+}
+
+@media screen and (max-width: 768px) {
+  .MallCart2_main_styling {
+    padding-left: 2rem;
+  }
+}

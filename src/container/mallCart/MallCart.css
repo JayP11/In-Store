@@ -45,4 +45,13 @@
   .MallCart_main {
     padding: 1.4rem;
   }
+
+  .mall_cart_price_box{
+    width: 60px;
+    font-size: 14px;
+  }
+
+  .mall_cart_head_box{
+    font-size: 14px;
+  }
 }

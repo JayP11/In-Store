@@ -7,7 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useMallContext } from "../context/mall_context";
 import moment from "moment";
 import { MallHero } from "../components";
-import Notification from "../utils/Notification";
+import Notification from "../utils/Notification"
 
 import { IoChevronBack } from "react-icons/io5";
 
@@ -23,6 +23,7 @@ const EditMallEvent = ({
   const { UpdateEventMall } = useMallContext();
 
   console.log("event id is", geteventId);
+  console.log("event data is", geteventdata1);
 
   const [files, setFiles] = useState([]);
   const regEx =
@@ -100,8 +101,8 @@ const EditMallEvent = ({
           await formdata.append("store_logo", files[0]);
         } else {
         }
-        await formdata.append("terms_condition", terms_condition);
-
+        await formdata.append("terms_condition", isAcceptTerm);
+        await formdata.append("privacy_policy", isAcceptTerm2);
         console.log("-=-=-=->", formdata);
         const data = await UpdateEventMall(formdata);
         if (data) {
@@ -113,8 +114,24 @@ const EditMallEvent = ({
           }
         }
       }
+
+
     }
   };
+
+
+  const [isAcceptTerm, setIsAcceptTerm] = useState(0);
+  const [isAcceptTerm2, setIsAcceptTerm2] = useState(0);
+
+  const handleTermChange = (e) => {
+    setIsAcceptTerm(1);
+    console.log("e.targate.value");
+  };
+  const handleTermChange2 = (e) => {
+    setIsAcceptTerm2(1);
+    console.log("e.targate.value"); 
+  };
+
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: (acceptedFiles) => {
@@ -154,14 +171,14 @@ const EditMallEvent = ({
           <p className="edit-brand-back-txt">Back</p>
         </div>
         {/* mall management name start */}
-        <div className="mall_name_wrapp mm_form_wrapp_padding">
-          <p className="mall_name_heading">
+        <div className="mall_name_wrapp mm_form_wrapp_name_padding mall_mall_name_wrapp mall_mall_name_wrapp_2">
+          <p className="mall_name_heading mall_mall_name_heading">
             {get_mall_auth_data.name && get_mall_auth_data.name}:
           </p>
-          <span style={{ fontWeight: "700" }}>Edit Events</span>
+          <span className="mall_mall_name_heading" style={{fontWeight:"600"}}>Edit Events</span>
         </div>
         {/* <div className="mm_horizontal_line"></div> */}
-        <div className="" style={{ marginBottom: "2rem" }}></div>
+        <div className="" style={{marginBottom:"2rem"}}></div>
         {/* mall management name end */}
 
         {/* mall management form start */}
@@ -170,7 +187,7 @@ const EditMallEvent = ({
           <div className="mm_form_input_wrapp">
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="ename">Event Name</label>
+              <label htmlFor="ename"style={{minWidth:"157px"}}>Event Name<span className="star_require">*</span></label>
               <input
                 type="text"
                 value={eventName}
@@ -182,7 +199,7 @@ const EditMallEvent = ({
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="elocation">Event Location</label>
+              <label htmlFor="elocation"style={{minWidth:"157px"}}>Event Location<span className="star_require">*</span></label>
               <input
                 type="text"
                 value={eventLocation}
@@ -217,7 +234,7 @@ const EditMallEvent = ({
             />
           </div> */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Event Date</label>
+              <label htmlFor=""style={{minWidth:"157px"}}>Event Date<span className="star_require">*</span></label>
               {/* <input
               type="date"
               value={eventEndDate}
@@ -264,8 +281,9 @@ const EditMallEvent = ({
             {/* text-area sec start */}
             <div
               className="mm_form_single_input"
-              style={{ alignItems: "flex-start" }}>
-              <label htmlFor="">Event Description</label>
+              style={{ alignItems: "flex-start" }}
+            >
+              <label htmlFor="" style={{minWidth:"157px"}}>Event Description<span className="star_require">*</span></label>
               <textarea
                 type="text"
                 value={eventDescription}
@@ -276,6 +294,14 @@ const EditMallEvent = ({
                 rows={8}
               />
             </div>
+
+            <div
+              className="mm_form_single_input"
+              style={{ alignItems: "flex-start" }}
+            >
+              <label htmlFor="" style={{minWidth:"157px"}}><span className="star_require">*</span></label>
+              <span style={{fontSize:"14px",color:"#bbb"}}>*Required Fields including all image uploads.</span>
+            </div>
             {/* text-area sec end */}
 
             {/*  terms condition start */}
@@ -284,13 +310,30 @@ const EditMallEvent = ({
               <div className="signup_terms_wrapp indep-side">
                 <input
                   type="checkbox"
-                  onChange={(e) => setterms_condition(1)}
+                  value={isAcceptTerm}
+                  onChange={handleTermChange}
+                  checked={isAcceptTerm}
                 />
 
                 <p className="fs-des">
                   I have read and agree to the{" "}
-                  <a className="signup_terms_link">Terms and Conditions</a> &{" "}
                   <a className="signup_terms_link">Privacy Policy</a>
+                </p>
+              </div>
+            </div>
+            <div className="mm_form_single_input mb_8">
+              <label htmlFor=""></label>
+              <div className="signup_terms_wrapp indep-side" style={{marginTop:"-12px"}}>
+                <input
+                  type="checkbox"
+                  value={isAcceptTerm2}
+                  onChange={handleTermChange2}
+                  checked={isAcceptTerm2}
+                />
+
+                <p className="fs-des">
+                  I have read and agree to the{" "}
+                  <a className="signup_terms_link">Terms and Conditions</a>
                 </p>
               </div>
             </div>
@@ -303,8 +346,9 @@ const EditMallEvent = ({
               <button
                 className="btn btn-black"
                 style={{ alignSelf: "start", maxWidth: "150px" }}
-                onClick={() => UpdateMallEventData()}>
-                Upload
+                onClick={() => UpdateMallEventData()}
+              >
+                Publish
               </button>
             </div>
             {/* upload btn end */}
@@ -315,28 +359,22 @@ const EditMallEvent = ({
           <div className="mm_img_upload_wrapp">
             {/* single upload image */}
             <div className="img-upl-border">
-              <div
-                className="myprofile_inner_sec2"
-                {...getRootProps()}
-                style={{ border: "none", paddingBottom: "0px" }}>
+
+              <div className="myprofile_inner_sec2" {...getRootProps()} style={{ border: "none", paddingBottom: "0px" }}>
                 {/* <input
                 {...getInputlogoProps()}
                 accept="image/jpeg, image/jpg, image/png, image/eps"
               /> */}
-                <h4
-                  style={{ marginBottom: "10px" }}
-                  className="myprofile_upload_img_card_name">
-                  Upload the Event image <br />
-                  (200 x 150 pixels)
+                <h4 style={{ marginBottom: "10px" }} className="myprofile_upload_img_card_name">
+                  Upload the Event logo <br />
+                  (200 x 200 pixels)
                 </h4>
-                {getcondation === true ? (
+                {getcondation === true ?
+
                   <>
-                    {files && files.length > 0 ? (
-                      <div className="myprofile_inner_sec2_img_upload">
-                        {thumbs}
-                      </div>
-                    ) : (
-                      <div style={{ width: "100%" }}>
+                    {files && files.length > 0 ? <div className="myprofile_inner_sec2_img_upload">{thumbs}</div> :
+
+                      <div style={{ width: "100%" }}  >
                         <div className="myprofile_inner_sec2_img_upload">
                           <AiOutlineCloudUpload
                             style={{
@@ -352,10 +390,7 @@ const EditMallEvent = ({
                             {...getRootProps()}
                             accept="image/jpeg, image/jpg, image/png, image/eps"
                           /> */}
-                          <button
-                            type="button"
-                            className="click_upload_btn"
-                            style={{ marginBottom: "10px" }}>
+                          <button type="button" className="click_upload_btn" style={{ marginBottom: "10px" }}>
                             click here
                           </button>
                           {/* <a href="">clicking here</a> */}
@@ -366,18 +401,20 @@ const EditMallEvent = ({
                             type="button"
                             onClick={() => {
                               // setFiles([]);
-                            }}>
+                            }}
+                          >
                             Upload File
                           </button>
                         </div>
                       </div>
-                    )}
+                    }
+
                   </>
-                ) : (
+                  :
                   <>
-                    {geteventdata1.image_path === null ? (
+                    {geteventdata1.image_path === null ?
                       <>
-                        <div style={{ width: "100%" }} {...getRootProps()}>
+                        <div style={{ width: "100%" }}  {...getRootProps()}>
                           <div className="myprofile_inner_sec2_img_upload">
                             <AiOutlineCloudUpload
                               style={{
@@ -393,10 +430,7 @@ const EditMallEvent = ({
                               {...getRootProps()}
                               accept="image/jpeg, image/jpg, image/png, image/eps"
                             />
-                            <button
-                              type="button"
-                              className="click_upload_btn"
-                              style={{ marginBottom: "10px" }}>
+                            <button type="button" className="click_upload_btn" style={{ marginBottom: "10px" }}>
                               click here
                             </button>
                             {/* <a href="">clicking here</a> */}
@@ -407,7 +441,8 @@ const EditMallEvent = ({
                               type="button"
                               onClick={() => {
                                 // setFiles([]);
-                              }}>
+                              }}
+                            >
                               Upload File
                             </button>
                           </div>
@@ -416,14 +451,19 @@ const EditMallEvent = ({
                           Cancel
                         </button>
                       </>
-                    ) : (
+
+                      :
                       <>
                         <div className="myprofile_inner_sec2_img_upload">
+
+
                           <img
                             src={geteventdata1.image_path}
                             style={{ width: "100%", height: "100%" }}
                             className="img-fluidb"
                           />
+
+
                         </div>
                         <div className="btnn-main" style={{ width: "100%" }}>
                           <button
@@ -431,30 +471,23 @@ const EditMallEvent = ({
                             type="button"
                             onClick={() => {
                               // setFiles([]);
-                            }}>
+                            }}
+                          >
                             Upload File
                           </button>
                         </div>
+
                       </>
-                    )}
+
+                    }
+
+
                   </>
-                )}
+
+                }
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  alingitem: "center",
-                  paddingLeft: "5px",
-                  paddingRight: "5px",
-                }}>
-                <button
-                  className="btn"
-                  onClick={() => setFiles([])}
-                  style={{
-                    marginBottom: "10px",
-                    marginLeft: "10px",
-                    marginRight: "10px",
-                  }}>
+              <div style={{ display: "flex", alingitem: "center", paddingLeft: "5px", paddingRight: "5px" }}>
+                <button className="btn" onClick={() => setFiles([])} style={{ marginBottom: "10px", marginLeft: "10px", marginRight: "10px" }}>
                   Cancel
                 </button>
               </div>
@@ -464,26 +497,49 @@ const EditMallEvent = ({
         </div>
         <div className="mm_form_single_input mb_8">
           <label htmlFor=""></label>
-          <div className="signup_terms_wrapp indep-side-show">
-            <input type="checkbox" onChange={(e) => setterms_condition(1)} />
+          <div className="signup_terms_wrapp indep-side-show indep-side-show-event">
+            <input
+             type="checkbox"
+                  value={isAcceptTerm}
+                  onChange={handleTermChange}
+                  checked={isAcceptTerm}
+            />
 
             <p className="fs-des">
               I have read and agree to the{" "}
-              <a className="signup_terms_link">Terms and Conditions</a> &{" "}
               <a className="signup_terms_link">Privacy Policy</a>
             </p>
           </div>
         </div>
 
-        <div className="mm_form_single_input brand-resp-show-btn">
+        <div className="mm_form_single_input mb_8">
+          <label htmlFor=""></label>
+          <div className="signup_terms_wrapp indep-side-show indep-side-show-event" style={{marginTop:"-12px"}}>
+            <input
+             type="checkbox"
+                  value={isAcceptTerm2}
+                  onChange={handleTermChange2}
+                  checked={isAcceptTerm2}
+            />
+
+            <p className="fs-des">
+              I have read and agree to the{" "}
+              <a className="signup_terms_link">Terms and Conditions</a>
+            </p>
+          </div>
+        </div>
+
+        <div className="mm_form_single_input brand-resp-show-btn brand-resp-show-btn-event">
           <label htmlFor=""></label>
           <button
             className="btn btn-black"
             style={{ alignSelf: "start", maxWidth: "150px" }}
-            onClick={() => UpdateMallEventData()}>
-            Upload
+            onClick={() => UpdateMallEventData()}
+          >
+            Publish
           </button>
         </div>
+
 
         {/* mall management form end */}
       </div>

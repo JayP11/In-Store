@@ -26,6 +26,22 @@
   z-index: 2;
 }
 
+.mall_nav_cart_digit_wrapp {
+  position: absolute;
+  top: 1px;
+  right: -9px;
+  background-color: #fff;
+  padding: 2px;
+  border-radius: 100%;
+  box-shadow: 1px 1px 1px #696060;
+  height: 18px;
+  width: 18px;
+}
+
+.mall_nav_cart_digit_main_wrapp{
+  position: relative;
+}
+
 @media (max-width: 900px) {
   .cus-nav-logo-after {
     justify-content: space-between;

@@ -1,0 +1,59 @@
+.RetailerProRateCard_card_black_main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1.5rem;
+    padding: 14px;
+    background: black;
+    color: white;
+    width: 100% !important;
+    height: 200px !important;
+  }
+  .RetailerProRateCard_content_main {
+    padding: 3rem !important;
+    margin-left: 3rem;
+  }
+  
+  @media screen and (max-width: 1110px) {
+    .RetailerProRateCard_card_black_main {
+      height: 148.6px !important;
+      font-size: 13px;
+    }
+  
+    .RetailerProRateCard_content_main {
+      padding: 1rem !important;
+      margin-left: 2rem;
+    }
+  }
+  
+  @media screen and (max-width: 1070px) {
+    .RetailerProRateCard_card_black_main {
+      height: 130px !important;
+      width: 100% !important;
+      /* width: 270px !important; */
+    }
+  }
+  
+  @media screen and (max-width: 900px) {
+    .RetailerProRateCard_card_black_main {
+      height: 150px !important;
+    }
+  }
+  
+  @media screen and (max-width: 640px) {
+    .RetailerProRateCard_card_black_main {
+      width: 300px !important;
+      height: 150px !important;
+      gap: "1.5em";
+    }
+  
+    .RetailerProRateCard_card_block_main {
+      display: flex !important;
+    }
+  
+    .RetailerProRateCard_card_black_main_display_none {
+      display: none;
+    }
+  }

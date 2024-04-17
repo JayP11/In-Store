@@ -9,7 +9,7 @@ import { FaPhone } from "react-icons/fa";
 import { useMallContext } from "../../context/mall_context";
 import { Link } from "react-router-dom";
 import { useStoreContext } from "../../context/store_context";
-import { ACCEPT_HEADER, get_store_mall_wise } from "../../utils/Constant";
+import { ACCEPT_HEADER, get_delete_popup, get_store_mall_wise } from "../../utils/Constant";
 import axios from "axios";
 import Notification from "../../utils/Notification";
 
@@ -98,6 +98,7 @@ const StoreDirectory = ({
 
   const [modalIsOpen, setIsOpen] = useState(false);
   const [storeData, setStoreData] = useState([]);
+  const [getdelete_popup_data, setdelete_popup_data] = useState({});
 
   // view store details states
 
@@ -109,6 +110,7 @@ const StoreDirectory = ({
 
   useEffect(() => {
     getStoreList();
+    DeleteMallStoreModalData();
   }, []);
 
   const [storeList, setStoreList] = useState([]);
@@ -158,24 +160,74 @@ const StoreDirectory = ({
     }
   };
 
+
+  const DeleteMallStoreModalData = async () => {
+    const token = await JSON.parse(localStorage.getItem("is_token"));
+
+    
+      const formdata = await new FormData();
+      await formdata.append("type",1);
+
+      console.log("-=-=-=->", formdata);
+
+
+    setStoreLoading(true);
+
+    axios
+      .post(get_delete_popup, formdata,{
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      })
+
+      .then((res) => {
+        console.log("get delete modal data---->>>>", res);
+        // setStoreTotalPages(res.data.last_page);
+        setdelete_popup_data(res.data.data);
+        setStoreLoading(false);
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+     
+    
+  };
+
   return (
+    <>
+  
+    {storeloading === true ? (
+
+      <div
+        style={{
+          width: "100%",
+          height: "80vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <div className="loader"></div>
+      </div>
+    ) : (
     <>
       <div className="">
         <MallHero get_mall_auth_data={get_mall_auth_data} />
       </div>
 
       <div className="mm_main_wrapp">
-        <div className="mall_name_wrapp">
-          <p className="mall_name_heading">{get_mall_auth_data.name} :</p>
-          <span>Brands</span>
+        <div className="mall_name_wrapp mall_name_wrapp_brand_mall mall_mall_name_wrapp">
+          <p className="mall_name_heading mall_mall_name_heading">{get_mall_auth_data.name} :</p>
+          <span className="mall_mall_name_heading" style={{fontWeight:"600"}}>Brands</span>
         </div>
         <button className="upload_retail_btn" onClick={() => setTab(10)}>
-          Upload Retailer Directory{" "}
+          Upload Brand Directory{" "}
           <BsArrowRight size={20} style={{ marginLeft: "10px" }} />
         </button>
-        <div className="mm_horizontal_line"></div>
+        {/* <div className="mm_horizontal_line"></div> */}
+        {/* <div className="" style={{marginBottom:"2rem"}}></div> */}
         {/*  Add New Button start */}
-        <div
+        {/* <div
           style={{ display: "flex", width: "100%", justifyContent: "flex-end" }}
         >
           <button
@@ -186,8 +238,9 @@ const StoreDirectory = ({
             Add new{" "}
             <img src={images.add_new} className="leaderboard-btn-icon" />
           </button>
-        </div>
+        </div> */}
         {/*  Add New Button end */}
+        {/* <div style={{width:"70%"}}> */}
         <div className="sd_cards_grid">
           {storeList && storeList.length > 0
             ? storeList.map((item, index) => {
@@ -203,11 +256,29 @@ const StoreDirectory = ({
                   // setStoreItem={setStoreItem}
                   setIsOpen={setIsOpen}
                   setSingleStoreData={setSingleStoreData}
+                  getdelete_popup_data={getdelete_popup_data}
                 />
               );
             })
             : null}
+
+              {/*  Add New Button start */}
+      
+        {/*  Add New Button end */}
         </div>
+        <div className="mall-store-directory-add-btn"
+          style={{ display: "flex", width: "100%", justifyContent: "flex-end",marginTop:"2rem",paddingRight:"5rem" }}
+        >
+          <button
+            onClick={() => setTab(16)}
+            className="leaderboard-btn"
+            style={{ justifyContent: "flex-end" }}
+          >
+            Add new single brand{" "}
+            <img src={images.add_new} className="leaderboard-btn-icon" />
+          </button>
+        </div>
+        {/* </div> */}
         {/* <button
         className="view_more_btn"
         onClick={() => setStorePage(storepage + 1)}
@@ -238,40 +309,40 @@ const StoreDirectory = ({
           <div className="sd_model_wrapp">
             {/* edit and delete orange btns start */}
             <div className="sd_model_edit_wrap">
-              {getsingleStoreData.type == 2 ? (
+              {/* {getsingleStoreData.type == 2 ? (
                 <button
                   className="sd_modal_edit_btn_wrapp"
                   onClick={() => {
-                    setTab(33);
+                    setTab(9);
                     setStore_id(getsingleStoreData.id);
                   }}
                 >
                   <img src={images.edit_orange} alt="" />
                   <p>Upload</p>
                 </button>
-              ) : null}
+              ) : null} */}
 
               <button
-                className="sd_modal_edit_btn_wrapp"
+                className="sd_modal_edit_btn_wrapp" style={{paddingTop:"2rem"}}
                 onClick={() => {
                   setTab(9);
                   setStore_id(getsingleStoreData.id);
 
                 }}
               >
-                <img src={images.edit_orange} alt="" />
-                <p>Edit</p>
+                <img src={images.edit_icon1} alt="" />
+                <p style={{color:"#000"}}>Edit</p>
               </button>
               <button
-                className="sd_modal_edit_btn_wrapp"
+                className="sd_modal_edit_btn_wrapp" style={{paddingTop:"2rem"}}
                 onClick={() => {
                   // setTab(9);
                   setStore_id(getsingleStoreData.id);
                   DeleteMallStoreData();
                 }}
               >
-                <img src={images.cancle_orange} alt="" />
-                <p>Delete</p>
+                <img src={images.delete_icon1} alt="" />
+                <p style={{color:"#000"}}>Remove</p>
               </button>
 
               <button onClick={closeModal}>
@@ -283,21 +354,21 @@ const StoreDirectory = ({
             {/* pert - 1 */}
             <div className="sd_model_sec1">
               <div className="sd_model_sec1_img_wrapp">
-                <img src={getsingleStoreData.store_logo_path} alt="" />
+                <img src={getsingleStoreData.store_logo_path} alt="" style={{filter:"grayscale(100%)"}} />
               </div>
               <div className="sd_model_sec1_name_part">
                 <h3
                   className="mb_8"
-                  style={{ letterSpacing: "1px", fontWeight: "800", fontSize: "26px" }}
+                  style={{ letterSpacing: "1px", fontWeight: "600", fontSize: "26px" }}
                 >
                   {getsingleStoreData.name}
                 </h3>
                 <p>
-                  Shop no: <span style={{ fontSize: "14px" }}>{getsingleStoreData.store_no}</span>
+                  Shop no: <span style={{ fontSize: "14px",fontWeight: "400" }}>{getsingleStoreData.store_no}</span>
                 </p>
                 <p>
                   Level:
-                  <span style={{ fontSize: "14px" }}>{getsingleStoreData.store_level}</span>
+                  <span style={{ fontSize: "14px",fontWeight: "400" }}>{getsingleStoreData.store_level}</span>
                 </p>
                 {/* <p>
                   Trading Hours:
@@ -319,11 +390,11 @@ const StoreDirectory = ({
                 <div className="sd_model_sec2" style={{ marginTop: "12px", flexDirection: "column", gap: "8px" }}>
                   <div className="sd_model_sec2_sigle" style={{ gap: "8px" }}>
                     <FaPhone color="var(--color-orange)" size={16} />
-                    <p style={{ fontSize: "14px" }}>+{getsingleStoreData.contact_no}</p>
+                    <p style={{ fontSize: "14px",fontWeight: "400" }}>+{getsingleStoreData.contact_no}</p>
                   </div>
                   <div className="sd_model_sec2_sigle">
                     <img src={images.send} alt="" />
-                    <p style={{ fontSize: "14px" }}>{getsingleStoreData.email}</p>
+                    <p style={{ fontSize: "14px",fontWeight: "400" }}>{getsingleStoreData.email}</p>
                   </div>
                 </div>
               </div>
@@ -331,7 +402,7 @@ const StoreDirectory = ({
                 <p className="sd_modal_time_head">Trading Hours:</p>
                 <div className="sd_modal_time_inner">
                   <p>
-                    <span style={{ fontSize: "14px", fontWeight: "300" }}>Mo - Fri: {getsingleStoreData.mon_fri_from_time === "" ||
+                    <span style={{ fontSize: "14px", fontWeight: "400" }}>Mon - Fri: {getsingleStoreData.mon_fri_from_time === "" ||
                       getsingleStoreData.mon_fri_from_time == null ||
                       getsingleStoreData.mon_fri_from_time == "undefined"
                       ? ""
@@ -341,7 +412,7 @@ const StoreDirectory = ({
                         ? ""
                         : getsingleStoreData.mon_fri_to_time}pm</span></p>
 
-                  <p><span style={{ fontSize: "14px", fontWeight: "300" }}>Sat: {getsingleStoreData.mon_fri_from_time === "" ||
+                  <p><span style={{ fontSize: "14px", fontWeight: "400" }}>Sat: {getsingleStoreData.sat_from_time === "" ||
                     getsingleStoreData.sat_from_time == null ||
                     getsingleStoreData.sat_from_time == "undefined"
                     ? ""
@@ -351,26 +422,26 @@ const StoreDirectory = ({
                       ? ""
                       : getsingleStoreData.sat_to_time}pm</span></p>
 
-                  <p><span style={{ fontSize: "14px", fontWeight: "300" }}>Sun: {getsingleStoreData.mon_fri_from_time === "" ||
-                    getsingleStoreData.sat_from_time == null ||
-                    getsingleStoreData.sat_from_time == "undefined"
+                  <p><span style={{ fontSize: "14px", fontWeight: "400" }}>Sun: {getsingleStoreData.sun_from_time === "" ||
+                    getsingleStoreData.sun_from_time == null ||
+                    getsingleStoreData.sun_from_time == "undefined"
                     ? ""
-                    : getsingleStoreData.sat_from_time}am - {getsingleStoreData.sat_to_time === "" ||
-                      getsingleStoreData.sat_to_time == null ||
-                      getsingleStoreData.sat_to_time == "undefined"
+                    : getsingleStoreData.sun_from_time}am - {getsingleStoreData.sun_to_time === "" ||
+                      getsingleStoreData.sun_to_time == null ||
+                      getsingleStoreData.sun_to_time == "undefined"
                       ? ""
-                      : getsingleStoreData.sat_to_time}pm</span></p>
+                      : getsingleStoreData.sun_to_time}pm</span></p>
 
 
-                  <p><span style={{ fontSize: "14px", fontWeight: "300" }}>Public Holiday: {getsingleStoreData.mon_fri_from_time === "" ||
-                    getsingleStoreData.sat_from_time == null ||
-                    getsingleStoreData.sat_from_time == "undefined"
+                  <p><span style={{ fontSize: "14px", fontWeight: "400" }}>Public Holiday: {getsingleStoreData.holiday_from_time === "" ||
+                    getsingleStoreData.holiday_from_time == null ||
+                    getsingleStoreData.holiday_from_time == "undefined"
                     ? ""
-                    : getsingleStoreData.sat_from_time}am - {getsingleStoreData.sat_to_time === "" ||
-                      getsingleStoreData.sat_to_time == null ||
-                      getsingleStoreData.sat_to_time == "undefined"
+                    : getsingleStoreData.holiday_from_time}am - {getsingleStoreData.holiday_to_time === "" ||
+                      getsingleStoreData.holiday_to_time == null ||
+                      getsingleStoreData.holiday_to_time == "undefined"
                       ? ""
-                      : getsingleStoreData.sat_to_time}pm</span></p>
+                      : getsingleStoreData.holiday_to_time}pm</span></p>
 
 
                 </div>
@@ -391,12 +462,13 @@ const StoreDirectory = ({
             </div> */}
             {/* pert - 3 */}
             <div className="sd_model_sec3">
-              <p style={{ fontSize: "14px" }}>{getsingleStoreData.description}</p>
+              <p style={{ fontSize: "14px",fontWeight: "400" }}>{getsingleStoreData.description}</p>
             </div>
           </div>
           {/* </div> */}
         </ReactModal>
       </div>
+    </>)}
     </>
   );
 };

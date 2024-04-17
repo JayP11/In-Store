@@ -2,3 +2,23 @@
     margin-top: 20px;
     margin-bottom: 20px;
 }   
+
+.leaderboard-sub-wrapp-cinema{
+    padding-left: 5rem;
+    padding-right: 5rem;
+    margin-left: 0rem;
+    margin-right: 0rem;
+}
+
+@media screen and (max-width:1385px) {
+    .leaderboard-sub-wrapp-cinema{
+        padding-right:3rem;
+        padding-left: 3rem;
+    }
+}
+
+@media screen and (max-width:940px) {
+    .leaderboard-sub-wrapp-cinema{
+    padding: 1rem !important;
+    }
+  }

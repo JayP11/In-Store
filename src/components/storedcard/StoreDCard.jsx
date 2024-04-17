@@ -34,6 +34,7 @@ const StoreDCard = ({
   setTab,
   setStore_id,
   getStoreList,
+  getdelete_popup_data
 }) => {
   const { DeleteStoreApi } = useMallContext();
 
@@ -103,6 +104,7 @@ const StoreDCard = ({
           }}
           src={img}
           alt=""
+          style={{filter:"grayscale(100%)"}}
           className="stored_card_img"
         />
       </div>
@@ -130,14 +132,14 @@ const StoreDCard = ({
           </div>
           {/* edit and delete orange btns end */}
 
-          <p>Are you sure you want to delete ?</p>
+          <p>{getdelete_popup_data ? getdelete_popup_data.details : ""}</p>
           <div className="delete-modal-btn-box">
             <button onClick={() => {
               // setStore_id(itm.id);
               DeleteMallStoreData(itm.id);
               // setDeleteModal(true);
             }} className="delete-modal-btn">
-              Yes
+              {getdelete_popup_data ? getdelete_popup_data.confirm_button : ""}
             </button>
             {/* onClick={() => {
               // setStore_id(itm.id);
@@ -146,7 +148,7 @@ const StoreDCard = ({
             }} */}
 
             <button onClick={closeModal} className="delete-modal-btn">
-              No
+            {getdelete_popup_data ? getdelete_popup_data.cancel_button : ""}
             </button>
           </div>
         </div>

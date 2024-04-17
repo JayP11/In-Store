@@ -50,6 +50,12 @@ import {
   GET_MULTIPLE_Mall_BEGIN,
   GET_MULTIPLE_MALL_SUCCESS,
   GET_MULTIPLE_Mall_ERROR,
+  GET_Mall_CART_BEGIN,
+  GET_MALL_CART_SUCCESS,
+  GET_Mall_CART_ERROR,
+  GET_BRAND_MULTIPLE_BEGIN,
+  GET_BRAND_MULTIPLE_SUCCESS,
+  GET_BRAND_MULTIPLE_FAIL,
 } from "../Action";
 const mall_reducer = (state, action) => {
   if (action.type === MALL_SIGNUP_BEGIN) {
@@ -115,6 +121,24 @@ const mall_reducer = (state, action) => {
   if (action.type === GET_MALL_FAIL) {
     return { ...state, get_mall_loading: false };
   }
+  // GET MALL Cart
+
+  if (action.type === GET_Mall_CART_BEGIN) {
+    return { ...state, get_mall_cart_loading: true };
+  }
+
+  if (action.type === GET_MALL_CART_SUCCESS) {
+    return {
+      ...state,
+      get_mall_cart_loading: false,
+      get_mall_cart_data: action.payload.data,
+      get_mall_cart_data_count: action.payload.total_count,
+    };
+  }
+
+  if (action.type === GET_Mall_CART_ERROR) {
+    return { ...state, get_mall_cart_loading: false };
+  }
 
   // Get Brand
 
@@ -134,6 +158,25 @@ const mall_reducer = (state, action) => {
   if (action.type === GET_BRAND_FAIL) {
     return { ...state, get_brand_loading: false };
   }
+
+    // Get Brand Multiple
+
+    if (action.type === GET_BRAND_MULTIPLE_BEGIN) {
+      return { ...state, get_brand_loading: true };
+    }
+  
+    if (action.type === GET_BRAND_MULTIPLE_SUCCESS) {
+      return {
+        ...state,
+        get_brand_loading: false,
+        get_brand_data_multiple: action.payload.data,
+        // contact_number: action.payload.data.contact_number,
+      };
+    }
+  
+    if (action.type === GET_BRAND_MULTIPLE_FAIL) {
+      return { ...state, get_brand_loading: false };
+    }
 
   // // Get Multiple Mall
 

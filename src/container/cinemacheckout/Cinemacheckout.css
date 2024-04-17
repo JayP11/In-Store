@@ -2,8 +2,42 @@
     margin-left: 4rem !important;
 }
 
+.cinema-checkout-main-flex-wrapp{
+    padding-left: 0rem;
+    padding-right: 0rem;
+}
+
+
+/* .checkout-terms-part{
+    display: flex;
+    flex-direction: column;
+} */
+
 @media screen and (max-width: 900px) {
     .mm_main_wrapp_cinema_checkout{
         margin-left: 2rem !important;
+        margin-right: 2rem !important;
     }
+
+   
+}
+
+@media screen and (max-width: 1050px) {
+    .cinema-checkout-main-flex-wrapp{
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .cinema_checkout_form_input_wrapp{
+        width: 100%;
+    }
+
+    .cinemaa-checkout-main-wrapp{
+        width: 100%;
+    }
+}
+@media screen and (max-width: 500px) {
+.checkout-head-sub-part-cinema{
+    font-size: 13px;
+}
 }

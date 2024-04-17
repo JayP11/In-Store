@@ -79,9 +79,36 @@
     width: 100%;
     margin: 1rem auto;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(325px, 1fr));
     grid-gap: 30px;
     padding: 10px;
+}
+
+@media screen and (max-width:1780px) {
+    .mall_near_brand_list_wrapp{
+        grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
+
+    }
+}
+@media screen and (max-width:1600px) {
+    .mall_near_brand_list_wrapp{
+        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+
+    }
+
+    .cust-stored_card_wrapp{
+        height: 180px !important;
+    }
+}
+@media screen and (max-width:1420px) {
+    .mall_near_brand_list_wrapp{
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+
+    }
+
+    .cust-stored_card_wrapp{
+        height: 170px !important;
+    }
 }
 
 @media screen and (max-width: 1075px) {
@@ -128,4 +155,9 @@
         gap: 0px;
         align-items: center;
     }
+
+    /* ..mall_near_brand_list_wrapp{
+        grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+
+    } */
 }

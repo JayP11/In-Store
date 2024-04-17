@@ -96,28 +96,47 @@ const CustomerFacility = ({ getsingalmalldata }) => {
       });
   };
   return (
-    <div>
-      <CustomerHeroSecond getsingalmalldata={getsingalmalldata} />
+<>
+    {loading === true ? <>
+      <div
+  style={{
+    width: "100%",
+    height: "80vh",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  }}>
+  <div className="loader"></div>
+</div>
 
-      <div className="mm_main_wrapp">
-        {/* <div className="mall_name_wrapp"> */}
-        <div className="mall-near-me-sub-flex">
-          <p className="mall_name_heading">{getsingalmalldata.name} facilities</p>
-        </div>
-        <span></span>
-        {/* </div> */}
-        {/* <div className="mm_horizontal_line"></div> */}
-        <div className="facilities_cards_wrapp">
-          {proList && proList.length > 0
-            ? proList.map((brndItm) => {
-              return (
-                <CustomerFacilityCard item={brndItm} />
-              );
-            })
-            : null}
-        </div>
+    </> : 
+
+    <div>
+
+    <CustomerHeroSecond getsingalmalldata={getsingalmalldata} />
+
+    <div className="mm_main_wrapp">
+      {/* <div className="mall_name_wrapp"> */}
+      <div className="mall-near-me-sub-flex">
+        <p className="mall_name_heading">{getsingalmalldata.name} facilities</p>
+      </div>
+      <span></span>
+      {/* </div> */}
+      {/* <div className="mm_horizontal_line"></div> */}
+      <div className="facilities_cards_wrapp">
+        {proList && proList.length > 0
+          ? proList.map((brndItm) => {
+            return (
+              <CustomerFacilityCard item={brndItm} />
+            );
+          })
+          : null}
       </div>
     </div>
+  </div>
+  }
+  </>
+  
   );
 };
 

@@ -1,8 +1,12 @@
 .cust-promotional-main-wrapp {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
-  grid-gap: 5px;
-  margin: 1rem 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  /* grid-gap: 5px; */
+  grid-gap: 0.7rem;
+  /* margin: 1rem 1rem; */
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 .view_more_btn {
@@ -17,4 +21,11 @@
   font-size: 1rem;
   color: var(--color-orange);
   font-weight: 600;
+}
+
+@media screen and (max-width:1050px) {
+  .cust-promotional-main-wrapp{
+    grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+
+  }
 }

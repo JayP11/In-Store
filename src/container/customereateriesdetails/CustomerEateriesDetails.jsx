@@ -21,7 +21,7 @@ const CustomerEateriesDetails = ({ getsingalmalldata, getedetalis, setTab }) => 
                         <div
                             className="profile_head_center customer-brand-details-head"
                             style={{
-                                marginTop: "20px",
+                            marginTop: "20px",
                                 alignItems: "start",
                                 justifyContent: "start",
                             }}
@@ -29,7 +29,7 @@ const CustomerEateriesDetails = ({ getsingalmalldata, getedetalis, setTab }) => 
                             {/* <h4 className="h3" style={{ textTransform: "capitalize" }}>{getsingalmalldata.name}</h4> &nbsp;&nbsp; <span className="h3">Eateries</span> */}
                             <h4
                                 className="h3"
-                                style={{ textTransform: "capitalize", textAlign: "initial" }}
+                                style={{ textTransform: "capitalize", textAlign: "initial",fontWeight:"700" }}
                             >
                                 {getedetalis.name} - {getsingalmalldata.name}
                             </h4>

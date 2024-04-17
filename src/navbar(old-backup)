@@ -645,7 +645,7 @@ const Navbar = () => {
             </LoginSocialGoogle>
           </div>
           <button className="h6 mb_10 mt_10" style={{ alignSelf: "center" }}>
-            Not registered yet?
+            Not Registered Yet?
           </button>
           <button
             onClick={() => {

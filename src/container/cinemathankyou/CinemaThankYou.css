@@ -7,6 +7,42 @@
   justify-content: flex-end;
 }
 
+.cinema_thank_card_main {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.cinemathank_part2_card {
+  width: 100% !important;
+  height: 220px !important;
+}
+
+@media screen and (max-width: 1250px) {
+  .cinemathank_part2_card {
+    height: 180px !important;
+  }
+}
+@media screen and (min-width: 1750px) {
+  .cinemathank_part2_card {
+    height: 330px !important;
+    gap:1.5rem
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .cinema_thank_card_main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .cinemathank_part2_card {
+    height: 220px !important;
+  }
+
+  .thankyou_main_wrapp {
+    margin: 2rem !important;
+  }
+}
+
 @media screen and (max-width: 450px) {
   .thankyou_main_wrapp {
     margin: 2rem !important;
@@ -18,5 +54,17 @@
     display: flex;
     align-items: flex-start;
     margin-left: 1rem;
+  }
+}
+
+@media screen and (max-width: 630px) {
+  .cinema_thank_card_main {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .cinemathank_part2_card {
+    width: 350px !important;
+    justify-items: center;
   }
 }

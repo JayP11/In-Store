@@ -26,13 +26,13 @@
 }
 
 .find-my-way-btn {
-    color: var(--color-blue);
+    color: var(--color-black);
     font-size: 22px;
     font-weight: 600;
 }
 
 .find-my-way-btn-arrow {
-    color: var(--color-blue);
+    color: var(--color-black);
     width: 35px;
     height: 30px;
 }

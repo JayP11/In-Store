@@ -1,135 +1,279 @@
-.CinemaProRateCard_content_main {
-  margin: 2rem;
-  margin-left: 8rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.CinemaProRateCard_card_block_main {
-  display: flex;
-  /* flex-direction: column; */
-  gap: 1rem;
-}
-
-.CinemaProRateCard_card_block_line_inner {
-  display: flex;
-  gap: 1rem;
-  flex-direction: column;
-}
-.CinemaProRateCard_card_block_line_main {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.CinemaProRateCard_card_black_main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  /* width: 285.5px !important;
-    height: 169.6px !important; */
-  gap: 1.5rem;
-  padding: 14px;
-  background: black;
-  color: white;
-  width: 100% !important;
-  height: 200px !important;
-}
-
-@media screen and (max-width: 1350px) {
-  .CinemaProRateCard_card_black_main {
-    /* width: 240.5px !important; */
+/* .CinemaProRateCard_content_main {
+    margin: 2rem;
+    margin-left: 8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-right: 5rem;
   }
-
-  .pro_card_head {
-    font-size: 14px;
+  
+  .CinemaProRateCard_card_block_main {
+    display: flex;
+    gap: 1rem;
   }
-
-  .pro_card_text {
-    font-size: 12px;
+  
+  .CinemaProRateCard_card_block_line_inner {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
   }
-
-  .CinemaProRateCard_content_main {
-    margin-left: 5rem;
-  }
-}
-
-@media screen and (max-width: 1160px) {
-  .CinemaProRateCard_card_black_main {
-    /* width: 224.5px !important; */
-    height: 148.6px !important;
-
-    font-size: 14px;
-  }
-}
-@media screen and (max-width: 1110px) {
-  .CinemaProRateCard_card_black_main {
-    height: 148.6px !important;
-    font-size: 13px;
-  }
-}
-@media screen and (max-width: 1070px) {
-  ..CinemaProRateCard_card_black_main {
-    /* max-width: 548px; */
-    height: 190px !important;
-    width: 270px !important;
-  }
-
-  .CinemaProRateCard_card_black_main {
-    height: 125px !important;
-  }
-
-  .pro_card_head {
-    font-size: 12px;
-  }
-
-  .pro_card_text {
-    font-size: 10px;
-  }
-}
-
-@media screen and (max-width: 900px) {
   .CinemaProRateCard_card_block_line_main {
-    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
   }
-
-  .CinemaProRateCard_content_main {
-    margin-left: 2rem;
-    margin-right: 2rem;
-  }
-
+  
   .CinemaProRateCard_card_black_main {
-    height: 150px !important;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .CinemaProRateCard_content_main {
-    margin-top: 5rem;
-  }
-}
-
-@media screen and (max-width: 640px) {
-  .CinemaProRateCard_card_block_main {
-    flex-wrap: wrap;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
+    text-align: center;
+    width: 285.5px !important;
+    height: 169.6px !important;
+    gap: 1.5rem;
+    padding: 14px;
+    background: black;
+    color: white;
   }
 
-  .CinemaProRateCard_card_black_main {
-    width: 285px !important;
-  }
-}
+  @media screen and (max-width:1350px) {
+    .CinemaProRateCard_card_black_main{
+      width: 240.5px !important;
+      
 
-@media screen and (max-width: 515px) {
-  /* .CinemaProRateCard_card_block_line_main{
+    }
+
+    .pro_card_head{
+      font-size: 14px;
+    }
+
+    .pro_card_text{
+      font-size: 12px;
+    }
+
+    .CinemaProRateCard_content_main{
+      margin-left: 5rem;
+    }
+  }
+
+  @media screen and (max-width:1160px) {
+    .CinemaProRateCard_card_black_main{
+      width: 224.5px !important;
+      height: 148.6px !important;
+
+      font-size: 14px;
+      
+
+    }
+  }
+  @media screen and (max-width:1110px) {
+    .CinemaProRateCard_card_black_main {
+        width: 210.5px !important;
+        height: 148.6px !important;
+        font-size: 13px;
+  }
+  }
+  @media screen and (max-width:1070px) {
+
+    .CinemaProRateCard_card_block_line_main{
+      max-width: 548px;
+    }
+
+    .CinemaProRateCard_card_black_main{
+      height: 129.5px !important;
+    }
+
+    .pro_card_head{
+      font-size: 12px;
+    }
+
+    .pro_card_text{
+      font-size: 10px;
+    }
+
+
+  }
+
+  @media screen and (max-width:900px) {
+    .CinemaProRateCard_card_block_line_main{
       max-width: 100%;
-    } */
+    }
 
-  .CinemaProRateCard_card_block_main {
-    flex-wrap: wrap;
-    justify-content: center;
+    .CinemaProRateCard_content_main{
+      margin-left: 2rem;
+      margin-right: 2rem;
+    }
+
+    .CinemaProRateCard_card_block_main{
+      margin-right: 15px;
+    }
+
   }
-}
+
+  @media screen and (max-width:768px) {
+    .CinemaProRateCard_content_main{
+      margin-top: 5rem;
+    }
+  }
+
+  @media screen and (max-width:640px) {
+
+
+    .CinemaProRateCard_card_block_main{
+      flex-wrap: wrap;
+    }
+
+  }
+
+  @media screen and (max-width:515px) {
+  
+
+    .CinemaProRateCard_card_block_main{
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+  } */
+
+  .CinemaProRateCard_content_main {
+    margin: 2rem;
+    margin-left: 7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .CinemaProRateCard_card_block_main {
+    display: flex;
+    /* flex-direction: column; */
+    gap: 1rem;
+  }
+  
+  .CinemaProRateCard_card_block_line_inner {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+  }
+  .CinemaProRateCard_card_block_line_main {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .CinemaProRateCard_card_black_main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    /* width: 285.5px !important;
+        height: 169.6px !important; */
+    gap: 1.5rem;
+    padding: 14px;
+    background: black;
+    color: white;
+    width: 100% !important;
+    height: 200px !important;
+  }
+  
+  @media screen and (max-width: 1350px) {
+    .CinemaProRateCard_card_black_main {
+      /* width: 240.5px !important; */
+    }
+  
+    .pro_card_head {
+      font-size: 14px;
+    }
+  
+    .pro_card_text {
+      font-size: 12px;
+    }
+  
+    .CinemaProRateCard_content_main {
+      margin-left: 5rem;
+    }
+  }
+  
+  @media screen and (max-width: 1160px) {
+    .CinemaProRateCard_card_black_main {
+      /* width: 224.5px !important; */
+      height: 148.6px !important;
+  
+      font-size: 14px;
+    }
+  }
+  @media screen and (max-width: 1110px) {
+    .CinemaProRateCard_card_black_main {
+      height: 148.6px !important;
+      font-size: 13px;
+    }
+  }
+  @media screen and (max-width: 1070px) {
+    .CinemaProRateCard_card_black_main {
+      height: 190px !important;
+      width: 270px !important;
+    }
+    .CinemaProRateCard_card_black_main_edited {
+      width: 100% !important;
+    }
+  
+    .CinemaProRateCard_card_black_main {
+      height: 125px !important;
+    }
+  
+    .pro_card_head {
+      font-size: 12px;
+    }
+  
+    .pro_card_text {
+      font-size: 10px;
+    }
+  }
+  
+  @media screen and (max-width: 900px) {
+    .CinemaProRateCard_card_block_line_main {
+      max-width: 100%;
+    }
+  
+    .CinemaProRateCard_content_main {
+      margin-left: 2rem;
+      margin-right: 2rem;
+    }
+  
+    .CinemaProRateCard_card_black_main {
+      height: 150px !important;
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    .CinemaProRateCard_content_main {
+      margin-top: 5rem;
+    }
+  }
+  
+  @media screen and (max-width: 640px) {
+    .CinemaProRateCard_card_block_main {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  
+    .CinemaProRateCard_card_black_main {
+      width: 285px !important;
+    }
+  
+    .cinema-pro-display-none {
+      display: none;
+    }
+  }
+  
+  @media screen and (max-width: 515px) {
+    /* .CinemaProRateCard_card_block_line_main{
+          max-width: 100%;
+        } */
+  
+    .CinemaProRateCard_card_block_main {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }

@@ -25,7 +25,7 @@ const FilterRusult = ({ setTab, getsingalmalldata, navbardata, navbardataName, n
         const data = JSON.parse(localStorage.getItem('malldata'))
         console.log("======>123", data);
 
-        getmovielist(data.id);
+        // getmovielist(data.id);
         // getproductbanner(data.id);
         console.log("navbardataName", navbardataName);
     }, [])
@@ -34,9 +34,17 @@ const FilterRusult = ({ setTab, getsingalmalldata, navbardata, navbardataName, n
         console.log("filter data is", navbardata);
         FilterApi()
     }, [navbardata])
+
     useEffect(() => {
-        console.log("filter data is----->>", navbardata1);
-        SearchApi()
+        console.log("search data is----->>", navbardata1);
+        if(navbardata1 === "") {
+            null
+        }else{
+            SearchApi()
+        }
+
+        // SearchApi()
+        
     }, [navbardata1])
 
 
@@ -138,39 +146,39 @@ const FilterRusult = ({ setTab, getsingalmalldata, navbardata, navbardataName, n
     //         });
     // };
 
-    const getmovielist = async (id) => {
-        setid(id)
-        SetLoading(true);
-        const token = JSON.parse(localStorage.getItem("is_token"));
+    // const getmovielist = async (id) => {
+    //     setid(id)
+    //     SetLoading(true);
+    //     const token = JSON.parse(localStorage.getItem("is_token"));
 
-        const formdata = new FormData();
-        formdata.append("mall_id", id);
-        formdata.append("brand_id", brandid);
+    //     const formdata = new FormData();
+    //     formdata.append("mall_id", id);
+    //     formdata.append("brand_id", brandid);
 
-        console.log("formdata", id, brandid);
+    //     console.log("formdata", id, brandid);
 
-        axios
-            .post(product_cus_tile, formdata, {
-                headers: {
-                    Accept: ACCEPT_HEADER,
-                    Authorization: "Bearer " + token,
-                },
-            })
-            .then((res) => {
-                console.log("ggg", JSON.stringify(res.data, null, 2));
-                if (res.data.success == 1) {
-                    SetList(res.data.data);
-                    SetLoading(false);
-                } else {
-                    null;
-                    SetLoading(false);
-                }
-            })
-            .catch((err) => {
-                console.log("err11", err);
-                SetLoading(false);
-            });
-    };
+    //     axios
+    //         .post(product_cus_tile, formdata, {
+    //             headers: {
+    //                 Accept: ACCEPT_HEADER,
+    //                 Authorization: "Bearer " + token,
+    //             },
+    //         })
+    //         .then((res) => {
+    //             console.log("ggg", JSON.stringify(res.data, null, 2));
+    //             if (res.data.success == 1) {
+    //                 SetList(res.data.data);
+    //                 SetLoading(false);
+    //             } else {
+    //                 null;
+    //                 SetLoading(false);
+    //             }
+    //         })
+    //         .catch((err) => {
+    //             console.log("err11", err);
+    //             SetLoading(false);
+    //         });
+    // };
 
     // // Search & Filter Api
 
@@ -266,7 +274,7 @@ const FilterRusult = ({ setTab, getsingalmalldata, navbardata, navbardataName, n
                                     return (
                                         <FilterProducts
                                             data={item}
-                                            getmovieapi={getmovielist}
+                                            // getmovieapi={getmovielist}
                                             replce={1}
                                             mainitem={''}
                                             getid={getid}

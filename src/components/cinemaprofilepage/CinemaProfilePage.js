@@ -1,18 +1,65 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./CinemaProfilePage.css";
-import { Link } from "react-router-dom";
-import images from "../../constants/images";
-import { CinemaHeroEdit, MallHeroEdit } from "../../components";
-import CinemaWelcomeStoreCard from "../cinemawelcomestorecard/CinemaWelcomeStoreCard";
+import { CinemaHeroEdit } from "../../components";
+import { ACCEPT_HEADER, get_welcome_page } from "../../utils/Constant";
+import axios from "axios";
 
 const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
+
+
+  const [welData,setWelData] = useState()
+  const [loading,setLoading] = useState()
+
+  const getWelcomeData = async () => {
+    console.log("dtttttr")
+    setLoading(true);
+
+    const token = await JSON.parse(localStorage.getItem("is_token"));
+    axios
+      .get(get_welcome_page, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((res) => {
+        if (res.data.success == 1) {
+          setWelData(res.data.data);
+          console.log("wel data are",welData);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.log("errr", err);
+        setLoading(false)
+      });
+  };
+
+  useEffect(()=>{
+    getWelcomeData();
+  },[])
   return (
     <>
       <CinemaHeroEdit
         get_mall_auth_data={get_mall_auth_data}
         sidebaropen={sidebaropen}
+        setTab={setTab}
       />
-      <div className={`${sidebaropen ? "" : "mall-profile-slider-off-margin"}`}>
+      {/* <div className={`${sidebaropen ? '' : 'mall-profile-slider-off-margin'}`}> */}
+
+      {loading === true ? (
+        <div
+          style={{
+            width: "100%",
+            height: "80vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}>
+          <div className="loader"></div>
+        </div>
+      ) :(
+      <div className="mall_profilepage_padding">
         <div className="mallpp_main_wrapp mall-display-none">
           <div className="mallpp_part1">
             <p className="mall_part_1_heading">
@@ -27,40 +74,39 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
             </h5>
 
             <ul>
+              <div>
+                <li className="mallpp_sigle_list">
+                  Populate your store profile with your store details under
+                  <button
+                    onClick={() => setTab(2)}
+                    style={{ fontWeight: "600" }}>
+                    Account Settings
+                  </button>
+                </li>
+              </div>
               <li className="mallpp_sigle_list">
-                Populate your profile to introduce your shopping center/mall on
-                In-store under{" "}
-                <button onClick={() => setTab(2)} style={{ fontWeight: "600" }}>
-                  Account Settings
-                </button>
-              </li>
-              <li className="mallpp_sigle_list">
-                Advertise your collection of retailers in your mall under{" "}
+                Upload marketing content via{" "}
                 <button onClick={() => setTab(3)} style={{ fontWeight: "600" }}>
                   {" "}
-                  Mall Retailers
+                  Product Tiles
                 </button>
               </li>
               <li className="mallpp_sigle_list">
-                Upload the
+                Keep track of your
                 <button onClick={() => setTab(4)} style={{ fontWeight: "600" }}>
-                  &nbsp;Eateries
-                </button>{" "}
-                in your Mall
-              </li>
-              <li className="mallpp_sigle_list">
-                Update and promote
-                <button onClick={() => setTab(5)} style={{ fontWeight: "600" }}>
-                  &nbsp;Events
-                </button>{" "}
-                in your Mall
-              </li>
-              <li className="mallpp_sigle_list">
-                List your Mall's
-                <button onClick={() => setTab(6)} style={{ fontWeight: "600" }}>
-                  &nbsp;Facilities
+                  &nbsp; marketing analytics
                 </button>
               </li>
+              <li className="mallpp_sigle_list">
+                Keep track of your
+                <button onClick={() => setTab(5)} style={{ fontWeight: "600" }}>
+                  &nbsp; brand in malls
+                </button>
+              </li>
+              {/* <li className="mallpp_sigle_list">
+                List your Mall's
+                <button onClick={() => setTab(6)} style={{ fontWeight: "600" }}>&nbsp;Facilities</button>
+              </li> */}
             </ul>
           </div>
 
@@ -75,11 +121,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big">
-                100% Native
+                {welData ? welData.title : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big">
-                In-store’s unique marketing adds respembles the experience of
-                stores in a mall
+                {welData ? welData.message: ""}
               </p>
             </div>
             <div
@@ -90,11 +135,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big">
-                Fulfillment
+                {welData ? welData.title2 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big">
-                One buying journey, multiple fulfillment options with preference
-                for In-store.
+                {welData ? welData.message2: ""}
               </p>
             </div>
             <div
@@ -105,11 +149,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big">
-                Unified
+              {welData ? welData.title3 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big">
-                Unified channel for retail brands to bring together consumers,
-                marketing & products
+                {welData ? welData.message3: ""}
               </p>
             </div>
             <div
@@ -120,11 +163,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big">
-                Personalised
+                {welData ? welData.title4 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big">
-                The In-store platform takes personalised content advertising to
-                a whole new level
+                {welData ? welData.message4: ""}
               </p>
             </div>
             <div
@@ -135,10 +177,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big">
-                Intergrated Publishing
+                {welData ? welData.title5 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big">
-                Digital brand marketing/ advertising
+                {welData ? welData.message5: ""}
               </p>
             </div>
             <div
@@ -149,11 +191,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big">
-                Simplified
+                {welData ? welData.title6 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big">
-                The In-store platform offers small business and enterprise
-                solutions
+                {welData ? welData.message6: ""}
               </p>
             </div>
             {/* single cards end */}
@@ -176,39 +217,34 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
 
             <ul>
               <li className="mallpp_sigle_list">
-                Populate your profile to introduce your shopping center/mall on
-                In-store under{" "}
+                Populate your store profile with your store details under{" "}
                 <button onClick={() => setTab(2)} style={{ fontWeight: "600" }}>
                   Account Settings
                 </button>
               </li>
               <li className="mallpp_sigle_list">
-                Advertise your collection of retailers in your mall under{" "}
+                Upload marketing content via{" "}
                 <button onClick={() => setTab(3)} style={{ fontWeight: "600" }}>
                   {" "}
-                  Mall Retailers
+                  Product Tiles
                 </button>
               </li>
               <li className="mallpp_sigle_list">
-                Upload the
+                Keep track of your
                 <button onClick={() => setTab(4)} style={{ fontWeight: "600" }}>
-                  &nbsp;Eateries
-                </button>{" "}
-                in your Mall
-              </li>
-              <li className="mallpp_sigle_list">
-                Update and promote
-                <button onClick={() => setTab(5)} style={{ fontWeight: "600" }}>
-                  &nbsp;Events
-                </button>{" "}
-                in your Mall
-              </li>
-              <li className="mallpp_sigle_list">
-                List your Mall's
-                <button onClick={() => setTab(6)} style={{ fontWeight: "600" }}>
-                  &nbsp;Facilities
+                  &nbsp; marketing analytics
                 </button>
               </li>
+              <li className="mallpp_sigle_list">
+                Keep track of your
+                <button onClick={() => setTab(5)} style={{ fontWeight: "600" }}>
+                  &nbsp; brand in malls
+                </button>
+              </li>
+              {/* <li className="mallpp_sigle_list">
+                List your Mall's
+                <button onClick={() => setTab(6)} style={{ fontWeight: "600" }}>&nbsp;Facilities</button>
+              </li> */}
             </ul>
           </div>
 
@@ -223,11 +259,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big2">
-                100% Native
+                {welData ? welData.title : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big2">
-                In-store’s unique marketing adds respembles the experience of
-                stores in a mall
+                {welData ? welData.message: ""}
               </p>
             </div>
             <div
@@ -238,11 +273,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big2">
-                Fulfillment
+                {welData ? welData.title2 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big2">
-                One buying journey, multiple fulfillment options with preference
-                for In-store.
+                {welData ? welData.message2: ""}
               </p>
             </div>
             <div
@@ -253,11 +287,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big2">
-                Unified
+              {welData ? welData.title3 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big2">
-                Unified channel for retail brands to bring together consumers,
-                marketing & products
+                {welData ? welData.message3: ""}
               </p>
             </div>
             <div
@@ -268,11 +301,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_description_big2">
-                Personalised
+                {welData ? welData.title4 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big2">
-                The In-store platform takes personalised content advertising to
-                a whole new level
+                {welData ? welData.message4: ""}
               </p>
             </div>
             <div
@@ -283,10 +315,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big2">
-                Intergrated Publishing
+                {welData ? welData.title5 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big2">
-                Digital brand marketing/ advertising
+                {welData ? welData.message5: ""}
               </p>
             </div>
             <div
@@ -297,11 +329,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big2">
-                Simplified
+                {welData ? welData.title6 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big2">
-                The In-store platform offers small business and enterprise
-                solutions
+                {welData ? welData.message6: ""}
               </p>
             </div>
             {/* single cards end */}
@@ -324,39 +355,34 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
 
             <ul>
               <li className="mallpp_sigle_list">
-                Populate your profile to introduce your shopping center/mall on
-                In-store under{" "}
+                Populate your store profile with your store details under{" "}
                 <button onClick={() => setTab(2)} style={{ fontWeight: "600" }}>
                   Account Settings
                 </button>
               </li>
               <li className="mallpp_sigle_list">
-                Advertise your collection of retailers in your mall under{" "}
+                Upload marketing content via{" "}
                 <button onClick={() => setTab(3)} style={{ fontWeight: "600" }}>
                   {" "}
-                  Mall Retailers
+                  Product Tiles
                 </button>
               </li>
               <li className="mallpp_sigle_list">
-                Upload the
+                Keep track of your
                 <button onClick={() => setTab(4)} style={{ fontWeight: "600" }}>
-                  &nbsp;Eateries
-                </button>{" "}
-                in your Mall
-              </li>
-              <li className="mallpp_sigle_list">
-                Update and promote
-                <button onClick={() => setTab(5)} style={{ fontWeight: "600" }}>
-                  &nbsp;Events
-                </button>{" "}
-                in your Mall
-              </li>
-              <li className="mallpp_sigle_list">
-                List your Mall's
-                <button onClick={() => setTab(6)} style={{ fontWeight: "600" }}>
-                  &nbsp;Facilities
+                  &nbsp; marketing analytics
                 </button>
               </li>
+              <li className="mallpp_sigle_list">
+                Keep track of your
+                <button onClick={() => setTab(5)} style={{ fontWeight: "600" }}>
+                  &nbsp; brand in malls
+                </button>
+              </li>
+              {/* <li className="mallpp_sigle_list">
+                List your Mall's
+                <button onClick={() => setTab(6)} style={{ fontWeight: "600" }}>&nbsp;Facilities</button>
+              </li> */}
             </ul>
           </div>
 
@@ -371,11 +397,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big3">
-                100% Native
+                {welData ? welData.title : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big3">
-                In-store’s unique marketing adds respembles the experience of
-                stores in a mall
+                {welData ? welData.message: ""}
               </p>
             </div>
             <div
@@ -386,11 +411,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big2">
-                Fulfillment
+                {welData ? welData.title2 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big2">
-                One buying journey, multiple fulfillment options with preference
-                for In-store.
+                {welData ? welData.message2: ""}
               </p>
             </div>
             <div
@@ -401,11 +425,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big mallpp_part2_card_description_big2">
-                Unified
+              {welData ? welData.title3 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big2">
-                Unified channel for retail brands to bring together consumers,
-                marketing & products
+                {welData ? welData.message3: ""}
               </p>
             </div>
             <div
@@ -416,11 +439,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big mallpp_part2_card_description_big2">
-                Personalised
+                {welData ? welData.title4 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big2">
-                The In-store platform takes personalised content advertising to
-                a whole new level
+                {welData ? welData.message4: ""}
               </p>
             </div>
             <div
@@ -431,10 +453,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big2">
-                Intergrated Publishing
+                {welData ? welData.title5 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big2">
-                Digital brand marketing/ advertising
+                {welData ? welData.message5: ""}
               </p>
             </div>
             <div
@@ -445,11 +467,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big2">
-                Simplified
+                {welData ? welData.title6 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big2">
-                The In-store platform offers small business and enterprise
-                solutions
+                {welData ? welData.message6: ""}
               </p>
             </div>
             {/* single cards end */}
@@ -457,7 +478,7 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
           {/* profile cards wrapp end */}
         </div>
 
-        <div className="mallpp_main_wrapp mall-display-none4 cinemaprofile">
+        <div className="mallpp_main_wrapp mall-display-none4">
           <div className="mallpp_part1">
             <p className="mall_part_1_heading">
               Welcome{" "}
@@ -470,42 +491,53 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
               Let’s start by setting up your account profile:
             </h5>
 
-            <ul>
-              <li className="mallpp_sigle_list">
-                Populate your profile to introduce your shopping center/mall on
-                In-store under{" "}
-                <button onClick={() => setTab(2)} style={{ fontWeight: "600" }}>
-                  Account Settings
-                </button>
-              </li>
-              <li className="mallpp_sigle_list">
-                Advertise your collection of retailers in your mall under{" "}
-                <button onClick={() => setTab(3)} style={{ fontWeight: "600" }}>
-                  {" "}
-                  Mall Retailers
-                </button>
-              </li>
-              <li className="mallpp_sigle_list">
-                Upload the
-                <button onClick={() => setTab(4)} style={{ fontWeight: "600" }}>
-                  &nbsp;Eateries
-                </button>{" "}
-                in your Mall
-              </li>
-              <li className="mallpp_sigle_list">
-                Update and promote
-                <button onClick={() => setTab(5)} style={{ fontWeight: "600" }}>
-                  &nbsp;Events
-                </button>{" "}
-                in your Mall
-              </li>
-              <li className="mallpp_sigle_list">
-                List your Mall's
-                <button onClick={() => setTab(6)} style={{ fontWeight: "600" }}>
-                  &nbsp;Facilities
-                </button>
-              </li>
-            </ul>
+            <div>
+              <div className="cinema_profile_bullet">
+                <div>●</div>
+                <div className="mallpp_sigle_list">
+                  Populate your store profile with your store details under{" "}
+                  <button
+                    onClick={() => setTab(2)}
+                    style={{ fontWeight: "600" }}>
+                    Account Settings
+                  </button>
+                </div>
+              </div>
+              <div className="cinema_profile_bullet">
+                <div>●</div>
+                <div className="mallpp_sigle_list">
+                  Upload marketing content via{" "}
+                  <button
+                    onClick={() => setTab(3)}
+                    style={{ fontWeight: "600" }}>
+                    {" "}
+                    Product Tiles
+                  </button>
+                </div>
+              </div>
+              <div className="cinema_profile_bullet">
+                <div>●</div>
+                <div className="mallpp_sigle_list">
+                  Keep track of your
+                  <button
+                    onClick={() => setTab(4)}
+                    style={{ fontWeight: "600" }}>
+                    &nbsp; marketing analytics
+                  </button>
+                </div>
+              </div>
+              <div className="cinema_profile_bullet">
+                <div>●</div>
+                <div className="mallpp_sigle_list">
+                  Keep track of your
+                  <button
+                    onClick={() => setTab(5)}
+                    style={{ fontWeight: "600" }}>
+                    &nbsp; brand in malls
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* profile cards wrapp start */}
@@ -519,11 +551,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big3">
-                100% Native
+                {welData ? welData.title : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big3">
-                In-store’s unique marketing adds respembles the experience of
-                stores in a mall
+                {welData ? welData.message: ""}
               </p>
             </div>
             <div
@@ -534,11 +565,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big2">
-                Fulfillment
+                {welData ? welData.title2 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big2">
-                One buying journey, multiple fulfillment options with preference
-                for In-store.
+                {welData ? welData.message2: ""}
               </p>
             </div>
             <div
@@ -549,11 +579,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big mallpp_part2_card_description_big2">
-                Unified
+              {welData ? welData.title3 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big2">
-                Unified channel for retail brands to bring together consumers,
-                marketing & products
+                {welData ? welData.message3: ""}
               </p>
             </div>
             <div
@@ -564,11 +593,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big mallpp_part2_card_description_big2">
-                Personalised
+                {welData ? welData.title4 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big2">
-                The In-store platform takes personalised content advertising to
-                a whole new level
+                {welData ? welData.message4: ""}
               </p>
             </div>
             <div
@@ -579,10 +607,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big2">
-                Intergrated Publishing
+                {welData ? welData.title5 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big2">
-                Digital brand marketing/ advertising
+                {welData ? welData.message5: ""}
               </p>
             </div>
             <div
@@ -593,11 +621,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big2">
-                Simplified
+                {welData ? welData.title6 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big2">
-                The In-store platform offers small business and enterprise
-                solutions
+                {welData ? welData.message6: ""}
               </p>
             </div>
             {/* single cards end */}
@@ -618,42 +645,60 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
               Let’s start by setting up your account profile:
             </h5>
 
-            <ul>
-              <li className="mallpp_sigle_list">
-                Populate your profile to introduce your shopping center/mall on
-                In-store under{" "}
-                <button onClick={() => setTab(2)} style={{ fontWeight: "600" }}>
-                  Account Settings
-                </button>
-              </li>
-              <li className="mallpp_sigle_list">
-                Advertise your collection of retailers in your mall under{" "}
-                <button onClick={() => setTab(3)} style={{ fontWeight: "600" }}>
-                  {" "}
-                  Mall Retailers
-                </button>
-              </li>
-              <li className="mallpp_sigle_list">
-                Upload the
-                <button onClick={() => setTab(4)} style={{ fontWeight: "600" }}>
-                  &nbsp;Eateries
-                </button>{" "}
-                in your Mall
-              </li>
-              <li className="mallpp_sigle_list">
-                Update and promote
-                <button onClick={() => setTab(5)} style={{ fontWeight: "600" }}>
-                  &nbsp;Events
-                </button>{" "}
-                in your Mall
-              </li>
-              <li className="mallpp_sigle_list">
-                List your Mall's
-                <button onClick={() => setTab(6)} style={{ fontWeight: "600" }}>
-                  &nbsp;Facilities
-                </button>
-              </li>
-            </ul>
+            <div>
+              <div className="cinema_profile_bullet">
+                <div>
+                  <b>●</b>
+                </div>
+                <div className="mallpp_sigle_list">
+                  Populate your store profile with your store details under{" "}
+                  <button
+                    onClick={() => setTab(2)}
+                    style={{ fontWeight: "600" }}>
+                    Account Settings
+                  </button>
+                </div>
+              </div>
+              <div className="cinema_profile_bullet">
+                <div>
+                  <b>●</b>
+                </div>
+                <div className="mallpp_sigle_list">
+                  Upload marketing content via{" "}
+                  <button
+                    onClick={() => setTab(3)}
+                    style={{ fontWeight: "600" }}>
+                    Product Tiles
+                  </button>
+                </div>
+              </div>
+              <div className="cinema_profile_bullet">
+                <div>
+                  <b>●</b>
+                </div>
+                <div className="mallpp_sigle_list">
+                  Keep track of your
+                  <button
+                    onClick={() => setTab(4)}
+                    style={{ fontWeight: "600" }}>
+                    marketing analytics{" "}
+                  </button>
+                </div>
+              </div>
+              <div className="cinema_profile_bullet">
+                <div>
+                  <b>●</b>
+                </div>
+                <div className="mallpp_sigle_list">
+                  Keep track of your
+                  <button
+                    onClick={() => setTab(5)}
+                    style={{ fontWeight: "600" }}>
+                    &nbsp; brand in malls
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* profile cards wrapp start */}
@@ -666,10 +711,9 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 // backgroundPosition: "center",
                 backgroundColor: "#ff8b00",
               }}>
-              <h5 className="mallpp_part2_card_heading">100% Native</h5>
+              <h5 className="mallpp_part2_card_heading">{welData ? welData.title : ""}</h5>
               <p className="mallpp_part2_card_description">
-                In-store’s unique marketing adds respembles the experience of
-                stores in a mall
+                {welData ? welData.message: ""}
               </p>
             </div>
             <div
@@ -679,10 +723,9 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 // backgroundPosition: "center",
                 backgroundColor: "#000",
               }}>
-              <h5 className="mallpp_part2_card_heading">Fulfillment</h5>
+              <h5 className="mallpp_part2_card_heading">{welData ? welData.title2 : ""}</h5>
               <p className="mallpp_part2_card_description">
-                One buying journey, multiple fulfillment options with preference
-                for In-store.
+                {welData ? welData.message2: ""}
               </p>
             </div>
             <div
@@ -692,10 +735,9 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 // backgroundPosition: "center",
                 backgroundColor: "#ff8b00",
               }}>
-              <h5 className="mallpp_part2_card_heading">Unified</h5>
+              <h5 className="mallpp_part2_card_heading">{welData ? welData.title3 : ""}</h5>
               <p className="mallpp_part2_card_description">
-                S Unified channel for retail brands to bring together consumers,
-                marketing & products
+                S {welData ? welData.message3: ""}
               </p>
             </div>
             <div
@@ -705,10 +747,9 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 // backgroundPosition: "center",
                 backgroundColor: "#000",
               }}>
-              <h5 className="mallpp_part2_card_heading">Personalised</h5>
+              <h5 className="mallpp_part2_card_heading">{welData ? welData.title4 : ""}</h5>
               <p className="mallpp_part2_card_description">
-                The In-store platform takes personalised content advertising to
-                a whole new level
+                {welData ? welData.message4: ""}
               </p>
             </div>
             <div
@@ -719,10 +760,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading">
-                Intergrated Publishing
+                {welData ? welData.title5 : ""}
               </h5>
               <p className="mallpp_part2_card_description">
-                Digital brand marketing/ advertising
+                {welData ? welData.message5: ""}
               </p>
             </div>
             <div
@@ -732,10 +773,9 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 // backgroundPosition: "center",
                 backgroundColor: "#000",
               }}>
-              <h5 className="mallpp_part2_card_heading">Simplified</h5>
+              <h5 className="mallpp_part2_card_heading">{welData ? welData.title6 : ""}</h5>
               <p className="mallpp_part2_card_description">
-                The In-store platform offers small business and enterprise
-                solutions
+                {welData ? welData.message6: ""}
               </p>
             </div>
             {/* single cards end */}
@@ -758,39 +798,34 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
 
             <ul>
               <li className="mallpp_sigle_list">
-                Populate your profile to introduce your shopping center/mall on
-                In-store under{" "}
+                Populate your store profile with your store details under{" "}
                 <button onClick={() => setTab(2)} style={{ fontWeight: "600" }}>
                   Account Settings
                 </button>
               </li>
               <li className="mallpp_sigle_list">
-                Advertise your collection of retailers in your mall under{" "}
+                Upload marketing content via{" "}
                 <button onClick={() => setTab(3)} style={{ fontWeight: "600" }}>
                   {" "}
-                  Mall Retailers
+                  Product Tiles
                 </button>
               </li>
               <li className="mallpp_sigle_list">
-                Upload the
+                Keep track of your
                 <button onClick={() => setTab(4)} style={{ fontWeight: "600" }}>
-                  &nbsp;Eateries
-                </button>{" "}
-                in your Mall
-              </li>
-              <li className="mallpp_sigle_list">
-                Update and promote
-                <button onClick={() => setTab(5)} style={{ fontWeight: "600" }}>
-                  &nbsp;Events
-                </button>{" "}
-                in your Mall
-              </li>
-              <li className="mallpp_sigle_list">
-                List your Mall's
-                <button onClick={() => setTab(6)} style={{ fontWeight: "600" }}>
-                  &nbsp;Facilities
+                  &nbsp; marketing analytics
                 </button>
               </li>
+              <li className="mallpp_sigle_list">
+                Keep track of your
+                <button onClick={() => setTab(5)} style={{ fontWeight: "600" }}>
+                  &nbsp; brand in malls
+                </button>
+              </li>
+              {/* <li className="mallpp_sigle_list">
+                List your Mall's
+                <button onClick={() => setTab(6)} style={{ fontWeight: "600" }}>&nbsp;Facilities</button>
+              </li> */}
             </ul>
           </div>
 
@@ -805,11 +840,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big6">
-                100% Native
+                {welData ? welData.title : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big6">
-                In-store’s unique marketing adds respembles the experience of
-                stores in a mall
+                {welData ? welData.message: ""}
               </p>
             </div>
             <div
@@ -820,11 +854,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big6">
-                Fulfillment
+                {welData ? welData.title2 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big6">
-                One buying journey, multiple fulfillment options with preference
-                for In-store.
+                {welData ? welData.message2: ""}
               </p>
             </div>
             <div
@@ -835,11 +868,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big6">
-                Unified
+              {welData ? welData.title3 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big6">
-                S Unified channel for retail brands to bring together consumers,
-                marketing & products
+                S {welData ? welData.message3: ""}
               </p>
             </div>
             <div
@@ -850,11 +882,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big6">
-                Personalised
+                {welData ? welData.title4 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big6">
-                The In-store platform takes personalised content advertising to
-                a whole new level
+                {welData ? welData.message4: ""}
               </p>
             </div>
             <div
@@ -865,10 +896,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big6">
-                Intergrated Publishing
+                {welData ? welData.title5 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big6">
-                Digital brand marketing/ advertising
+                {welData ? welData.message5: ""}
               </p>
             </div>
             <div
@@ -879,11 +910,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big6">
-                Simplified
+                {welData ? welData.title6 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big6">
-                The In-store platform offers small business and enterprise
-                solutions
+                {welData ? welData.message6: ""}
               </p>
             </div>
             {/* single cards end */}
@@ -891,7 +921,7 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
           {/* profile cards wrapp end */}
         </div>
 
-        <div className="mallpp_main_wrapp mall-display-none7 cinemaprofile">
+        <div className="mallpp_main_wrapp mall-display-none7">
           <div className="mallpp_part1">
             <p className="mall_part_1_heading">
               Welcome{" "}
@@ -904,42 +934,52 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
               Let’s start by setting up your account profile:
             </h5>
 
-            <ul>
-              <li className="mallpp_sigle_list">
-                Populate your profile to introduce your shopping center/mall on
-                In-store under{" "}
-                <button onClick={() => setTab(2)} style={{ fontWeight: "600" }}>
-                  Account Settings
-                </button>
-              </li>
-              <li className="mallpp_sigle_list">
-                Advertise your collection of retailers in your mall under{" "}
-                <button onClick={() => setTab(3)} style={{ fontWeight: "600" }}>
-                  {" "}
-                  Mall Retailers
-                </button>
-              </li>
-              <li className="mallpp_sigle_list">
-                Upload the
-                <button onClick={() => setTab(4)} style={{ fontWeight: "600" }}>
-                  &nbsp;Eateries
-                </button>{" "}
-                in your Mall
-              </li>
-              <li className="mallpp_sigle_list">
-                Update and promote
-                <button onClick={() => setTab(5)} style={{ fontWeight: "600" }}>
-                  &nbsp;Events
-                </button>{" "}
-                in your Mall
-              </li>
-              <li className="mallpp_sigle_list">
-                List your Mall's
-                <button onClick={() => setTab(6)} style={{ fontWeight: "600" }}>
-                  &nbsp;Facilities
-                </button>
-              </li>
-            </ul>
+            <div>
+              <div className="cinema_profile_bullet">
+                <div>●</div>
+                <div className="mallpp_sigle_list">
+                  Populate your store profile with your store details under{" "}
+                  <button
+                    onClick={() => setTab(2)}
+                    style={{ fontWeight: "600" }}>
+                    Account Settings
+                  </button>
+                </div>
+              </div>
+              <div className="cinema_profile_bullet">
+                <div>●</div>
+                <div className="mallpp_sigle_list">
+                  Upload marketing content via
+                  <button
+                    onClick={() => setTab(3)}
+                    style={{ fontWeight: "600" }}>
+                    Product Tiles
+                  </button>
+                </div>
+              </div>
+              <div className="cinema_profile_bullet">
+                <div>●</div>
+                <div className="mallpp_sigle_list">
+                  Keep track of your
+                  <button
+                    onClick={() => setTab(4)}
+                    style={{ fontWeight: "600" }}>
+                    &nbsp; marketing analytics
+                  </button>
+                </div>
+              </div>
+              <div className="cinema_profile_bullet">
+                <div>●</div>
+                <div className="mallpp_sigle_list">
+                  Keep track of your
+                  <button
+                    onClick={() => setTab(5)}
+                    style={{ fontWeight: "600" }}>
+                    &nbsp; brand in malls
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* profile cards wrapp start */}
@@ -953,11 +993,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big6">
-                100% Native
+                {welData ? welData.title : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big7">
-                In-store’s unique marketing adds respembles the experience of
-                stores in a mall
+                {welData ? welData.message: ""}
               </p>
             </div>
             <div
@@ -968,11 +1007,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big6">
-                Fulfillment
+                {welData ? welData.title2 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big7">
-                One buying journey, multiple fulfillment options with preference
-                for In-store.
+                {welData ? welData.message2: ""}
               </p>
             </div>
             <div
@@ -983,11 +1021,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big6">
-                Unified
+              {welData ? welData.title3 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big7">
-                S Unified channel for retail brands to bring together consumers,
-                marketing & products
+                S {welData ? welData.message3: ""}
               </p>
             </div>
             <div
@@ -998,11 +1035,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big6">
-                Personalised
+                {welData ? welData.title4 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big7">
-                The In-store platform takes personalised content advertising to
-                a whole new level
+                {welData ? welData.message4: ""}
               </p>
             </div>
             <div
@@ -1013,10 +1049,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big6">
-                Intergrated Publishing
+                {welData ? welData.title5 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big7">
-                Digital brand marketing/ advertising
+                {welData ? welData.message5: ""}
               </p>
             </div>
             <div
@@ -1027,11 +1063,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big6">
-                Simplified
+                {welData ? welData.title6 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big7">
-                The In-store platform offers small business and enterprise
-                solutions
+                {welData ? welData.message6: ""}
               </p>
             </div>
             {/* single cards end */}
@@ -1054,39 +1089,34 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
 
             <ul>
               <li className="mallpp_sigle_list">
-                Populate your profile to introduce your shopping center/mall on
-                In-store under{" "}
+                Populate your store profile with your store details under{" "}
                 <button onClick={() => setTab(2)} style={{ fontWeight: "600" }}>
                   Account Settings
                 </button>
               </li>
               <li className="mallpp_sigle_list">
-                Advertise your collection of retailers in your mall under{" "}
+                Upload marketing content via{" "}
                 <button onClick={() => setTab(3)} style={{ fontWeight: "600" }}>
                   {" "}
-                  Mall Retailers
+                  Product Tiles
                 </button>
               </li>
               <li className="mallpp_sigle_list">
-                Upload the
+                Keep track of your
                 <button onClick={() => setTab(4)} style={{ fontWeight: "600" }}>
-                  &nbsp;Eateries
-                </button>{" "}
-                in your Mall
-              </li>
-              <li className="mallpp_sigle_list">
-                Update and promote
-                <button onClick={() => setTab(5)} style={{ fontWeight: "600" }}>
-                  &nbsp;Events
-                </button>{" "}
-                in your Mall
-              </li>
-              <li className="mallpp_sigle_list">
-                List your Mall's
-                <button onClick={() => setTab(6)} style={{ fontWeight: "600" }}>
-                  &nbsp;Facilities
+                  &nbsp; marketing analytics
                 </button>
               </li>
+              <li className="mallpp_sigle_list">
+                Keep track of your
+                <button onClick={() => setTab(5)} style={{ fontWeight: "600" }}>
+                  &nbsp; brand in malls
+                </button>
+              </li>
+              {/* <li className="mallpp_sigle_list">
+                List your Mall's
+                <button onClick={() => setTab(6)} style={{ fontWeight: "600" }}>&nbsp;Facilities</button>
+              </li> */}
             </ul>
           </div>
 
@@ -1101,11 +1131,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big">
-                100% Native
+                {welData ? welData.title : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big">
-                In-store’s unique marketing adds respembles the experience of
-                stores in a mall
+                {welData ? welData.message: ""}
               </p>
             </div>
             <div
@@ -1116,11 +1145,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big8">
-                Fulfillment
+                {welData ? welData.title2 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big8">
-                One buying journey, multiple fulfillment options with preference
-                for In-store.
+                {welData ? welData.message2: ""}
               </p>
             </div>
             <div
@@ -1131,11 +1159,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big8">
-                Unified
+              {welData ? welData.title3 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big8">
-                Unified channel for retail brands to bring together consumers,
-                marketing & products
+                {welData ? welData.message3: ""}
               </p>
             </div>
             <div
@@ -1146,11 +1173,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big8">
-                Personalised
+                {welData ? welData.title4 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big8">
-                The In-store platform takes personalised content advertising to
-                a whole new level
+                {welData ? welData.message4: ""}
               </p>
             </div>
             <div
@@ -1161,10 +1187,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big8">
-                Intergrated Publishing
+                {welData ? welData.title5 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big8">
-                Digital brand marketing/ advertising
+                {welData ? welData.message5: ""}
               </p>
             </div>
             <div
@@ -1175,11 +1201,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big8">
-                Simplified
+                {welData ? welData.title6 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big8">
-                The In-store platform offers small business and enterprise
-                solutions
+                {welData ? welData.message6: ""}
               </p>
             </div>
             {/* single cards end */}
@@ -1202,39 +1227,34 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
 
             <ul>
               <li className="mallpp_sigle_list">
-                Populate your profile to introduce your shopping center/mall on
-                In-store under{" "}
+                Populate your store profile with your store details under{" "}
                 <button onClick={() => setTab(2)} style={{ fontWeight: "600" }}>
                   Account Settings
                 </button>
               </li>
               <li className="mallpp_sigle_list">
-                Advertise your collection of retailers in your mall under{" "}
+                Upload marketing content via{" "}
                 <button onClick={() => setTab(3)} style={{ fontWeight: "600" }}>
                   {" "}
-                  Mall Retailers
+                  Product Tiles
                 </button>
               </li>
               <li className="mallpp_sigle_list">
-                Upload the
+                Keep track of your
                 <button onClick={() => setTab(4)} style={{ fontWeight: "600" }}>
-                  &nbsp;Eateries
-                </button>{" "}
-                in your Mall
-              </li>
-              <li className="mallpp_sigle_list">
-                Update and promote
-                <button onClick={() => setTab(5)} style={{ fontWeight: "600" }}>
-                  &nbsp;Events
-                </button>{" "}
-                in your Mall
-              </li>
-              <li className="mallpp_sigle_list">
-                List your Mall's
-                <button onClick={() => setTab(6)} style={{ fontWeight: "600" }}>
-                  &nbsp;Facilities
+                  &nbsp; marketing analytics
                 </button>
               </li>
+              <li className="mallpp_sigle_list">
+                Keep track of your
+                <button onClick={() => setTab(5)} style={{ fontWeight: "600" }}>
+                  &nbsp; brand in malls
+                </button>
+              </li>
+              {/* <li className="mallpp_sigle_list">
+                List your Mall's
+                <button onClick={() => setTab(6)} style={{ fontWeight: "600" }}>&nbsp;Facilities</button>
+              </li> */}
             </ul>
           </div>
 
@@ -1249,11 +1269,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big">
-                100% Native
+                {welData ? welData.title : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big">
-                In-store’s unique marketing adds respembles the experience of
-                stores in a mall
+                {welData ? welData.message: ""}
               </p>
             </div>
             <div
@@ -1264,11 +1283,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big">
-                Fulfillment
+                {welData ? welData.title2 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big">
-                One buying journey, multiple fulfillment options with preference
-                for In-store.
+                {welData ? welData.message2: ""}
               </p>
             </div>
             <div
@@ -1279,11 +1297,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big">
-                Unified
+              {welData ? welData.title3 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big">
-                Unified channel for retail brands to bring together consumers,
-                marketing & products
+                {welData ? welData.message3: ""}
               </p>
             </div>
             <div
@@ -1294,11 +1311,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big">
-                Personalised
+                {welData ? welData.title4 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big">
-                The In-store platform takes personalised content advertising to
-                a whole new level
+                {welData ? welData.message4: ""}
               </p>
             </div>
             <div
@@ -1309,10 +1325,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big">
-                Intergrated Publishing
+                {welData ? welData.title5 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big">
-                Digital brand marketing/ advertising
+                {welData ? welData.message5: ""}
               </p>
             </div>
             <div
@@ -1323,11 +1339,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big">
-                Simplified
+                {welData ? welData.title6 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big">
-                The In-store platform offers small business and enterprise
-                solutions
+                {welData ? welData.message6: ""}
               </p>
             </div>
             {/* single cards end */}
@@ -1350,39 +1365,34 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
 
             <ul>
               <li className="mallpp_sigle_list">
-                Populate your profile to introduce your shopping center/mall on
-                In-store under{" "}
+                Populate your store profile with your store details under{" "}
                 <button onClick={() => setTab(2)} style={{ fontWeight: "600" }}>
                   Account Settings
                 </button>
               </li>
               <li className="mallpp_sigle_list">
-                Advertise your collection of retailers in your mall under{" "}
+                Upload marketing content via{" "}
                 <button onClick={() => setTab(3)} style={{ fontWeight: "600" }}>
                   {" "}
-                  Mall Retailers
+                  Product Tiles
                 </button>
               </li>
               <li className="mallpp_sigle_list">
-                Upload the
+                Keep track of your
                 <button onClick={() => setTab(4)} style={{ fontWeight: "600" }}>
-                  &nbsp;Eateries
-                </button>{" "}
-                in your Mall
-              </li>
-              <li className="mallpp_sigle_list">
-                Update and promote
-                <button onClick={() => setTab(5)} style={{ fontWeight: "600" }}>
-                  &nbsp;Events
-                </button>{" "}
-                in your Mall
-              </li>
-              <li className="mallpp_sigle_list">
-                List your Mall's
-                <button onClick={() => setTab(6)} style={{ fontWeight: "600" }}>
-                  &nbsp;Facilities
+                  &nbsp; marketing analytics
                 </button>
               </li>
+              <li className="mallpp_sigle_list">
+                Keep track of your
+                <button onClick={() => setTab(5)} style={{ fontWeight: "600" }}>
+                  &nbsp; brand in malls
+                </button>
+              </li>
+              {/* <li className="mallpp_sigle_list">
+                List your Mall's
+                <button onClick={() => setTab(6)} style={{ fontWeight: "600" }}>&nbsp;Facilities</button>
+              </li> */}
             </ul>
           </div>
 
@@ -1397,11 +1407,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big">
-                100% Native
+                {welData ? welData.title : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big">
-                In-store’s unique marketing adds respembles the experience of
-                stores in a mall
+                {welData ? welData.message: ""}
               </p>
             </div>
             <div
@@ -1412,11 +1421,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big">
-                Fulfillment
+                {welData ? welData.title2 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big">
-                One buying journey, multiple fulfillment options with preference
-                for In-store.
+                {welData ? welData.message2: ""}
               </p>
             </div>
             <div
@@ -1427,11 +1435,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big">
-                Unified
+              {welData ? welData.title3 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big">
-                Unified channel for retail brands to bring together consumers,
-                marketing & products
+                {welData ? welData.message3: ""}
               </p>
             </div>
             <div
@@ -1442,11 +1449,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big">
-                Personalised
+                {welData ? welData.title4 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big">
-                The In-store platform takes personalised content advertising to
-                a whole new level
+                {welData ? welData.message4: ""}
               </p>
             </div>
             <div
@@ -1457,10 +1463,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big">
-                Intergrated Publishing
+                {welData ? welData.title5 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big">
-                Digital brand marketing/ advertising
+                {welData ? welData.message5: ""}
               </p>
             </div>
             <div
@@ -1471,11 +1477,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big">
-                Simplified
+                {welData ? welData.title6 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big">
-                The In-store platform offers small business and enterprise
-                solutions
+                {welData ? welData.message6: ""}
               </p>
             </div>
             {/* single cards end */}
@@ -1498,39 +1503,34 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
 
             <ul>
               <li className="mallpp_sigle_list">
-                Populate your profile to introduce your shopping center/mall on
-                In-store under{" "}
+                Populate your store profile with your store details under{" "}
                 <button onClick={() => setTab(2)} style={{ fontWeight: "600" }}>
                   Account Settings
                 </button>
               </li>
               <li className="mallpp_sigle_list">
-                Advertise your collection of retailers in your mall under{" "}
+                Upload marketing content via{" "}
                 <button onClick={() => setTab(3)} style={{ fontWeight: "600" }}>
                   {" "}
-                  Mall Retailers
+                  Product Tiles
                 </button>
               </li>
               <li className="mallpp_sigle_list">
-                Upload the
+                Keep track of your
                 <button onClick={() => setTab(4)} style={{ fontWeight: "600" }}>
-                  &nbsp;Eateries
-                </button>{" "}
-                in your Mall
-              </li>
-              <li className="mallpp_sigle_list">
-                Update and promote
-                <button onClick={() => setTab(5)} style={{ fontWeight: "600" }}>
-                  &nbsp;Events
-                </button>{" "}
-                in your Mall
-              </li>
-              <li className="mallpp_sigle_list">
-                List your Mall's
-                <button onClick={() => setTab(6)} style={{ fontWeight: "600" }}>
-                  &nbsp;Facilities
+                  &nbsp; marketing analytics
                 </button>
               </li>
+              <li className="mallpp_sigle_list">
+                Keep track of your
+                <button onClick={() => setTab(5)} style={{ fontWeight: "600" }}>
+                  &nbsp; brand in malls
+                </button>
+              </li>
+              {/* <li className="mallpp_sigle_list">
+                List your Mall's
+                <button onClick={() => setTab(6)} style={{ fontWeight: "600" }}>&nbsp;Facilities</button>
+              </li> */}
             </ul>
           </div>
 
@@ -1545,11 +1545,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big11">
-                100% Native
+                {welData ? welData.title : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big11">
-                In-store’s unique marketing adds respembles the experience of
-                stores in a mall
+                {welData ? welData.message: ""}
               </p>
             </div>
             <div
@@ -1560,11 +1559,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big11">
-                Fulfillment
+                {welData ? welData.title2 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big11">
-                One buying journey, multiple fulfillment options with preference
-                for In-store.
+                {welData ? welData.message2: ""}
               </p>
             </div>
             <div
@@ -1575,11 +1573,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big11">
-                Unified
+              {welData ? welData.title3 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big11">
-                Unified channel for retail brands to bring together consumers,
-                marketing & products
+                {welData ? welData.message3: ""}
               </p>
             </div>
             <div
@@ -1590,11 +1587,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big11">
-                Personalised
+                {welData ? welData.title4 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big11">
-                The In-store platform takes personalised content advertising to
-                a whole new level
+                {welData ? welData.message4: ""}
               </p>
             </div>
             <div
@@ -1605,10 +1601,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big11">
-                Intergrated Publishing
+                {welData ? welData.title5 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big11">
-                Digital brand marketing/ advertising
+                {welData ? welData.message5: ""}
               </p>
             </div>
             <div
@@ -1619,11 +1615,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big11">
-                Simplified
+                {welData ? welData.title6 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big11">
-                The In-store platform offers small business and enterprise
-                solutions
+                {welData ? welData.message6: ""}
               </p>
             </div>
             {/* single cards end */}
@@ -1646,39 +1641,34 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
 
             <ul>
               <li className="mallpp_sigle_list">
-                Populate your profile to introduce your shopping center/mall on
-                In-store under{" "}
+                Populate your store profile with your store details under{" "}
                 <button onClick={() => setTab(2)} style={{ fontWeight: "600" }}>
                   Account Settings
                 </button>
               </li>
               <li className="mallpp_sigle_list">
-                Advertise your collection of retailers in your mall under{" "}
+                Upload marketing content via{" "}
                 <button onClick={() => setTab(3)} style={{ fontWeight: "600" }}>
                   {" "}
-                  Mall Retailers
+                  Product Tiles
                 </button>
               </li>
               <li className="mallpp_sigle_list">
-                Upload the
+                Keep track of your
                 <button onClick={() => setTab(4)} style={{ fontWeight: "600" }}>
-                  &nbsp;Eateries
-                </button>{" "}
-                in your Mall
-              </li>
-              <li className="mallpp_sigle_list">
-                Update and promote
-                <button onClick={() => setTab(5)} style={{ fontWeight: "600" }}>
-                  &nbsp;Events
-                </button>{" "}
-                in your Mall
-              </li>
-              <li className="mallpp_sigle_list">
-                List your Mall's
-                <button onClick={() => setTab(6)} style={{ fontWeight: "600" }}>
-                  &nbsp;Facilities
+                  &nbsp; marketing analytics
                 </button>
               </li>
+              <li className="mallpp_sigle_list">
+                Keep track of your
+                <button onClick={() => setTab(5)} style={{ fontWeight: "600" }}>
+                  &nbsp; brand in malls
+                </button>
+              </li>
+              {/* <li className="mallpp_sigle_list">
+                List your Mall's
+                <button onClick={() => setTab(6)} style={{ fontWeight: "600" }}>&nbsp;Facilities</button>
+              </li> */}
             </ul>
           </div>
 
@@ -1693,11 +1683,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big">
-                100% Native
+                {welData ? welData.title : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big">
-                In-store’s unique marketing adds respembles the experience of
-                stores in a mall
+                {welData ? welData.message: ""}
               </p>
             </div>
             <div
@@ -1708,11 +1697,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big">
-                Fulfillment
+                {welData ? welData.title2 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big">
-                One buying journey, multiple fulfillment options with preference
-                for In-store.
+                {welData ? welData.message2: ""}
               </p>
             </div>
             <div
@@ -1723,11 +1711,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big">
-                Unified
+              {welData ? welData.title3 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big">
-                Unified channel for retail brands to bring together consumers,
-                marketing & products
+                {welData ? welData.message3: ""}
               </p>
             </div>
             <div
@@ -1738,11 +1725,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big">
-                Personalised
+                {welData ? welData.title4 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big">
-                The In-store platform takes personalised content advertising to
-                a whole new level
+                {welData ? welData.message4: ""}
               </p>
             </div>
             <div
@@ -1753,10 +1739,10 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#ff8b00",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big">
-                Intergrated Publishing
+                {welData ? welData.title5 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big">
-                Digital brand marketing/ advertising
+                {welData ? welData.message5: ""}
               </p>
             </div>
             <div
@@ -1767,18 +1753,17 @@ const CinemaProfilePage = ({ setTab, get_mall_auth_data, sidebaropen }) => {
                 backgroundColor: "#000",
               }}>
               <h5 className="mallpp_part2_card_heading mallpp_part2_card_heading_big">
-                Simplified
+                {welData ? welData.title6 : ""}
               </h5>
               <p className="mallpp_part2_card_description mallpp_part2_card_description_big">
-                The In-store platform offers small business and enterprise
-                solutions
+                {welData ? welData.message6: ""}
               </p>
             </div>
             {/* single cards end */}
           </div>
           {/* profile cards wrapp end */}
         </div>
-      </div>
+      </div>)}
     </>
   );
 };

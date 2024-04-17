@@ -224,7 +224,11 @@ const LeaderBoardCard = ({
   };
 
   const handleDateChange = (startDate, endDate) => {
-    console.log("==>", startDate, endDate);
+    if ((startDate && endDate !== "") || (startDate && endDate !== null)) {
+      SetWeekCondation(true);
+    } else {
+      SetWeekCondation(false);
+    }
     setSelectedDates({ startDate, endDate });
   };
 
@@ -237,15 +241,21 @@ const LeaderBoardCard = ({
     useDropzone({
       onDrop: (acceptedFiles) => {
         SetCondation(true);
+        const filteredFiles = acceptedFiles.filter(file => file.size <= 200000); // Limit size to 200KB (in bytes)
+
 
         {
           setFiles(
-            acceptedFiles.map((file) =>
+            filteredFiles.map((file) =>
               Object.assign(file, {
                 preview: URL.createObjectURL(file),
               })
             )
           );
+          if (filteredFiles.length !== acceptedFiles.length) {
+            // Notification('');
+            Notification("error","Error!", "Some files exceed the maximum size limit of 200KB and will not be uploaded.");
+          }
         }
 
         if (acceptedFiles.length === 0) {
@@ -265,44 +275,153 @@ const LeaderBoardCard = ({
 
   // Update Leaderboard Api
 
-  const UpdateLeaderboard = async () => {
+  const [getweekcondation, SetWeekCondation] = useState(false);
 
+  // const UpdateLeaderboard = async () => {
+  //   const { startDate, endDate } = selectedDates;
+  //   console.log("==>11", selectedDates);
+
+  //   if (title == "" || undefined) {
+  //     Notification("error", "Error!", "Please Enter Title!");
+  //     return;
+  //   } else if (weekname1 === "") {
+  //     Notification("error", "Error", "Please Enter Start Date");
+  //     return;
+  //   } else if (weekname2 === "") {
+  //     Notification("error", "Error", "Please Enter End Date");
+  //     return;
+  //   } else if (getmallarray.length < 0) {
+  //     Notification("error", "Error!", "Please Select Mall!");
+  //   }  else if (BrandName == "" || undefined) {
+  //     Notification("error", "Error!", "Please Select Brand!");
+  //   } else if (CategoryId == "" || undefined) {
+  //     Notification("error", "Error!", "Please Select Category!");
+  //   } else {
+  //     const formdata = await new FormData();
+  //     await formdata.append("id", item.id);
+  //     await formdata.append("title", title);
+  //     if (gettrue === true) {
+  //       for (var i = 0; i < regionidarray.length; i++) {
+  //         await formdata.append("region_id[" + i + "]", regionidarray[i].id);
+  //       }
+  //       for (var i = 0; i < mallidarray.length; i++) {
+  //         await formdata.append("mall_id[" + i + "]", mallidarray[i].id);
+  //       }
+  //     } else {
+  //       for (var i = 0; i < getmallarray.length; i++) {
+  //         await formdata.append(
+  //           "region_id[" + i + "]",
+  //           getmallarray[i].region_id
+  //         );
+  //       }
+  //       for (var i = 0; i < getmallarray.length; i++) {
+  //         await formdata.append("mall_id[" + i + "]", getmallarray[i].mall_id);
+  //       }
+  //     }
+  //     if (getweekcondation === true) {
+  //       await formdata.append(
+  //         "from_date",
+  //         moment(startDate[0]).format("YYYY-MM-DD")
+  //       );
+  //       await formdata.append(
+  //         "to_date",
+  //         moment(startDate[1]).format("YYYY-MM-DD")
+  //       );
+  //     } else {
+  //       await formdata.append("from_date", weekname1);
+  //       await formdata.append("to_date", weekname2);
+  //     }
+  //     await formdata.append("brand_id", BrandId);
+  //     await formdata.append("category_id", CategoryId);
+  //     await formdata.append("region_child_id[0]", "");
+  //     if (files[0] !== undefined) {
+  //       await formdata.append("image", files[0]);
+  //       for (var i = 0; i < peopleInfo.length; i++) {
+  //         formdata.append("region_child_id[" + i + "]", peopleInfo[i].id);
+  //       }
+  //     }
+
+  //     console.log("leaderboard formdata", formdata);
+
+  //     const data = await UpdateLeaderBoardApi(formdata);
+  //     if (data) {
+  //       if (data.success === 1) {
+  //         console.log("category-data", data);
+  //         Notification(
+  //           "success",
+  //           "Success!",
+  //           "Leaderboard Updated Successfully!"
+  //         );
+
+  //         setTab(1);
+  //         // getLeaderboard();
+  //         // window.location.reload();
+  //       } else if (data.success === 0){
+  //         Notification(
+  //           "error",
+  //           "Error!",
+  //           data.message
+  //         );
+  //       }
+  //     }
+  //   }
+  // };
+
+  // Deleate Leaderboard Api
+
+
+  const UpdateLeaderboard = async () => {
     const { startDate, endDate } = selectedDates;
     console.log("==>11", selectedDates);
 
     if (title == "" || undefined) {
       Notification("error", "Error!", "Please Enter Title!");
       return;
-    } else if (startDate == "" || startDate == undefined) {
+    } else if (weekname1 === "") {
       Notification("error", "Error", "Please Enter Start Date");
       return;
-    } else if (endDate == "" || endDate == undefined) {
+    } else if (weekname2 === "") {
       Notification("error", "Error", "Please Enter End Date");
       return;
-    } else if (mallidarray == "" || undefined) {
+    } else if (getmallarray.length < 0) {
       Notification("error", "Error!", "Please Select Mall!");
-    } else if (regionidarray == "" || undefined) {
-      Notification("error", "Error!", "Please Select Region!");
-    } else if (BrandName == "" || undefined) {
-      Notification("error", "Error!", "Please Select Brand!");
     } else if (CategoryId == "" || undefined) {
       Notification("error", "Error!", "Please Select Category!");
     } else {
       const formdata = await new FormData();
       await formdata.append("id", item.id);
       await formdata.append("title", title);
-      for (var i = 0; i < regionidarray.length; i++) {
-        await formdata.append("region_id[" + i + "]", regionidarray[i].id);
+      if (gettrue === true) {
+        for (var i = 0; i < regionidarray.length; i++) {
+          await formdata.append("region_id[" + i + "]", regionidarray[i].id);
+        }
+        for (var i = 0; i < mallidarray.length; i++) {
+          await formdata.append("mall_id[" + i + "]", mallidarray[i].id);
+        }
+      } else {
+        for (var i = 0; i < getmallarray.length; i++) {
+          await formdata.append(
+            "region_id[" + i + "]",
+            getmallarray[i].region_id
+          );
+        }
+        for (var i = 0; i < getmallarray.length; i++) {
+          await formdata.append("mall_id[" + i + "]", getmallarray[i].mall_id);
+        }
       }
-      for (var i = 0; i < mallidarray.length; i++) {
-        await formdata.append("mall_id[" + i + "]", mallidarray[i].id);
+      if (getweekcondation === true) {
+        await formdata.append(
+          "from_date",
+          moment(startDate[0]).format("YYYY-MM-DD")
+        );
+        await formdata.append(
+          "to_date",
+          moment(startDate[1]).format("YYYY-MM-DD")
+        );
+      } else {
+        await formdata.append("from_date", weekname1);
+        await formdata.append("to_date", weekname2);
       }
-      await formdata.append(
-        "from_date",
-        moment(startDate[0]).format("YYYY-MM-DD")
-      );
-      await formdata.append("to_date", moment(startDate[1]).format("YYYY-MM-DD"));
-      await formdata.append("brand_id", BrandId);
       await formdata.append("category_id", CategoryId);
       await formdata.append("region_child_id[0]", "");
       if (files[0] !== undefined) {
@@ -327,13 +446,16 @@ const LeaderBoardCard = ({
           setTab(1);
           // getLeaderboard();
           // window.location.reload();
+        } else if (data.success === 0){
+          Notification(
+            "error",
+            "Error!",
+            data.message
+          );
         }
       }
     }
   };
-
-  // Deleate Leaderboard Api
-
   const DeleteLeaderboard = async () => {
     const formdata = await new FormData();
     await formdata.append("id", item.id);
@@ -481,7 +603,7 @@ const LeaderBoardCard = ({
     <>
       <div className="leaderboard-card-main-wrapp">
         {/* Leaderboard flex start */}
-        <div className="leaderboard-card-flex-wrapp">
+        <div className="leaderboard-card-flex-wrapp leaderboard-card-flex-wrapp-half">
           {/* Leaderboard first part responsive side start */}
           <div className="leaderboard-card-first-resp-main-wrapp">
             <p className="leaderboard-last-part-txt">
@@ -490,6 +612,7 @@ const LeaderBoardCard = ({
             <button className="leaderboard-delete-icon-btn">
               cancel{" "}
               <img
+                alt=""
                 src={images.delete_icon}
                 className="leaderboard-delete-icon"
               />
@@ -498,12 +621,12 @@ const LeaderBoardCard = ({
           {/* Leaderboard first part responsive side end*/}
 
           {/* Leaderboard part first start */}
-          <div className="leaderboard-card-part-first">
+          <div className="leaderboard-card-part-first ">
             {/* Leaderboad form start */}
 
             {/* Leaderboard inputbox start */}
             <div className="leaderboard-card-inpbox-wrapp">
-              <label className="leaderboard-card-lbl">Title:</label>
+              <label className="leaderboard-card-lbl">Title:<span className="star_require">*</span></label>
               <input
                 type="text"
                 className="leaderboard-card-inp"
@@ -511,7 +634,7 @@ const LeaderBoardCard = ({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
-            </div>
+            </div> 
             {/* Leaderboard inputbox end */}
 
             {/* Leaderboard inputbox start */}
@@ -522,25 +645,26 @@ const LeaderBoardCard = ({
                   openMallModal();
                 }}
                 className="leaderboard-card-inp"
-                style={{ display: "flex", gap: "5px", flexWrap: "wrap" }}>
+                style={{ display: "flex", gap: "5px", flexWrap: "wrap" }}
+              >
                 {gettrue === true ? (
                   <>
                     {selectedMalls && selectedMalls.length > 0
                       ? selectedMalls.map((mall, mindx) => {
-                        return <p className="mall-lib-font">{mall}</p>;
-                      })
+                          return <p className="mall-lib-font">{mall}</p>;
+                        })
                       : null}
                   </>
                 ) : (
                   <>
                     {getmallarray && getmallarray.length > 0
                       ? getmallarray.map((itm, mindx) => {
-                        return (
-                          <p className="mall-lib-font">
-                            {itm.malls ? itm.malls.name : ""}
-                          </p>
-                        );
-                      })
+                          return (
+                            <p className="mall-lib-font">
+                              {itm.malls ? itm.malls.name : ""}
+                            </p>
+                          );
+                        })
                       : null}
                   </>
                 )}
@@ -549,7 +673,7 @@ const LeaderBoardCard = ({
             {/* Leaderboard inputbox end */}
             <div className="leaderboard-card-inpbox-wrapp">
               <label className="leaderboard-card-lbl" htmlFor="">
-                Week
+                Week:<span className="star_require">*</span>
               </label>
               {/* <input
               type="date"
@@ -576,8 +700,7 @@ const LeaderBoardCard = ({
                 oneTap
                 hoverRange="week"
                 isoWeek
-                placeholder="Select your Week"
-
+                placeholder={`${weekname1} - ${weekname2}`}
                 className="leaderboard-card-inp DateRangePicker_LeaderboardCard"
                 startDate={selectedDates.startDate} // Set the initial start date
                 endDate={selectedDates.endDate}
@@ -586,7 +709,7 @@ const LeaderBoardCard = ({
               />
             </div>
             {/* Leaderboard inputbox start */}
-            <div className="leaderboard-card-inpbox-wrapp">
+            {/* <div className="leaderboard-card-inpbox-wrapp">
               <label className="leaderboard-card-lbl">Brand(s):</label>
               <div className="select-wrapper" style={{ width: "100%" }}>
                 <select
@@ -594,7 +717,8 @@ const LeaderBoardCard = ({
                   onChange={(e) => {
                     setBrandName(e.target.value);
                     setBrandId(e.target.value);
-                  }}>
+                  }}
+                >
                   <option selected disabled value="">
                     {BrandName}
                   </option>
@@ -610,19 +734,20 @@ const LeaderBoardCard = ({
                     })}
                 </select>
               </div>
-            </div>
+            </div> */}
             {/* Leaderboard inputbox end */}
 
             {/* Leaderboard inputbox start */}
             <div className="leaderboard-card-inpbox-wrapp">
-              <label className="leaderboard-card-lbl">Categories:</label>
+              <label className="leaderboard-card-lbl">Categories:<span className="star_require">*</span></label>
               <div className="select-wrapper" style={{ width: "100%" }}>
                 <select
-                  className="leaderboard-card-inp"
+                  className="leaderboard-card-inp cons_select_nav"
                   onChange={(e) => {
                     setCategory(e.target.value);
                     setCategoryId(e.target.value);
-                  }}>
+                  }}
+                >
                   <option selected disabled value="">
                     {Category}
                   </option>
@@ -734,7 +859,8 @@ const LeaderBoardCard = ({
                           marginBottom: "10px",
                         }}
                       />
-                      <h4>.PDF .JPG .PNG</h4>
+                      <h4>.JPG .PNG .GIF (1050x284 pixels)</h4>
+                      <p>(max 200kb)</p>
                       <p>You can also upload file by</p>
                       {/* <input
                       {...getInputlogoProps()}
@@ -743,7 +869,8 @@ const LeaderBoardCard = ({
                       <button
                         type="button"
                         className="click_upload_btn"
-                        style={{ marginBottom: "10px" }}>
+                        style={{ marginBottom: "10px",color:"var(--color-orange)",fontWeight:"600" }}
+                      >
                         click here
                       </button>
                       {/* <a href="">clicking here</a> */}
@@ -773,7 +900,8 @@ const LeaderBoardCard = ({
                       <button
                         type="button"
                         className="click_upload_btn"
-                        style={{ marginBottom: "10px" }}>
+                        style={{ marginBottom: "10px" }}
+                      >
                         click here
                       </button>
                       {/* <a href="">clicking here</a> */}
@@ -783,6 +911,7 @@ const LeaderBoardCard = ({
                   <>
                     <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl">
                       <img
+                        alt=""
                         src={item.image_path}
                         style={{ width: "100%", height: "100%" }}
                         className="img-fluidb"
@@ -798,15 +927,17 @@ const LeaderBoardCard = ({
           {/* Leaderboard part second end */}
 
           {/* Leaderboard part third start */}
-          <div className="leaderboard-card-part-third">
+          <div className="leaderboard-card-part-third leaderboard-card-part-third-half">
             <button
               onClick={() => {
                 DeleteLeaderboard();
               }}
-              className="leaderboard-delete-icon-btn">
+              className="leaderboard-delete-icon-btn"
+            >
               cancel{" "}
               <img
                 src={images.delete_icon}
+                alt=""
                 className="leaderboard-delete-icon"
               />
             </button>
@@ -816,22 +947,23 @@ const LeaderBoardCard = ({
             <div className="leaderboard-btn-box">
               {item.cart_status === 0 ? (
                 <>
-                  <button
-                    className="btn btn-orange"
+                  <button style={{padding:"0.4rem",fontSize:"16px"}}
+                    className="btn btn-black"
                     onClick={() => {
                       Addtocart();
                       // window.location.reload(true);
-                    }}>
+                    }}
+                  >
                     Add To Cart
                   </button>
                 </>
               ) : (
                 <button
-                  className="btn btn-orange"
-                // onClick={() => {
-                //   window.location.reload(true);
-                //   Addtocart();
-                // }}
+                  className="btn btn-black"
+                  // onClick={() => {
+                  //   window.location.reload(true);
+                  //   Addtocart();
+                  // }}
                 >
                   Added
                 </button>
@@ -849,10 +981,11 @@ const LeaderBoardCard = ({
             </button> */}
             <div className="leaderboard-btn-box">
               <button
-                className="btn btn-blue"
+                className="btn btn-orange"
                 onClick={() => {
                   UpdateLeaderboard();
-                }}>
+                }}
+              >
                 Update
               </button>
             </div>
@@ -860,43 +993,37 @@ const LeaderBoardCard = ({
           {/* Leaderboard part third end */}
 
           {/* Leaderboard last part responsive side start */}
-          <div className="leaderboard-card-sec-resp-main-wrapp">
+          <div
+            className="leaderboard-card-sec-resp-main-wrapp"
+            style={{ alignItems: "flex-end", gap: "1rem" }}
+          >
             <div className="leaderboard-btn-box">
               {item.cart_status === 0 ? (
                 <>
                   <button
-                    className="btn btn-orange"
+                    className="btn btn-black"
+                    style={{ width: "165px" }}
                     onClick={() => {
                       Addtocart();
-                    }}>
+                    }}
+                  >
                     Add To Cart
                   </button>
                 </>
               ) : (
-                <button
-                  className="btn btn-orange"
-                // onClick={() => {
-                //   window.location.reload(true);
-                //   Addtocart();
-                // }}
-                >
+                <button className="btn btn-black" style={{ width: "165px" }}>
                   Added
                 </button>
               )}
             </div>
-            {/* <Link className="leaderboard-delete-icon-btn">
-              <span className="leaderboard-extend-txt">Extend</span>{" "}
-              <img
-                src={images.extend_icon}
-                className="leaderboard-delete-icon"
-              />
-            </Link> */}
             <div className="leaderboard-btn-box">
               <button
-                className="btn btn-blue"
+                className="btn btn-orange"
+                style={{ width: "165px" }}
                 onClick={() => {
                   UpdateLeaderboard();
-                }}>
+                }}
+              >
                 Update
               </button>
             </div>
@@ -915,7 +1042,8 @@ const LeaderBoardCard = ({
         isOpen={mallMolalOpen}
         // onAfterOpen={afterOpenModal}
         onRequestClose={closeMallModal}
-        style={customStyles}>
+        style={customStyles}
+      >
         <div className="select_mall_main_wrapp">
           <div className="select_mall_base_wrapp">
             {/* mall heading */}
@@ -967,15 +1095,16 @@ const LeaderBoardCard = ({
             <div className="select_mall_tag_btns_wrapp">
               {selectedMalls && selectedMalls.length > 0
                 ? selectedMalls.map((mall, mindx) => {
-                  return (
-                    <button
-                      className="select_mall_tag_single_btn"
-                      style={{ backgroundColor: "#4FBB10" }}
-                      key={mindx}>
-                      {mall}
-                    </button>
-                  );
-                })
+                    return (
+                      <button
+                        className="select_mall_tag_single_btn"
+                        style={{ backgroundColor: "#4FBB10" }}
+                        key={mindx}
+                      >
+                        {mall}
+                      </button>
+                    );
+                  })
                 : null}
             </div>
 
@@ -985,84 +1114,89 @@ const LeaderBoardCard = ({
                   fontSize: "18px",
                   alignSelf: "start",
                   marginBottom: "1rem",
-                }}>
+                }}
+              >
                 Region
               </p>
 
               {getregion_array && getregion_array.length > 0
                 ? getregion_array.map((item, index) => {
-                  return (
-                    <div
-                      className="bim_accordian_wrapp"
-                      style={{ marginBottom: "6px" }}
-                      key={item.region_id}>
-                      <button
-                        className="bim_accordian_btn"
-                        onClick={() => {
-                          setToggle(item.region_id);
-                          handleRegionChange(
-                            item.region_name,
-                            item.region_id
-                          );
-                        }}>
-                        <p
-                          style={{
-                            color:
-                              item.region_id === toggle ? "#ff8b00" : "#000",
-                            fontWeight:
-                              item.region_id === toggle ? "500" : "300",
-                          }}>
-                          {item.region_name}
-                        </p>
-
-                        {item.region_id == toggle ? (
-                          <IoIosArrowUp size={20} color="#ff8b00" />
-                        ) : (
-                          <IoIosArrowDown size={20} />
-                        )}
-                      </button>
-                      {item.region_id == toggle ? (
-                        <div className="bim_accordian_mall_wrapp">
-                          {item.malls.map((itm, ind) => {
-                            return (
-                              <>
-                                <div
-                                  key={itm.id}
-                                  style={{
-                                    display: "flex",
-                                    gap: "10px",
-                                    marginLeft: "10px",
-                                  }}>
-                                  <input
-                                    type="checkbox"
-                                    checked={selectedMalls.includes(itm.name)}
-                                    // value={peopleInfo}
-                                    onChange={(e) => {
-                                      // handleCheckboxChange(e, itm, ind);
-                                      handleMallChange(itm.name, itm.id);
-                                    }}
-
-                                  // type="checkbox"
-                                  // checked={
-                                  //   getcheck[(itm, ind, "", item.region_id)]
-                                  // }
-                                  // onChange={(e) => {
-                                  //   check(itm, ind, "", item.region_id);
-                                  // }}
-                                  // value={peopleInfo}
-                                  />
-                                  <label htmlFor={itm.id}>{itm.name}</label>
-                                </div>
-                              </>
+                    return (
+                      <div
+                        className="bim_accordian_wrapp"
+                        style={{ marginBottom: "6px" }}
+                        key={item.region_id}
+                      >
+                        <button
+                          className="bim_accordian_btn"
+                          onClick={() => {
+                            setToggle(item.region_id);
+                            handleRegionChange(
+                              item.region_name,
+                              item.region_id
                             );
-                          })}
-                        </div>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                  );
-                })
+                          }}
+                        >
+                          <p
+                            style={{
+                              color:
+                                item.region_id === toggle ? "#ff8b00" : "#000",
+                              fontWeight:
+                                item.region_id === toggle ? "500" : "300",
+                            }}
+                          >
+                            {item.region_name}
+                          </p>
+
+                          {item.region_id == toggle ? (
+                            <IoIosArrowUp size={20} color="#ff8b00" />
+                          ) : (
+                            <IoIosArrowDown size={20} />
+                          )}
+                        </button>
+                        {item.region_id == toggle ? (
+                          <div className="bim_accordian_mall_wrapp">
+                            {item.malls.map((itm, ind) => {
+                              return (
+                                <>
+                                  <div
+                                    key={itm.id}
+                                    style={{
+                                      display: "flex",
+                                      gap: "10px",
+                                      marginLeft: "10px",
+                                    }}
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      checked={selectedMalls.includes(itm.name)}
+                                      // value={peopleInfo}
+                                      onChange={(e) => {
+                                        // handleCheckboxChange(e, itm, ind);
+                                        handleMallChange(itm.name, itm.id);
+                                      }}
+
+                                      // type="checkbox"
+                                      // checked={
+                                      //   getcheck[(itm, ind, "", item.region_id)]
+                                      // }
+                                      // onChange={(e) => {
+                                      //   check(itm, ind, "", item.region_id);
+                                      // }}
+                                      // value={peopleInfo}
+                                    />
+                                    <label htmlFor={itm.id}>{itm.name}</label>
+                                  </div>
+                                </>
+                              );
+                            })}
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    );
+                  })
                 : null}
             </div>
 
@@ -1072,7 +1206,8 @@ const LeaderBoardCard = ({
                 onClick={() => {
                   closeMallModal();
                   SetTrue(true);
-                }}>
+                }}
+              >
                 Submit
               </button>
             </div>

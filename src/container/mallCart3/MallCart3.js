@@ -17,12 +17,12 @@ const MallCart3 = () => {
           Thank you for purchasing V&A Waterfront Mall!{" "}
         </h3>
         <p>
-          By selecting the multiple options below we will be able to establilsh
+          By selecting the multiple options below we will be able to establish
           your complete &nbsp;
           <Link
             to={""}
             style={{ color: "var(--color-orange)", fontWeight: "700" }}>
-            Analytics Dashbboard
+            Analytics Dashboard
           </Link>
         </p>
       </div>

@@ -7,7 +7,7 @@ import images from "../../constants/images";
 import { useMallContext } from "../../context/mall_context";
 import { useEffect } from "react";
 
-const MallHeroEdit = ({ get_mall_auth_data, sidebaropen }) => {
+const MallHeroEdit = ({ get_mall_auth_data, sidebaropen,setTab }) => {
   const [files, setFiles] = useState([]);
   const [files2, setFiles2] = useState([]);
   const [getcondation, SetCondation] = useState(false);
@@ -126,12 +126,13 @@ const MallHeroEdit = ({ get_mall_auth_data, sidebaropen }) => {
   return (
     <div>
       <div>
-        <div className="brand-hero-edit-main-wrapp" {...getRootbannerProps()}>
-          <input
+        <div className="brand-hero-edit-main-wrapp" onClick={()=>{setTab(2)}}
+        //  {...getRootbannerProps()}
+         >
+          {/* <input
             {...getInputbannerProps()}
             accept="image/jpeg, image/jpg, image/png, image/eps"
-          // style={{ position: "relative" }}
-          />
+          /> */}
 
           {/* banner img */}
           {getcondation1 === true ? (
@@ -162,16 +163,16 @@ const MallHeroEdit = ({ get_mall_auth_data, sidebaropen }) => {
 
         {/* logo wrapp */}
         <div
-          className="band-inn-logo-wrapp"
+          className="band-inn-logo-wrapp" onClick={()=>{setTab(2)}}
           style={{ left: sidebaropen === false ? "5%" : "" }}
-          {...getRootlogoProps()}
+          // {...getRootlogoProps()}
         >
           {/* <div style={{ width: '100%' }} {...getRootlogoProps()}> */}
           {/* <div style={{ position: 'relative' }}> */}
-          <input
+          {/* <input
             {...getInputlogoProps()}
             accept="image/jpeg, image/jpg, image/png, image/eps"
-          />
+          /> */}
           {getcondation === true ? (
             <>
               {files2 && files2.length > 0 ? (

@@ -258,7 +258,7 @@ const CustomerHomePage = () => {
                 </div>
                 {/* hero end */}
                 <CustomerHomeWelcomeStore
-                  WcBtn={false}
+                  WcBtn={true}
                   titie={getCustData}
                   // titie={getCustData ? getCustData.welcome_title : ""}
                   des={
@@ -267,15 +267,15 @@ const CustomerHomePage = () => {
                 />
                 <WhyjoinCustomerHome getCustData={getCustData} />
                 {/* about in store register part-2 end*/}
-                <div className="main_wrapp registermall_main_wrapp bg-blue">
+                <div className="main_wrapp registermall_main_wrapp" style={{backgroundColor:"#fff"}}>
                   <div className="container registermall_base_wrapp">
                     <div className="registermall_sec1">
-                      <h2 className="h2">
+                      <h2 className="h2" style={{color:"#000",fontWeight:"600"}}>
                         {/* Lorem ipsum dolor sit
                     <br /> consectetuer */}
                         {getCustData ? getCustData.details_title_1 : ""}
                       </h2>
-                      <p>
+                      <p style={{color:"#000"}}>
                         {getCustData ? getCustData.details_description_1 : ""}
                         {/* Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
                     sed diam nonummy nibh euismod tincidunt ut laoreet dolore

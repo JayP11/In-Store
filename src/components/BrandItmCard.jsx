@@ -36,7 +36,7 @@ const BrandItmCard = ({ img }) => {
         //     setSingleStoreData(itm);
         //     setIsOpen(true);
         //   }}
-        className="stored_card_wrapp"
+        className="stored_card_wrapp cust-stored_card_wrapp"
       >
         {/* <div className="stored_card_edit_wrapp">
         <button className="stored_card_edit_btn">

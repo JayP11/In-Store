@@ -1,12 +1,24 @@
 .MallCart2_main {
-  padding: 5rem;
-  gap: 1rem;
-  display: flex;
-  flex-direction: column;
-}
-
-@media screen and (max-width: 768px) {
-  .MallCart2_main {
-    padding: 2rem;
+    padding: 5rem;
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
   }
-}
+  
+
+  .leaderboard-card-inpbox-wrapp-mall{
+    width: 50%;
+    align-items: center;
+  }
+  @media screen and (max-width: 768px) {
+    .MallCart2_main {
+      padding: 2rem;
+      padding-top: 5rem;
+    }
+
+    .leaderboard-card-inpbox-wrapp-mall{
+      align-items: start;
+    }
+
+    
+  }

@@ -10,15 +10,16 @@
   
   .CinemaHomeWelcome_head_inner {
     font-size: 45px;
-    font-weight: 600;
+    font-weight: 700;
   }
   
   .cinemahome_banner_main {
     display: flex;
     width: 100%;
+    height: 67vh;
   }
   .cinemahome_banner_img_main {
-    width: 100%;
+    width: 50%;
   }
   
   .cinemahome_banner_inner {
@@ -34,6 +35,11 @@
   @media screen and (max-width: 768px) {
     .cinemahome_banner_main {
       flex-direction: column;
+      height: 100%;
+    }
+
+    .cinemahome_banner_img_main {
+      width: 100%;
     }
   
     .CinemaHomeWelcome_head_inner {

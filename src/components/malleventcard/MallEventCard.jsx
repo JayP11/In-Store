@@ -35,6 +35,7 @@ const MallEventCard = ({
   edit_btns,
   setTab,
   EventApi,
+  setEventId,
 }) => {
   const { get_mall_auth_data, get_mall_store_data, DeleteEventApi } =
     useMallContext();
@@ -58,8 +59,8 @@ const MallEventCard = ({
         if (data.success === 1) {
           console.log("mall-data", data);
           Notification("success", "Success!", "Event Deleted Successfully!");
-          setTab(5);
-          EventApi();
+          setTab(1);
+          // EventApi();
         }
       }
     }
@@ -75,6 +76,7 @@ const MallEventCard = ({
               className="stored_card_edit_btn"
               onClick={() => {
                 setTab(11);
+                setEventId(id);
               }}>
               <img src={images.card_edit} alt="" />
             </button>
@@ -89,11 +91,11 @@ const MallEventCard = ({
           </div>
         )}
         {/* edit buttons end */}
-        <div className="event_single_wrapp">
+        <div className="event_single_wrapp cus_event_card_txt_main">
           <img src={img} alt="" />
-          <div className="event_single_inner_text_wrapp">
+          <div className="event_single_inner_text_wrapp cus_event_card_txt_main">
             <div>
-              <h5 className="h5" style={{ textTransform: "capitalize" }}>
+              <h5 className="h5" style={{ textTransform: "capitalize",fontWeight:"600" }}>
                 {name}
               </h5>
             </div>
@@ -102,7 +104,7 @@ const MallEventCard = ({
               {end_date === "" ? "" : moment(end_date).format("DD MMM YY")}
             </h6>
             {description.length > 200 ? (
-              <p style={{ fontWeight: "400" }}>
+              <p style={{ fontWeight: "400" }} className="cus_event_card_txt">
                 {description == "" ||
                 description == null ||
                 description == undefined ? null : (
@@ -120,6 +122,7 @@ const MallEventCard = ({
                         // marginTop: "10px",
                         padding: "0px",
                         fontWeight: "600",
+                        paddingLeft:"0.4rem"
                       }}
                       onClick={() => setReadMore(!readMore)}>
                       {readMore ? "Show less" : "  Read more"}
@@ -128,7 +131,7 @@ const MallEventCard = ({
                 )}
               </p>
             ) : (
-              <p style={{ fontWeight: "400" }}>
+              <p style={{ fontWeight: "400" }} className="cus_event_card_txt">
                 {description == "" ||
                 description == null ||
                 description == undefined ? null : (

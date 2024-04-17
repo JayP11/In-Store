@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./AddProductTilesBannerCard.css"
+import "./AddProductTilesBannerCard.css";
 import { useDropzone } from "react-dropzone";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { Link } from "react-router-dom";
@@ -48,6 +48,10 @@ const AddProductTilesBannerCard = ({
   const [getTag, setTag] = useState("");
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
+  const [size, setSize] = useState("");
+  const [filesqr, setFilesQr] = useState([]);
+
+
   // const [Category, setCategory] = useState("");
 
   const [selectedDates, setSelectedDates] = useState({
@@ -59,15 +63,10 @@ const AddProductTilesBannerCard = ({
 
   // const [deletemodalstate, setDleteModalstate] = useState(false);
   const [getcondition, setCondition] = useState(true);
+  const [selectedImage, setSelectedImage] = useState(null);
+
 
   useEffect(() => {
-    // setTitle(item.title ? item.title : "");
-    // setMallName(item.malls.name ? item.malls.name : '');
-    // setBrandName(item.brands.name ? item.brands.name : "");
-    // setCategory(item.categorys.name ? item.categorys.name : item.categorys.name);
-    // setDiscription(item.description ? item.description : item.description);
-    // setPrice(item.price ? item.price : item.price);
-    // setWeek(item.title ? item.title : "");
     console.log("get brand is", get_brand_data);
   }, []);
 
@@ -76,6 +75,8 @@ const AddProductTilesBannerCard = ({
     setSelectedDates({ startDate, endDate });
   };
 
+  
+
   // logo dropzon
 
   const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } =
@@ -83,15 +84,21 @@ const AddProductTilesBannerCard = ({
       onDrop: (acceptedFiles) => {
         console.log("file type", files[0]);
         console.log("acceptedFiles", acceptedFiles[0].File);
+        const filteredFiles = acceptedFiles.filter(file => file.size <= 50000); // Limit size to 200KB (in bytes)
 
         {
           setFiles(
-            acceptedFiles.map((file) =>
+            filteredFiles.map((file) =>
               Object.assign(file, {
                 preview: URL.createObjectURL(file),
               })
             )
           );
+
+          if (filteredFiles.length !== acceptedFiles.length) {
+            // Notification('');
+            Notification("error","Error!", "Some files exceed the maximum size limit of 50KB and will not be uploaded.");
+          }
         }
         setCondition(true);
         if (acceptedFiles.length === 0) {
@@ -108,6 +115,36 @@ const AddProductTilesBannerCard = ({
       alt="file"
     />
   ));
+
+  // QR Code
+
+  const { getRootProps: getRootlogoPropsQr, getInputProps: getInputlogoPropsQr } =
+  useDropzone({
+    onDrop: (acceptedFiles) => {
+      {
+        setFilesQr(
+          acceptedFiles.map((file) =>
+            Object.assign(file, {
+              preview: URL.createObjectURL(file),
+            })
+          )
+        );
+      }
+      // setCondition(true);
+      // if (acceptedFiles.length === 0) {
+      //   window.location.reload(true);
+      // }
+    },
+  });
+
+const thumbsqr = filesqr.map((file) => (
+  <img
+    src={file.preview}
+    style={{ width: "100%", height: "100%" }}
+    className="img-fluidb"
+    alt="file"
+  />
+));
 
   // Update Promotion Banner Api
 
@@ -153,11 +190,15 @@ const AddProductTilesBannerCard = ({
       await formdata.append("price", Price);
       await formdata.append("description", Description);
       await formdata.append("tag", getTag);
+      await formdata.append("size", size);
       await formdata.append(
         "from_date",
         moment(startDate[0]).format("YYYY-MM-DD")
       );
-      await formdata.append("to_date", moment(startDate[1]).format("YYYY-MM-DD"));
+      await formdata.append(
+        "to_date",
+        moment(startDate[1]).format("YYYY-MM-DD")
+      );
       await formdata.append("region_child_id[0]", "");
       if (files[0] !== undefined) {
         await formdata.append("image", files[0]);
@@ -213,11 +254,11 @@ const AddProductTilesBannerCard = ({
     console.log("cdategory data", category_data);
   });
   return (
-    <div className="leaderboard-card-main-wrapp product-tiles-card-main-wrapp">
+    <div className="leaderboard-card-main-wrapp product-tiles-card-main-wrapp product-tiles-card-main-wrapp_edit">
       {/* Leaderboard flex start */}
-      <div className="leaderboard-card-flex-wrapp">
+      <div className="leaderboard-card-flex-wrapp leaderboard-card-flex-wrapp_edit">
         {/* Leaderboard first part responsive side start */}
-        <div className="leaderboard-card-first-resp-main-wrapp">
+        {/* <div className="leaderboard-card-first-resp-main-wrapp">
           <p className="leaderboard-last-part-txt">
             Service fee will apply if canceled
           </p>
@@ -227,13 +268,11 @@ const AddProductTilesBannerCard = ({
             cancel{" "}
             <img src={images.delete_icon} className="leaderboard-delete-icon" />
           </button>
-        </div>
+        </div> */}
         {/* Leaderboard first part responsive side end*/}
 
         {/* Leaderboard part first start */}
-        <div
-          className="leaderboard-card-part-first"
-          style={{ width: "42% !important" }}>
+        <div className="leaderboard-card-part-first leaderboard-card-part-first_edit">
           {/* Leaderboad form start */}
 
           {/* Leaderboard inputbox start */}
@@ -255,11 +294,12 @@ const AddProductTilesBannerCard = ({
             <div
               onClick={() => openMallModal()}
               className="leaderboard-card-inp"
-              style={{ display: "flex", gap: "5px", flexWrap: "wrap" }}>
+              style={{ display: "flex", gap: "5px", flexWrap: "wrap" }}
+            >
               {selectedMalls && selectedMalls.length > 0
                 ? selectedMalls.map((mall, mindx) => {
-                  return <p className="mall-lib-font">{mall}</p>;
-                })
+                    return <p className="mall-lib-font">{mall}</p>;
+                  })
                 : null}
               {/* <p className="">abc</p>
               <p className="">abc</p>
@@ -285,47 +325,36 @@ const AddProductTilesBannerCard = ({
               Select Mall
             </button> */}
           </div>
-          {/* Leaderboard inputbox end */}
+
+          {/* Categories */}
           <div className="leaderboard-card-inpbox-wrapp">
-            <label className="leaderboard-card-lbl" htmlFor="">
-              Week
-            </label>
-            {/* <input
-              type="date"
-              value={eventEndDate}
-              onChange={(e) => setEventEndDate(e.target.value)}
-              name=""
-              id=""
-              className="input_box"
-            /> */}
-            {/* <DatePicker
-                            selected={startDate}
-                            onChange={onDateChage}
-                            startDate={startDate}
-                            endDate={endDate}
-                            selectsRange
-                            // selectsDisabledDaysInRange
-                            // inline
-                            monthsShown={2}
-
-
-                            calendarStartDay={1}
-                            className="leaderboard-card-inp"
-                            placeholderText="Select your week"
-                        /> */}
-            <DateRangePicker
-              oneTap
-              hoverRange="week"
-              isoWeek
-              placeholder="Select your Week"
-              className="leaderboard-card-inp DateRangePicker_LeaderboardCard"
-              onChange={handleDateChange}
-              disabledDate={combine(allowedMaxDays(7), beforeToday())}
-
-
-            />
+            <label className="leaderboard-card-lbl">Categories:</label>
+            <div className="select-wrapper" style={{ width: "100%" }}>
+              <select
+                className="leaderboard-card-inp cons_select_nav"
+                onChange={(e) => {
+                  // console.log("rrr", e.target.value);
+                  setCategory(e.target.value);
+                }}
+              >
+                <option selected disabled value="">
+                  Select Category
+                </option>
+                {category_data &&
+                  category_data.map((item, index) => {
+                    return (
+                      <>
+                        <option value={item.id} key={index}>
+                          {item.name}
+                        </option>
+                      </>
+                    );
+                  })}
+              </select>
+            </div>
           </div>
-          {/* Leaderboard inputbox start */}
+          {/* Categories end*/}
+
           <div className="leaderboard-card-inpbox-wrapp">
             <label className="leaderboard-card-lbl">Brand(s):</label>
             <div className="select-wrapper" style={{ width: "100%" }}>
@@ -351,62 +380,8 @@ const AddProductTilesBannerCard = ({
               </select>
             </div>
           </div>
-          {/* Leaderboard inputbox end */}
 
-          {/* Leaderboard inputbox start */}
-
-          <div className="leaderboard-card-inpbox-wrapp">
-            <label className="leaderboard-card-lbl">Categories:</label>
-            <div className="select-wrapper" style={{ width: "100%" }}>
-              <select
-                className="leaderboard-card-inp"
-                onChange={(e) => {
-                  console.log("rrr", e.target.value);
-                  setCategory(e.target.value);
-                }}>
-                <option selected disabled value="">
-                  Select Category
-                </option>
-                {category_data &&
-                  category_data.map((item, index) => {
-                    return (
-                      <>
-                        <option value={item.id} key={index}>
-                          {item.name}
-                        </option>
-                      </>
-                    );
-                  })}
-              </select>
-            </div>
-          </div>
-
-          {/* <div className="leaderboard-card-inpbox-wrapp">
-                        <label className="leaderboard-card-lbl">From:</label>
-                        <DatePicker
-                            // selected={birthDate}
-                            // onChange={(date) => setBirthDate(date)}
-                            className="red-border leaderboard-card-inp"
-                            placeholderText="Date Of Birth"
-                            dateFormat="dd/MM/yyyy"
-                        />
-                    </div> */}
-          {/* Leaderboard inputbox end */}
-
-          {/* Leaderboard inputbox start */}
-          {/* <div className="leaderboard-card-inpbox-wrapp">
-                        <label className="leaderboard-card-lbl">Until:</label>
-                        <DatePicker
-                            // selected={birthDate}
-                            // onChange={(date) => setBirthDate(date)}
-                            className="red-border leaderboard-card-inp"
-                            placeholderText="Date Of Birth"
-                            dateFormat="dd/MM/yyyy"
-                        />
-                    </div> */}
-          {/* Leaderboard inputbox end */}
-
-          {/* Leaderboard inputbox start */}
+          {/* Price */}
           <div className="leaderboard-card-inpbox-wrapp">
             <label className="leaderboard-card-lbl">Price:</label>
             <input
@@ -417,20 +392,21 @@ const AddProductTilesBannerCard = ({
               onChange={(e) => setPrice(e.target.value)}
             />
           </div>
-          {/* Leaderboard inputbox end */}
+          {/* Price end */}
 
-          {/* Leaderboard inputbox start */}
+          {/* Desc */}
           <div className="leaderboard-card-inpbox-wrapp">
             <label className="leaderboard-card-lbl">Description:</label>
             <textarea
               style={{ height: "30px" }}
               className="leaderboard-card-inp"
-              placeholder="XS, S, M, L, XL, XXL"
+              placeholder="Add Disctiption"
               value={Description}
               onChange={(e) => setDiscription(e.target.value)}
             />
           </div>
-          {/* Leaderboard inputbox start */}
+          {/* Desc end */}
+          {/* Tags */}
           <div className="leaderboard-card-inpbox-wrapp">
             <label className="leaderboard-card-lbl">
               Tags:
@@ -440,29 +416,99 @@ const AddProductTilesBannerCard = ({
             <textarea
               style={{ height: "60px" }}
               className="leaderboard-card-inp"
-              placeholder="White,tekkies,sneakers,shoes,trainers,running"
+              placeholder="Add Tags"
               value={getTag}
               onChange={(e) => setTag(e.target.value)}
             />
           </div>
-          {/* <button onClick={() => openMallModal()} className="leaderboard-delete-icon-btn">
-                        <span className="leaderboard-extend-txt">Chose Date</span>{" "}
-                        <img src={images.banner_cal_img} className="leaderboard-delete-icon" style={{ width: "42px", height: "42px" }} />
-                    </button> */}
+          {/* Tags end */}
 
-          {/* Leaderboard inputbox end */}
+          {/* Size */}
+          <div className="leaderboard-card-inpbox-wrapp">
+            <label className="leaderboard-card-lbl">Sizes:</label>
+            <input
+              style={{ height: "30px" }}
+              className="leaderboard-card-inp"
+              placeholder="XS, S, M, L, XL, XXL"
+              value={size}
+              onChange={(e) => setSize(e.target.value)}
+            />
+          </div>
+          {/* Size end */}
+          {/* Duration */}
+          <div className="leaderboard-card-inpbox-wrapp">
+            <label className="leaderboard-card-lbl" htmlFor="">
+              Duration
+            </label>
 
-          {/* Leaderboad form end */}
+            <DateRangePicker
+              oneTap
+              hoverRange="week"
+              isoWeek
+              placeholder="Add Duration"
+              className="leaderboard-card-inp DateRangePicker_LeaderboardCard"
+              onChange={handleDateChange}
+              disabledDate={combine(allowedMaxDays(7), beforeToday())}
+            />
+          </div>
+          {/* Duration  end */}
+          <div className="leaderboard-card-inpbox-wrapp">
+              <label className="leaderboard-card-lbl" htmlFor="">
+                Discount QR Code:
+              </label>
+              <input
+                type="text"
+                className="leaderboard-card-inp"
+                placeholder="10% Discount"
+                // value={Price}
+                // onChange={(e) => setPrice(e.target.value)}
+              />
+            </div>
+            <div className="leaderboard-card-inpbox-wrapp">
+              <label className="leaderboard-card-lbl" htmlFor="">
+                {/* Discount QR Code::<span className="star_require">*</span> */}
+              </label>
+              <div  {...getRootlogoPropsQr()}>
+                <button
+                  className="btn btn_qr"
+                  style={{
+                    background: "var(--color-orange)",
+                    color: "var(--color-white)",
+                    position: "relative",
+                  }}>
+                  <input
+                {...getInputlogoPropsQr()}
+                accept="image/jpeg, image/jpg, image/png, image/eps"
+              />
+                  Upload QR Code
+                </button>
+
+                <span
+                  style={{
+                    fontSize: "14px",
+                    color: "#bbb",
+                    alignSelf: "flex-start",
+                    marginBottom: "0.7rem",
+                  }}>
+                  Supported Formats: jpeg, png.
+                  <br /> (150 x 150 pixels (max 50kb))
+                </span>
+                {/* Supported Formats: jpeg, png. (150 x 150 pixels (max 50kb)) */}
+              </div>
+            </div>
+          {/* Leaderboard inputbox start */}
         </div>
-
-        {/* Leaderboard part first end */}
-
-        {/* Leaderboard part second start */}
-
+        <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "2rem",
+            }}>
         <div
           className="leaderboard-card-part-sec product-tiles-card-sec-part"
           style={{ width: "200px", height: "200px" }}
-          {...getRootlogoProps()}>
+          {...getRootlogoProps()}
+        >
           <input
             {...getInputlogoProps()}
             accept="image/jpeg, image/jpg, image/png, image/eps"
@@ -475,7 +521,7 @@ const AddProductTilesBannerCard = ({
                 </div>
               ) : (
                 <div style={{ width: "100%" }}>
-                  <div className="leaderboard-card-part-sec2">
+                  <div className="leaderboard-card-part-sec2" style={{paddingLeft:"1.1rem",paddingRight:"1.1rem",textAlign:"center"}}>
                     <AiOutlineCloudUpload
                       style={{
                         width: "60px",
@@ -484,7 +530,10 @@ const AddProductTilesBannerCard = ({
                         marginBottom: "10px",
                       }}
                     />
-                    <h4 style={{ fontSize: "14px" }}>.PDF .JPG .PNG</h4>
+                    <h4 style={{ fontSize: "14px" }}>.JPG .PNG .GIF (350 x 354 pixels)</h4>
+                    <p style={{ fontSize: "14px" }}>
+                    (max 50kb)
+                    </p>
                     <p style={{ fontSize: "14px" }}>
                       You can also upload file by
                     </p>
@@ -492,7 +541,8 @@ const AddProductTilesBannerCard = ({
                     <button
                       type="button"
                       className="click_upload_btn"
-                      style={{ marginBottom: "10px" }}>
+                      style={{ marginBottom: "10px",color:"var(--color-orange)",fontWeight:"600" }}
+                    >
                       click here
                     </button>
                   </div>
@@ -520,7 +570,8 @@ const AddProductTilesBannerCard = ({
                     <button
                       type="button"
                       className="click_upload_btn"
-                      style={{ marginBottom: "10px" }}>
+                      style={{ marginBottom: "10px" }}
+                    >
                       click here
                     </button>
                     {/* <a href="">clicking here</a> */}
@@ -529,6 +580,7 @@ const AddProductTilesBannerCard = ({
               ) : (
                 <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl">
                   <img
+                    alt=""
                     src={item.image_path}
                     style={{ width: "100%", height: "100%" }}
                     className="img-fluidb"
@@ -538,20 +590,45 @@ const AddProductTilesBannerCard = ({
             </>
           )}
         </div>
+
+        <div
+              className="leaderboard-card-part-sec2"
+              style={{
+                width: "200px",
+                height: "200px",
+                padding:"1rem",
+              }}>
+              {selectedImage && (
+                <button
+                  onClick={clearImage}
+                  style={{ transform: "translate(55px, 32px)",zIndex:"1" }}>
+                  <HiPencilSquare />
+                </button>
+              )}
+            
+                <div style={{ position: "relative",width:"200px",height:"200px",border:"none", }}>
+                 
+                 {thumbsqr}
+                </div>
+              
+            </div>
+        </div>
         {/* Leaderboard part second end */}
 
         {/* Leaderboard part third start */}
         <div
           className="leaderboard-card-part-third"
-          style={{ width: "24%", alignSelf: "end" }}>
+          style={{ alignSelf: "end" }}
+        >
           {/* <button className='leaderboard-delete-icon-btn' onClick={() => DeleteProductTilesboard()}>cancel <img src={images.delete_icon} className='leaderboard-delete-icon' /></button>
                     <p className='leaderboard-last-part-txt'>Service fee will
                         apply if canceled</p>
                     <Link className='leaderboard-delete-icon-btn'><span className='leaderboard-extend-txt'>Extend</span> <img src={images.extend_icon} className='leaderboard-delete-icon' /></Link> */}
-          <div className="leaderboard-btn-box">
-            <button
-              className="btn btn-orange"
-              onClick={() => AddProductTilesBanner()}>
+          <div className="leaderboard-btn-box leaderboard-btn-box_edit">
+            <button style={{padding:"0.4rem",fontSize:"16px"}}
+              className="btn btn-orange btn-orange_respoedit"
+              onClick={() => AddProductTilesBanner()}
+            >
               Publish
             </button>
           </div>
@@ -563,8 +640,9 @@ const AddProductTilesBannerCard = ({
           {/* <Link className='leaderboard-delete-icon-btn'><span className='leaderboard-extend-txt'>Extend</span> <img src={images.extend_icon} className='leaderboard-delete-icon' /></Link> */}
           <div className="leaderboard-btn-box">
             <button
-              className="btn btn-orange"
-              onClick={() => AddProductTilesBanner()}>
+              className="btn btn-orange btn-orange_respoedit"
+              onClick={() => AddProductTilesBanner()}
+            >
               Publish
             </button>
           </div>

@@ -7,19 +7,12 @@ import "./CinemaThankYou.css";
 const CinemaThankYou = ({ setTab, get_mall_auth_data }) => {
   return (
     <>
-      <CinemaHero />
+      <CinemaHero get_mall_auth_data ={get_mall_auth_data}/>
       <div className="mm_main_wrapp  thankyou_main_wrapp">
         {/* Choose product name start */}
         <div className="mall_name_wrapp" style={{ paddingLeft: "0px" }}>
-          {/* <p className="mall_name_heading">
-                    {" "}
-                    {get_mall_auth_data &&
-                        get_mall_auth_data.retailers.name &&
-                        get_mall_auth_data.retailers.name}
-                    :
-                </p> */}
-          <p className="mall_name_heading">Sterkinikor:</p>
-          <span>Thank you!</span>
+          <p className="mall_name_heading">{get_mall_auth_data.name}:</p>
+          <span style={{fontWeight:"600"}}>Thank you!</span>
         </div>
         <div className="mm_horizontal_line"></div>
         {/* Choose product  name end */}
@@ -38,12 +31,12 @@ const CinemaThankYou = ({ setTab, get_mall_auth_data }) => {
         {/* Choose product sub heading end */}
 
         {/* choose product cards wrapp start */}
-        <div className="choose-prod-card-flex">
+        <div className="choose-prod-card-flex  cinema_thank_card_main">
           {/* single cards start */}
           <div
-            className="mallpp_part2_card"
+            className="mallpp_part2_card cinemathank_part2_card"
             style={{
-              // backgroundImage: `url(${images.home_card_bg_1})`,
+              // backgroundImage: url(${images.home_card_bg_1}),
               backgroundColor: "#ff8b00",
               backgroundPosition: "center",
             }}>
@@ -58,14 +51,10 @@ const CinemaThankYou = ({ setTab, get_mall_auth_data }) => {
               In-store’s unique marketing adds respembles the experience of
               stores in a mall
             </p>
-            {/* <Link to="" className="mallpp_part2_card_description">
-                        Check it out! &gt;
-                    </Link> */}
           </div>
           <div
-            className="mallpp_part2_card"
+            className="mallpp_part2_card cinemathank_part2_card"
             style={{
-              // backgroundImage: `url(${images.home_card_bg_2})`,
               backgroundColor: "#000",
               backgroundPosition: "center",
             }}>
@@ -85,9 +74,9 @@ const CinemaThankYou = ({ setTab, get_mall_auth_data }) => {
                     </Link> */}
           </div>
           <div
-            className="mallpp_part2_card"
+            className="mallpp_part2_card cinemathank_part2_card"
             style={{
-              // backgroundImage: `url(${images.home_card_bg_3})`,
+              // backgroundImage: url(${images.home_card_bg_3}),
               backgroundColor: "#ff8b00",
               backgroundPosition: "center",
             }}>
@@ -107,9 +96,9 @@ const CinemaThankYou = ({ setTab, get_mall_auth_data }) => {
                     </Link> */}
           </div>
           <div
-            className="mallpp_part2_card"
+            className="mallpp_part2_card cinemathank_part2_card"
             style={{
-              // backgroundImage: `url(${images.home_card_bg_3})`,
+              // backgroundImage: url(${images.home_card_bg_3}),
               backgroundColor: "#000",
               backgroundPosition: "center",
             }}>
@@ -129,9 +118,9 @@ const CinemaThankYou = ({ setTab, get_mall_auth_data }) => {
                     </Link> */}
           </div>
           <div
-            className="mallpp_part2_card"
+            className="mallpp_part2_card cinemathank_part2_card"
             style={{
-              // backgroundImage: `url(${images.home_card_bg_1})`,
+              // backgroundImage: url(${images.home_card_bg_1}),
               backgroundColor: "#ff8b00",
               backgroundPosition: "center",
             }}>
@@ -152,9 +141,9 @@ const CinemaThankYou = ({ setTab, get_mall_auth_data }) => {
           </div>
 
           <div
-            className="mallpp_part2_card"
+            className="mallpp_part2_card cinemathank_part2_card"
             style={{
-              // backgroundImage: `url(${images.home_card_bg_1})`,
+              // backgroundImage: url(${images.home_card_bg_1}),
               backgroundColor: "#000",
               backgroundPosition: "center",
             }}>
@@ -206,7 +195,7 @@ const CinemaThankYou = ({ setTab, get_mall_auth_data }) => {
           <div className="choose-prod-location-sec-part">
             <div className="choose-prod-location-imgbox">
               <img
-                src={images.locationicon}
+                src={images.cinema_anlytic_loction}
                 className="choose-prod-location-img"
               />
             </div>

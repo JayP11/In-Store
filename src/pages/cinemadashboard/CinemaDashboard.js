@@ -4,6 +4,7 @@ import { CinemaNavbar, Footer, Navbar } from "../../common";
 import { FiChevronLeft } from "react-icons/fi";
 import {
   CinemaAccountSetting,
+  CinemaHero,
   CinemaProfilePage,
   MallHero,
   MallNavbar,
@@ -11,10 +12,23 @@ import {
 import { CSSTransition } from "react-transition-group";
 
 import {
+  AddCinemaAnalyticBundle,
+  AddCinemaLandingpageLeaderboard,
+  AddCinemaTiles,
   AddEateries,
+  AddLandingPageSquareTile,
   AddMallFacility,
+  ArchivesCinema,
+  BuyCinemaAnalytics,
+  CinemaAddLeaderboardBanner,
+  CinemaAnalytics,
+  CinemaAnalyticsBundles,
   CinemaCart,
   CinemaCheckout,
+  CinemaLandingPageLeaderboard,
+  CinemaLandingpageTile,
+  CinemaLeaderboard,
+  CinemaPromotionalBanner,
   CinemaThankYou,
   ContactDetail,
   Eateries,
@@ -23,6 +37,7 @@ import {
   EditMallEvent,
   EditStoreDetail,
   Facilities,
+  LandingPageSquareTile,
   MallAddEvents,
   MallAddMvie,
   MallEditMovie,
@@ -52,17 +67,19 @@ import CinemaTiles from "../../container/cinematiles/CinemaTiles";
 import CinemaTahankYou from "../../container/cinemathankyou/CinemaThankYou";
 import CinemaProRateCard from "../../container/cinemaproratecard/CinemaProRateCard";
 import FaqPage from "../faqpage/FaqPage";
-import MallCart from "../../container/mallCart/MallCart";
-import MallCart2 from "../../container/mallCart2/MallCart2";
-import MallCart3 from "../../container/mallCart3/MallCart3";
+import { useStoreContext } from "../../context/store_context";
+import AddCinemaPromotionalBanner from "../../container/addcinemapromotionalbanner/AddCinemaPromotionalBanner";
+import AddCinemaLandingPageBanner from "../../container/addcinemalandingpagetilebanner/AddCinemaLandingPageBanner";
 
 const CinemaDashboard = () => {
   const {
-    get_mall_auth_data,
-    get_mall_store_data,
-    get_mall_auth_loading,
-    getMallAuthWise,
-  } = useMallContext();
+    get_cinema_data,
+    // get_mall_store_data,
+    get_cinema_loading,
+    getCinema,
+    getCinemaCategoryApi,
+    getStoreCartApi,
+  } = useStoreContext();
   const { get_mevent_data } = useMeventContext();
   const [gettab, setTab] = useState(1);
   const [geteventId, setEventId] = useState();
@@ -102,13 +119,13 @@ const CinemaDashboard = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log("re754775775675", res.data);
-        setTotalPages(res.data.last_page);
+        // console.log("re754775775675", res.data);
+        // setTotalPages(res.data.last_page);
         setEventList([...eventList, ...res.data.data]);
         setLoading(false);
       })
       .catch((err) => {
-        console.log("err", err);
+        // console.log("err", err);
       });
   };
 
@@ -132,18 +149,18 @@ const CinemaDashboard = () => {
 
   var islogin = localStorage.getItem("is_login");
 
-  console.log("get_mall_auth_data", get_mall_auth_data);
+  // console.log("get_mall_auth_data", get_cinema_data);
 
   useEffect(() => {
-    setMallheadname(get_mall_auth_data.name);
+    setMallheadname(get_cinema_data.name);
   }, []);
 
   useEffect(() => {
     if (
-      get_mall_auth_data === "" ||
-      get_mall_auth_data == null ||
-      get_mall_auth_data.length === 0 ||
-      get_mall_auth_data == undefined
+      get_cinema_data === "" ||
+      get_cinema_data == null ||
+      get_cinema_data.length === 0 ||
+      get_cinema_data == undefined
     ) {
       window.location.reload(false);
       navigate("/");
@@ -151,13 +168,16 @@ const CinemaDashboard = () => {
   }, []);
 
   useEffect(() => {
-    getMallAuthWise();
-    console.log("geteventData", geteventData);
-    console.log("getsingleStoreData", getsingleStoreData);
+    getCinema();
+    getCinemaCategoryApi();
+    getStoreCartApi();
+
+    // console.log("geteventData", geteventData);
+    // console.log("getsingleStoreData", getsingleStoreData);
     // window.location.reload(true);
   }, []);
 
-  console.log("edit store is is", getstore_is);
+  // console.log("edit store is is", getstore_is);
 
   // Mall Event Api Start
 
@@ -208,31 +228,6 @@ const CinemaDashboard = () => {
   const handlePopstate = () => {
     window.history.pushState(null, document.title, window.location.href);
   };
-  // Facility data map
-
-  // const = { get_facility_data } = useMa
-
-  // const history = useNavigate();
-
-  // useEffect(() => {
-  //   const preventNavigation = (e) => {
-  //     e.preventDefault();
-  //     e.returnValue = ''; // For Chrome
-  //   };
-
-  //   const confirmNavigation = () => {
-  //     return 'Are you sure you want to leave this page?';
-  //   };
-
-  //   history.block(confirmNavigation);
-
-  //   window.addEventListener('beforeunload', preventNavigation);
-
-  //   return () => {
-  //     history.block(null);
-  //     window.removeEventListener('beforeunload', preventNavigation);
-  //   };
-  // }, [history]);
 
   const [isPromptActive, setPromptActive] = useState(false);
 
@@ -285,8 +280,8 @@ const CinemaDashboard = () => {
         // getcustomerDropdown={getcustomerDropdown}
         /> */}
         {/* <MallNavbar setTab={setTab} get_mall_auth_data={get_mall_auth_data} /> */}
-        <CinemaNavbar />
-        {get_mall_auth_loading ? (
+        <CinemaNavbar setTab={setTab} />
+        {get_cinema_loading ? (
           <div
             style={{
               width: "100%",
@@ -301,34 +296,20 @@ const CinemaDashboard = () => {
           <div className="profilepage_main_wrapp profilepage_slider_transition">
             {/* side-bar start  */}
 
-            <div style={{ backgroundColor: "#E5E4E2", minHeight: "100vh" }}>
-              {/* <CSSTransition
-                in={showElement}
-                timeout={300}
-                classNames="fade"
-              // unmountOnExit
-              > */}
-
+            <div style={{ backgroundColor: "#E5E4E2" }}>
               <div
                 className="pro-side-none-resp"
                 style={{
                   display: "flex",
                   gap: "5px",
-                  width: sidebaropen ? "300px" : "0px",
+                  width: sidebaropen ? "275px" : "0px",
                   transition: "width 1s ease",
-
-                  // position: sidebaropen === true ? null : "absolute",
-
-                  // left: sidebaropen === true ? null : "-400px",
-                  // transition: 'left 2s ease'
-                }}
-                // className="profilepage_sidebarr profilepage_slider_transition"
-              >
+                }}>
                 <div className="profile_sidebar_wrapp">
                   <div
                     style={{
                       position: "relative",
-                      width: sidebaropen ? "300px" : "0px",
+                      width: sidebaropen ? "275px" : "0px",
                       transition: "width 1s ease",
                     }}
                     className="">
@@ -337,7 +318,7 @@ const CinemaDashboard = () => {
                         background: gettab === 1 ? "#ff8b00" : "#fff",
                         color: gettab === 1 ? "#fff" : "#000",
                         fontWeight: gettab === 1 ? "700" : "500",
-                        width: sidebaropen ? "300px" : "0px",
+                        width: sidebaropen ? "275px" : "0px",
                         overflow: "hidden",
                         transition: "width 1s ease",
                         whiteSpace: "nowrap",
@@ -356,7 +337,7 @@ const CinemaDashboard = () => {
                         background: gettab === 2 ? "#ff8b00" : "#fff",
                         color: gettab === 2 ? "#fff" : "#000",
                         fontWeight: gettab === 2 ? "700" : "500",
-                        width: sidebaropen ? "300px" : "0px",
+                        width: sidebaropen ? "275px" : "0px",
                         overflow: "hidden",
                         transition: "width 1s ease",
                         whiteSpace: "nowrap",
@@ -375,7 +356,7 @@ const CinemaDashboard = () => {
                         background: gettab === 21 ? "#ff8b00" : "#fff",
                         color: gettab === 21 ? "#fff" : "#000",
                         fontWeight: gettab === 21 ? "700" : "500",
-                        width: sidebaropen ? "300px" : "0px",
+                        width: sidebaropen ? "275px" : "0px",
                         overflow: "hidden",
                         transition: "width 1s ease",
                         whiteSpace: "nowrap",
@@ -388,19 +369,88 @@ const CinemaDashboard = () => {
                     </button>
                     <button
                       style={{
-                        background: gettab === 22 ? "#ff8b00" : "#fff",
-                        color: gettab === 22 ? "#fff" : "#000",
-                        fontWeight: gettab === 22 ? "700" : "500",
-                        width: sidebaropen ? "300px" : "0px",
+                        background: gettab === 40 ? "#ff8b00" : "#fff",
+                        color: gettab === 40 ? "#fff" : "#000",
+                        fontWeight: gettab === 40 ? "700" : "500",
+                        width: sidebaropen ? "275px" : "0px",
                         overflow: "hidden",
                         transition: "width 1s ease",
                         whiteSpace: "nowrap",
                         borderRight: "1px solid",
-                        borderleft: "1px solid",
+                        // borderLeft: "1px solid",
                       }}
-                      onClick={() => setTab(22)}
-                      className="profile_sidebar_sig_btn cinema_sidebar_sig_btn">
-                      FAQ
+                      onClick={() => setTab(40)}
+                      className="profile_sidebar_sig_btn cinema_sidebar_sig_btn profile_sidebar_sig_btn_padding">
+                      - Landing Page <br />
+                      1/2 Page Tile
+                    </button>
+                    <button
+                      style={{
+                        background: gettab === 46 ? "#ff8b00" : "#fff",
+                        color: gettab === 46 ? "#fff" : "#000",
+                        fontWeight: gettab === 46 ? "700" : "500",
+                        width: sidebaropen ? "275px" : "0px",
+                        overflow: "hidden",
+                        transition: "width 1s ease",
+                        whiteSpace: "nowrap",
+                        borderRight: "1px solid",
+                        // borderLeft: "1px solid",
+                      }}
+                      onClick={() => setTab(46)}
+                      className="profile_sidebar_sig_btn cinema_sidebar_sig_btn profile_sidebar_sig_btn_padding">
+                      - Landing Page <br />
+                      Square Tiles{" "}
+                    </button>
+                    <button
+                      style={{
+                        background: gettab === 42 ? "#ff8b00" : "#fff",
+                        color: gettab === 42 ? "#fff" : "#000",
+                        fontWeight: gettab === 42 ? "700" : "500",
+                        width: sidebaropen ? "275px" : "0px",
+                        overflow: "hidden",
+                        transition: "width 1s ease",
+                        whiteSpace: "nowrap",
+                        borderRight: "1px solid",
+                        // borderLeft: "1px solid",
+                      }}
+                      onClick={() => setTab(42)}
+                      className="profile_sidebar_sig_btn cinema_sidebar_sig_btn profile_sidebar_sig_btn_padding">
+                      - Landing Page <br />
+                      Leaderboard Banner{" "}
+                    </button>
+                    <button
+                      style={{
+                        background: gettab === 35 ? "#ff8b00" : "#fff",
+                        color: gettab === 35 ? "#fff" : "#000",
+                        fontWeight: gettab === 35 ? "700" : "500",
+                        width: sidebaropen ? "275px" : "0px",
+                        overflow: "hidden",
+                        transition: "width 1s ease",
+                        whiteSpace: "nowrap",
+                        borderRight: "1px solid",
+                        // borderLeft: "1px solid",
+                      }}
+                      onClick={() => setTab(35)}
+                      className="profile_sidebar_sig_btn cinema_sidebar_sig_btn profile_sidebar_sig_btn_padding">
+                      - Leaderboard
+                      <br /> Banner Mall
+                    </button>
+                    <button
+                      style={{
+                        background: gettab === 37 ? "#ff8b00" : "#fff",
+                        color: gettab === 37 ? "#fff" : "#000",
+                        fontWeight: gettab === 37 ? "700" : "500",
+                        width: sidebaropen ? "275px" : "0px",
+                        overflow: "hidden",
+                        transition: "width 1s ease",
+                        whiteSpace: "nowrap",
+                        borderRight: "1px solid",
+                        // borderLeft: "1px solid",
+                      }}
+                      onClick={() => setTab(37)}
+                      className="profile_sidebar_sig_btn cinema_sidebar_sig_btn profile_sidebar_sig_btn_padding">
+                      - Promotional
+                      <br /> Banner
                     </button>
                     <button
                       style={{
@@ -410,7 +460,7 @@ const CinemaDashboard = () => {
                           gettab === 3 || gettab === 9 || gettab === 10
                             ? "700"
                             : "500",
-                        width: sidebaropen ? "300px" : "0px",
+                        width: sidebaropen ? "275px" : "0px",
                         overflow: "hidden",
                         transition: "width 1s ease",
                         whiteSpace: "nowrap",
@@ -418,9 +468,30 @@ const CinemaDashboard = () => {
                         borderleft: "1px solid",
                       }}
                       onClick={() => setTab(3)}
-                      className="profile_sidebar_sig_btn cinema_sidebar_sig_btn">
-                      {/* &nbsp;&nbsp;&nbsp; - Brands */}
-                      &nbsp;&nbsp;&nbsp; -Cinema Product Tiles
+                      className="profile_sidebar_sig_btn cinema_sidebar_sig_btn profile_sidebar_sig_btn_padding">
+                      {/* &nbsp;&nbsp;&nbsp; - Brands */}- Cinema Product Tiles
+                      {/* <div className="profile_sidebar_sig_btn_right_arrow">
+                  <FiChevronLeft color="#fff" size={20} />
+                </div> */}
+                    </button>
+                    <button
+                      style={{
+                        background: gettab === 44 ? "#ff8b00" : "#fff",
+                        color: gettab === 44 ? "#fff" : "#000",
+                        fontWeight:
+                          gettab === 44 || gettab === 8 ? "700" : "500",
+                        width: sidebaropen ? "275px" : "0px",
+                        overflow: "hidden",
+                        transition: "width 1s ease",
+                        whiteSpace: "nowrap",
+                        borderRight: "1px solid",
+                        borderleft: "1px solid",
+                      }}
+                      onClick={() => setTab(44)}
+                      className="profile_sidebar_sig_btn cinema_sidebar_sig_btn profile_sidebar_sig_btn_padding">
+                      {/* &nbsp;&nbsp;&nbsp; - Eateries */}
+                      - Cinema <br />
+                      Analytics Bundles
                       {/* <div className="profile_sidebar_sig_btn_right_arrow">
                   <FiChevronLeft color="#fff" size={20} />
                 </div> */}
@@ -431,27 +502,26 @@ const CinemaDashboard = () => {
                         color: gettab === 4 ? "#fff" : "#000",
                         fontWeight:
                           gettab === 4 || gettab === 8 ? "700" : "500",
-                        width: sidebaropen ? "300px" : "0px",
+                        width: sidebaropen ? "275px" : "0px",
                         overflow: "hidden",
                         transition: "width 1s ease",
                         whiteSpace: "nowrap",
                         borderRight: "1px solid",
                         borderleft: "1px solid",
                       }}
-                      onClick={() => setTab(4)}
-                      className="profile_sidebar_sig_btn cinema_sidebar_sig_btn">
-                      {/* &nbsp;&nbsp;&nbsp; - Eateries */}
-                      &nbsp;&nbsp;&nbsp; - Track Analytics
+                      // onClick={() => setTab(4)}
+                      className="profile_sidebar_sig_btn cinema_sidebar_sig_btn profile_sidebar_sig_btn_padding">
+                      {/* &nbsp;&nbsp;&nbsp; - Eateries */}- Track Analytics
                       {/* <div className="profile_sidebar_sig_btn_right_arrow">
                   <FiChevronLeft color="#fff" size={20} />
                 </div> */}
                     </button>
-                    <button
+                    {/* <button
                       style={{
                         background: gettab === 17 ? "#ff8b00" : "#fff",
                         color: gettab === 17 ? "#fff" : "#000",
                         fontWeight: gettab === 17 ? "700" : "500",
-                        width: sidebaropen ? "300px" : "0px",
+                        width: sidebaropen ? "275px" : "0px",
                         overflow: "hidden",
                         transition: "width 1s ease",
                         whiteSpace: "nowrap",
@@ -460,18 +530,48 @@ const CinemaDashboard = () => {
                       }}
                       onClick={() => setTab(17)}
                       className="profile_sidebar_sig_btn cinema_sidebar_sig_btn">
-                      {/* &nbsp;&nbsp;&nbsp; - Movies */}
-                      &nbsp;&nbsp;&nbsp; - My Brand in Malls
-                      {/* <div className="profile_sidebar_sig_btn_right_arrow">
-                  <FiChevronLeft color="#fff" size={20} />
-                </div> */}
+                     
+                    </button> */}
+
+                    <button
+                      style={{
+                        background: gettab === 24 ? "#ff8b00" : "#fff",
+                        color: gettab === 24 ? "#fff" : "#000",
+                        fontWeight: gettab === 24 ? "700" : "500",
+                        width: sidebaropen ? "275px" : "0px",
+                        overflow: "hidden",
+                        transition: "width 1s ease",
+                        whiteSpace: "nowrap",
+                        borderBottom: "1px solid #000",
+                        borderRight: "1px solid #000",
+                      }}
+                      onClick={() => setTab(24)}
+                      className="profile_sidebar_sig_btn">
+                      - My Analytics
+                    </button>
+                
+                    <button
+                      style={{
+                        background: gettab === 25 ? "#ff8b00" : "#fff",
+                        color: gettab === 25 ? "#fff" : "#000",
+                        fontWeight: gettab === 25 ? "700" : "500",
+                        width: sidebaropen ? "275px" : "0px",
+                        overflow: "hidden",
+                        transition: "width 1s ease",
+                        whiteSpace: "nowrap",
+                        borderBottom: "1px solid #000",
+                        borderRight: "1px solid #000",
+                      }}
+                      onClick={() => setTab(25)}
+                      className="profile_sidebar_sig_btn">
+                      - My Archives
                     </button>
                     <button
                       style={{
                         background: gettab === 5 ? "#ff8b00" : "#fff",
                         color: gettab === 5 ? "#fff" : "#000",
                         fontWeight: gettab === 5 ? "700" : "500",
-                        width: sidebaropen ? "300px" : "0px",
+                        width: sidebaropen ? "275px" : "0px",
                         overflow: "hidden",
                         transition: "width 1s ease",
                         whiteSpace: "nowrap",
@@ -479,9 +579,9 @@ const CinemaDashboard = () => {
                         borderleft: "1px solid",
                       }}
                       onClick={() => setTab(5)}
-                      className="profile_sidebar_sig_btn cinema_sidebar_sig_btn">
+                      className="profile_sidebar_sig_btn cinema_sidebar_sig_btn profile_sidebar_sig_btn_padding">
                       {/* &nbsp;&nbsp;&nbsp; - Events */}
-                      &nbsp;&nbsp;&nbsp; -My Cart
+                      -My Cart
                       {/* <div className="profile_sidebar_sig_btn_right_arrow">
                   <FiChevronLeft color="#fff" size={20} />
                 </div> */}
@@ -492,7 +592,7 @@ const CinemaDashboard = () => {
                         background: gettab === 6 ? "#ff8b00" : "#fff",
                         color: gettab === 6 ? "#fff" : "#000",
                         fontWeight: gettab === 6 ? "700" : "500",
-                        width: sidebaropen ? "300px" : "0px",
+                        width: sidebaropen ? "275px" : "0px",
                         overflow: "hidden",
                         transition: "width 1s ease",
                         whiteSpace: "nowrap",
@@ -500,20 +600,19 @@ const CinemaDashboard = () => {
                         borderleft: "1px solid",
                       }}
                       onClick={() => setTab(6)}
-                      className="profile_sidebar_sig_btn cinema_sidebar_sig_btn">
-                      {/* &nbsp;&nbsp;&nbsp; - Events */}
-                      &nbsp;&nbsp;&nbsp; - Cinema Checkout
+                      className="profile_sidebar_sig_btn cinema_sidebar_sig_btn profile_sidebar_sig_btn_padding">
+                      {/* &nbsp;&nbsp;&nbsp; - Events */}- Cinema Checkout
                       {/* <div className="profile_sidebar_sig_btn_right_arrow">
                   <FiChevronLeft color="#fff" size={20} />
                 </div> */}
                     </button>
 
-                    <button
+                    {/* <button
                       style={{
                         background: gettab === 7 ? "#ff8b00" : "#fff",
                         color: gettab === 7 ? "#fff" : "#000",
                         fontWeight: gettab === 7 ? "700" : "500",
-                        width: sidebaropen ? "300px" : "0px",
+                        width: sidebaropen ? "275px" : "0px",
                         overflow: "hidden",
                         transition: "width 1s ease",
                         whiteSpace: "nowrap",
@@ -522,57 +621,9 @@ const CinemaDashboard = () => {
                       }}
                       onClick={() => setTab(7)}
                       className="profile_sidebar_sig_btn cinema_sidebar_sig_btn">
-                      &nbsp;&nbsp;&nbsp; - Thank You
-                    </button>
-                    <button
-                      style={{
-                        background: gettab === 23 ? "#ff8b00" : "#fff",
-                        color: gettab === 23 ? "#fff" : "#000",
-                        fontWeight: gettab === 23 ? "700" : "500",
-                        width: sidebaropen ? "300px" : "0px",
-                        overflow: "hidden",
-                        transition: "width 1s ease",
-                        whiteSpace: "nowrap",
-                        borderRight: "1px solid",
-                        borderleft: "1px solid",
-                      }}
-                      onClick={() => setTab(23)}
-                      className="profile_sidebar_sig_btn cinema_sidebar_sig_btn">
-                      &nbsp;&nbsp;&nbsp; - Mall cart
-                    </button>
-                    <button
-                      style={{
-                        background: gettab === 24 ? "#ff8b00" : "#fff",
-                        color: gettab === 24 ? "#fff" : "#000",
-                        fontWeight: gettab === 24 ? "700" : "500",
-                        width: sidebaropen ? "300px" : "0px",
-                        overflow: "hidden",
-                        transition: "width 1s ease",
-                        whiteSpace: "nowrap",
-                        borderRight: "1px solid",
-                        borderleft: "1px solid",
-                      }}
-                      onClick={() => setTab(24)}
-                      className="profile_sidebar_sig_btn cinema_sidebar_sig_btn">
-                      &nbsp;&nbsp;&nbsp; - Mall cart2
-                    </button>
-                    <button
-                      style={{
-                        background: gettab === 25 ? "#ff8b00" : "#fff",
-                        color: gettab === 25 ? "#fff" : "#000",
-                        fontWeight: gettab === 25 ? "700" : "500",
-                        width: sidebaropen ? "300px" : "0px",
-                        overflow: "hidden",
-                        transition: "width 1s ease",
-                        whiteSpace: "nowrap",
-                        borderRight: "1px solid",
-                        borderleft: "1px solid",
-                      }}
-                      onClick={() => setTab(25)}
-                      className="profile_sidebar_sig_btn cinema_sidebar_sig_btn">
-                      &nbsp;&nbsp;&nbsp; - Mall cart3
-                    </button>
-
+                      &nbsp;&nbsp; - Thank You
+                  
+                    </button> */}
                     {/* <button
                       style={{
                         background: gettab === 6 ? "#ff8b00" : "#fff",
@@ -607,6 +658,23 @@ const CinemaDashboard = () => {
                       
                     </button> */}
 
+                    <button
+                      style={{
+                        background: gettab === 22 ? "#ff8b00" : "#fff",
+                        color: gettab === 22 ? "#fff" : "#000",
+                        fontWeight: gettab === 22 ? "700" : "500",
+                        width: sidebaropen ? "275px" : "0px",
+                        overflow: "hidden",
+                        transition: "width 1s ease",
+                        whiteSpace: "nowrap",
+                        borderRight: "1px solid",
+                        borderleft: "1px solid",
+                      }}
+                      onClick={() => setTab(22)}
+                      className="profile_sidebar_sig_btn cinema_sidebar_sig_btn">
+                      FAQ
+                    </button>
+
                     <div className="profilepage_slider_transition">
                       <div
                         className="profile_sidebar_sig_btn_right_arrow"
@@ -614,7 +682,7 @@ const CinemaDashboard = () => {
                           setSidebarOpen(!sidebaropen);
                           setShowElement(!showElement);
 
-                          console.log("check", sidebaropen);
+                          // console.log("check", sidebaropen);
                         }}>
                         <FiChevronLeft color="#fff" size={20} />
                       </div>
@@ -629,54 +697,34 @@ const CinemaDashboard = () => {
 
             {/* main-cotainer start */}
             <div className="profile_main_sec_wrapp">
-              {/* <div className="">
-                <MallHero get_mall_auth_data={get_mall_auth_data} />
-              </div> */}
+              <div className="">
+                {/* <CinemaHero get_mall_auth_data={get_cinema_data} /> */}
+              </div>
               {gettab === 1 && (
                 <CinemaProfilePage
                   setTab={setTab}
-                  get_mall_auth_data={get_mall_auth_data}
+                  get_mall_auth_data={get_cinema_data}
                   sidebaropen={sidebaropen}
                 />
               )}
               {gettab === 2 && (
                 <CinemaAccountSetting
-                  get_mall_auth_data={get_mall_auth_data}
+                  get_mall_auth_data={get_cinema_data}
                   sidebaropen={sidebaropen}
                   setTab={setTab}
                 />
               )}
               {gettab === 21 && (
                 <CinemaProRateCard
-                  get_mall_auth_data={get_mall_auth_data}
+                  get_mall_auth_data={get_cinema_data}
                   sidebaropen={sidebaropen}
                   setTab={setTab}
+                  gettab={gettab}
                 />
               )}
               {gettab === 22 && (
                 <FaqPage
-                  get_mall_auth_data={get_mall_auth_data}
-                  sidebaropen={sidebaropen}
-                  setTab={setTab}
-                />
-              )}
-              {gettab === 23 && (
-                <MallCart
-                  get_mall_auth_data={get_mall_auth_data}
-                  sidebaropen={sidebaropen}
-                  setTab={setTab}
-                />
-              )}
-              {gettab === 24 && (
-                <MallCart2
-                  get_mall_auth_data={get_mall_auth_data}
-                  sidebaropen={sidebaropen}
-                  setTab={setTab}
-                />
-              )}
-              {gettab === 25 && (
-                <MallCart3
-                  get_mall_auth_data={get_mall_auth_data}
+                  get_mall_auth_data={get_cinema_data}
                   sidebaropen={sidebaropen}
                   setTab={setTab}
                 />
@@ -685,7 +733,7 @@ const CinemaDashboard = () => {
                 <CinemaTiles
                   setTab={setTab}
                   gettab={gettab}
-                  get_mall_auth_data={get_mall_auth_data}
+                  get_mall_auth_data={get_cinema_data}
                 />
               )}
               {gettab === 4 && (
@@ -696,33 +744,32 @@ const CinemaDashboard = () => {
                   // setTab={setTab}
                   // setSingleStoreData={setSingleStoreData}
                   // getsingleStoreData={getsingleStoreData}
-                  get_mall_auth_data={get_mall_auth_data}
+                  get_mall_auth_data={get_cinema_data}
                   // setStore_id={setStore_id}
                 />
               )}
               {gettab === 5 && (
                 <CinemaCart
-                  get_mall_auth_data={get_mall_auth_data}
+                  get_mall_auth_data={get_cinema_data}
                   setTab={setTab}
                   getTab={gettab}
                 />
               )}
-
               {gettab === 6 && (
                 <CinemaCheckout
                   setTab={setTab}
-                  get_mall_auth_data={get_mall_auth_data}
+                  get_mall_auth_data={get_cinema_data}
                 />
               )}
               {gettab === 7 && (
-                <CinemaThankYou get_mall_auth_data={get_mall_auth_data} />
+                <CinemaThankYou get_mall_auth_data={get_cinema_data} />
               )}
               {gettab === 8 && (
                 <EditEateriesDetails
                   getsingleStoreData={getsingleStoreData}
                   getstore_is={getstore_is}
                   setTab={setTab}
-                  get_mall_auth_data={get_mall_auth_data}
+                  get_mall_auth_data={get_cinema_dataget_cinema_data}
                 />
               )}
               {gettab === 9 && (
@@ -737,7 +784,7 @@ const CinemaDashboard = () => {
               {gettab === 10 && (
                 <UploadStoreDirectory
                   getsingleStoreData={getsingleStoreData}
-                  get_mall_auth_data={get_mall_auth_data}
+                  get_mall_auth_data={get_cinema_data}
                   setTab={setTab}
                 />
               )}
@@ -746,14 +793,14 @@ const CinemaDashboard = () => {
                   setTab={setTab}
                   eventList={eventList}
                   geteventId={geteventId}
-                  get_mall_auth_data={get_mall_auth_data}
+                  get_mall_auth_data={get_cinema_data}
                   EventApi={EventApi}
                   geteventdata1={geteventdata1}
                 />
               )}
               {gettab === 12 && (
                 <EditFacilities
-                  get_mall_auth_data={get_mall_auth_data}
+                  get_mall_auth_data={get_cinema_data}
                   getfacility_id={getfacility_id}
                   getsinglefacilitydata={getsinglefacilitydata}
                   setTab={setTab}
@@ -762,20 +809,20 @@ const CinemaDashboard = () => {
               )}
               {gettab === 13 && (
                 <MallAddEvents
-                  get_mall_auth_data={get_mall_auth_data}
+                  get_mall_auth_data={get_cinema_data}
                   setTab={setTab}
                   // EventApi={EventApi}
                 />
               )}
               {gettab === 14 && (
                 <AddMallFacility
-                  get_mall_auth_data={get_mall_auth_data}
+                  get_mall_auth_data={get_cinema_data}
                   setTab={setTab}
                 />
               )}
               {gettab === 15 && (
                 <AddEateries
-                  get_mall_auth_data={get_mall_auth_data}
+                  get_mall_auth_data={get_cinema_data}
                   setTab={setTab}
                 />
               )}
@@ -783,7 +830,7 @@ const CinemaDashboard = () => {
                 <MallAddStore
                   getsingleStoreData={getsingleStoreData}
                   getstore_is={getstore_is}
-                  get_mall_auth_data={get_mall_auth_data}
+                  get_mall_auth_data={get_cinema_data}
                   setTab={setTab}
                   // getStoreList={getStoreList}
                 />
@@ -792,7 +839,7 @@ const CinemaDashboard = () => {
               {gettab === 17 && (
                 <CinemaProfilePage
                   setTab={setTab}
-                  get_mall_auth_data={get_mall_auth_data}
+                  get_mall_auth_data={get_cinema_data}
                   sidebaropen={sidebaropen}
                 />
               )}
@@ -801,7 +848,7 @@ const CinemaDashboard = () => {
                 <UploadMovieDirectory
                   getsingleStoreData={getsingleStoreData}
                   getstore_is={getstore_is}
-                  get_mall_auth_data={get_mall_auth_data}
+                  get_mall_auth_data={get_cinema_data}
                   setTab={setTab}
                 />
               )}
@@ -810,7 +857,7 @@ const CinemaDashboard = () => {
                 <MallEditMovie
                   getsingleStoreData={getsingleStoreData}
                   getstore_is={getstore_is}
-                  get_mall_auth_data={get_mall_auth_data}
+                  get_mall_auth_data={get_cinema_data}
                   setTab={setTab}
                   moviedata={moviedata}
                 />
@@ -819,7 +866,7 @@ const CinemaDashboard = () => {
                 <MallAddMvie
                   getsingleStoreData={getsingleStoreData}
                   getstore_is={getstore_is}
-                  get_mall_auth_data={get_mall_auth_data}
+                  get_mall_auth_data={get_cinema_data}
                   setTab={setTab}
                   gettab={gettab}
                 />
@@ -828,7 +875,7 @@ const CinemaDashboard = () => {
               {gettab === 33 && (
                 <RetailerTypeSheet
                   getsingleStoreData={getsingleStoreData}
-                  get_mall_auth_data={get_mall_auth_data}
+                  get_mall_auth_data={get_cinema_data}
                   getstore_is={getstore_is}
                 />
               )}
@@ -836,9 +883,153 @@ const CinemaDashboard = () => {
               {gettab === 34 && (
                 <UploadEateryDirectory
                   getsingleStoreData={getsingleStoreData}
-                  get_mall_auth_data={get_mall_auth_data}
+                  get_mall_auth_data={get_cinema_data}
                   getstore_is={getstore_is}
                   setTab={setTab}
+                />
+              )}
+
+              {gettab === 35 && (
+                <CinemaLeaderboard
+                  getsingleStoreData={getsingleStoreData}
+                  get_mall_auth_data={get_cinema_data}
+                  getstore_is={getstore_is}
+                  setTab={setTab}
+                  gettab={gettab}
+                />
+              )}
+              {gettab === 36 && (
+                <CinemaAddLeaderboardBanner
+                  getsingleStoreData={getsingleStoreData}
+                  get_mall_auth_data={get_cinema_data}
+                  getstore_is={getstore_is}
+                  setTab={setTab}
+                />
+              )}
+
+              {gettab === 37 && (
+                <CinemaPromotionalBanner
+                  getsingleStoreData={getsingleStoreData}
+                  get_mall_auth_data={get_cinema_data}
+                  getstore_is={getstore_is}
+                  setTab={setTab}
+                  gettab={gettab}
+                />
+              )}
+              {gettab === 38 && (
+                <AddCinemaPromotionalBanner
+                  getsingleStoreData={getsingleStoreData}
+                  get_mall_auth_data={get_cinema_data}
+                  getstore_is={getstore_is}
+                  setTab={setTab}
+                />
+              )}
+              {gettab === 39 && (
+                <AddCinemaTiles
+                  getsingleStoreData={getsingleStoreData}
+                  get_mall_auth_data={get_cinema_data}
+                  getstore_is={getstore_is}
+                  setTab={setTab}
+                />
+              )}
+
+              {gettab === 40 && (
+                <CinemaLandingpageTile
+                  getsingleStoreData={getsingleStoreData}
+                  get_mall_auth_data={get_cinema_data}
+                  getstore_is={getstore_is}
+                  setTab={setTab}
+                  gettab={gettab}
+                />
+              )}
+              {gettab === 41 && (
+                <AddCinemaLandingPageBanner
+                  getsingleStoreData={getsingleStoreData}
+                  get_mall_auth_data={get_cinema_data}
+                  getstore_is={getstore_is}
+                  setTab={setTab}
+                />
+              )}
+
+              {gettab === 42 && (
+                <CinemaLandingPageLeaderboard
+                  getsingleStoreData={getsingleStoreData}
+                  get_mall_auth_data={get_cinema_data}
+                  getstore_is={getstore_is}
+                  setTab={setTab}
+                  gettab={gettab}
+                />
+              )}
+              {gettab === 43 && (
+                <AddCinemaLandingpageLeaderboard
+                  getsingleStoreData={getsingleStoreData}
+                  get_mall_auth_data={get_cinema_data}
+                  getstore_is={getstore_is}
+                  setTab={setTab}
+                />
+              )}
+              {gettab === 44 && (
+                <CinemaAnalyticsBundles
+                  getsingleStoreData={getsingleStoreData}
+                  get_mall_auth_data={get_cinema_data}
+                  getstore_is={getstore_is}
+                  setTab={setTab}
+                  gettab={gettab}
+                />
+              )}
+
+              {gettab === 45 && (
+                <AddCinemaAnalyticBundle
+                  getsingleStoreData={getsingleStoreData}
+                  get_mall_auth_data={get_cinema_data}
+                  getstore_is={getstore_is}
+                  setTab={setTab}
+                />
+              )}
+
+              {gettab === 46 && (
+                <LandingPageSquareTile
+                  getsingleStoreData={getsingleStoreData}
+                  get_mall_auth_data={get_cinema_data}
+                  getstore_is={getstore_is}
+                  setTab={setTab}
+                  gettab={gettab}
+                />
+              )}
+              {gettab === 47 && (
+                <AddLandingPageSquareTile
+                  getsingleStoreData={getsingleStoreData}
+                  get_mall_auth_data={get_cinema_data}
+                  getstore_is={getstore_is}
+                  setTab={setTab}
+                />
+              )}
+              {gettab === 25 && (
+                <ArchivesCinema
+                  getsingleStoreData={getsingleStoreData}
+                  get_mall_auth_data={get_cinema_data}
+                  getstore_is={getstore_is}
+                  setTab={setTab}
+                  gettab={gettab}
+                />
+              )}
+
+              {gettab === 24 && (
+                <CinemaAnalytics
+                  // getsingleStoreData={getsingleStoreData}
+                  // getstore_is={getstore_is}
+                  // get_mall_auth_data={get_mall_auth_data}
+                  getsingleStoreData={getsingleStoreData}
+                  get_mall_auth_data={get_cinema_data}
+                  setTab={setTab}
+                  gettab={gettab}
+
+                />
+              )}
+              {gettab === 26 && (
+                <BuyCinemaAnalytics
+                  setTab={setTab}
+                  gettab={gettab}
                 />
               )}
             </div>

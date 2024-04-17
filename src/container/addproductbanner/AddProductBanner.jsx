@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react'
-// import "./AddLeaderBoardBanner.css"
-import { Link } from 'react-router-dom'
-import images from '../../constants/images'
 import { IoIosArrowDown, IoIosArrowUp, IoIosClose } from 'react-icons/io';
 import { BiSearch } from 'react-icons/bi';
 import ReactModal from 'react-modal';
-import { AddLeaderBoardCard, AddProductCard, AddPromotionBannerCard } from '../../components';
+import { AddProductCard, } from '../../components';
 
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
@@ -142,6 +139,8 @@ const AddProductBanner = ({ get_mall_auth_data, setTab }) => {
     // select chackbox functionality
     const [peopleInfo, setPeopleInfo] = useState([]);
     const [checkboxChecked, setCheckboxChecked] = useState(false);
+    const { getCategoryApi, getWeekApi, getCinemaCategoryApi } = useStoreContext();
+
 
     const handleCheckboxChange = (event, itm, ind) => {
         if (
@@ -149,7 +148,7 @@ const AddProductBanner = ({ get_mall_auth_data, setTab }) => {
             itm.region_id === toggle &&
             !peopleInfo.includes(itm.region_id)
         ) {
-            console.log("checked_true");
+            // console.log("checked_true");
 
             setPeopleInfo([
                 ...peopleInfo,
@@ -161,7 +160,7 @@ const AddProductBanner = ({ get_mall_auth_data, setTab }) => {
                 },
             ]);
         } else {
-            console.log("checked_false");
+            // console.log("checked_false");
             let result = peopleInfo.filter((item, key) => item.id != itm.id);
             setPeopleInfo(result);
         }
@@ -169,6 +168,8 @@ const AddProductBanner = ({ get_mall_auth_data, setTab }) => {
 
     useEffect(() => {
         GetRegion();
+        getCinemaCategoryApi();
+        getCategoryApi();
     }, []);
 
     const [getregion_array, SetRigion_Array] = useState([]);
@@ -184,11 +185,11 @@ const AddProductBanner = ({ get_mall_auth_data, setTab }) => {
                 },
             })
             .then((res) => {
-                console.log("ggg", JSON.stringify(res.data, null, 2));
+                // console.log("ggg", JSON.stringify(res.data, null, 2));
                 if (res.data.success == 1) {
                     SetRigion_Array(res.data.data);
                 } else {
-                    null;
+                    // null;
                 }
             })
             .catch((err) => {
@@ -245,10 +246,10 @@ const AddProductBanner = ({ get_mall_auth_data, setTab }) => {
             <div className="leaderboard-sub-wrapp" style={{ margin: "0px" }}>
                 {/* LeaderBoard name start */}
                 <div className='edit-brand-back-iconbox' onClick={() => setTab(5)}><IoChevronBack className='edit-brand-back-icon' /> <p className='edit-brand-back-txt'>Back</p></div>
-                <div className="mall_name_wrapp mall_name_wrapp-spacebetween">
+                <div className="mall_name_wrapp mall_name_wrapp-spacebetween" style={{ paddingLeft: "0px" }}>
                     <div className="leaderboard-inner-namebox">
                         <p className="mall_name_heading">{mainName}:</p>
-                        <span className="leaderboard-span">Add Product Banners</span>
+                        <span className="leaderboard-span" style={{ fontWeight: "600" }}>Add Product Banners</span>
                     </div>
                     {/* <button onClick={() => setTab(20)} className="leaderboard-btn">
                         Add new{" "}
@@ -273,6 +274,8 @@ const AddProductBanner = ({ get_mall_auth_data, setTab }) => {
                 regionidarray={regionidarray}
                 mallidarray={mallidarray}
                 selectedMalls={selectedMalls} />
+
+            <span style={{ fontSize: "14px", color: "#bbb", alignSelf: "flex-start", marginBottom: "0.7rem" }}>*Required Fields including all image uploads.</span>
             {/* Add Leaderboard card end */}
 
             {/* select mall modal start */}
@@ -455,8 +458,8 @@ const AddProductBanner = ({ get_mall_auth_data, setTab }) => {
                                 className="btn btn-orange"
                                 onClick={() => {
                                     closeMallModal();
-                                    console.log("mallidarray", mallidarray);
-                                    console.log("regionidarray", regionidarray);
+                                    // console.log("mallidarray", mallidarray);
+                                    // console.log("regionidarray", regionidarray);
                                 }}
                             >
                                 Submit

@@ -5,3 +5,9 @@
     align-items: center;
     margin-bottom: 6rem;
 }
+
+@media screen and (max-width: 768px) {
+    .modal_thankyou {
+      width: 83vw;
+    }
+  }

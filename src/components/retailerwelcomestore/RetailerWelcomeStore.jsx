@@ -50,34 +50,41 @@ const RetailerWelcomeStore = ({ WcBtn, titie, des }) => {
     return (
         <div className="main_wrapp">
             <div className="container welcome_store_wrapp wel-sec-gap">
-                <h1 className="h1" style={{ marginBottom: "1rem" }}>{titie ? titie.welcome_title : "Welcome to In-store retailers"}</h1>
+                <h1 className="h1" style={{ marginBottom: "1rem",fontWeight:"600" }}>{titie ? titie.welcome_title : "Welcome to In-store retailers"}</h1>
                 <p className="wel-store-txt">{des && des.welcome_description}</p>
                 <div className="welcome_cards_warpp">
                     {/* <Slider {...settings}> */}
                     <div className="home-wel-card-flex">
-                        <WelcomeCard
-                            img1={images.wcard_3}
-                            h3="BIGGEST SELECTION"
-                            h4="OF PROMOTIONS NATIVE TO YOUR BRAND"
-                            color="#d813a5"
-                            wc_btn={WcBtn ? "Register mall" : null}
-                        />
-                        <WelcomeCard
-                            img1={images.wcard_2}
-                            h3="NEW PRODUCTS"
-                            h4="UNIQUE TO YOUR <br/> BRANDS IN <br/> TARGETED MALL"
-                            color="#ff8b00"
-                            wc_btn={WcBtn ? "Register brand" : null}
-                        />{" "}
+            <WelcomeCard
+            //   img1={images.wcard_3}
+              h3="BIGGEST SELECTION"
+              h4="OF PROMOTIONS NATIVE TO YOUR BRAND"
+              // color="#d813a5"
+              color="#000"
+              wc_btn={WcBtn ? "Register your mall" : null}
+              wc_btnlink={WcBtn ? "/mall" : null}
 
-                        <WelcomeCard
-                            img1={images.wcard_1}
-                            h3="SIGN UP & REGISTER"
-                            h4="FOR A UNIQUE <br/> SHOPPING <br/> EXPERIENCE"
-                            color="#4397ff"
-                            wc_btn={WcBtn ? "Sign up" : null}
-                        />
-                    </div>
+            />
+            <WelcomeCard
+            //   img1={images.wcard_2}
+              h3="NEW PRODUCTS"
+              h4="UNIQUE TO YOUR <br/> BRANDS IN <br/> TARGETED MALL"
+              color="#ff8b00"
+              wc_btn={WcBtn ? "Register your cinema" : null}
+              wc_btnlink={WcBtn ? "/CinemaPage" : null}
+
+            />{" "}
+            <WelcomeCard
+            //   img1={images.wcard_1}
+              h3="SIGN UP & REGISTER"
+              h4="FOR A UNIQUE <br/> SHOPPING <br/> EXPERIENCE"
+              //   color="#4397ff"
+              color="#000"
+              wc_btn={WcBtn ? "Sign up & Register" : null}
+              wc_btnlink={WcBtn ? "/customer" : null}
+
+            />
+          </div>
                     {/* </Slider> */}
 
                     {/* <WelcomeCard

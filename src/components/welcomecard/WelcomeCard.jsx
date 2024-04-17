@@ -9,11 +9,11 @@ const WelcomeCard = ({ img1, h3, h4, color, wc_btn, wc_btnlink }) => {
       <img src={img1} alt="" className="wc_bottom_img" />
       {/* <div className="wc_top_dot"></div> */}
       <div className="wc_text_wrapp">
-        <h3 className="h3" style={{ fontWeight: "800", paddingTop: "2rem" }}>
+        <h3 className="h3" style={{ fontWeight: "600", paddingTop: "2rem",fontSize:"40px" }}>
           {h3}
         </h3>
         {/* <h4 className="h4">{h4}</h4> */}
-        <h4
+        <h4 style={{fontSize:"30px",fontWeight:"400"}}
           className="h4"
           dangerouslySetInnerHTML={{
             __html: h4,
@@ -21,7 +21,7 @@ const WelcomeCard = ({ img1, h3, h4, color, wc_btn, wc_btnlink }) => {
         ></h4>
         {wc_btn &&
           <Link to={wc_btnlink} className="wc_btn_wrapp">
-            <p>{wc_btn}</p>
+            <p className='mall_cards_btn'>{wc_btn}</p>
             <BsArrowRight size={26} color="#fff" />
           </Link>}
       </div>

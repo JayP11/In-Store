@@ -75,11 +75,12 @@ const Facilities = ({ get_mall_auth_data, setTab, setfacility_id, getsinglefacil
       </div>
 
       <div className="mm_main_wrapp">
-        <div className="mall_name_wrapp">
-          <p className="mall_name_heading">{get_main_name}:</p>
-          <span>Facilities</span>
+        <div className="mall_name_wrapp mall_name_wrapp_fac mall_mall_name_wrapp">
+          <p className="mall_name_heading mall_mall_name_heading">{get_main_name}:</p>
+          <span className='mall_mall_name_heading' style={{fontWeight:"600"}}>Facilities</span>
         </div>
-        <div className="mm_horizontal_line"></div>
+        {/* <div className="mm_horizontal_line"></div> */}
+        <div className="" style={{marginBottom:"2rem"}}></div>
         <div className="facilities_cards_wrapp">
           {get_facility_data && get_facility_data.map((item, index) => {
             return (

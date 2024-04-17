@@ -19,6 +19,7 @@ export const mall_create_store = BaseUrl + "mall-create-store";
 export const mall_update_eatery = BaseUrl + "mall-update-eatery";
 export const mall_delete_eatery = BaseUrl + "mall-delete-eatery";
 export const mall_delete_event = BaseUrl + "mall-delete-event";
+export const new_analytic_archive = BaseUrl + "new-analytic-archive";
 
 // customer part
 
@@ -143,7 +144,7 @@ export const create_movie = BaseUrl + "create-movie";
 export const get_movie_list = BaseUrl + "get-movie-authwise";
 export const delete_movie = BaseUrl + "delete-movie";
 export const update_movie = BaseUrl + "update-movie";
-export const get_mall_movie_customer = BaseUrl + "get-mall-movie-customer";
+export const get_mall_cinema_customer = BaseUrl + "get-mall-cinema-customer";
 
 // product tils
 export const product_cus_tile = BaseUrl + "get-product-customer-tile";
@@ -190,3 +191,94 @@ export const start_payment = BaseUrl + "start-payment";
 
 export const product_banner_tiles_customer =
   BaseUrl + "product-banner-tiles-customer";
+
+
+export const get_mall_upcoming_event =
+  BaseUrl + "get-mall-upcoming-event";
+
+
+export const get_mall_past_event =
+  BaseUrl + "get-mall-past-event";
+
+export const get_faq =
+  BaseUrl + "get-faq";
+
+  export const get_facility_master =BaseUrl + "get-facility-master";
+  export const create_facility =BaseUrl + "create-facility";
+  export const get_mall_analytic =BaseUrl + "get-mall-analytic";
+  export const get_ratecard_child =BaseUrl + "get-ratecard-child";
+  export const add_mall_cart =BaseUrl + "add-mall-cart";
+  export const get_mall_cart =BaseUrl + "get-mall-cart";
+  export const mall_cart_remove_item =BaseUrl + "mall-cart-remove-item";
+  export const start_mall_payment =BaseUrl + "start-mall-payment";
+
+
+  // Cinema mall side api
+
+  export const get_cinema_manual =BaseUrl + "get-cinema-manual";
+  export const update_cinema_manual =BaseUrl + "update-cinema-manual";
+  export const create_cinema_manual =BaseUrl + "create-cinema-manual";
+
+  export const get_cinema_retailer =BaseUrl + "get-cinema-retailer";
+  export const cinema_register =BaseUrl + "cinema-register";
+
+  // get multiple mall
+export const get_multiple_mall = BaseUrl + "get-multiple-mall";
+
+
+  export const get_cinema = BaseUrl + "get-cinema"
+  export const update_cinema = BaseUrl + "update-cinema"
+  export const get_ratecard = BaseUrl + "get-ratecard"
+  export const get_cinema_category = BaseUrl + "get-cinema-category"
+  export const get_landingpagetile = BaseUrl + "get-landingpagetile?"
+  export const create_landingpagetile = BaseUrl + "create-landingpagetile"
+  export const update_landingpagetile = BaseUrl + "update-landingpagetile"
+  export const delete_landingpagetile = BaseUrl + "delete-landingpagetile"
+  export const get_landingpage_leaderboard = BaseUrl + "get-landingpage-leaderboard?"
+  export const create_landingpage_leaderboard = BaseUrl + "create-landingpage-leaderboard?"
+  export const update_landingpage_leaderboard = BaseUrl + "update-landingpage-leaderboard?"
+  export const delete_landingpage_leaderboard = BaseUrl + "delete-landingpage-leaderboard?"
+  export const get_analytic_bundle = BaseUrl + "get-analytic-bundle?"
+
+  export const create_analytic_bundle = BaseUrl + "create-analytic-bundle"
+  export const update_analytic_bundle = BaseUrl + "update-analytic-bundle"
+  export const delete_analytic_bundle = BaseUrl + "delete-analytic-bundle"
+
+
+  // Cinema mall side inport / export
+
+  export const sample_export_cinema = BaseUrl + "sample-export-cinema"
+  export const import_cinema = BaseUrl + "import-cinema"
+
+
+  export const get_landingpagetile_without_auth = BaseUrl + "get-landingpagetile-without-auth"
+  export const get_landingpage_squaretile_without_auth = BaseUrl + "get-landingpage-squaretile-without-auth"
+  export const get_landingpage_leaderboard_without_auth = BaseUrl + "get-landingpage-leaderboard-without-auth"
+
+  // Square Tile
+  export const get_landingpage_squaretile = BaseUrl + "get-landingpage-squaretile?"
+  export const create_landingpage_squaretile = BaseUrl + "create-landingpage-squaretile?"
+  export const update_landingpage_squaretile = BaseUrl + "update-landingpage-squaretile?"
+  export const delete_landingpage_squaretile = BaseUrl + "delete-landingpage-squaretile?"
+
+
+  
+  
+  // Cinema Home Page
+  export const get_cinema_landing = BaseUrl + "get-cinema-landing"
+
+  export const update_notification = BaseUrl + "update-notification";
+export const location_customer = BaseUrl + "location-customer";
+export const get_notification_url = BaseUrl + "get-notification";
+export const rate_card_pdf_url = BaseUrl + "rate-card-pdf/";
+export const get_location_popup = BaseUrl + "get-location-popup";
+export const get_welcome_page = BaseUrl + "get-welcome-page";
+export const get_delete_popup = BaseUrl + "get-delete-popup";
+export const get_brand_multiple = BaseUrl + "get-brand-multiple";
+export const get_privacy_policy = BaseUrl + "get-privacy-policy";
+
+// create mall analytics
+
+export const mall_create_analitic_bundle = BaseUrl + "mall-create-analitic-bundle";
+export const retailer_brand_multiple = BaseUrl + "retailer-brand-multiple";
+

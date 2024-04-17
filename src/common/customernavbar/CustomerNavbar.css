@@ -34,8 +34,8 @@
 
 .cus-nav-logo-after {
     gap: 125px;
-    padding-left: 8rem;
-    padding-right: 8rem;
+    padding-left: 3rem;
+    padding-right: 4rem;
 }
 
 .select-wrapper {
@@ -45,13 +45,17 @@
 .select-wrapper::after {
     content: "┏";
     font-size: 1rem;
-    top: 6px;
-    right: 10px;
+    top: 9px;
+    right: 12px;
     position: absolute;
     transform: rotate(-134deg);
     font-weight: bold;
     font-size: initial;
     color: #000000e8;
+}
+
+.cons_select_nav{
+    padding-right: 2rem !important;
 }
 
 select {

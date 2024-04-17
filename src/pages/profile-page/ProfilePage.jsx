@@ -3,27 +3,40 @@ import "./ProfilePage.css";
 import { Footer, Navbar } from "../../common";
 import { FiChevronLeft } from "react-icons/fi";
 import { MallHero, MallNavbar } from "../../components";
-import { CSSTransition } from "react-transition-group";
+import { CSSTransition } from 'react-transition-group';
+
 
 import {
   AddEateries,
+  AddFacilities,
+  AddMallCinema,
   AddMallFacility,
+  Archives,
+  BuyAnalytics,
   ContactDetail,
   Eateries,
   EditEateriesDetails,
   EditFacilities,
+  EditMallCinema,
   EditMallEvent,
   EditStoreDetail,
   Facilities,
+  FaqMall,
   MallAddEvents,
   MallAddMvie,
+  MallCart,
+  MallCart2,
+  MallCheckout,
+  MallCinema,
   MallEditMovie,
   MallEvents,
   MallManagement,
   MallMovieCards,
   MallProfilePart,
+  NotificationMall,
   RetailerTypeSheet,
   StoreDirectory,
+  UploadCinemaDirectory,
   UploadEateryDirectory,
   UploadMovieDirectory,
   UploadSd,
@@ -40,7 +53,7 @@ import {
   get_store_mall_wise,
 } from "../../utils/Constant";
 import MallAddStore from "../../container/MallAddStore";
-import AddFacilities from "../../container/addFacilities/AddFacilities";
+import MallCart3 from "../../container/mallCart3/MallCart3";
 
 const ProfilePage = () => {
   const {
@@ -48,6 +61,7 @@ const ProfilePage = () => {
     get_mall_store_data,
     get_mall_auth_loading,
     getMallAuthWise,
+    getMallCartApi,
   } = useMallContext();
   const { get_mevent_data } = useMeventContext();
   const [gettab, setTab] = useState(1);
@@ -63,12 +77,15 @@ const ProfilePage = () => {
   const [geteventdata1, SetEventData] = useState("");
   const [showElement, setShowElement] = useState(true);
 
+
+
   // store api start
   const storePerPage = 3;
   const [storetotalPages, setStoreTotalPages] = useState(1);
   const [storepage, setStorePage] = useState(1);
 
   // store api end
+
 
   const [eventList, setEventList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -88,7 +105,7 @@ const ProfilePage = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log("re754775775675", res.data);
+        console.log('re754775775675', res.data);
         setTotalPages(res.data.last_page);
         setEventList([...eventList, ...res.data.data]);
         setLoading(false);
@@ -102,7 +119,11 @@ const ProfilePage = () => {
     EventApi();
   }, [page]);
 
+
   // eatery api start
+
+
+
 
   const eateryPerPage = 3;
   const [eaterytotalPages, setEateryTotalPages] = useState(1);
@@ -138,6 +159,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     getMallAuthWise();
+    getMallCartApi();
     console.log("geteventData", geteventData);
     console.log("getsingleStoreData", getsingleStoreData);
     // window.location.reload(true);
@@ -220,47 +242,47 @@ const ProfilePage = () => {
   //   };
   // }, [history]);
 
-  const [isPromptActive, setPromptActive] = useState(false);
+  // const [isPromptActive, setPromptActive] = useState(false);
 
-  useEffect(() => {
-    const confirmNavigation = (e) => {
-      e.preventDefault();
-      e.returnValue = ""; // For Chrome
-    };
+  // useEffect(() => {
+  //   const confirmNavigation = (e) => {
+  //     e.preventDefault();
+  //     e.returnValue = ""; // For Chrome
+  //   };
 
-    const handleBeforeUnload = (e) => {
-      if (isPromptActive) {
-        confirmNavigation(e);
-      }
-    };
+  //   const handleBeforeUnload = (e) => {
+  //     if (isPromptActive) {
+  //       confirmNavigation(e);
+  //     }
+  //   };
 
-    const handleNavigation = (location) => {
-      if (location.pathname === "/your-specific-url") {
-        setPromptActive(true);
-      } else {
-        setPromptActive(false);
-      }
-    };
+  //   const handleNavigation = (location) => {
+  //     if (location.pathname === "/your-specific-url") {
+  //       setPromptActive(true);
+  //     } else {
+  //       setPromptActive(false);
+  //     }
+  //   };
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
+  //   window.addEventListener("beforeunload", handleBeforeUnload);
 
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, [isPromptActive]);
+  //   return () => {
+  //     window.removeEventListener("beforeunload", handleBeforeUnload);
+  //   };
+  // }, [isPromptActive]);
 
-  const handlePromptCancel = () => {
-    setPromptActive(false);
-  };
+  // const handlePromptCancel = () => {
+  //   setPromptActive(false);
+  // };
 
   return (
     <>
-      {isPromptActive && (
+      {/* {isPromptActive && (
         <div>
           Are you sure you want to leave?
           <button onClick={handlePromptCancel}>Stay</button>
         </div>
-      )}
+      )} */}
       <Helmet>
         <title>Profile | In-Store</title>
       </Helmet>
@@ -279,14 +301,16 @@ const ProfilePage = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-            }}>
+            }}
+          >
             <div className="loader"></div>
           </div>
         ) : (
           <div className="profilepage_main_wrapp profilepage_slider_transition">
             {/* side-bar start  */}
 
-            <div style={{ backgroundColor: "#E5E4E2", minHeight: "100vh" }}>
+
+            <div style={{ backgroundColor: "#E5E4E2", }}>
               {/* <CSSTransition
                 in={showElement}
                 timeout={300}
@@ -294,8 +318,7 @@ const ProfilePage = () => {
               // unmountOnExit
               > */}
 
-              <div
-                className="pro-side-none-resp"
+              <div className="pro-side-none-resp"
                 style={{
                   display: "flex",
                   gap: "5px",
@@ -307,16 +330,13 @@ const ProfilePage = () => {
                   // left: sidebaropen === true ? null : "-400px",
                   // transition: 'left 2s ease'
                 }}
-                // className="profilepage_sidebarr profilepage_slider_transition"
+              // className="profilepage_sidebarr profilepage_slider_transition"
               >
                 <div className="profile_sidebar_wrapp">
                   <div
-                    style={{
-                      position: "relative",
-                      width: sidebaropen ? "275px" : "0px",
-                      transition: "width 1s ease",
-                    }}
-                    className="">
+                    style={{ position: "relative", width: sidebaropen ? "275px" : "0px", transition: "width 1s ease", }}
+                    className=""
+                  >
                     <button
                       style={{
                         // background: gettab === 1 ? "#ff8b00" : "#ffb103",
@@ -328,10 +348,12 @@ const ProfilePage = () => {
                         transition: "width 1s ease",
                         whiteSpace: "nowrap",
                         borderBottom: "1px solid #000",
-                        borderRight: "1px solid #000",
+                        borderRight: "1px solid #000"
+
                       }}
                       onClick={() => setTab(1)}
-                      className="profile_sidebar_sig_btn">
+                      className="profile_sidebar_sig_btn"
+                    >
                       My Profile
                       {/* <div className="profile_sidebar_sig_btn_right_arrow">
                   <FiChevronLeft color="#fff" size={20} />
@@ -348,11 +370,13 @@ const ProfilePage = () => {
                         transition: "width 1s ease",
                         whiteSpace: "nowrap",
                         borderBottom: "1px solid #000",
-                        borderRight: "1px solid #000",
+                        borderRight: "1px solid #000"
+
                       }}
                       onClick={() => setTab(2)}
-                      className="profile_sidebar_sig_btn">
-                      Account Setting
+                      className="profile_sidebar_sig_btn"
+                    >
+                      Account Settings
                       {/* <div className="profile_sidebar_sig_btn_right_arrow">
                   <FiChevronLeft color="#fff" size={20} />
                 </div> */}
@@ -380,10 +404,13 @@ const ProfilePage = () => {
                         transition: "width 1s ease",
                         whiteSpace: "nowrap",
                         borderBottom: "1px solid #000",
-                        borderRight: "1px solid #000",
+                        borderRight: "1px solid #000"
+
+
                       }}
                       onClick={() => setTab(3)}
-                      className="profile_sidebar_sig_btn">
+                      className="profile_sidebar_sig_btn"
+                    >
                       &nbsp;&nbsp;&nbsp; - Brands
                       {/* <div className="profile_sidebar_sig_btn_right_arrow">
                   <FiChevronLeft color="#fff" size={20} />
@@ -393,7 +420,8 @@ const ProfilePage = () => {
                       style={{
                         background:
                           gettab === 4 || gettab === 8 ? "#ff8b00" : "#fff",
-                        color: gettab === 4 || gettab === 8 ? "#fff" : "#000",
+                        color:
+                          gettab === 4 || gettab === 8 ? "#fff" : "#000",
                         fontWeight:
                           gettab === 4 || gettab === 8 ? "700" : "500",
                         width: sidebaropen ? "275px" : "0px",
@@ -402,15 +430,38 @@ const ProfilePage = () => {
                         whiteSpace: "nowrap",
                         borderBottom: "1px solid #000",
                         borderRight: "1px solid #000",
+
+
                       }}
                       onClick={() => setTab(4)}
-                      className="profile_sidebar_sig_btn">
+                      className="profile_sidebar_sig_btn"
+                    >
                       &nbsp;&nbsp;&nbsp; - Eateries
                       {/* <div className="profile_sidebar_sig_btn_right_arrow">
                   <FiChevronLeft color="#fff" size={20} />
                 </div> */}
                     </button>
+
                     <button
+                      style={{
+                        background: gettab === 28 ? "#ff8b00" : "#fff",
+                        color: gettab === 28 ? "#fff" : "#000",
+                        fontWeight: gettab === 28 ? "700" : "500",
+                        width: sidebaropen ? "275px" : "0px",
+                        overflow: "hidden",
+                        transition: "width 1s ease",
+                        whiteSpace: "nowrap",
+                        borderBottom: "1px solid #000",
+                        borderRight: "1px solid #000"
+
+                      }}
+                      onClick={() => setTab(28)}
+                      className="profile_sidebar_sig_btn"
+                    >
+                      &nbsp;&nbsp;&nbsp; - Cinema
+
+                    </button>
+                    {/* <button
                       style={{
                         background: gettab === 17 ? "#ff8b00" : "#ffb103",
                         background: gettab === 17 ? "#ff8b00" : "#fff",
@@ -420,16 +471,19 @@ const ProfilePage = () => {
                         overflow: "hidden",
                         transition: "width 1s ease",
                         whiteSpace: "nowrap",
-                        borderBottom: "1px solid #000",
-                        borderRight: "1px solid #000",
+                        borderBottom:"1px solid #000",
+                        borderRight:"1px solid #000"
+
+
                       }}
                       onClick={() => setTab(17)}
-                      className="profile_sidebar_sig_btn">
+                      className="profile_sidebar_sig_btn"
+                    >
                       &nbsp;&nbsp;&nbsp; - Movies
-                      {/* <div className="profile_sidebar_sig_btn_right_arrow">
+                      <div className="profile_sidebar_sig_btn_right_arrow">
                   <FiChevronLeft color="#fff" size={20} />
-                </div> */}
-                    </button>
+                </div>
+                    </button> */}
                     <button
                       style={{
                         background: gettab === 5 ? "#ff8b00" : "#fff",
@@ -440,10 +494,13 @@ const ProfilePage = () => {
                         transition: "width 1s ease",
                         whiteSpace: "nowrap",
                         borderBottom: "1px solid #000",
-                        borderRight: "1px solid #000",
+                        borderRight: "1px solid #000"
+
+
                       }}
                       onClick={() => setTab(5)}
-                      className="profile_sidebar_sig_btn">
+                      className="profile_sidebar_sig_btn"
+                    >
                       &nbsp;&nbsp;&nbsp; - Events
                       {/* <div className="profile_sidebar_sig_btn_right_arrow">
                   <FiChevronLeft color="#fff" size={20} />
@@ -451,18 +508,21 @@ const ProfilePage = () => {
                     </button>
                     <button
                       style={{
-                        background: gettab === 6 ? "#ff8b00" : "#fff",
-                        color: gettab === 6 ? "#fff" : "#000",
-                        fontWeight: gettab === 6 ? "700" : "500",
+                        background: gettab === 6 || gettab === 12 || gettab === 26 ? "#ff8b00" : "#fff",
+                        color: gettab === 6 || gettab === 12 || gettab === 26 ? "#fff" : "#000",
+                        fontWeight: gettab === 6 || gettab === 12 || gettab === 26 ? "700" : "500",
                         width: sidebaropen ? "275px" : "0px",
                         overflow: "hidden",
                         transition: "width 1s ease",
                         whiteSpace: "nowrap",
                         borderBottom: "1px solid #000",
-                        borderRight: "1px solid #000",
+                        borderRight: "1px solid #000"
+
+
                       }}
                       onClick={() => setTab(6)}
-                      className="profile_sidebar_sig_btn">
+                      className="profile_sidebar_sig_btn"
+                    >
                       &nbsp;&nbsp;&nbsp; - Facilities
                       {/* <div className="profile_sidebar_sig_btn_right_arrow">
                   <FiChevronLeft color="#fff" size={20} />
@@ -478,15 +538,201 @@ const ProfilePage = () => {
                         transition: "width 1s ease",
                         whiteSpace: "nowrap",
                         borderBottom: "1px solid #000",
-                        borderRight: "1px solid #000",
+                        borderRight: "1px solid #000"
+
                       }}
                       onClick={() => setTab(7)}
-                      className="profile_sidebar_sig_btn">
+                      className="profile_sidebar_sig_btn"
+                    >
                       Contact Details
                       {/* <div className="profile_sidebar_sig_btn_right_arrow">
                   <FiChevronLeft color="#fff" size={20} />
                 </div> */}
                     </button>
+
+                    <button
+                      style={{
+                        background: "#fff",
+                        color: "#000",
+                        // background: gettab === 60 ? "#ff8b00" : "#fff",
+                        // color: gettab === 60 ? "#fff" : "#000",
+                        // fontWeight: gettab === 60 ? "700" : "500",
+                        // width: sidebaropen ? "275px" : "0px",
+                        overflow: "hidden",
+                        transition: "width 1s ease",
+                        whiteSpace: "nowrap",
+                        borderBottom: "1px solid #000",
+                        borderRight: "1px solid #000"
+
+                      }}
+                      // onClick={() => setTab(7)}
+                      className="profile_sidebar_sig_btn"
+                    >
+                      Track My Analytics
+                      {/* <div className="profile_sidebar_sig_btn_right_arrow">
+                  <FiChevronLeft color="#fff" size={20} />
+                </div> */}
+                    </button>
+
+                    <button
+                      style={{
+                        background: "#fff",
+                        color: "#000",
+                        // background: gettab === 60 ? "#ff8b00" : "#fff",
+                        // color: gettab === 60 ? "#fff" : "#000",
+                        // fontWeight: gettab === 60 ? "700" : "500",
+                        width: sidebaropen ? "275px" : "0px",
+                        overflow: "hidden",
+                        transition: "width 1s ease",
+                        whiteSpace: "nowrap",
+                        borderBottom: "1px solid #000",
+                        borderRight: "1px solid #000"
+
+                      }}
+                      // onClick={() => setTab(7)}
+                      className="profile_sidebar_sig_btn"
+                    >
+                      &nbsp;&nbsp;&nbsp; - My Analytics
+                      {/* <div className="profile_sidebar_sig_btn_right_arrow">
+                  <FiChevronLeft color="#fff" size={20} />
+                </div> */}
+                    </button>
+                    <button
+                      style={{
+                        background: gettab === 25 ? "#ff8b00" : "#fff",
+                        color: gettab === 25 ? "#fff" : "#000",
+                        fontWeight: gettab === 25 ? "700" : "500",
+                        width: sidebaropen ? "275px" : "0px",
+                        overflow: "hidden",
+                        transition: "width 1s ease",
+                        whiteSpace: "nowrap",
+                        borderBottom: "1px solid #000",
+                        borderRight: "1px solid #000",
+                      }}
+                      onClick={() => setTab(25)}
+                      className="profile_sidebar_sig_btn">
+                     - My Archives
+                    </button>
+                    {/* <button
+                      style={{
+                        background: gettab === 21 ? "#ff8b00" : "#fff",
+                        color: gettab === 21 ? "#fff" : "#000",
+                        fontWeight: gettab === 21 ? "700" : "500",
+                        width: sidebaropen ? "275px" : "0px",
+                        overflow: "hidden",
+                        transition: "width 1s ease",
+                        whiteSpace: "nowrap",
+                        borderBottom:"1px solid #000",
+                        borderRight:"1px solid #000"
+
+                      }}
+                      onClick={() => setTab(21)}
+                      className="profile_sidebar_sig_btn"
+                    >
+                      Cart2
+                     
+                    </button> */}
+
+                    <button
+                      style={{
+                        background: gettab === 22 ? "#ff8b00" : "#fff",
+                        color: gettab === 22 ? "#fff" : "#000",
+                        fontWeight: gettab === 22 ? "700" : "500",
+                        width: sidebaropen ? "275px" : "0px",
+                        overflow: "hidden",
+                        transition: "width 1s ease",
+                        whiteSpace: "nowrap",
+                        borderBottom: "1px solid #000",
+                        borderRight: "1px solid #000"
+
+                      }}
+                      onClick={() => setTab(22)}
+                      className="profile_sidebar_sig_btn"
+                    >
+                      My Cart
+                      {/* <div className="profile_sidebar_sig_btn_right_arrow">
+                  <FiChevronLeft color="#fff" size={20} />
+                </div> */}
+                    </button>
+
+                    {/* <button
+                      style={{
+                        background: gettab === 23 ? "#ff8b00" : "#fff",
+                        color: gettab === 23 ? "#fff" : "#000",
+                        fontWeight: gettab === 23 ? "700" : "500",
+                        width: sidebaropen ? "275px" : "0px",
+                        overflow: "hidden",
+                        transition: "width 1s ease",
+                        whiteSpace: "nowrap",
+                        borderBottom:"1px solid #000",
+                        borderRight:"1px solid #000"
+
+                      }}
+                      onClick={() => setTab(23)}
+                      className="profile_sidebar_sig_btn"
+                    >
+                      Cart3
+                      
+                    </button> */}
+
+                    {/* <button
+                      style={{
+                        background: gettab === 24 ? "#ff8b00" : "#fff",
+                        color: gettab === 24 ? "#fff" : "#000",
+                        fontWeight: gettab === 24 ? "700" : "500",
+                        width: sidebaropen ? "275px" : "0px",
+                        overflow: "hidden",
+                        transition: "width 1s ease",
+                        whiteSpace: "nowrap",
+                        borderBottom:"1px solid #000",
+                        borderRight:"1px solid #000"
+
+                      }}
+                      onClick={() => setTab(24)}
+                      className="profile_sidebar_sig_btn"
+                    >
+                      Checkout
+                     
+                    </button> */}
+
+                    <button
+                      style={{
+                        background: gettab === 27 ? "#ff8b00" : "#fff",
+                        color: gettab === 27 ? "#fff" : "#000",
+                        fontWeight: gettab === 27 ? "700" : "500",
+                        width: sidebaropen ? "275px" : "0px",
+                        overflow: "hidden",
+                        transition: "width 1s ease",
+                        whiteSpace: "nowrap",
+                        borderBottom: "1px solid #000",
+                        borderRight: "1px solid #000",
+
+                      }}
+                      onClick={() => setTab(27)}
+                      className="profile_sidebar_sig_btn"
+                    >
+                      FAQ
+                      {/* <div className="profile_sidebar_sig_btn_right_arrow">
+                  <FiChevronLeft color="#fff" size={20} />
+                </div> */}
+                    </button>
+
+                    {/* <button
+                      style={{
+                        background: gettab === 32 ? "#ff8b00" : "#fff",
+                        color: gettab === 32 ? "#fff" : "#000",
+                        fontWeight: gettab === 32 ? "700" : "500",
+                        width: sidebaropen ? "275px" : "0px",
+                        overflow: "hidden",
+                        transition: "width 1s ease",
+                        whiteSpace: "nowrap",
+                        borderBottom: "1px solid #000",
+                        borderRight: "1px solid #000",
+                      }}
+                      onClick={() => setTab(32)}
+                      className="profile_sidebar_sig_btn">
+                      Notification
+                    </button> */}
 
                     <div className="profilepage_slider_transition">
                       <div
@@ -496,7 +742,8 @@ const ProfilePage = () => {
                           setShowElement(!showElement);
 
                           console.log("check", sidebaropen);
-                        }}>
+                        }}
+                      >
                         <FiChevronLeft color="#fff" size={20} />
                       </div>
                     </div>
@@ -595,7 +842,7 @@ const ProfilePage = () => {
                   getstore_is={getstore_is}
                   get_mall_auth_data={get_mall_auth_data}
                   setTab={setTab}
-                  // getStoreList={getStoreList}
+                // getStoreList={getStoreList}
                 />
               )}
               {gettab === 10 && (
@@ -628,7 +875,7 @@ const ProfilePage = () => {
                 <MallAddEvents
                   get_mall_auth_data={get_mall_auth_data}
                   setTab={setTab}
-                  // EventApi={EventApi}
+                // EventApi={EventApi}
                 />
               )}
               {gettab === 14 && (
@@ -649,7 +896,7 @@ const ProfilePage = () => {
                   getstore_is={getstore_is}
                   get_mall_auth_data={get_mall_auth_data}
                   setTab={setTab}
-                  // getStoreList={getStoreList}
+                // getStoreList={getStoreList}
                 />
               )}
 
@@ -708,13 +955,126 @@ const ProfilePage = () => {
                   setTab={setTab}
                 />
               )}
-              {gettab === 26 && (
-                <AddFacilities
+
+              {gettab === 21 && (
+                <MallCart
+                  getsingleStoreData={getsingleStoreData}
                   get_mall_auth_data={get_mall_auth_data}
+                  getstore_is={getstore_is}
                   setTab={setTab}
-                  // EventApi={EventApi}
                 />
               )}
+
+              {gettab === 22 && (
+                <MallCart2
+                  getsingleStoreData={getsingleStoreData}
+                  get_mall_auth_data={get_mall_auth_data}
+                  getstore_is={getstore_is}
+                  setTab={setTab}
+                />
+              )}
+
+
+              {gettab === 23 && (
+                <MallCart3
+                  getsingleStoreData={getsingleStoreData}
+                  get_mall_auth_data={get_mall_auth_data}
+                  getstore_is={getstore_is}
+                  setTab={setTab}
+                />
+              )}
+
+              {gettab === 24 && (
+                <MallCheckout
+                  getsingleStoreData={getsingleStoreData}
+                  get_mall_auth_data={get_mall_auth_data}
+                  getstore_is={getstore_is}
+                  setTab={setTab}
+                />
+              )}
+
+              {gettab === 26 && (
+                <AddFacilities
+                  getsingleStoreData={getsingleStoreData}
+                  get_mall_auth_data={get_mall_auth_data}
+                  getstore_is={getstore_is}
+                  setTab={setTab}
+                />
+              )}
+
+              {gettab === 27 && (
+                <FaqMall
+                  getsingleStoreData={getsingleStoreData}
+                  get_mall_auth_data={get_mall_auth_data}
+                  getstore_is={getstore_is}
+                  setTab={setTab}
+
+                />
+              )}
+              {gettab === 28 && (
+                <MallCinema
+                  setTab={setTab}
+                  storepage={storepage}
+                  setStorePage={setStorePage}
+                  storetotalPages={storetotalPages}
+                  setStore_id={setStore_id}
+                  // getstore_is={getstore_is}
+                  setSingleStoreData={setSingleStoreData}
+                  getsingleStoreData={getsingleStoreData}
+                  get_mall_auth_data={get_mall_auth_data}
+
+
+
+
+
+
+                />
+              )}
+              {gettab === 29 && (
+                <EditMallCinema
+                  getsingleStoreData={getsingleStoreData}
+                  getstore_is={getstore_is}
+                  get_mall_auth_data={get_mall_auth_data}
+
+                  setTab={setTab}
+                />
+              )}
+              {gettab === 30 && (
+                <AddMallCinema
+                  getsingleStoreData={getsingleStoreData}
+                  get_mall_auth_data={get_mall_auth_data}
+                  getstore_is={getstore_is}
+                  setTab={setTab}
+                />
+              )}
+              {gettab === 31 && (
+                <UploadCinemaDirectory
+                  getsingleStoreData={getsingleStoreData}
+                  get_mall_auth_data={get_mall_auth_data}
+                  getstore_is={getstore_is}
+                  setTab={setTab}
+                />
+              )}
+
+              {gettab === 32 && (
+                <NotificationMall
+                  getsingleStoreData={getsingleStoreData}
+                  get_mall_auth_data={get_mall_auth_data}
+                  getstore_is={getstore_is}
+                  setTab={setTab}
+                />
+              )}
+
+              {gettab === 25 && (
+                <Archives
+                  getsingleStoreData={getsingleStoreData}
+                  getstore_is={getstore_is}
+                  get_mall_auth_data={get_mall_auth_data}
+                  setTab={setTab}
+                  gettab={gettab}
+                />
+              )}
+              {gettab === 35 && <BuyAnalytics setTab={setTab} />}
             </div>
             {/* main-cotainer end */}
           </div>

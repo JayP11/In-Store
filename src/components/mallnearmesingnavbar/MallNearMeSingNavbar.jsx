@@ -81,13 +81,13 @@ const MallNearMeSingNavbar = ({ setTab, getsingalmalldata }) => {
 
     useEffect(() => {
         token();
-        console.log("profile", profile);
+       
         let role = localStorage.getItem("role");
         setrole(role);
         var islogin = localStorage.getItem("is_login");
         var customerimg = localStorage.getItem("cusimg");
-        console.log("customer image is", customerimg);
-        setcusimg(customerimg);
+
+        // setcusimg (JSON.parse(customerimg));
         SetLogin(islogin);
     }, []);
 
@@ -412,7 +412,8 @@ const MallNearMeSingNavbar = ({ setTab, getsingalmalldata }) => {
                                 <div className="nav_myacc_wrapp" style={{ marginLeft: "0px" }}>
                                     <Link>
                                         <img
-                                            src={getcusimg ? getcusimg : images.profile_logo}
+                                            // src={getcusimg ? getcusimg : images.profile_logo}
+                                            src={ images.profile_logo}
                                             alt=""
                                             className="nav_profile"
                                             style={{ borderRadius: "100%" }}
@@ -462,14 +463,14 @@ const MallNearMeSingNavbar = ({ setTab, getsingalmalldata }) => {
                                                 ) : null}
                                                 {/* <Link className="navbar-acc-menu-link">My profile</Link> */}
                                                 <Link className="navbar-acc-menu-link">Help</Link>
-                                                {login === "true" && getrole == 4 ? (
+                                                {/* {login === "true" && getrole == 4 ? (
                                                     <Link
                                                         to=""
                                                         className="navbar-acc-menu-link"
                                                         onClick={() => setTab(9)}>
                                                         Account Settings
                                                     </Link>
-                                                ) : null}
+                                                ) : null} */}
 
                                                 {/* {is_login === true ? (<><Link onClick={logout}>Logout</Link></>) : (<></>)} */}
                                                 {login === "true" ? (
@@ -553,9 +554,10 @@ const MallNearMeSingNavbar = ({ setTab, getsingalmalldata }) => {
                                             <Link onClick={() => setIsOpen3(true)}>Login</Link>
                                         )}
                                         {/* <Link onClick={() => setRegisterCustomerOpen(true)}>Sign Up</Link> */}
-                                        <Link onClick={() => modalIsOpen(true)}>Sign Up</Link>
+                                        {/* <Link onClick={() => modalIsOpen(true)}>Sign Up</Link> */}
 
-                                        <Link to="/mallnearme">Malls near me</Link>
+                                        {login === "true" || getrole === 4 ? ( <>
+                                        {/* <Link to="/mallnearme">Malls near me</Link>
                                         <Link
                                             to="/customerdashboard"
                                             onClick={() => {
@@ -627,7 +629,7 @@ const MallNearMeSingNavbar = ({ setTab, getsingalmalldata }) => {
                                                 setSidebarOpen(!getsidebarOpen);
                                             }}>
                                             Account Settings
-                                        </Link>
+                                        </Link> */}
 
                                         <Link>Help</Link>
                                         {login === "true" ? (
@@ -635,7 +637,7 @@ const MallNearMeSingNavbar = ({ setTab, getsingalmalldata }) => {
                                         ) : (
                                             <></>
                                         )}
-
+</>) : <></>}
                                         {/* <Link> - Events</Link>
                   <Link> - Facilities</Link>
                   <Link> Contact Details</Link> */}

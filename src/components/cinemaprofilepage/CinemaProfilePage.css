@@ -1,9 +1,4 @@
-.cinemaprofile {
-  margin: 5rem !important;
-}
-
-@media screen and (max-width: 768px){
-  .cinemaprofile {
-    margin: 4.2rem 2rem 2rem 2rem !important;
+.cinema_profile_bullet {
+    display: flex;
+    gap: 1rem;
   }
-}

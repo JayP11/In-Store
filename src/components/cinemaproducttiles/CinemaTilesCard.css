@@ -1,38 +1,68 @@
 .leaderboard-card-part-first-cinema {
-  /* width: 45% !important; */
-  width: 64% !important;
-}
-
-.cinemaproduct-tiles-card-main-wrapp{
-  width: 86%;
-}
-.leaderboard-card {
-  width: 100%;
-}
-
-.cinema_card_part {
-  height: 285px !important;
-}
-@media screen and (max-width: 1230px) {
-  .leaderboard-card-part-first-cinema {
-    width: 100% !important;
-    order: 1;
+    width: 60% !important;
   }
 
-  .product-tiles-card-cinema-sec-part {
-    align-self: center;
-  }
-}
-
-@media screen and (max-width: 1020px) {
-  .rs-picker-daterange-calendar-group {
-    display: flex !important;
-    flex-direction: column !important;
-    height: 100% !important;
-    min-width: 100% !important;
+  .product-tiles-card-main-wrapp-cinema{
+    width: 87% !important;
   }
 
-  .rs-picker-daterange-menu .rs-calendar:first-child {
-    border-right: 0px solid var(--rs-border-primary);
+  .leaderboard-card-flex-wrapp-cinema{
+    padding: 20px;
   }
+
+  .leaderboard-card-part-img-upl-cinema{
+    height: 285px;
+    margin-bottom: 0px;
 }
+  
+
+  .leaderboard-card {
+    width: 100%;
+  }
+
+  .cinema_card_part {
+    height: 285px !important;
+  }
+
+
+  @media screen and (max-width: 1230px) {
+    .leaderboard-card-part-first-cinema {
+      width: 100% !important;
+      order: 1;
+    }
+
+    .leaderboard-card-part-first-cinema{
+      width: 100% !important;
+    }
+  
+    .product-tiles-card-cinema-sec-part {
+      align-self: center;
+    }
+  }
+  
+ 
+  
+  @media screen and (max-width: 1020px) {
+    .rs-picker-daterange-calendar-group {
+      display: flex !important;
+      flex-direction: column !important;
+      height: 100% !important;
+      min-width: 100% !important;
+    }
+  
+    .rs-picker-daterange-menu .rs-calendar:first-child {
+      border-right: 0px solid var(--rs-border-primary);
+    }
+  }
+
+  @media screen and (max-width:500px) {
+    .product-tiles-card-main-wrapp-cinema{
+      width: 90% !important;
+    }
+
+    .leaderboard-delete-icon{
+      width: 30px;
+      height: 30px;
+    }
+  }
+

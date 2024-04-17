@@ -96,10 +96,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   // mall Registore api
-  const setMallRegister = async (params, url) => {
+  const setMallRegister = async (formdata, url) => {
     dispatch({ type: MALL_SIGNUP_BEGIN });
     try {
-      const response = await axios.post(register_mall, params, {
+      const response = await axios.post(register_mall, formdata, {
         headers: {
           Accept: ACCEPT_HEADER,
         },
@@ -156,12 +156,40 @@ export const AuthProvider = ({ children }) => {
         },
       });
       const logindata = response.data;
-      console.log("login data---login", response.data);
+     
       if (logindata.success == 1) {
+        // localStorage.setItem("cusimg", response.data.user.store_logo_path);
+
+        console.log("login data---login",logindata);
         dispatch({ type: LOGIN_SUCCESS, payload: logindata });
         localStorage.setItem("is_login", JSON.stringify(true));
         localStorage.setItem("is_token", JSON.stringify(logindata.token));
+        if(logindata.user.role == 6 ||logindata.user.role ==='6' ){
+          localStorage.setItem(
+            "cusimg",
+            JSON.stringify(logindata.user.store_logo_path)
+          );
+        }else if(logindata.user.role == 4 ||logindata.user.role ==='4' ){
+          localStorage.setItem(
+            "cusimg",
+            JSON.stringify(logindata.user.cus_profile_path)
+          );
+        }else if(logindata.user.role == 3 ||logindata.user.role ==='3' ){
+          localStorage.setItem(
+            "cusimg",
+            JSON.stringify(logindata.user.store_logo_path)
+          );
+        }else if(logindata.user.role == 2 ||logindata.user.role ==='2' ){
+          localStorage.setItem(
+            "cusimg",
+            JSON.stringify(logindata.user.store_logo_path)
+          );
+        }else {
+          null
+        }
+       
         localStorage.setItem("role", JSON.stringify(logindata.user.role));
+              
       } else {
         alert(logindata.message);
       }

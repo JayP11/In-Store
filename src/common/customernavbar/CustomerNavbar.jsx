@@ -12,6 +12,7 @@ import ReactModal from "react-modal";
 import { GrClose } from "react-icons/gr";
 import { ACCEPT_HEADER, get_category, product_banner_tiles_customer } from "../../utils/Constant";
 import axios from "axios";
+import { RiNotification4Fill } from "react-icons/ri";
 
 const customStyles = {
   content: {
@@ -432,14 +433,14 @@ const CustomerNavbar = ({ setTab, getsingalmalldata, SetNavBarData, SetNavBarDat
                       </select> */}
 
                       <select
-                        className="leaderboard-card-inp"
+                        className="leaderboard-card-inp cons_select_nav"
                         style={{ width: "180px" }}
 
                         // onChange={(e) => FilterApi(e.target.value)}
                         onChange={(e) => {
                           // FilterApi(e.target.value);
-                          SetNavBarData((e.target.value).slice(0, 3));
-                          SetNavBarDataName((e.target.value).slice(3));
+                          SetNavBarData((e.target.value).slice(0, 2));
+                          SetNavBarDataName((e.target.value).slice(2));
 
                           console.log("navbardataid", (e.target.value).slice(0, 3));
                           console.log("navbardataid", (e.target.value).slice(3));
@@ -475,7 +476,7 @@ const CustomerNavbar = ({ setTab, getsingalmalldata, SetNavBarData, SetNavBarDat
                   onChange={(e) => {
                     // SearchApi(e.target.value);
                     SetNavBarData1(e.target.value);
-                    setTab(35)
+                    setTab(35);
                     // SetNavBarData(e.target.value);
 
                   }}
@@ -561,6 +562,15 @@ const CustomerNavbar = ({ setTab, getsingalmalldata, SetNavBarData, SetNavBarDat
                   className="cus-nav-wishlist-icon-part">
                   <AiFillHeart className="cus-nav-wishlist-icon" />
                 </button>
+                {/* <button
+                    onClick={() => setTab(38)}
+                    className="cus-nav-wishlist-icon-part"
+                    style={{ position: "relative" }}>
+                    <RiNotification4Fill className="cus-nav-wishlist-icon" />
+                    <div className="cart-digit-main">
+                      0{store_cart_count ? store_cart_count : "0"}
+                    </div>
+                  </button> */}
               </div>
 
               <button
@@ -597,11 +607,17 @@ const CustomerNavbar = ({ setTab, getsingalmalldata, SetNavBarData, SetNavBarDat
                   </Link>
                 ) : null}
 
+                {login === "true" && getrole == 6 ? (
+                  <Link to="/CinemaDashboard" className="navbar-acc-menu-link">
+                    Cinema Dashboard
+                  </Link>
+                ) : null}
+
                 <Link to="/about-instore">About In-store</Link>
                 {/* <Link to="/mall">Mall </Link> */}
                 <Link to="/mall">Mall Registration</Link>
-
                 <Link to="/retailer">Brand Registration</Link>
+                <Link to="/CinemaPage">Cinema Registration</Link>
                 {/* {getcondation === false ? (
                 <Link onClick={() => setIsOpen2(true)}>Sign Up</Link>
               ) : null} */}
@@ -625,7 +641,7 @@ const CustomerNavbar = ({ setTab, getsingalmalldata, SetNavBarData, SetNavBarDat
                       <Link onClick={() => setIsOpen3(true)}>Login</Link>
                     )}
                     {/* <Link onClick={() => setRegisterCustomerOpen(true)}>Sign Up</Link> */}
-                    <Link onClick={() => modalIsOpen(true)}>Sign Up</Link>
+                    {/* <Link onClick={() => modalIsOpen(true)}>Sign Up</Link> */}
 
                     <Link to="/mallnearme">Malls near me</Link>
                     <Link
@@ -658,7 +674,7 @@ const CustomerNavbar = ({ setTab, getsingalmalldata, SetNavBarData, SetNavBarDat
                         setTab(28);
                         setSidebarOpen(!getsidebarOpen);
                       }}>
-                      Movies
+                      Cinema
                     </Link>
                     <Link
                       to="/customerdashboard"
@@ -668,14 +684,7 @@ const CustomerNavbar = ({ setTab, getsingalmalldata, SetNavBarData, SetNavBarDat
                       }}>
                       Events
                     </Link>
-                    <Link
-                      to="/customerdashboard"
-                      onClick={() => {
-                        setTab(29);
-                        setSidebarOpen(!getsidebarOpen);
-                      }}>
-                      Mall Map
-                    </Link>
+                    
                     <Link
                       to="/customerdashboard"
                       onClick={() => {
@@ -683,6 +692,14 @@ const CustomerNavbar = ({ setTab, getsingalmalldata, SetNavBarData, SetNavBarDat
                         setSidebarOpen(!getsidebarOpen);
                       }}>
                       Facilities
+                    </Link>
+                    <Link
+                      to="/customerdashboard"
+                      onClick={() => {
+                        setTab(29);
+                        setSidebarOpen(!getsidebarOpen);
+                      }}>
+                      Mall Map
                     </Link>
                     <Link
                       to="/customerdashboard"
@@ -699,6 +716,22 @@ const CustomerNavbar = ({ setTab, getsingalmalldata, SetNavBarData, SetNavBarDat
                         setSidebarOpen(!getsidebarOpen);
                       }}>
                       Account Settings
+                    </Link>
+                    <Link
+                      to="/customerdashboard"
+                      onClick={() => {
+                        setTab(30);
+                        setSidebarOpen(!getsidebarOpen);
+                      }}>
+                     Contact the Mall
+                    </Link>
+                    <Link
+                      to="/customerdashboard"
+                      onClick={() => {
+                        setTab(37);
+                        setSidebarOpen(!getsidebarOpen);
+                      }}>
+                      FAQ
                     </Link>
 
                     <Link>Help</Link>

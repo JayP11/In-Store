@@ -60,7 +60,7 @@ const CustomerBrandDetailsComponent = ({ getbdetalis, setTab }) => {
                 <div className="cus-brand-details-flex-part2"></div>
 
                 <div className="cus-brand-details-flex-part4">
-                    <p>
+                    {/* <p>
                         {" "}
                         GUESS was established in 1981 by the Marciano brothers, who left the
                         south of France in pursuit of the American dream. Inspired by a
@@ -76,7 +76,10 @@ const CustomerBrandDetailsComponent = ({ getbdetalis, setTab }) => {
                         Today GUESS is a truly global lifestyle brand with a full range of
                         denim, apparel and accessories offered in over 80 countries around
                         the world.
-                    </p>
+                    </p> */}
+
+                    {getbdetalis ? getbdetalis.description
+ : ""}
 
                 </div>
                 <div className="find-my-way-btn-flex find-my-way-btn-flex2">

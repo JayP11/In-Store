@@ -7,13 +7,15 @@
 .cus-wishlist-dropdown-erapp {
   display: flex;
   gap: 25px;
-  margin-top: 40px;
+  margin-top: 32px;
   align-items: center;
 }
 .cus-wishlist-dropdown-main-wrapp {
   display: flex;
+  flex-wrap: wrap;
   /* flex-direction: column; */
-  /* gap: 25px; */
+  /* justify-content: center; */
+  gap: 1.5rem;
 }
 
 .cus-wishlist-dropdown-prod-wrapp {
@@ -59,11 +61,36 @@
     gap: 10px;
   }
 
+  .wish_find_way_flex{
+    flex-direction: column;
+    align-items: flex-start;
+    align-items: flex-start !important;
+    
+  }
+
+  .wish_btn_find_way{
+    font-size: 18px !important;
+  }
+
+  .find-my-way-btn-arrow_wish{
+    width: 25px;
+    height: 25px;
+  }
+
   .cus-wishlist-sub-heading {
     font-size: 16px;
+    text-align: center;
   }
 
   .cus-wishlist-dropdown-erapp {
     margin-bottom: 10px;
+  }
+
+  .mall_name_wrapp_cus_wishlist{
+    align-items: center;
+  }
+
+  .cus-wishlist-dropdown-main-wrapp{
+    justify-content: center;
   }
 }

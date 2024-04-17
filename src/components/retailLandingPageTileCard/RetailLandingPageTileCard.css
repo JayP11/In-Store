@@ -1,0 +1,24 @@
+.leaderboard-card-part-third-chng{
+    width: 15%;
+}
+
+.leaderboard-card-part-sec-chng{
+    width: 41%;
+}
+
+.leaderboard-card-part-first-half{
+    width: 350px;
+}
+
+.leaderboard-card-part-sec-half{
+    width: 350px;
+}
+
+.leaderboard-card-part-third-half{
+    width: 150px;
+}
+
+.leaderboard-card-flex-wrapp-half{
+    gap: 2%;
+    justify-content: space-between;
+}

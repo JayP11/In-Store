@@ -12,7 +12,7 @@ import hero_logo from "../assets/logos/home/hero_logo.png";
 import profile_logo from "../assets/logos/home/profile_logo.png";
 import hero_banner from "../assets/images/hero_banner.webp";
 import hero_banner2 from "../assets/images/hero_banner2.webp";
-
+import faq_banner from "../assets/images/in-store-FAQ-mobile-banner.png"
 import wcard_1 from "../assets/logos/home/wcard_1.png";
 import wcard_2 from "../assets/logos/home/wcard_2.png";
 import wcard_3 from "../assets/logos/home/wcard_3.png";
@@ -61,6 +61,8 @@ import cloud_upload from "../assets/logos/profile/cloud_upload.png";
 import clock from "../assets/logos/profile/clock.png";
 import add_new from "../assets/logos/profile/add_new.png";
 import delete_icon from "../assets/logos/profile/delete_icon.png";
+import delete_icon1 from "../assets/images/delete_icon.png";
+import edit_icon1 from "../assets/images/edit_icon.png";
 import extend_icon from "../assets/logos/profile/extend_icon.png";
 import hero_profile_banner from "../assets/images/profile/hero_profile_banner.png";
 import promotion_banner_sing from "../assets/images/profile/promotion_banner_sing.png";
@@ -85,6 +87,7 @@ import sl9 from "../assets/images/stores-logos/sl9.jpg";
 import sl10 from "../assets/images/stores-logos/sl10.jpg";
 import sl11 from "../assets/images/stores-logos/sl11.jpg";
 import sl12 from "../assets/images/stores-logos/sl12.jpg";
+import sl13 from "../assets/images/stores-logos/guesbrandlogo.png";
 
 // Eateries
 
@@ -191,6 +194,7 @@ import in_store_google_download from "../assets/images/in-store-google-download.
 import in_store_apple_download from "../assets/images/in-store-istore-download.png";
 import retailer_home_last_card from "../assets/images/retailer_home_last_card.png";
 
+
 //Cinema Home
 import cinemahomeimg1 from "../assets/images/cinemahomeimg1.png";
 import cinemahomeimg2 from "../assets/images/cinemahomeimg2.png";
@@ -199,19 +203,28 @@ import cinemahoodie from "../assets/images/cinemahoodie.png";
 import cinemashoes from "../assets/images/cinemashoes.png";
 import cinematrackpant from "../assets/images/cinematrackpant.png";
 import cinemahomebanner from "../assets/images/cinemahomebanner.png";
+import basket_white from "../assets/images/basket_white.png";
+import tick from "../assets/images/tick.png";
+import cart_black from "../assets/images/cart_black.png";
+import cinema_anlytic_loction from "../assets/images/cinema_anlytic_loction.png";
+import download_upload_directory from "../assets/images/download_upload_directory.png";
+import location from "../assets/images/location.png";
+
+import cons_wel_eatery_icon from "../assets/images/cons_wel_eatery_icon.png";
+import cons_wel_movie_icon from "../assets/images/cons_wel_movie_icon.png";
+import cons_wel_event_icon from "../assets/images/cons_wel_event_icon.png";
+import cons_wel_cart_icon from "../assets/images/cons_wel_cart_icon.png";
+import cons_wel_promotion_icon from "../assets/images/cons_wel_promotion_icon.png";
+import cons_wel_facility_icon from "../assets/images/cons_wel_facility_icon.png";
+
+
 
 // Cinema Images
 
-import cinema_logo from "../assets/images/cinema_logo.png";
-import cinema_banner from "../assets/images/cinema_banner.png";
-import demovideo from "../assets/images/demovideo.mp4";
-import basket_white from "../assets/images/basket_white.png";
-import tick from "../assets/images/tick.png";
-import locationicon from "../assets/images/locationicon.png";
-import arrows from "../assets/images/arrows.png";
-
+import cinema_logo from "../assets/images/cinema_logo.png"
+import cinema_banner from "../assets/images/cinema_banner.png"
+import brand_banner from "../assets/images/brand_banner.png"
 export default {
-  demovideo,
   // mainlogo,
   mall_img,
   introducebg,
@@ -390,8 +403,21 @@ export default {
   cinemashoes,
   cinematrackpant,
   cinemahomebanner,
-
+  delete_icon1,
+  edit_icon1,
   basket_white,
   tick,
-  locationicon,arrows,
+  cart_black,
+  faq_banner,
+  cinema_anlytic_loction,
+  download_upload_directory,
+  location,
+  brand_banner,
+  sl13,
+  cons_wel_eatery_icon,
+  cons_wel_movie_icon,
+  cons_wel_event_icon,
+  cons_wel_cart_icon,
+  cons_wel_promotion_icon,
+  cons_wel_facility_icon
 };

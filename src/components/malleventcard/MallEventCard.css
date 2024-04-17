@@ -91,4 +91,14 @@
   .stored_card_edit_wrapp_position {
     top: 0px !important;
   }
+
+  .cus_event_card_txt{
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .cus_event_card_txt_main{
+    width: 100%;
+    max-width: 100%;
+  }
 }

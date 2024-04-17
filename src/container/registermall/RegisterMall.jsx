@@ -4,15 +4,15 @@ import images from "../../constants/images";
 
 const RegisterMall = ({ getStoreData }) => {
   return (
-    <div className="main_wrapp registermall_main_wrapp">
+    <div className="main_wrapp registermall_main_wrapp" style={{background:"#fff"}}>
       <div className="container registermall_base_wrapp">
         <div className="registermall_sec1">
-          <h2 className="h2">
+          <h2 className="h2" style={{color:"#000",fontWeight:"600"}}>
             {getStoreData ? getStoreData.details_title_3 : ""}
             {/* Register Your Mall,
             <br /> Your First Year Is Free! */}
           </h2>
-          <p>
+          <p style={{color:"#000",fontSize:"14px",fontWeight:"400"}}>
             {getStoreData ? getStoreData.details_description_3 : ""}
             {/* Malls who register stores within their first year receives{" "}
             <span>FREE MARKETING</span> and store/brand owners will be able to

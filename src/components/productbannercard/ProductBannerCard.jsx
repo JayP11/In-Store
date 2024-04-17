@@ -203,24 +203,33 @@ const ProductBannerCard = ({
   };
 
   const handleDateChange = (startDate, endDate) => {
-    console.log("==>", startDate, endDate);
+    if ((startDate && endDate !== "") || (startDate && endDate !== null)) {
+      SetWeekCondation(true);
+    } else {
+      SetWeekCondation(false);
+    }
     setSelectedDates({ startDate, endDate });
   };
-
 
   // logo dropzon
 
   const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } =
     useDropzone({
       onDrop: (acceptedFiles) => {
+        const filteredFiles = acceptedFiles.filter(file => file.size <= 200000); // Limit size to 200KB (in bytes)
+
         {
           setFiles(
-            acceptedFiles.map((file) =>
+            filteredFiles.map((file) =>
               Object.assign(file, {
                 preview: URL.createObjectURL(file),
               })
             )
           );
+          if (filteredFiles.length !== acceptedFiles.length) {
+            // Notification('');
+            Notification("error","Error!", "Some files exceed the maximum size limit of 200KB and will not be uploaded.");
+          }
         }
         setCondition(true);
         if (acceptedFiles.length === 0) {
@@ -240,28 +249,109 @@ const ProductBannerCard = ({
 
   // Update Product Banner Api
 
-  const UpdateProductBanner = async () => {
+  const [getweekcondation, SetWeekCondation] = useState(false);
 
+  // const UpdateProductBanner = async () => {
+  //   const { startDate, endDate } = selectedDates;
+  //   console.log("==>11", selectedDates);
+
+  //   if (title == "" || undefined) {
+  //     Notification("error", "Error!", "Please Enter Title!");
+  //     return;
+  //   }  else if (weekname1 === "")  {
+  //     Notification("error", "Error", "Please Enter Start Date");
+  //     return;
+  //   } else if (weekname2 === "") {
+  //     Notification("error", "Error", "Please Enter End Date");
+  //     return;
+  //   } else if (getmallarray.length < 0) {
+  //     Notification("error", "Error!", "Please Select Mall!");
+  //     return;
+  //   } else if (BrandName == "" || undefined) {
+  //     Notification("error", "Error!", "Please Select Brand!");
+  //     return;
+  //   } else if (Category == "" || undefined) {
+  //     Notification("error", "Error!", "Please Select Category!");
+  //     return;
+  //   } else {
+  //     const formdata = await new FormData();
+  //     await formdata.append("id", item.id);
+  //     await formdata.append("title", title);
+  //     if (gettrue === true) {
+  //       for (var i = 0; i < regionidarray.length; i++) {
+  //         await formdata.append("region_id[" + i + "]", regionidarray[i].id);
+  //       }
+  //       for (var i = 0; i < mallidarray.length; i++) {
+  //         await formdata.append("mall_id[" + i + "]", mallidarray[i].id);
+  //       }
+  //     } else {
+  //       for (var i = 0; i < getmallarray.length; i++) {
+  //         await formdata.append(
+  //           "region_id[" + i + "]",
+  //           getmallarray[i].region_id
+  //         );
+  //       }
+  //       for (var i = 0; i < getmallarray.length; i++) {
+  //         await formdata.append("mall_id[" + i + "]", getmallarray[i].mall_id);
+  //       }
+  //     }
+  //     await formdata.append("brand_id", BrandId);
+  //     await formdata.append("category_id", CategoryId);
+  //     // await formdata.append("week_id", Week);
+  //     if (getweekcondation === true) {
+  //       await formdata.append(
+  //         "from_date",
+  //         moment(startDate[0]).format("YYYY-MM-DD")
+  //       );
+  //       await formdata.append(
+  //         "to_date",
+  //         moment(startDate[1]).format("YYYY-MM-DD")
+  //       );
+  //     } else {
+  //       await formdata.append("from_date", weekname1);
+  //       await formdata.append("to_date", weekname2);
+  //     }
+  //     await formdata.append("region_child_id[0]", "");
+  //     if (files[0] !== undefined) {
+  //       await formdata.append("image", files[0]);
+  //     }
+
+  //     const data = await UpdateProductBoardApi(formdata);
+  //     if (data) {
+  //       if (data.success === 1) {
+  //         console.log("category-data", data);
+  //         Notification(
+  //           "success",
+  //           "Success!",
+  //           "Product Banner Updated Successfully!"
+  //         );
+
+  //         setTab(1);
+  //         // getLeaderboard();
+  //         // window.location.reload();
+  //       }
+  //     }
+  //   }
+  // };
+
+  // Deleate Leaderboard Api
+
+
+  const UpdateProductBanner = async () => {
     const { startDate, endDate } = selectedDates;
     console.log("==>11", selectedDates);
 
     if (title == "" || undefined) {
       Notification("error", "Error!", "Please Enter Title!");
       return;
-    } else if (mallidarray == "" || undefined) {
-      Notification("error", "Error!", "Please Select Mall!");
-      return;
-    } else if (startDate == "" || startDate == undefined) {
+    } else if (weekname1 === "") {
       Notification("error", "Error", "Please Enter Start Date");
       return;
-    } else if (endDate == "" || endDate == undefined) {
+    } else if (weekname2 === "") {
       Notification("error", "Error", "Please Enter End Date");
       return;
-    } else if (regionidarray == "" || undefined) {
-      Notification("error", "Error!", "Please Select Region!");
-      return;
-    } else if (BrandName == "" || undefined) {
-      Notification("error", "Error!", "Please Select Brand!");
+    } else if (getmallarray.length < 0) {
+      Notification("error", "Error!", "Please Select Mall!");
       return;
     } else if (Category == "" || undefined) {
       Notification("error", "Error!", "Please Select Category!");
@@ -270,20 +360,39 @@ const ProductBannerCard = ({
       const formdata = await new FormData();
       await formdata.append("id", item.id);
       await formdata.append("title", title);
-      for (var i = 0; i < regionidarray.length; i++) {
-        await formdata.append("region_id[" + i + "]", regionidarray[i].id);
+      if (gettrue === true) {
+        for (var i = 0; i < regionidarray.length; i++) {
+          await formdata.append("region_id[" + i + "]", regionidarray[i].id);
+        }
+        for (var i = 0; i < mallidarray.length; i++) {
+          await formdata.append("mall_id[" + i + "]", mallidarray[i].id);
+        }
+      } else {
+        for (var i = 0; i < getmallarray.length; i++) {
+          await formdata.append(
+            "region_id[" + i + "]",
+            getmallarray[i].region_id
+          );
+        }
+        for (var i = 0; i < getmallarray.length; i++) {
+          await formdata.append("mall_id[" + i + "]", getmallarray[i].mall_id);
+        }
       }
-      for (var i = 0; i < mallidarray.length; i++) {
-        await formdata.append("mall_id[" + i + "]", mallidarray[i].id);
-      }
-      await formdata.append("brand_id", BrandId);
       await formdata.append("category_id", CategoryId);
       // await formdata.append("week_id", Week);
-      await formdata.append(
-        "from_date",
-        moment(startDate[0]).format("YYYY-MM-DD")
-      );
-      await formdata.append("to_date", moment(startDate[1]).format("YYYY-MM-DD"));
+      if (getweekcondation === true) {
+        await formdata.append(
+          "from_date",
+          moment(startDate[0]).format("YYYY-MM-DD")
+        );
+        await formdata.append(
+          "to_date",
+          moment(startDate[1]).format("YYYY-MM-DD")
+        );
+      } else {
+        await formdata.append("from_date", weekname1);
+        await formdata.append("to_date", weekname2);
+      }
       await formdata.append("region_child_id[0]", "");
       if (files[0] !== undefined) {
         await formdata.append("image", files[0]);
@@ -306,8 +415,6 @@ const ProductBannerCard = ({
       }
     }
   };
-
-  // Deleate Leaderboard Api
 
   const DeleteProductBanner = async () => {
     const formdata = await new FormData();
@@ -437,7 +544,7 @@ const ProductBannerCard = ({
     <>
       <div className="leaderboard-card-main-wrapp">
         {/* Leaderboard flex start */}
-        <div className="leaderboard-card-flex-wrapp">
+        <div className="leaderboard-card-flex-wrapp leaderboard-card-flex-wrapp-half">
           {/* Leaderboard first part responsive side start */}
           <div className="leaderboard-card-first-resp-main-wrapp">
             <p className="leaderboard-last-part-txt">
@@ -459,7 +566,7 @@ const ProductBannerCard = ({
 
             {/* Leaderboard inputbox start */}
             <div className="leaderboard-card-inpbox-wrapp">
-              <label className="leaderboard-card-lbl">Title:</label>
+              <label className="leaderboard-card-lbl">Title:<span className="star_require">*</span></label>
               <input
                 type="text"
                 className="leaderboard-card-inp"
@@ -476,7 +583,8 @@ const ProductBannerCard = ({
               <div
                 onClick={() => openMallModal()}
                 className="leaderboard-card-inp"
-                style={{ display: "flex", gap: "5px", flexWrap: "wrap" }}>
+                style={{ display: "flex", gap: "5px", flexWrap: "wrap" }}
+              >
                 {gettrue === true ? (
                   <>
                     {selectedMalls && selectedMalls.length > 0
@@ -503,7 +611,7 @@ const ProductBannerCard = ({
             {/* Leaderboard inputbox end */}
             <div className="leaderboard-card-inpbox-wrapp">
               <label className="leaderboard-card-lbl" htmlFor="">
-                Week
+                Week:<span className="star_require">*</span>
               </label>
               {/* <input
               type="date"
@@ -532,14 +640,14 @@ const ProductBannerCard = ({
                 oneTap
                 hoverRange="week"
                 isoWeek
-                placeholder="Select your Week"
+                placeholder={`${weekname1} - ${weekname2}`}
                 className="leaderboard-card-inp DateRangePicker_LeaderboardCard"
                 onChange={handleDateChange}
                 disabledDate={combine(allowedMaxDays(7), beforeToday())}
               />
             </div>
             {/* Leaderboard inputbox start */}
-            <div className="leaderboard-card-inpbox-wrapp">
+            {/* <div className="leaderboard-card-inpbox-wrapp">
               <label className="leaderboard-card-lbl">Brand(s):</label>
               <div className="select-wrapper" style={{ width: "100%" }}>
                 <select
@@ -547,7 +655,8 @@ const ProductBannerCard = ({
                   onChange={(e) => {
                     setBrandName(e.target.value);
                     setBrandId(e.target.value);
-                  }}>
+                  }}
+                >
                   <option selected disabled value="">
                     {BrandName}
                   </option>
@@ -563,19 +672,20 @@ const ProductBannerCard = ({
                     })}
                 </select>
               </div>
-            </div>
+            </div> */}
             {/* Leaderboard inputbox end */}
 
             {/* Leaderboard inputbox start */}
             <div className="leaderboard-card-inpbox-wrapp">
-              <label className="leaderboard-card-lbl">Categories:</label>
+              <label className="leaderboard-card-lbl">Categories:<span className="star_require">*</span></label>
               <div className="select-wrapper" style={{ width: "100%" }}>
                 <select
-                  className="leaderboard-card-inp"
+                  className="leaderboard-card-inp cons_select_nav"
                   onChange={(e) => {
                     setCategory(e.target.value);
                     setCategoryId(e.target.value);
-                  }}>
+                  }}
+                >
                   <option selected disabled value="">
                     {Category}
                   </option>
@@ -687,13 +797,15 @@ const ProductBannerCard = ({
                           marginBottom: "10px",
                         }}
                       />
-                      <h4>.PDF .JPG .PNG</h4>
+                      <h4>.JPG .PNG .GIF (2176 x 590 pixels)</h4>
+                      <p>(max 200kb)</p>
                       <p>You can also upload file by</p>
 
                       <button
                         type="button"
                         className="click_upload_btn"
-                        style={{ marginBottom: "10px" }}>
+                        style={{ marginBottom: "10px",color:"var(--color-orange)",fontWeight:"600" }}
+                      >
                         click here
                       </button>
                       {/* <a href="">clicking here</a> */}
@@ -720,7 +832,8 @@ const ProductBannerCard = ({
                       <button
                         type="button"
                         className="click_upload_btn"
-                        style={{ marginBottom: "10px" }}>
+                        style={{ marginBottom: "10px" }}
+                      >
                         click here
                       </button>
                       {/* <a href="">clicking here</a> */}
@@ -729,6 +842,7 @@ const ProductBannerCard = ({
                 ) : (
                   <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl">
                     <img
+                      alt=""
                       src={item.image_path}
                       style={{ width: "100%", height: "100%" }}
                       className="img-fluidb"
@@ -743,14 +857,16 @@ const ProductBannerCard = ({
           {/* Leaderboard part second end */}
 
           {/* Leaderboard part third start */}
-          <div className="leaderboard-card-part-third">
+          <div className="leaderboard-card-part-third leaderboard-card-part-third-half">
             <button
               onClick={() => {
                 DeleteProductBanner();
               }}
-              className="leaderboard-delete-icon-btn">
+              className="leaderboard-delete-icon-btn"
+            >
               cancel{" "}
               <img
+                alt=""
                 src={images.delete_icon}
                 className="leaderboard-delete-icon"
               />
@@ -761,41 +877,26 @@ const ProductBannerCard = ({
             <div className="leaderboard-btn-box">
               {item.cart_status === 0 ? (
                 <>
-                  <button
-                    className="btn btn-orange"
+                  <button style={{ padding: "0.4rem", fontSize: "16px" }}
+                    className="btn btn-black"
                     onClick={() => {
                       Addtocart();
                       // window.location.reload(true);
-                    }}>
+                    }}
+                  >
                     Add To Cart
                   </button>
                 </>
               ) : (
-                <button
-                  className="btn btn-orange"
-                // onClick={() => {
-                //   window.location.reload(true);
-                //   Addtocart();
-                // }}
-                >
-                  Added
-                </button>
+                <button className="btn btn-black">Added</button>
               )}
             </div>
-            {/* <button
-              onClick={() => openMallModal()}
-              className="leaderboard-delete-icon-btn"
-            >
-              <span className="leaderboard-extend-txt">Extend</span>{" "}
-              <img
-                src={images.extend_icon}
-                className="leaderboard-delete-icon"
-              />
-            </button> */}
+
             <div className="leaderboard-btn-box">
               <button
-                className="btn btn-blue"
-                onClick={() => UpdateProductBanner()}>
+                className="btn btn-orange"
+                onClick={() => UpdateProductBanner()}
+              >
                 Update
               </button>
             </div>
@@ -803,22 +904,23 @@ const ProductBannerCard = ({
           {/* Leaderboard part third end */}
 
           {/* Leaderboard last part responsive side start */}
-          <div className="leaderboard-card-sec-resp-main-wrapp">
+          <div className="leaderboard-card-sec-resp-main-wrapp  leaderboard-card-sec-resp-main-wrapp_edited">
             <div className="leaderboard-btn-box">
               {item.cart_status === 0 ? (
                 <>
                   <button
-                    className="btn btn-orange"
+                    className="btn btn-black cartbtnblack"
                     onClick={() => {
                       Addtocart();
                       // window.location.reload(true);
-                    }}>
+                    }}
+                  >
                     Add To Cart
                   </button>
                 </>
               ) : (
                 <button
-                  className="btn btn-orange"
+                  className="btn btn-black cartbtnblack"
                 // onClick={() => {
                 //   window.location.reload(true);
                 //   Addtocart();
@@ -828,17 +930,12 @@ const ProductBannerCard = ({
                 </button>
               )}
             </div>
-            {/* <Link className="leaderboard-delete-icon-btn">
-              <span className="leaderboard-extend-txt">Extend</span>{" "}
-              <img
-                src={images.extend_icon}
-                className="leaderboard-delete-icon"
-              />
-            </Link> */}
-            <div className="leaderboard-btn-box">
+
+            <div className="leaderboard-btn-box updatebtnorg">
               <button
-                className="btn btn-blue"
-                onClick={() => UpdateProductBanner()}>
+                className="btn btn-orange"
+                onClick={() => UpdateProductBanner()}
+              >
                 Update
               </button>
             </div>
@@ -856,7 +953,8 @@ const ProductBannerCard = ({
         isOpen={mallMolalOpen}
         // onAfterOpen={afterOpenModal}
         onRequestClose={closeMallModal}
-        style={customStyles}>
+        style={customStyles}
+      >
         <div className="select_mall_main_wrapp">
           <div className="select_mall_base_wrapp">
             {/* mall heading */}
@@ -912,7 +1010,8 @@ const ProductBannerCard = ({
                     <button
                       className="select_mall_tag_single_btn"
                       style={{ backgroundColor: "#4FBB10" }}
-                      key={mindx}>
+                      key={mindx}
+                    >
                       {mall}
                     </button>
                   );
@@ -926,7 +1025,8 @@ const ProductBannerCard = ({
                   fontSize: "18px",
                   alignSelf: "start",
                   marginBottom: "1rem",
-                }}>
+                }}
+              >
                 Region
               </p>
 
@@ -936,7 +1036,8 @@ const ProductBannerCard = ({
                     <div
                       className="bim_accordian_wrapp"
                       style={{ marginBottom: "6px" }}
-                      key={item.region_id}>
+                      key={item.region_id}
+                    >
                       <button
                         className="bim_accordian_btn"
                         onClick={() => {
@@ -945,14 +1046,16 @@ const ProductBannerCard = ({
                             item.region_name,
                             item.region_id
                           );
-                        }}>
+                        }}
+                      >
                         <p
                           style={{
                             color:
                               item.region_id === toggle ? "#ff8b00" : "#000",
                             fontWeight:
                               item.region_id === toggle ? "500" : "300",
-                          }}>
+                          }}
+                        >
                           {item.region_name}
                         </p>
 
@@ -973,7 +1076,8 @@ const ProductBannerCard = ({
                                     display: "flex",
                                     gap: "10px",
                                     marginLeft: "10px",
-                                  }}>
+                                  }}
+                                >
                                   <input
                                     type="checkbox"
                                     checked={selectedMalls.includes(itm.name)}
@@ -1013,7 +1117,8 @@ const ProductBannerCard = ({
                 onClick={() => {
                   closeMallModal();
                   SetTrue(true);
-                }}>
+                }}
+              >
                 Submit
               </button>
             </div>

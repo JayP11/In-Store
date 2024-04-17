@@ -6,13 +6,16 @@
   align-self: start;
   /* position: sticky; */
   top: 5rem;
-  background: rgb(255, 177, 3);
+  /* background: rgb(255, 177, 3); */
+  background: "#aaa";
   /* min-width: 400px; */
+  border: 1px solid #aaa;
 
 }
 
 .customer_sidebar_sing_btn {
   border-bottom: 1px solid;
+  padding-left: 5%;
 }
 
 .customer-sidebar-profile-part {
@@ -44,6 +47,8 @@
 .customer-sidebar-profile-img-none {
   display: none;
 }
+
+
 
 .customer-sidebar-location-flex {
   display: flex;
@@ -92,15 +97,64 @@
 } */
 
 .cust-main-sec-wrapp {
-  width: 100%;
+  width: 82.5%;
   min-height: 80vh;
+  transition: 1s ease,
 }
 
 .cust-main-sec-wrapp2 {
-  width: 100%;
+  width: 100% !important;
+  /* transition: 1s ease-in; */
 }
 
+.cust-stored_card_wrapp{
+  height: 210px;
+}
+
+.cus_slider_gray_color_main{
+  width: 17.5%;
+  transition: 1s ease,
+}
+
+.cus_slider_gray_color_main2{
+  width: 0%;
+  transition: 1s ease,
+}
+
+
+.notification_checkbox {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding-bottom: 1rem;
+}
 /* new added csss for account tab sidebar */
+
+@media screen and (max-width:1560px) {
+  .cus_slider_gray_color_main{
+    width: 19.5% !important;
+    transition: 1s ease,
+
+  }
+
+  .cust-main-sec-wrapp {
+    width: 80.5%;
+
+  }
+}
+
+
+@media screen and (max-width:1400px) {
+  .cus_slider_gray_color_main{
+    width: 21.5% !important;
+    /* display: none; */
+  }
+
+  .cust-main-sec-wrapp {
+    width: 78.5%;
+  }
+}
 
 .cus-acc-sidebar-img {
   width: 200px;
@@ -111,6 +165,10 @@
 @media screen and (max-width:1260px) {
   .cust-sidemenu-resp {
     display: none !important;
+  }
+
+  .cus_slider_gray_color_main{
+    display: none;
   }
 
   .cust-main-sec-wrapp {

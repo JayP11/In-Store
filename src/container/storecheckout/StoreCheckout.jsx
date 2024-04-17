@@ -6,6 +6,8 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import images from "../../constants/images";
 import ReactModal from "react-modal";
 import axios from "axios";
+import Notification from "../../utils/Notification";
+
 
 import {
   ACCEPT_HEADER,
@@ -25,20 +27,36 @@ import {
 const AccordionData = [
   {
     id: 1,
-    city: "Leaderboard Banners ",
+    name: "Landing Page 1/2 Tile",
   },
   {
     id: 2,
-    city: "Promotional Banners",
+    name: "Landing Page Square Tiles",
   },
   {
     id: 3,
-    city: "Product Banners",
+    name: "Landing Page Leaderboard Banner",
   },
   {
     id: 4,
-    city: "Product Tiles",
+    name: "Leaderboard Banner Mall",
   },
+  {
+    id: 5,
+    name: "Promotional Banner",
+  },
+  {
+    id: 6,
+    name: "In Mall Brand Banner sider",
+  },
+  {
+    id: 7,
+    name: "In Mall Product Tiles",
+  },
+  // {
+  //   id: 7,
+  //   name: "Cinema Analytics Bundles",
+  // },
 ];
 const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
   const [isload, SetLoad] = useState(false);
@@ -46,6 +64,9 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
   const [totalpro, SetTotalPro] = useState("");
   const [totalpduct, SetTotalPduct] = useState("");
   const [totalpducttil, SetTotalPducttil] = useState("");
+  const [totalsquare, SetTotalSquare] = useState("");
+  const [totalomebytwo, SetTotalOnebyTwo] = useState("");
+  const [totallandingleaderboard, SetLandingLeaderboard] = useState("");
   const [modalIsOpen4, setIsOpen4] = useState(false);
 
   useEffect(() => {
@@ -91,6 +112,9 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
           SetTotalPro(res.data.total_promotion_banner_amt);
           SetTotalPduct(res.data.total_product_banner_amt);
           SetTotalPducttil(res.data.total_product_banner_tile_amt);
+          SetTotalSquare(res.data.total_landing_page_square_tile_amt);
+          SetTotalOnebyTwo(res.data.total_landing_page_tile_amt);
+          SetLandingLeaderboard(res.data.total_landing_page_leaderboard_amt);
           SetLoad(false);
         } else {
           SetLoad(false);
@@ -104,26 +128,45 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
   const [getnearStore, SetnearStore] = useState([]);
   const [sort_array, SetSort_Array] = useState([]);
 
+
   const array_sort = (id) => {
     if (id == 1) {
       const numDescending = [...getnearStore].filter((a, b) =>
-        a.leaderboard_banner_id ? a.leaderboard_banner_id : ""
+        a.landing_page_tile_id ? a.landing_page_tile_id : ""
       );
       console.log("ffff", numDescending);
       SetSort_Array(numDescending);
     } else if (id == 2) {
       const numDescending = [...getnearStore].filter((a, b) =>
-        a.promotion_banner_id ? a.promotion_banner_id : ""
+        a.landing_page_square_tile_id ? a.landing_page_square_tile_id : ""
       );
       console.log("ffff", numDescending);
       SetSort_Array(numDescending);
     } else if (id == 3) {
       const numDescending = [...getnearStore].filter((a, b) =>
-        a.product_banner_id ? a.product_banner_id : ""
+        a.landing_page_leaderboard_id ? a.landing_page_leaderboard_id : ""
       );
       console.log("ffff", numDescending);
       SetSort_Array(numDescending);
     } else if (id == 4) {
+      const numDescending = [...getnearStore].filter((a, b) =>
+        a.leaderboard_banner_id ? a.leaderboard_banner_id : ""
+      );
+      console.log("ffff", numDescending);
+      SetSort_Array(numDescending);
+    } else if (id == 5) {
+      const numDescending = [...getnearStore].filter((a, b) =>
+        a.promotion_banner_id ? a.promotion_banner_id : ""
+      );
+      console.log("ffff", numDescending);
+      SetSort_Array(numDescending);
+    } else if (id == 6) {
+      const numDescending = [...getnearStore].filter((a, b) =>
+        a.product_banner_id ? a.product_banner_id : ""
+      );
+      console.log("ffff", numDescending);
+      SetSort_Array(numDescending);
+    } else if (id == 7) {
       const numDescending = [...getnearStore].filter((a, b) =>
         a.product_banner_tile_id ? a.product_banner_tile_id : ""
       );
@@ -253,9 +296,13 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
   const [checkout_id, setCheckout_id] = useState("");
 
   const [isAcceptTerm, setIsAcceptTerm] = useState(false);
+  const [isAcceptTerm2, setIsAcceptTerm2] = useState(false);
 
   const handleTermChange = (event) => {
     setIsAcceptTerm((current) => !current);
+  };
+  const handleTermChange2 = (event) => {
+    setIsAcceptTerm2((current) => !current);
   };
 
   function closeModal4() {
@@ -295,9 +342,26 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
       })
       .then((res) => {
         console.log(JSON.stringify(res.data.data, null, 2));
-        displayRazorpay(res.data.data.checkout_id);
-        // check_data(res.data.data.checkout_id);
-        SetCheckId(res.data.data.checkout_id);
+      
+        if (res.data.success === 1) {
+
+          displayRazorpay(res.data.data.checkout_id);
+          // check_data(res.data.data.checkout_id);
+          SetCheckId(res.data.data.checkout_id);
+          // Notification(
+          //   "success",
+          //   "Success!",
+          //   "Order Submitted Successfully!"
+          // );
+          // getLeaderboard();
+          // window.location.reload();
+        } else if (res.data.success === 0){
+          Notification(
+            "error",
+            "Error!",
+            res.data.message
+          );
+        }
       })
       .catch((err) => {
         console.log("err11", err);
@@ -322,9 +386,11 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
     };
   }
 
-  // const shopperResultUrl = `https://eu-test.oppwa.com/v1/checkouts/payment?entityId=8ac7a4c78aaf7f58018ab1fb531903ea&amount=92.00&currency=EUR&paymentBrand=VISA&paymentType=DB&merchantTransactionId=test`;
-  // const shopperResultUrl = `https://eu-test.oppwa.com/v1/checkouts/${checkid}/paymententityId=8ac7a4c78aaf7f58018ab1fb531903ea&amount=92.00&currency=ZAR&paymentBrand=VISA&paymentType=DB&merchantTransactionId=test`;
-  const shopperResultUrl = `https://theapplified.com/In-store-front/Newpage/v1/checkouts/${checkid}/payment/`;
+  // const shopperResultUrl = https://eu-test.oppwa.com/v1/checkouts/payment?entityId=8ac7a4c78aaf7f58018ab1fb531903ea&amount=92.00&currency=EUR&paymentBrand=VISA&paymentType=DB&merchantTransactionId=test;
+  // const shopperResultUrl = https://eu-test.oppwa.com/v1/checkouts/${checkid}/paymententityId=8ac7a4c78aaf7f58018ab1fb531903ea&amount=92.00&currency=ZAR&paymentBrand=VISA&paymentType=DB&merchantTransactionId=test;
+  // const shopperResultUrl = `https://theapplified.com/In-store-front/Newpage/v1/checkouts/${checkid}/payment/`
+
+  const shopperResultUrl = `https://plance.in/In-store-front/retailer`
 
   function handleSubmit(event) {
     console.log("reeeeeee");
@@ -332,7 +398,7 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
     event.preventDefault();
 
     // const token = JSON.parse(localStorage.getItem("is_token"));
-    // const url = `https://eu-test.oppwa.com/v1/checkouts/${checkid}/payment?entityId=8ac7a4c78aaf7f58018ab1fb531903ea`;
+    // const url = https://eu-test.oppwa.com/v1/checkouts/${checkid}/payment?entityId=8ac7a4c78aaf7f58018ab1fb531903ea;
     // axios
     //   .get(url, {
     //     headers: {
@@ -351,7 +417,7 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
   return (
     <div className="mm_main_wrapp">
       {/* mall management name start */}
-      <div className="mall_name_wrapp">
+      <div className="mall_name_wrapp mall_name_wrapp_check" style={{ paddingLeft: "3rem" }}>
         <p className="mall_name_heading">
           {" "}
           {get_mall_auth_data &&
@@ -359,9 +425,9 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
             get_mall_auth_data.retailers.name}
           :
         </p>
-        <span>Checkout</span>
+        <span style={{fontWeight:"600"}}>Checkout</span>
       </div>
-      <div className="mm_horizontal_line"></div>
+      {/* <div className="mm_horizontal_line"></div> */}
       {/* mall management name end */}
 
       {/* mall management form start */}
@@ -686,8 +752,25 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
                   />
                   <p className="fs-des">
                     I have read and agree to the{" "}
-                    <a className="signup_terms_link">Terms and Conditions</a> &{" "}
                     <a className="signup_terms_link">Privacy Policy</a>
+                  </p>
+                </div>
+              </div>
+              <div className="mm_form_single_input">
+                {/* <label htmlFor=""></label> */}
+                <div
+                  className="signup_terms_wrapp"
+                  style={{ marginBottom: "10px", marginTop: "0rem" }}
+                >
+                  <input
+                    type="checkbox"
+                    value={isAcceptTerm2}
+                    onChange={handleTermChange2}
+                    checked={isAcceptTerm2}
+                  />
+                  <p className="fs-des">
+                    I have read and agree to the{" "}
+                    <a className="signup_terms_link">Terms and Conditions</a>
                   </p>
                 </div>
               </div>
@@ -703,9 +786,9 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
                   }}
                 >
                   <button
-                    className="btn btn-orange"
+                    className="btn btn-black checkout_brand_submit"
                     onClick={() => Place_Order()}
-                    // onClick={() => setIsOpen4(true)}
+                  // onClick={() => setIsOpen4(true)}
                   >
                     Submit Order
                   </button>
@@ -722,73 +805,99 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
           <div className="checkout-dropdown-main-wrapp">
             {AccordionData && AccordionData.length > 0
               ? AccordionData.map((item, index) => {
-                  return (
-                    <>
-                      <button
-                        className="checkout-head-sub-part"
-                        onClick={() => {
-                          handleToggle(item.id);
-                          array_sort(item.id);
-                        }}
-                      >
-                        <div className="checkout-heading-txt-part">
-                          <p className="checkout-heading-txt">
-                            {item.city}
-                            {/* {item.city} {"(" + item.mall.length + ")"} &nbsp;
+                return (
+                  <>
+                    <button
+                      className="checkout-head-sub-part"
+                      onClick={() => {
+                        handleToggle(item.id);
+                        array_sort(item.id);
+                      }}
+                    >
+                      <div className="checkout-heading-txt-part">
+                        <p className="checkout-heading-txt">
+                          {item.name}
+                          {/* {item.city} {"(" + item.mall.length + ")"} &nbsp;
                             &nbsp;{" "} */}
-                            {item.id === toggle ? (
-                              <IoIosArrowUp size={20} color="#ff8b00" />
-                            ) : (
-                              <IoIosArrowDown size={20} />
-                            )}
-                          </p>
-                        </div>
-                        {item.id == 1 ? (
+                          {item.id === toggle ? (
+                            <IoIosArrowUp size={20} color="#ff8b00" />
+                          ) : (
+                            <IoIosArrowDown size={20} />
+                          )}
+                        </p>
+                      </div>
+                      {item.id == 1 ? (
+                        <p className="checkout-price">R {totalomebytwo}</p>
+                      ) : item.id == 2 ? (
+                        <p className="checkout-price">R {totalsquare}</p>
+                      ) : item.id == 3 ? (
+                        <p className="checkout-price">R {totallandingleaderboard}</p>
+                      ) :
+                        item.id == 4 ? (
                           <p className="checkout-price">R {totallead}</p>
-                        ) : item.id == 2 ? (
+                        ) : item.id == 5 ? (
                           <p className="checkout-price">R {totalpro}</p>
-                        ) : item.id == 3 ? (
+                        ) : item.id == 6 ? (
                           <p className="checkout-price">R {totalpduct}</p>
-                        ) : item.id == 4 ? (
+                        ) : item.id == 7 ? (
                           <p className="checkout-price">R {totalpducttil}</p>
                         ) : null}
-                      </button>
+                    </button>
 
-                      {item.id === toggle ? (
-                        <div className="bim_accordian_mall_wrapp">
-                          {sort_array.map((itm, ind) => {
-                            return (
-                              <>
-                                {item.id == 1 ? (
+                    {item.id === toggle ? (
+                      <div className="bim_accordian_mall_wrapp">
+                        {sort_array.map((itm, ind) => {
+                          return (
+                            <>
+                              {item.id == 1 ?
+                                <button key={itm.id}>
+                                  {itm.landingpagetiles?.title}
+                                </button>
+                                : item.id == 2 ?
                                   <button key={itm.id}>
-                                    {itm.leaderboards.title}
+                                    {itm.landingpagesquaretiles?.title}
                                   </button>
-                                ) : item.id == 2 ? (
-                                  <button key={itm.id}>
-                                    {itm.promotionbanners.description}
-                                  </button>
-                                ) : item.id == 3 ? (
-                                  <button key={itm.id}>
-                                    {itm.productbanners.description}
-                                  </button>
-                                ) : item.id == 4 ? (
-                                  <button key={itm.id}>
-                                    {itm.productbannertiles.title}
-                                  </button>
-                                ) : null}
-                              </>
-                            );
-                          })}
-                        </div>
-                      ) : null}
-                    </>
-                  );
-                })
+                                  : item.id == 3 ?
+                                    <button key={itm.id}>
+                                      {itm.landingpageleaderborads?.title}
+                                    </button>
+                                    : item.id == 4 ? (
+                                      <button key={itm.id}>
+                                        {itm.leaderboards.title}
+                                      </button>
+                                    ) : item.id == 5 ? (
+                                      <button key={itm.id}>
+                                        {itm.promotionbanners.description}
+                                      </button>
+                                    ) : item.id == 6 ? (
+                                      <button key={itm.id}>
+                                        {itm.productbanners.description}
+                                      </button>
+                                    ) : item.id == 7 ? (
+                                      <button key={itm.id}>
+                                        {itm.productbannertiles.title}
+                                      </button>
+                                    ) : null}
+                            </>
+                          );
+                        })}
+                      </div>
+                    ) : null}
+                  </>
+                );
+              })
               : null}
             <div className="checkout-totalbox">
               <p className="checkout-total-txt">Total</p>
               <p className="checkout-total-txt">
-                R {totallead + totalpro + totalpduct + totalpducttil}
+                R {totalomebytwo +
+                  totalsquare +
+                  totallandingleaderboard +
+                  totallead +
+                  totalpro +
+                  totalpduct +
+                  totalpducttil
+                }{" "}
               </p>
             </div>
           </div>
@@ -805,8 +914,20 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
               <input type="checkbox" />
               <p className="fs-des">
                 I have read and agree to the{" "}
-                <a className="signup_terms_link">Terms and Conditions</a> &{" "}
                 <a className="signup_terms_link">Privacy Policy</a>
+              </p>
+            </div>
+          </div>
+          <div className="mm_form_single_input">
+            {/* <label htmlFor=""></label> */}
+            <div
+              className="signup_terms_wrapp"
+              style={{ marginBottom: "10px", marginTop: "0rem" }}
+            >
+              <input type="checkbox" />
+              <p className="fs-des">
+                I have read and agree to the{" "}
+                <a className="signup_terms_link">Terms and Conditions</a>
               </p>
             </div>
           </div>
@@ -814,10 +935,11 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
           {/* upload button */}
           <div className="mm_form_single_input">
             {/* <label htmlFor=""></label> */}
-            <div className="mall_upload_btn_wrapp">
-              <button
-                className="btn btn-orange"
-                // onClick={() => UpdateMallData()}
+            {/* <div className="mall_upload_btn_wrapp"> */}
+            <div className="">
+              <button style={{ marginTop: "1rem" }}
+                className="btn btn-black checkout_brand_submit"
+              // onClick={() => UpdateMallData()}
               >
                 Update
               </button>

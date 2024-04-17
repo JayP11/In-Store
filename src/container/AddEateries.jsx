@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { AiOutlineCloudUpload } from "react-icons/ai";
-import { ACCEPT_HEADER, mall_create_eatery } from "../utils/Constant";
+import { ACCEPT_HEADER, get_category, mall_create_eatery } from "../utils/Constant";
 import axios from "axios";
 import Notification from "../utils/Notification"
 import { IoChevronBack } from "react-icons/io5";
@@ -22,6 +22,7 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
   const [getcontactNo, setContactNo] = useState();
   const [email, setEmail] = useState("");
   const [getstoreDes, setStoreDes] = useState("");
+  const [getstoreContactPerson, setStoreContactPerson] = useState("");
 
   // tranding times
   const [monFromTime, setMonFromTime] = useState("");
@@ -32,6 +33,10 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
   const [sunToTime, setSunToTime] = useState("");
   const [holidayFromTime, setHolidayFromTime] = useState("");
   const [holidayToTime, setHolidayToTime] = useState("");
+  const [catarray, SetArray] = useState([]);
+  const [storeCategory, setStoreCategory] = useState("");
+
+
 
   // Add Etaries
 
@@ -45,24 +50,41 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
   };
 
 
-  const [isAcceptTerm, setIsAcceptTerm] = useState(false);
+  const [isAcceptTerm, setIsAcceptTerm] = useState(0);
+  const [isAcceptTerm2, setIsAcceptTerm2] = useState(0);
 
-  const handleTermChange = (event) => {
-    setIsAcceptTerm((current) => !current);
+  const handleTermChange = (e) => {
+    setIsAcceptTerm(1);
+    console.log("e.targate.value");
   };
+  const handleTermChange2 = (e) => {
+    setIsAcceptTerm2(1);
+    console.log("e.targate.value");
+  };
+
+
+  useEffect(() => {
+    getcat();
+  }, [])
+
   const addEateries = async () => {
     const token = await JSON.parse(localStorage.getItem("is_token"));
 
     if (getstoreName == "" || undefined) {
       Notification("error", "Error", "Please Enter Store Name");
       return;
+    } else if (storeCategory == "" || undefined) {
+      Notification("error", "Error!", "Please Select Eatery Category!");
+      return;
     } else if (getstoreNo == "" || undefined) {
       Notification("error", "Error", "Please Enter Store Number");
       return;
-    } else if (getstoreLevel == "" || undefined) {
-      Notification("error", "Error", "Please Enter Store Level");
-      return;
-    } else if (getcontactNo == "" || undefined) {
+    }
+    // else if (getstoreLevel == "" || undefined) {
+    //   Notification("error", "Error", "Please Enter Store Level");
+    //   return;
+    // } 
+    else if (getcontactNo == "" || undefined) {
       Notification("error", "Error", "Please Enter Contact Number");
       return;
     }
@@ -82,9 +104,13 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
     else {
       const formdata = await new FormData();
       formdata.append("name", getstoreName);
+      formdata.append("category_id", storeCategory);
+
       formdata.append("store_no", getstoreNo);
       formdata.append("store_level", getstoreLevel);
       formdata.append("number", getcontactNo);
+      await formdata.append("contact_person", getstoreContactPerson);
+
       formdata.append("email", email);
       formdata.append("description", getstoreDes);
 
@@ -104,6 +130,8 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
       formdata.append("sun_to_time", sunToTime);
       formdata.append("holiday_from_time", holidayFromTime);
       formdata.append("holiday_to_time", holidayToTime);
+      formdata.append("terms_condition", isAcceptTerm);
+      formdata.append("privacy_policy", isAcceptTerm2);
 
       try {
         const response = await axios.post(mall_create_eatery, formdata, {
@@ -130,6 +158,30 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
   useEffect(() => {
     console.log("files", files);
   }, [files]);
+
+  const getcat = async () => {
+    const token = JSON.parse(localStorage.getItem("is_token"));
+
+    axios
+      .get(get_category, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((res) => {
+        console.log("ggg", JSON.stringify(res.data, null, 2));
+        if (res.data.success == 1) {
+          SetArray(res.data.data);
+
+        } else {
+          null;
+        }
+      })
+      .catch((err) => {
+        console.log("err11", err);
+      });
+  };
 
   useEffect(() => {
     console.log("files2", files2);
@@ -175,7 +227,7 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
   const thumbs = files.map((file) => (
     <img
       src={file.preview}
-      style={{ width: "100%", height: "100%", maxHeight: "175px" }}
+      style={{ width: "100%", height: "100%", maxHeight: "175px", filter: "grayscale(100%)" }}
       className="img-fluid"
       alt="file"
     />
@@ -198,22 +250,24 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
     <>
       <MallHero get_mall_auth_data={get_mall_auth_data} />
       <div className="mm_main_wrapp mm_form_wrapp_add_brand_mall">
-        <div className='edit-brand-back-iconbox' onClick={() => setTab(4)}><IoChevronBack className='edit-brand-back-icon' /> <p className='edit-brand-back-txt'>Back</p></div>
+        <div className='edit-brand-back-iconbox' onClick={() => setTab(4)}><IoChevronBack className='edit-brand-back-icon' />
+          <p className='edit-brand-back-txt'>Back</p></div>
         {/* mall management name start */}
-        <div className="mall_name_wrapp">
+        <div className="mall_name_wrapp mm_form_wrapp_name_padding">
           <p className="mall_name_heading">{get_mall_auth_data.name}:</p>
-          <span>Add Eatery </span>
+          <span style={{ fontWeight: "600" }}>Add Eatery </span>
         </div>
-        <div className="mm_horizontal_line"></div>
+        {/* <div className="mm_horizontal_line"></div> */}
+        <div className="" style={{ marginBottom: "2rem" }}></div>
         {/* mall management name end */}
 
         {/* mall management form start */}
-        <div className="mm_form_wrapp mm_form_wrapp_add_brand_mall">
+        <div className="mm_form_wrapp mm_form_wrapp_add_brand_mall mm_form_wrapp_padding">
           {/* text-input wrapp start */}
           <div className="mm_form_input_wrapp">
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="" style={{ minWidth: "140px" }}>Store Name</label>
+              <label htmlFor="" style={{ minWidth: "162px" }}>Eatery Name<span className="star_require">*</span></label>
               <input
                 type="text"
                 value={getstoreName}
@@ -223,9 +277,45 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
                 className="input_box"
               />
             </div>
+
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="" style={{ minWidth: "140px" }}>Store Number</label>
+              <label htmlFor="" style={{ minWidth: "162px" }}>Category<span className="star_require">*</span></label>
+              <div className="select-wrapper" style={{ width: "100%" }}>
+                <select
+                  className="leaderboard-card-inp cons_select_nav"
+                  onChange={(e) => {
+                    setStoreCategory(e.target.value);
+                    console.log(e.target.value);
+                  }}
+                >
+                  <option defaultValue value=""></option>
+                  {catarray &&
+                    catarray.map((item, index) => {
+                      return (
+                        <>
+                          <option key={item.id} value={item.id}>
+                            {item.name}
+                          </option>
+                        </>
+                      );
+                    })}
+                </select>
+              </div>
+              {/* <input
+              type="text"
+              value={storeCategory}
+              //   onChange={(e) => setStoreName(e.target.value)}
+              name=""
+              id=""
+              className="input_box"
+              placeholder="Fashion, homeware, audio visual"
+            /> */}
+            </div>
+            {/* single text-input */}
+            {/* single text-input */}
+            <div className="mm_form_single_input">
+              <label htmlFor="" style={{ minWidth: "162px" }}>Shop Number<span className="star_require">*</span></label>
               <input
                 type="text"
                 value={getstoreNo}
@@ -237,7 +327,7 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="" style={{ minWidth: "140px" }}>Store Level</label>
+              <label htmlFor="" style={{ minWidth: "162px" }}>Eatery Level</label>
               <input
                 type="text"
                 value={getstoreLevel}
@@ -248,8 +338,22 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
               />
             </div>
             {/* single text-input */}
+
+            {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="" style={{ minWidth: "140px" }}>Contact Number</label>
+              <label htmlFor="" style={{ minWidth: "162px" }}>Contact Person</label>
+              <input
+                type="text"
+                value={getstoreContactPerson}
+                onChange={(e) => setStoreContactPerson(e.target.value)}
+                name=""
+                id=""
+                className="input_box"
+              />
+            </div>
+            {/* single text-input */}
+            <div className="mm_form_single_input">
+              <label htmlFor="" style={{ minWidth: "162px" }}>Contact Number<span className="star_require">*</span></label>
               <input
                 type="number"
                 value={getcontactNo}
@@ -261,7 +365,7 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="" style={{ minWidth: "140px" }}>Email Address</label>
+              <label htmlFor="" style={{ minWidth: "162px" }}>Email Address<span className="star_require">*</span></label>
               <input
                 type="email"
                 onChange={(e) => onHandleEmailChange(e)}
@@ -274,10 +378,10 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
             {/* tranding sec start */}
             <div className="mm_tranding_wrapp">
               <label
-                style={{ fontSize: "16px", fontWeight: "400", minWidth: "140px" }}
+                style={{ fontSize: "16px", fontWeight: "400", minWidth: "162px" }}
                 htmlFor=""
               >
-                Trading Hours
+                Trading Hours<span className="star_require">*</span>
               </label>
               <div className="tranding_times_wrapp">
                 {/* single time */}
@@ -286,7 +390,7 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
                     style={{
                       fontSize: "16px",
                       fontWeight: "400",
-                      minWidth: "140px",
+                      minWidth: "162px",
                     }}
                     htmlFor=""
                   >
@@ -341,7 +445,7 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
                     style={{
                       fontSize: "16px",
                       fontWeight: "400",
-                      minWidth: "140px",
+                      minWidth: "162px",
                     }}
                     htmlFor=""
                   >
@@ -393,7 +497,7 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
                     style={{
                       fontSize: "16px",
                       fontWeight: "400",
-                      minWidth: "140px",
+                      minWidth: "162px",
                     }}
                     htmlFor=""
                   >
@@ -442,7 +546,7 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
                     style={{
                       fontSize: "16px",
                       fontWeight: "400",
-                      minWidth: "140px",
+                      minWidth: "162px",
                     }}
                     htmlFor=""
                   >
@@ -494,7 +598,7 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
               className="mm_form_single_input"
               style={{ alignItems: "flex-start" }}
             >
-              <label htmlFor="">Store Description</label>
+              <label htmlFor="" style={{ minWidth: "157px" }}>Eatery Description<span className="star_require">*</span></label>
               <textarea
                 type="text"
                 value={getstoreDes}
@@ -505,9 +609,17 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
                 rows={8}
               />
             </div>
+            <div
+              className="mm_form_single_input"
+              style={{ alignItems: "flex-start" }}
+            >
+              <label htmlFor="" style={{ minWidth: "157px" }}></label>
+              <span style={{ fontSize: "14px", color: "#bbb" }}>*Required Fields including all image uploads.</span>
+
+            </div>
 
             <div className="mm_form_single_input mb_8">
-              <label htmlFor="" style={{ minWidth: "140px" }}></label>
+              <label htmlFor="" style={{ minWidth: "162px" }}></label>
               <div className="signup_terms_wrapp indep-side">
                 <input
                   type="checkbox"
@@ -518,8 +630,24 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
 
                 <p className="fs-des" style={{ fontWeight: "400", fontSize: "14px" }}>
                   I have read and agree to the{" "}
-                  <a className="signup_terms_link">Terms and Conditions</a> &{" "}
                   <a className="signup_terms_link">Privacy Policy</a>
+                </p>
+              </div>
+            </div>
+
+            <div className="mm_form_single_input mb_8" >
+              <label htmlFor="" style={{ minWidth: "162px" }}></label>
+              <div className="signup_terms_wrapp indep-side" style={{ marginTop: "-12px" }}>
+                <input
+                  type="checkbox"
+                  value={isAcceptTerm2}
+                  onChange={handleTermChange2}
+                  checked={isAcceptTerm2}
+                />
+
+                <p className="fs-des" style={{ fontWeight: "400", fontSize: "14px" }}>
+                  I have read and agree to the{" "}
+                  <a className="signup_terms_link">Terms and Conditions</a>
                 </p>
               </div>
             </div>
@@ -531,8 +659,8 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
             <div className="mm_img_upload_wrapp" style={{ width: "100%" }}>
               {/* single upload image */}
               <div className="myprofile_inner_sec2">
-                <h4 style={{ marginBottom: "10px" }} className="myprofile_upload_img_card_name">Upload the eatery logo <br />
-                  (200 x 150 pixels)</h4>
+                <h4 style={{ marginBottom: "10px", fontSize: "14px", fontWeight: "600" }} className="myprofile_upload_img_card_name">Upload black and white  <br />
+                  Eatery logo <br /> (200 x 200 pixels) <br /> (max 40kb)<span className="star_require">*</span></h4>
                 {files && files.length > 0 ? (
                   <div className="myprofile_inner_sec2_img_upload">{thumbs}</div>
                 ) : (
@@ -559,7 +687,7 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
                     </div>
                     <div className="btnn-main">
                       <button
-                        className="btn btn-orange"
+                        className="btn btn-black"
                         type="button"
                         onClick={() => {
                           // setFiles([]);
@@ -572,20 +700,22 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
                   </div>
                 )}
                 {/* <div className="myprofile_upload_img_btn_wrapp"> */}
-                <button className="btn btn-blue" onClick={() => setFiles([])}>
+                <button className="btn" onClick={() => setFiles([])}>
                   Cancel
                 </button>
                 {/* </div> */}
               </div>
             </div>
             {/* upload images wrapp end */}
-
+            <p className="upload_img_instr">All Brand logo’s to be uploaded <br />
+              in black and white format <br />
+              (no colour logo’s)</p>
             {/* upload images wrapp start */}
             <div className="mm_img_upload_wrapp" style={{ width: "100%" }}>
               {/* single upload image */}
               <div className="myprofile_inner_sec2">
-                <h4 style={{ marginBottom: "10px" }} className="myprofile_upload_img_card_name">Upload the eatery banner <br />
-                  (200 x 150 pixels)</h4>
+                <h4 style={{ marginBottom: "10px", fontSize: "14px", fontWeight: "600" }} className="myprofile_upload_img_card_name">Upload the Eatery banner  <br />
+                  (1050px x 284px) <br /> (max 200kb)<span className="star_require">*</span></h4>
                 {files2 && files2.length > 0 ? (
                   <div className="myprofile_inner_sec2_img_upload">{thumbs2}</div>
                 ) : (
@@ -612,7 +742,7 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
                     </div>
                     <div className="btnn-main">
                       <button
-                        className="btn btn-orange"
+                        className="btn btn-black"
                         type="button"
                         onClick={() => {
                           // setFiles([]);
@@ -625,7 +755,7 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
                   </div>
                 )}
                 {/* <div className="myprofile_upload_img_btn_wrapp"> */}
-                <button className="btn btn-blue" onClick={() => setFiles2([])}>
+                <button className="btn" onClick={() => setFiles2([])}>
                   Cancel
                 </button>
                 {/* </div> */}
@@ -644,16 +774,29 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
 
           <p className="fs-des" style={{ fontWeight: "400", fontSize: "14px" }}>
             I have read and agree to the{" "}
-            <a className="signup_terms_link">Terms and Conditions</a> &{" "}
             <a className="signup_terms_link">Privacy Policy</a>
           </p>
 
         </div>
+        <div className="signup_terms_wrapp indep-side-show" style={{ marginTop: "-12px" }}>
+          <input
+            type="checkbox"
+            value={isAcceptTerm2}
+            onChange={handleTermChange2}
+            checked={isAcceptTerm2}
+          />
+
+          <p className="fs-des" style={{ fontWeight: "400", fontSize: "14px" }}>
+            I have read and agree to the{" "}
+            <a className="signup_terms_link">Terms and Conditions</a>
+          </p>
+
+        </div>
         <div className="mm_form_single_input mb_8">
-          <label htmlFor="" style={{ minWidth: "140px" }}></label>
+          <label htmlFor="" style={{ minWidth: "235px" }}></label>
           <button
-            style={{ marginTop: "20px", width: "25%" }}
-            className="btn btn-orange add-eatery-resp"
+            style={{ marginTop: "20px", width: "200px" }}
+            className="btn btn-black add-eatery-resp"
             onClick={() => {
               addEateries();
               console.log("smnbsmdb");

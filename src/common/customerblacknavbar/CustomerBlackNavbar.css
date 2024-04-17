@@ -6,12 +6,13 @@
 }
 
 .cus-nav-black-con {
-    max-width: 1140px;
+    /* max-width: 1140px; */
     margin: 0 auto;
     display: flex;
     align-items: center;
     padding-top: 15px;
     gap: 5px;
+    margin-left: 2rem;
 }
 
 @media screen and (max-width:1140px) {

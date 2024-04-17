@@ -33,6 +33,7 @@ const StoreECard = ({
     setStore_id,
     getStoreList,
     getEateryList,
+    getdelete_popup_data,
 }) => {
     const { DeleteStoreApi, DeleteEateriesApi } = useMallContext();
 
@@ -105,7 +106,7 @@ const StoreECard = ({
                     }}
                     src={img}
                     alt=""
-                    className="stored_card_img"
+                    style={{filter:"grayscale(100%)"}} className="stored_card_img"
                 />
             </div>
 
@@ -132,14 +133,14 @@ const StoreECard = ({
                     </div>
                     {/* edit and delete orange btns end */}
 
-                    <p>Are you sure you want to delete ?</p>
+                    <p>{getdelete_popup_data ? getdelete_popup_data.details : ""}</p>
                     <div className="delete-modal-btn-box">
                         <button onClick={() => {
                             // setStore_id(itm.id);
                             DeleteMallEateryData(itm.id);
                             // setDeleteModal(true);
                         }} className="delete-modal-btn">
-                            Yes
+                            {getdelete_popup_data ? getdelete_popup_data.confirm_button : ""}
                         </button>
                         {/* onClick={() => {
               // setStore_id(itm.id);
@@ -148,7 +149,7 @@ const StoreECard = ({
             }} */}
 
                         <button onClick={closeModal} className="delete-modal-btn">
-                            No
+                        {getdelete_popup_data ? getdelete_popup_data.cancel_button : ""}
                         </button>
                     </div>
                 </div>

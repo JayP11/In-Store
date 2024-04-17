@@ -117,15 +117,20 @@ const AddPromotionBannerCard = ({ openMallModal, setTab, gateweek, seteweek, peo
       onDrop: (acceptedFiles) => {
         console.log("file type", files[0]);
         console.log("acceptedFiles", acceptedFiles[0].File);
+        const filteredFiles = acceptedFiles.filter(file => file.size <= 200000); // Limit size to 200KB (in bytes)
 
         {
           setFiles(
-            acceptedFiles.map((file) =>
+            filteredFiles.map((file) =>
               Object.assign(file, {
                 preview: URL.createObjectURL(file),
               })
             )
           );
+          if (filteredFiles.length !== acceptedFiles.length) {
+            // Notification('');
+            Notification("error","Error!", "Some files exceed the maximum size limit of 200KB and will not be uploaded.");
+          }
         }
         if (acceptedFiles.length === 0) {
           window.location.reload(true);
@@ -144,6 +149,72 @@ const AddPromotionBannerCard = ({ openMallModal, setTab, gateweek, seteweek, peo
 
   // Create Promotion Banner Api
 
+  // const CreatePromotionBanner = async () => {
+
+  //   console.log("test");
+  //   const { startDate, endDate } = selectedDates;
+
+
+  //   if (title == "" || undefined) {
+  //     Notification("error", "Error!", "Please Enter Title!");
+  //     return;
+  //   } else if (mallidarray == "" || undefined) {
+  //     Notification("error", "Error!", "Please Select Mall!");
+  //   } else if (regionidarray == "" || undefined) {
+  //     Notification("error", "Error!", "Please Select Region!");
+  //   } else if (startDate == "" || startDate == undefined) {
+  //     Notification("error", "Error", "Please Enter Start Date");
+  //     return;
+  //   } else if (endDate == "" || endDate == undefined) {
+  //     Notification("error", "Error", "Please Enter End Date");
+  //     return;
+  //   } else if (BrandName == "" || undefined) {
+  //     Notification("error", "Error!", "Please Select Brand!");
+  //   } else if (Category == "" || undefined) {
+  //     Notification("error", "Error!", "Please Select Category!");
+  //   } else {
+
+  //     const formdata = await new FormData();
+  //     // await formdata.append("id", item.id)
+  //     await formdata.append("title", title)
+  //     for (var i = 0; i < regionidarray.length; i++) {
+  //       await formdata.append("region_id[" + i + "]", regionidarray[i].id);
+  //     }
+  //     for (var i = 0; i < mallidarray.length; i++) {
+  //       await formdata.append("mall_id[" + i + "]", mallidarray[i].id);
+  //     }
+  //     await formdata.append("brand_id", BrandName)
+  //     await formdata.append("category_id", Category)
+  //     // await formdata.append("week_id", gateweek)
+  //     await formdata.append("from_date", moment(startDate[0]).format("YYYY-MM-DD"));
+  //     await formdata.append("to_date", moment(startDate[1]).format("YYYY-MM-DD"));
+  //     await formdata.append("region_child_id[0]", "")
+  //     await formdata.append("region_child_id[1]", "")
+  //     if (files[0] !== undefined) {
+  //       await formdata.append("image", files[0]);
+  //     }
+
+
+
+  //     console.log("-=-=-=->", formdata);
+  //     const data = await CreatePromotionBoardApi(formdata);
+  //     if (data) {
+  //       if (data.success === 1) {
+  //         console.log("category-data", data);
+  //         Notification("success", "Success!", "Promotion Banner Added Successfully!");
+  //         setTab(1);
+  //         // getLeaderboard();
+  //         // window.location.reload();
+  //       } else if (data.success === 0){
+  //         Notification(
+  //           "error",
+  //           "Error!",
+  //           data.message
+  //         );
+  //       }
+  //     }
+  //   }
+  // }
   const CreatePromotionBanner = async () => {
 
     console.log("test");
@@ -163,10 +234,11 @@ const AddPromotionBannerCard = ({ openMallModal, setTab, gateweek, seteweek, peo
     } else if (endDate == "" || endDate == undefined) {
       Notification("error", "Error", "Please Enter End Date");
       return;
-    } else if (BrandName == "" || undefined) {
-      Notification("error", "Error!", "Please Select Brand!");
     } else if (Category == "" || undefined) {
       Notification("error", "Error!", "Please Select Category!");
+    } else if (files == "" || undefined) {
+      Notification("error", "Error", "Please Upload Image");
+      return;
     } else {
 
       const formdata = await new FormData();
@@ -178,7 +250,6 @@ const AddPromotionBannerCard = ({ openMallModal, setTab, gateweek, seteweek, peo
       for (var i = 0; i < mallidarray.length; i++) {
         await formdata.append("mall_id[" + i + "]", mallidarray[i].id);
       }
-      await formdata.append("brand_id", BrandName)
       await formdata.append("category_id", Category)
       // await formdata.append("week_id", gateweek)
       await formdata.append("from_date", moment(startDate[0]).format("YYYY-MM-DD"));
@@ -200,6 +271,12 @@ const AddPromotionBannerCard = ({ openMallModal, setTab, gateweek, seteweek, peo
           setTab(1);
           // getLeaderboard();
           // window.location.reload();
+        } else if (data.success === 0){
+          Notification(
+            "error",
+            "Error!",
+            data.message
+          );
         }
       }
     }
@@ -207,16 +284,16 @@ const AddPromotionBannerCard = ({ openMallModal, setTab, gateweek, seteweek, peo
   return (
     <div className="leaderboard-card-main-wrapp">
       {/* Leaderboard flex start */}
-      <div className="leaderboard-card-flex-wrapp">
+      <div className="leaderboard-card-flex-wrapp leaderboard-card-flex-wrapp-half">
         {/* Leaderboard first part responsive side start */}
         <div className="leaderboard-card-first-resp-main-wrapp">
           <p className="leaderboard-last-part-txt">
             Service fee will apply if canceled
           </p>
-          <Link className="leaderboard-delete-icon-btn">
+          {/* <Link className="leaderboard-delete-icon-btn">
             cancel{" "}
-            {/* <img src={images.delete_icon} className="leaderboard-delete-icon" /> */}
-          </Link>
+            <img src={images.delete_icon} className="leaderboard-delete-icon" />
+          </Link> */}
         </div>
         {/* Leaderboard first part responsive side end*/}
 
@@ -225,8 +302,8 @@ const AddPromotionBannerCard = ({ openMallModal, setTab, gateweek, seteweek, peo
           {/* Leaderboad form start */}
 
           {/* Leaderboard inputbox start */}
-          <div className="leaderboard-card-inpbox-wrapp">
-            <label className="leaderboard-card-lbl">Title:</label>
+           <div className="leaderboard-card-inpbox-wrapp">
+            <label className="leaderboard-card-lbl">Title:<span className="star_require">*</span></label>
             <input
               type="text"
               className="leaderboard-card-inp"
@@ -234,7 +311,7 @@ const AddPromotionBannerCard = ({ openMallModal, setTab, gateweek, seteweek, peo
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
-          </div>
+          </div> 
           {/* Leaderboard inputbox end */}
 
           {/* Leaderboard inputbox start */}
@@ -249,34 +326,14 @@ const AddPromotionBannerCard = ({ openMallModal, setTab, gateweek, seteweek, peo
                   return <p className="mall-lib-font">{mall}</p>;
                 })
                 : null}
-              {/* <p className="">abc</p>
-              <p className="">abc</p>
-              <p className="">abc</p> */}
+              
             </div>
-            {/* <Select
-                            value={mallsOption}
-                            styles={{ width: "100%", padding: "0px" }}
-                            className="leaderboard-card-inp"
-                            closeMenuOnSelect={false}
-                            components={animatedComponents}
-                            // defaultValue={[colourOptions[4], colourOptions[5]]}
-
-                            isMulti
-                            options={multiple_week_data}
-                            onChange={setMallsOption}
-                        /> */}
-            {/* <button
-              className="leaderboard-card-inp"
-              style={{ color: "rgb(129 128 128)", textAlign: "start" }}
-              onClick={() => openMallModal()}
-            >
-              Select Mall
-            </button> */}
+           
           </div>
           {/* Leaderboard inputbox end */}
           <div className="leaderboard-card-inpbox-wrapp">
             <label className="leaderboard-card-lbl" htmlFor="">
-              Week
+              Week:<span className="star_require">*</span>
             </label>
             {/* <input
               type="date"
@@ -315,7 +372,7 @@ const AddPromotionBannerCard = ({ openMallModal, setTab, gateweek, seteweek, peo
             />
           </div>
           {/* Leaderboard inputbox start */}
-          <div className="leaderboard-card-inpbox-wrapp">
+          {/* <div className="leaderboard-card-inpbox-wrapp">
             <label className="leaderboard-card-lbl">Brand(s):</label>
             <div className="select-wrapper" style={{ width: "100%" }}>
               <select
@@ -339,15 +396,15 @@ const AddPromotionBannerCard = ({ openMallModal, setTab, gateweek, seteweek, peo
                   })}
               </select>
             </div>
-          </div>
+          </div> */}
           {/* Leaderboard inputbox end */}
 
           {/* Leaderboard inputbox start */}
           <div className="leaderboard-card-inpbox-wrapp">
-            <label className="leaderboard-card-lbl">Categories:</label>
+            <label className="leaderboard-card-lbl">Categories:<span className="star_require">*</span></label>
             <div className="select-wrapper" style={{ width: "100%" }}>
               <select
-                className="leaderboard-card-inp"
+                className="leaderboard-card-inp cons_select_nav"
                 onChange={(e) => {
                   console.log("rrr", e.target.value);
                   setCategory(e.target.value);
@@ -463,7 +520,8 @@ const AddPromotionBannerCard = ({ openMallModal, setTab, gateweek, seteweek, peo
                     marginBottom: "10px",
                   }}
                 />
-                <h4>.PDF .JPG .PNG</h4>
+                <h4>.JPG .PNG .GIF(1050 x 284 pixels)</h4>
+                <p>(max 200kb)</p>
                 <p>You can also upload file by</p>
                 <input
                   {...getInputlogoProps()}
@@ -472,7 +530,7 @@ const AddPromotionBannerCard = ({ openMallModal, setTab, gateweek, seteweek, peo
                 <button
                   type="button"
                   className="click_upload_btn"
-                  style={{ marginBottom: "10px" }}>
+                  style={{ marginBottom: "10px",color:"var(--color-orange)",fontWeight:"600" }}>
                   click here
                 </button>
                 {/* <a href="">clicking here</a> */}
@@ -485,7 +543,7 @@ const AddPromotionBannerCard = ({ openMallModal, setTab, gateweek, seteweek, peo
         {/* Leaderboard part second end */}
 
         {/* Leaderboard part third start */}
-        <div className="leaderboard-card-part-third">
+        <div className="leaderboard-card-part-third leaderboard-card-part-third-half" style={{justifyContent:"flex-end"}}>
           {/* <Link className="leaderboard-delete-icon-btn">
                         cancel{" "}
                         <img src={images.delete_icon} className="leaderboard-delete-icon" />
@@ -498,7 +556,7 @@ const AddPromotionBannerCard = ({ openMallModal, setTab, gateweek, seteweek, peo
                         <img src={images.extend_icon} className="leaderboard-delete-icon" />
                     </Link> */}
           <div className="leaderboard-btn-box">
-            <button
+            <button style={{padding:"0.4rem",fontSize:"16px"}}
               className="btn btn-orange"
               onClick={() => CreatePromotionBanner()}>
               Publish

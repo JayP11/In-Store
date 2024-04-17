@@ -1,0 +1,26 @@
+.DatePicker_style {
+  padding: 0.5rem;
+  width: 350px !important;
+  background-color: var(--color-bg-gray);
+  /* border-radius: 10px; */
+  border: none;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.react-datepicker__month-container {
+  width: 350px !important;
+}
+
+.month_checkbox {
+  background-color: var(--color-bg-gray);
+  width: 350px !important;
+  padding: 0.5rem;
+}
+
+.month_checkbox_inner {
+  display: flex;
+  gap: 1rem;
+}

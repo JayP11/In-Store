@@ -56,6 +56,54 @@ import {
   GET_MULTIPLE_Mall_BEGIN,
   GET_MULTIPLE_MALL_SUCCESS,
   GET_MULTIPLE_Mall_ERROR,
+  GET_MALL_CINEMA_BEGIN,
+  GET_MALL_CINEMA_SUCCESS,
+  GET_MALL_CINEMA_FAIL,
+  GET_CINEMA_FAIL,
+  GET_CINEMA_SUCCESS,
+  GET_CINEMA_BEGIN,
+  UPDATE_CINEMA_BEGIN,
+  UPDATE_CINEMA_SUCCESS,
+  UPDATE_CINEMA_FAIL,
+  GET_CINEMA_CATEGORY_FAIL,
+  GET_CINEMA_CATEGORY_SUCCESS,
+  GET_CINEMA_CATEGORY_BEGIN,
+  CREATE_LANDING_PAGE_LEADERBOARD_BEGIN,
+  CREATE_LANDING_PAGE_LEADERBOARD_SUCCESS,
+  UPDATE_LANDING_PAGE_TILE_FAIL,
+  UPDATE_LANDING_PAGE_TILE_SUCCESS,
+  UPDATE_LANDING_PAGE_TILE_BEGIN,
+  DELETE_LANDING_PAGE_TILE_BEGIN,
+  DELETE_LANDING_PAGE_TILE_SUCCESS,
+  DELETE_LANDING_PAGE_TILE_FAIL,
+  UPDATE_LANDING_PAGE_LEADERBOARD_FAIL,
+  UPDATE_LANDING_PAGE_LEADERBOARD_SUCCESS,
+  UPDATE_LANDING_PAGE_LEADERBOARD_BEGIN,
+  DELETE_LANDING_PAGE_LEADERBOARD_FAIL,
+  DELETE_LANDING_PAGE_LEADERBOARD_BEGIN,
+  DELETE_LANDING_PAGE_LEADERBOARD_SUCCESS,
+  DELETE_ANALYTICS_BUNDLE_FAIL,
+  DELETE_ANALYTICS_BUNDLE_SUCCESS,
+  DELETE_ANALYTICS_BUNDLE_BEGIN,
+  UPDATE_ANALYTICS_BUNDLE_FAIL,
+  UPDATE_ANALYTICS_BUNDLE_SUCCESS,
+  UPDATE_ANALYTICS_BUNDLE_BEGIN,
+  CREATE_ANALYTICS_BUNDLE_FAIL,
+  CREATE__ANALYTICS_BUNDLE_SUCCESS,
+  CREATE_ANALYTICS_BUNDLE_BEGIN,
+  CREATE_LANDING_PAGE_LEADERBOARD_FAIL,
+  CREATE_LANDING_PAGE_SQUARE_TILE_FAIL,
+  CREATE_LANDING_PAGE_SQUARE_TILE_SUCCESS,
+  CREATE_LANDING_PAGE_SQUARE_TILE_BEGIN,
+  UPDATE_LANDING_PAGE_SQUARE_TILE_FAIL,
+  UPDATE_LANDING_PAGE_SQUARE_TILE_SUCCESS,
+  UPDATE_LANDING_PAGE_SQUARE_TILE_BEGIN,
+  DELETE_LANDING_PAGE_SQUARE_TILE_FAIL,
+  DELETE_LANDING_PAGE_SQUARE_TILE_SUCCESS,
+  DELETE_LANDING_PAGE_SQUARE_TILE_BEGIN,
+  GET_STORE_CART_BEGIN,
+  GET_STORE_CART_SUCCESS,
+  GET_STORE_CART_ERROR,
 } from "../Action";
 const store_reducer = (state, action) => {
   // REGISTER STORE
@@ -96,6 +144,44 @@ const store_reducer = (state, action) => {
   if (action.type === GET_STORE_FAIL) {
     return { ...state, get_store_loading: false };
   }
+  // GET CINEMA
+
+  if (action.type === GET_CINEMA_BEGIN) {
+    return { ...state, get_cinema_loading: true };
+  }
+
+  if (action.type === GET_CINEMA_SUCCESS) {
+    // console.log('"br̥and-data-ruder', action.payload);
+    return {
+      ...state,
+      get_cinema_loading: false,
+      get_cinema_data: action.payload.data,
+      // contact_number: action.payload.data.contact_number,
+    };
+  }
+
+  if (action.type === GET_CINEMA_FAIL) {
+    return { ...state, get_cinema_loading: false };
+  }
+
+   // GET STORE Cart
+
+   if (action.type === GET_STORE_CART_BEGIN) {
+    return { ...state, store_cart_data_loading: true };
+  }
+
+  if (action.type === GET_STORE_CART_SUCCESS) {
+    return {
+      ...state,
+      store_cart_data_loading: false,
+      store_cart_data: action.payload.data,
+      store_cart_count: action.payload.total_count,
+    };
+  }
+
+  if (action.type === GET_STORE_CART_ERROR) {
+    return { ...state, store_cart_data_loading: false };
+  }
 
   // GET RETAILER
 
@@ -116,6 +202,25 @@ const store_reducer = (state, action) => {
     return { ...state, ratailer_data_loading: false };
   }
 
+   // GET CINEMA MALL
+
+   if (action.type === GET_MALL_CINEMA_BEGIN) {
+    return { ...state, cinema_mall_data_loading: true };
+  }
+
+  if (action.type === GET_MALL_CINEMA_SUCCESS) {
+    return {
+      ...state,
+      cinema_mall_data_loading: false,
+      cinema_mall_data: action.payload.data,
+      // contact_number: action.payload.data.contact_number,
+    };
+  }
+
+  if (action.type === GET_MALL_CINEMA_FAIL) {
+    return { ...state, cinema_mall_data_loading: false };
+  }
+
   // GET Category
 
   if (action.type === GET_CATEGORY_BEGIN) {
@@ -133,6 +238,25 @@ const store_reducer = (state, action) => {
 
   if (action.type === GET_CATEGORY_FAIL) {
     return { ...state, category_data_loading: false };
+  }
+
+  // GET Cinema Category
+
+  if (action.type === GET_CINEMA_CATEGORY_BEGIN) {
+    return { ...state, cinema_category_data_loading: true };
+  }
+
+  if (action.type === GET_CINEMA_CATEGORY_SUCCESS) {
+    return {
+      ...state,
+      cinema_category_data_loading: false,
+      cinema_category_data: action.payload.data,
+      // contact_number: action.payload.data.contact_number,
+    };
+  }
+
+  if (action.type === GET_CINEMA_CATEGORY_FAIL) {
+    return { ...state, cinema_category_data_loading: false };
   }
 
   // GET Week
@@ -192,6 +316,25 @@ const store_reducer = (state, action) => {
     return { ...state, brand_update_loading: false };
   }
 
+  // Update Cinema
+
+  if (action.type === UPDATE_CINEMA_BEGIN) {
+    return { ...state, cinema_update_loading: true };
+  }
+
+  if (action.type === UPDATE_CINEMA_SUCCESS) {
+    return {
+      ...state,
+      cinema_update_loading: false,
+      cinema_update_data: action.payload,
+      // contact_number: action.payload.data.contact_number,
+    };
+  }
+
+  if (action.type === UPDATE_CINEMA_FAIL) {
+    return { ...state, cinema_update_loading: false };
+  }
+
   // delete Leaderboard data
 
   if (action.type === DELETE_LEADERBOARD_BEGIN) {
@@ -210,6 +353,84 @@ const store_reducer = (state, action) => {
   if (action.type === DELETE_LEADERBOARD_FAIL) {
     return { ...state, delete_leaderboard_loading: false };
   }
+
+
+    // Delete Lnadingpage Tile 
+
+  if (action.type === DELETE_LANDING_PAGE_TILE_BEGIN) {
+    return { ...state, delete_leaderboard_loading: true };
+  }
+
+  if (action.type === DELETE_LANDING_PAGE_TILE_SUCCESS) {
+    return {
+      ...state,
+      delete_leaderboard_loading: false,
+      // delete_leaderboard_data: action.payload,
+      // contact_number: action.payload.data.contact_number,
+    };
+  }
+
+  if (action.type === DELETE_LANDING_PAGE_TILE_FAIL) {
+    return { ...state, delete_leaderboard_loading: false };
+  }
+
+
+  // Delete Lnadingpage Leaderboard
+  if (action.type === DELETE_LANDING_PAGE_LEADERBOARD_BEGIN) {
+    return { ...state, delete_leaderboard_loading: true };
+  }
+
+  if (action.type === DELETE_LANDING_PAGE_LEADERBOARD_SUCCESS) {
+    return {
+      ...state,
+      delete_leaderboard_loading: false,
+      // delete_leaderboard_data: action.payload,
+      // contact_number: action.payload.data.contact_number,
+    };
+  }
+
+  if (action.type === DELETE_LANDING_PAGE_LEADERBOARD_FAIL) {
+    return { ...state, delete_leaderboard_loading: false };
+  }
+
+   // Delete Lnadingpage Square
+   if (action.type === DELETE_LANDING_PAGE_SQUARE_TILE_BEGIN) {
+    return { ...state, delete_leaderboard_loading: true };
+  }
+
+  if (action.type === DELETE_LANDING_PAGE_SQUARE_TILE_SUCCESS) {
+    return {
+      ...state,
+      delete_leaderboard_loading: false,
+      // delete_leaderboard_data: action.payload,
+      // contact_number: action.payload.data.contact_number,
+    };
+  }
+
+  if (action.type === DELETE_LANDING_PAGE_SQUARE_TILE_FAIL) {
+    return { ...state, delete_leaderboard_loading: false };
+  }
+
+  // Delete Analytic Bundle
+
+  // Delete Lnadingpage Leaderboard
+  if (action.type === DELETE_ANALYTICS_BUNDLE_BEGIN) {
+    return { ...state, delete_leaderboard_loading: true };
+  }
+
+  if (action.type === DELETE_ANALYTICS_BUNDLE_SUCCESS) {
+    return {
+      ...state,
+      delete_leaderboard_loading: false,
+      // delete_leaderboard_data: action.payload,
+      // contact_number: action.payload.data.contact_number,
+    };
+  }
+
+  if (action.type === DELETE_ANALYTICS_BUNDLE_FAIL) {
+    return { ...state, delete_leaderboard_loading: false };
+  }
+
 
   // delete Promotion Banner data
 
@@ -265,6 +486,80 @@ const store_reducer = (state, action) => {
     return { ...state, update_leaderboard_loading: false };
   }
 
+  // Update Landingpage Tile data
+
+  if (action.type === UPDATE_LANDING_PAGE_TILE_BEGIN) {
+    return { ...state, cinemalandingpagetile_update_loading: true };
+  }
+
+  if (action.type === UPDATE_LANDING_PAGE_TILE_SUCCESS) {
+    return {
+      ...state,
+      cinemalandingpagetile_update_loading: false,
+      cinemalandingpagetile_update_data: action.payload,
+    };
+  }
+
+  if (action.type === UPDATE_LANDING_PAGE_TILE_FAIL) {
+    return { ...state, cinemalandingpagetile_update_loading: false };
+  }
+
+  // Update Landingpage Leaderboard data
+
+  if (action.type === UPDATE_LANDING_PAGE_LEADERBOARD_BEGIN) {
+    return { ...state, landingpage_leaderboard_data_loading: true };
+  }
+
+  if (action.type === UPDATE_LANDING_PAGE_LEADERBOARD_SUCCESS) {
+    return {
+      ...state,
+      landingpage_leaderboard_data_loading: false,
+      landingpage_leaderboard_data: action.payload,
+    };
+  }
+
+  if (action.type === UPDATE_LANDING_PAGE_LEADERBOARD_FAIL) {
+    return { ...state, landingpage_leaderboard_data_loading: false };
+  }
+
+
+    // Update Landingpage Square data
+
+    if (action.type === UPDATE_LANDING_PAGE_SQUARE_TILE_BEGIN) {
+      return { ...state, landingpage_square_data_loading: true };
+    }
+  
+    if (action.type === UPDATE_LANDING_PAGE_SQUARE_TILE_SUCCESS) {
+      return {
+        ...state,
+        landingpage_square_data_loading: false,
+        landingpage_square_data: action.payload,
+      };
+    }
+  
+    if (action.type === UPDATE_LANDING_PAGE_SQUARE_TILE_FAIL) {
+      return { ...state, landingpage_square_data_loading: false };
+    }
+
+   // Update Analytic Bundle data
+
+   if (action.type === UPDATE_ANALYTICS_BUNDLE_BEGIN) {
+    return { ...state, analytic_bundle_loading: true };
+  }
+
+  if (action.type === UPDATE_ANALYTICS_BUNDLE_SUCCESS) {
+    return {
+      ...state,
+      analytic_bundle_loading: false,
+      analytic_bundle_data: action.payload,
+    };
+  }
+
+  if (action.type === UPDATE_ANALYTICS_BUNDLE_FAIL) {
+    return { ...state, analytic_bundle_loading: false };
+  }
+
+
   // Update Promotion Banner data
 
   if (action.type === UPDATE_PROMOTION_BANNER_BEGIN) {
@@ -318,6 +613,78 @@ const store_reducer = (state, action) => {
   if (action.type === CREATE_LEADERBOARD_BANNER_FAIL) {
     return { ...state, create_leaderboard_loading: false };
   }
+
+    // Create Landingpagetile Data
+
+    if (action.type === CREATE_LANDING_PAGE_LEADERBOARD_BEGIN) {
+      return { ...state, create_landing_page_tile_loading: true };
+    }
+  
+    if (action.type === CREATE_LANDING_PAGE_LEADERBOARD_SUCCESS) {
+      return {
+        ...state,
+        create_landing_page_tile_loading: false,
+        create_landing_page_tile_data: action.payload,
+      };
+    }
+  
+    if (action.type === CREATE_LANDING_PAGE_LEADERBOARD_FAIL) {
+      return { ...state, create_landing_page_tile_loading: false };
+    }
+
+     // Create Landingpage Leaderboard Data
+
+     if (action.type === CREATE_LANDING_PAGE_LEADERBOARD_BEGIN) {
+      return { ...state, create_landing_page_leaderboard_loading: true };
+    }
+  
+    if (action.type === CREATE_LANDING_PAGE_LEADERBOARD_SUCCESS) {
+      return {
+        ...state,
+        create_landing_page_leaderboard_loading: false,
+        create_landing_page_leaderboard_data: action.payload,
+      };
+    }
+  
+    if (action.type === CREATE_LANDING_PAGE_LEADERBOARD_FAIL) {
+      return { ...state, create_landing_page_leaderboard_loading: false };
+    }
+
+    // Landing page Square
+
+    if (action.type === CREATE_LANDING_PAGE_SQUARE_TILE_BEGIN) {
+      return { ...state, create_landing_page_square_tile_loading: true };
+    }
+  
+    if (action.type === CREATE_LANDING_PAGE_SQUARE_TILE_SUCCESS) {
+      return {
+        ...state,
+        create_landing_page_square_tile_loading: false,
+        create_landing_page_square_tile_data: action.payload,
+      };
+    }
+  
+    if (action.type === CREATE_LANDING_PAGE_SQUARE_TILE_FAIL) {
+      return { ...state, create_landing_page_square_tile_loading: false };
+    }
+
+      // Create Analytic Bundle Data
+
+      if (action.type === CREATE_ANALYTICS_BUNDLE_BEGIN) {
+        return { ...state, create_analytic_bundle_loading: true };
+      }
+    
+      if (action.type === CREATE__ANALYTICS_BUNDLE_SUCCESS) {
+        return {
+          ...state,
+          create_analytic_bundle_loading: false,
+          create_analytic_bundle_data: action.payload,
+        };
+      }
+    
+      if (action.type === CREATE_ANALYTICS_BUNDLE_FAIL) {
+        return { ...state, create_analytic_bundle_loading: false };
+      }
 
   // Create Promotion Data
 

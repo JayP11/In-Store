@@ -4,8 +4,8 @@
     align-items: flex-start;
     justify-content: flex-start;
     width: 100%;
-    min-height: 367px;
-    padding: 30px;
+    /* min-height: 300px; */
+    padding: 15px;
     position: relative;
     text-align: left;
     gap: 10px;
@@ -19,13 +19,13 @@
 .facility_card_heading {
     font-size: 20px;
     font-weight: 800;
-    color: var(--color-white);
+    color: var(--color-black);
 }
 
 .facility_card_des {
     font-size: 16px;
-    font-weight: 300;
-    color: var(--color-white);
+    font-weight: 400;
+    color: var(--color-black);
 }
 
 @media (max-width: 500px) {

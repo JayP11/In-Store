@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react'
 import images from '../../constants/images'
+import "./CustomerFacilityCard.css"
 
 const CustomerFacilityCard = ({ item }) => {
     useEffect(() => { console.log("customer facility is", item); }, [])
 
     return (
-        <div className="facility_card_main_wrapp" style={{ background: item.bg_colour == 1 ? item.sky_blue : item.bg_colour == 2 ? item.orange : item.bg_colour == 3 ? item.pink : null }}>
+        <div className="facility_card_main_wrapp" >
+        {/* <div className="facility_card_main_wrapp" style={{ background: item.bg_colour == 1 ? item.sky_blue : item.bg_colour == 2 ? item.orange : item.bg_colour == 3 ? item.pink : null }}> */}
             <div className="stored_card_edit_wrapp">
                 {/* <button className="stored_card_edit_btn">
                     <img src={images.card_edit} alt="" />
@@ -14,7 +16,7 @@ const CustomerFacilityCard = ({ item }) => {
                     <img src={images.card_cancle} alt="" />
                 </button> */}
             </div>
-            {
+            {/* {
                 item.bg_colour == 1 ? <>
                     <img src={images.wcard_1} alt="" className="wc_bottom_img" />
 
@@ -28,10 +30,10 @@ const CustomerFacilityCard = ({ item }) => {
 
                         </> : null
 
-            }
+            } */}
             {/* <img src={item.image_path} alt="" className="wc_bottom_img" /> */}
-            <img src={item.image_path} alt="" className="facility_logo" />
-            <h5 className="facility_card_heading">{item.name}</h5>
+            <img src={item ? item.facilities.image_path : ""} alt="" className="facility_logo" />
+            <h5 className="facility_card_heading">{item ? item.facilities.name : ""}</h5>
             <p className="facility_card_des">{item.description}</p>
         </div>
     )

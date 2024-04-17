@@ -54,12 +54,23 @@ const CutomerMallEvents = ({ getsingalmalldata }) => {
 
   return (
     <div>
-      {/* <CustomerHero getsingalmalldata={getsingalmalldata} /> */}
-      <CustomerHeroSecond getsingalmalldata={getsingalmalldata} />
+    {loading === true ? <>
+      <div
+        style={{
+          width: "100%",
+          height: "80vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+        <div className="loader"></div>
+      </div>
+    </>:<>
+    <CustomerHeroSecond getsingalmalldata={getsingalmalldata} />
       <div className="mm_main_wrapp">
         {/* heading */}
         <div className="profile_head_center" style={{ marginBottom: "2rem" }}>
-          <h4 className="h3" style={{ textTransform: "capitalize" }}>{getsingalmalldata.name} events</h4>
+          <h4 className="h3" style={{ textTransform: "capitalize",fontWeight:"600" }}>{getsingalmalldata.name} events</h4>
         </div>
 
         <div style={{ margin: "1rem auto" }}>
@@ -108,6 +119,9 @@ const CutomerMallEvents = ({ getsingalmalldata }) => {
           </button>
         )}
       </div>
+    </>}
+      {/* <CustomerHero getsingalmalldata={getsingalmalldata} /> */}
+     
     </div>
   );
 };

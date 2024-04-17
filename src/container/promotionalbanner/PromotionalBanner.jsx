@@ -1,28 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { LeaderBoardCard, PromotionBannerCard, RetailerNavigationBar } from "../../components";
+import { PromotionBannerCard, RetailerNavigationBar } from "../../components";
 import images from "../../constants/images";
-import { Link } from "react-router-dom";
 import {
   ACCEPT_HEADER,
   get_promotion,
   get_region_mall,
 } from "../../utils/Constant";
 import { BsChevronDown } from "react-icons/bs";
-import { IoIosArrowDown, IoIosArrowUp, IoIosClose } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { BiSearch } from "react-icons/bi";
 import ReactModal from "react-modal";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
 import { useStoreContext } from "../../context/store_context";
 import axios from "axios";
-
-const animatedComponents = makeAnimated();
-
-const options = [
-  { value: "chocolate", label: "Chocolate" },
-  { value: "strawberry", label: "Strawberry" },
-  { value: "vanilla", label: "Vanilla" },
-];
 
 // model style
 
@@ -45,80 +34,80 @@ const customStyles = {
   },
 };
 
-const AccordionData = [
-  {
-    id: 1,
-    city: "Western Cape",
-    mall: [
-      {
-        id: 1,
-        name: "Bayside Mall",
-      },
-      {
-        id: 2,
-        name: "Blue Route Mall",
-      },
-      {
-        id: 3,
-        name: "Boulevard Square",
-      },
-    ],
-  },
-  {
-    id: 2,
-    city: "KZN",
-    mall: [
-      {
-        id: 1,
-        name: "Brackenfell Centre",
-      },
-      {
-        id: 2,
-        name: "Brackenfell Corner",
-      },
-      {
-        id: 3,
-        name: "Brackenfell Shopping Centre",
-      },
-    ],
-  },
-  {
-    id: 3,
-    city: "Eastern Cape",
-    mall: [
-      {
-        id: 1,
-        name: "Canal Walk",
-      },
-      {
-        id: 2,
-        name: "Cape Quarter",
-      },
-      {
-        id: 3,
-        name: "Cape Gate",
-      },
-    ],
-  },
-  {
-    id: 4,
-    city: "Free State",
-    mall: [
-      {
-        id: 1,
-        name: "Delft Mall",
-      },
-      {
-        id: 2,
-        name: "De Ville Centre",
-      },
-      {
-        id: 3,
-        name: "Durbanville Town Centre",
-      },
-    ],
-  },
-];
+// const AccordionData = [
+//   {
+//     id: 1,
+//     city: "Western Cape",
+//     mall: [
+//       {
+//         id: 1,
+//         name: "Bayside Mall",
+//       },
+//       {
+//         id: 2,
+//         name: "Blue Route Mall",
+//       },
+//       {
+//         id: 3,
+//         name: "Boulevard Square",
+//       },
+//     ],
+//   },
+//   {
+//     id: 2,
+//     city: "KZN",
+//     mall: [
+//       {
+//         id: 1,
+//         name: "Brackenfell Centre",
+//       },
+//       {
+//         id: 2,
+//         name: "Brackenfell Corner",
+//       },
+//       {
+//         id: 3,
+//         name: "Brackenfell Shopping Centre",
+//       },
+//     ],
+//   },
+//   {
+//     id: 3,
+//     city: "Eastern Cape",
+//     mall: [
+//       {
+//         id: 1,
+//         name: "Canal Walk",
+//       },
+//       {
+//         id: 2,
+//         name: "Cape Quarter",
+//       },
+//       {
+//         id: 3,
+//         name: "Cape Gate",
+//       },
+//     ],
+//   },
+//   {
+//     id: 4,
+//     city: "Free State",
+//     mall: [
+//       {
+//         id: 1,
+//         name: "Delft Mall",
+//       },
+//       {
+//         id: 2,
+//         name: "De Ville Centre",
+//       },
+//       {
+//         id: 3,
+//         name: "Durbanville Town Centre",
+//       },
+//     ],
+//   },
+// ];
 
 const PromotionalBanner = ({ get_mall_auth_data, setTab, getTab }) => {
   const perPage = 3;
@@ -141,7 +130,6 @@ const PromotionalBanner = ({ get_mall_auth_data, setTab, getTab }) => {
   const getPromation = async () => {
     const token = await JSON.parse(localStorage.getItem("is_token"));
 
-
     setLoading(true);
     fetch(get_promotion + `per_page=${perPage}&page=${page}`, {
       method: "GET",
@@ -153,7 +141,7 @@ const PromotionalBanner = ({ get_mall_auth_data, setTab, getTab }) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log("ffff", JSON.stringify(res.data, null, 2));
+        // console.log("ffff", JSON.stringify(res.data, null, 2));
         setTotalPages(res.data.last_page);
         SetLiast([...getliast, ...res.data.data]);
         setLoading(false);
@@ -187,7 +175,6 @@ const PromotionalBanner = ({ get_mall_auth_data, setTab, getTab }) => {
 
   // select chackbox functionality
   const [peopleInfo, setPeopleInfo] = useState([]);
-  const [checkboxChecked, setCheckboxChecked] = useState(false);
 
   // const handleCheckboxChange = (event) => {
   //   setCheckboxChecked(event.target.checked);
@@ -199,8 +186,6 @@ const PromotionalBanner = ({ get_mall_auth_data, setTab, getTab }) => {
       itm.region_id === toggle &&
       !peopleInfo.includes(itm.region_id)
     ) {
-      console.log("checked_true");
-
       setPeopleInfo([
         ...peopleInfo,
         {
@@ -211,7 +196,6 @@ const PromotionalBanner = ({ get_mall_auth_data, setTab, getTab }) => {
         },
       ]);
     } else {
-      console.log("checked_false");
       let result = peopleInfo.filter((item, key) => item.id != itm.id);
       setPeopleInfo(result);
     }
@@ -221,7 +205,6 @@ const PromotionalBanner = ({ get_mall_auth_data, setTab, getTab }) => {
     GetRegion();
     getCategoryApi();
     getWeekApi();
-
   }, []);
 
   const [getregion_array, SetRigion_Array] = useState([]);
@@ -237,11 +220,10 @@ const PromotionalBanner = ({ get_mall_auth_data, setTab, getTab }) => {
         },
       })
       .then((res) => {
-        console.log("ggg", JSON.stringify(res.data, null, 2));
+        // console.log("ggg", JSON.stringify(res.data, null, 2));
         if (res.data.success == 1) {
           SetRigion_Array(res.data.data);
         } else {
-          null;
         }
       })
       .catch((err) => {
@@ -295,30 +277,38 @@ const PromotionalBanner = ({ get_mall_auth_data, setTab, getTab }) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-          }}
-        >
+          }}>
           <div className="loader"></div>
         </div>
       ) : (
         <div className="mm_main_wrapp">
-          <div className="leaderboard-sub-wrapp">
-            <RetailerNavigationBar title="Account Management" setTabType={getTab == 4 ? "Promotional Banner" : ""} />
+          <div className="leaderboard-sub-wrapp" style={{ gap: "1rem" }}>
+            <RetailerNavigationBar
+              title="Account Management"
+              setTabType={getTab == 4 ? "Promotional Banner" : ""}
+            />
             {/* LeaderBoard name start */}
-            <div className="mall_name_wrapp mall_name_wrapp-spacebetween" style={{ marginTop: "0px" }}>
+            <div
+              className="mall_name_wrapp mall_name_wrapp-spacebetween"
+              style={{ marginTop: "0px", paddingLeft: "0px" }}>
               <div className="leaderboard-inner-namebox">
-
-                <p className="mall_name_heading">
-                  {mainName}
-                  :
-                </p>
-                <span className="leaderboard-span">Promotional Banners</span>
-
+                <p className="mall_name_heading">{mainName}:</p>
+                <span
+                  className="leaderboard-span"
+                  style={{ fontWeight: "600", fontSize: "2.2rem" }}>
+                  Promotional Banners
+                </span>
               </div>
-              <button onClick={() => setTab(21)} className="leaderboard-btn">
+              {/* <button onClick={() => setTab(21)} className="leaderboard-btn">
                 Add new{" "}
                 <img src={images.add_new} className="leaderboard-btn-icon" />
-              </button>
+              </button> */}
             </div>
+            <p>
+              Purchase marketing space through our Leaderboard Banners below
+              (max 1 Leaderboard Banner per Reteiler per mall). There is a
+              limited amount of 5 banners per mall. Fist come, first serve.
+            </p>
 
             <div className="mm_horizontal_line"></div>
 
@@ -327,12 +317,13 @@ const PromotionalBanner = ({ get_mall_auth_data, setTab, getTab }) => {
               <div className="leaderboard-filter-part-first">
                 <label
                   className="leaderboard-card-lbl"
-                  style={{ minWidth: "125px" }}
-                >
+                  style={{ minWidth: "125px" }}>
                   Filter by region:
                 </label>
                 <div className="select-wrapper" style={{ width: "100%" }}>
-                  <select className="leaderboard-card-inp">
+                  <select
+                    className="leaderboard-card-inp"
+                    style={{ padding: "0.5rem", borderRadius: "4px" }}>
                     <option selected disabled value="">
                       Select region
                     </option>
@@ -346,12 +337,13 @@ const PromotionalBanner = ({ get_mall_auth_data, setTab, getTab }) => {
               <div className="leaderboard-filter-part-sec">
                 <label
                   className="leaderboard-card-lbl"
-                  style={{ minWidth: "125px" }}
-                >
+                  style={{ minWidth: "125px" }}>
                   Filter by mall:
                 </label>
                 <div className="select-wrapper" style={{ width: "100%" }}>
-                  <select className="leaderboard-card-inp">
+                  <select
+                    className="leaderboard-card-inp"
+                    style={{ padding: "0.5rem", borderRadius: "4px" }}>
                     <option selected disabled value="">
                       Select mall
                     </option>
@@ -362,40 +354,29 @@ const PromotionalBanner = ({ get_mall_auth_data, setTab, getTab }) => {
                 </div>
               </div>
             </div>
-            {/* Leaderboard Filter End */}
 
-            {/* LeaderBoard  name end */}
-
-            {/* LeaderBoard subheading start */}
-
-            {/* <p className="leaderboard-sub-heading">Purchase marketing space through our Leaderboard Banner below (max 1 Leaderboard Banner per Brand)</p> */}
-
-            {/* LeaderBoard subheading end */}
-
-            {/* LeaderBoard Card Component start */}
-            {/* <LeaderBoardCard /> */}
             {getliast && getliast.length > 0
               ? getliast.map((mall, mindx) => {
-                return (
-                  <PromotionBannerCard
-                    openMallModal={openMallModal}
-                    item={mall}
-                    mindx={mindx}
-                    setTab={setTab}
-                    peopleInfo={peopleInfo}
-                    regionidarray={regionidarray}
-                    mallidarray={mallidarray}
-                    selectedMalls={selectedMalls}
-                    getweek={getweek}
-                  />
-                );
-              })
+                  return (
+                    <PromotionBannerCard
+                      openMallModal={openMallModal}
+                      item={mall}
+                      mindx={mindx}
+                      setTab={setTab}
+                      peopleInfo={peopleInfo}
+                      regionidarray={regionidarray}
+                      mallidarray={mallidarray}
+                      selectedMalls={selectedMalls}
+                      getweek={getweek}
+                    />
+                  );
+                })
               : null}
+              <span style={{fontSize:"14px",color:"#bbb",alignSelf:"flex-start",marginBottom:"0.7rem"}}>*Required Fields including all image uploads.</span>
             {totalPages !== page && (
               <button
                 className="view_more_btn"
-                onClick={() => setPage(page + 1)}
-              >
+                onClick={() => setPage(page + 1)}>
                 {loading ? "Loading..." : " Load More LeaderBoard"}
                 <BsChevronDown />
               </button>
@@ -416,8 +397,7 @@ const PromotionalBanner = ({ get_mall_auth_data, setTab, getTab }) => {
             isOpen={mallMolalOpen}
             // onAfterOpen={afterOpenModal}
             onRequestClose={closeMallModal}
-            style={customStyles}
-          >
+            style={customStyles}>
             <div className="select_mall_main_wrapp">
               <div className="select_mall_base_wrapp">
                 {/* mall heading */}
@@ -476,25 +456,25 @@ const PromotionalBanner = ({ get_mall_auth_data, setTab, getTab }) => {
                 <div className="select_mall_tag_btns_wrapp">
                   {selectedMalls && selectedMalls.length > 0
                     ? selectedMalls.map((mall, mindx) => {
-                      // console.log("gggg", mall);
-                      return (
-                        <button
-                          className="select_mall_tag_single_btn"
-                          key={mindx}
-                        // onClick={() => {
-                        //   handleMallChange(mall);
-                        //   // setPeopleInfo(
-                        //   //   peopleInfo.filter(
-                        //   //     (people) => people.name !== mall.name
-                        //   //   )
-                        //   // );
-                        // }}
-                        >
-                          {mall}
-                          {/* <IoIosClose className="select_mall_tag_single_btn_close" /> */}
-                        </button>
-                      );
-                    })
+                        // console.log("gggg", mall);
+                        return (
+                          <button
+                            className="select_mall_tag_single_btn"
+                            key={mindx}
+                            // onClick={() => {
+                            //   handleMallChange(mall);
+                            //   // setPeopleInfo(
+                            //   //   peopleInfo.filter(
+                            //   //     (people) => people.name !== mall.name
+                            //   //   )
+                            //   // );
+                            // }}
+                          >
+                            {mall}
+                            {/* <IoIosClose className="select_mall_tag_single_btn_close" /> */}
+                          </button>
+                        );
+                      })
                     : null}
                 </div>
 
@@ -504,95 +484,90 @@ const PromotionalBanner = ({ get_mall_auth_data, setTab, getTab }) => {
                       fontSize: "18px",
                       alignSelf: "start",
                       marginBottom: "1rem",
-                    }}
-                  >
+                    }}>
                     Region
                   </p>
 
                   {getregion_array && getregion_array.length > 0
                     ? getregion_array.map((item, index) => {
-                      return (
-                        <div
-                          className="bim_accordian_wrapp"
-                          style={{ marginBottom: "6px" }}
-                          key={item.region_id}
-                        >
-                          <button
-                            className="bim_accordian_btn"
-                            onClick={() => {
-                              setToggle(item.region_id);
-                              handleRegionChange(
-                                item.region_name,
-                                item.region_id
-                              );
-                            }}
-                          >
-                            <p
-                              style={{
-                                color:
-                                  item.region_id === toggle
-                                    ? "#ff8b00"
-                                    : "#000",
-                                fontWeight:
-                                  item.region_id === toggle ? "500" : "300",
-                              }}
-                            >
-                              {item.region_name}
-                            </p>
-
-                            {item.region_id == toggle ? (
-                              <IoIosArrowUp size={20} color="#ff8b00" />
-                            ) : (
-                              <IoIosArrowDown size={20} />
-                            )}
-                          </button>
-                          {item.region_id == toggle ? (
-                            <div className="bim_accordian_mall_wrapp">
-                              {item.malls.map((itm, ind) => {
-                                return (
-                                  <>
-                                    <div
-                                      key={itm.id}
-                                      style={{
-                                        display: "flex",
-                                        gap: "10px",
-                                        marginLeft: "10px",
-                                      }}
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        checked={selectedMalls.includes(
-                                          itm.name
-                                        )}
-                                        // value={peopleInfo}
-                                        onChange={(e) => {
-                                          // handleCheckboxChange(e, itm, ind);
-                                          handleMallChange(itm.name, itm.id);
-                                        }}
-
-                                      // type="checkbox"
-                                      // checked={
-                                      //   getcheck[(itm, ind, "", item.region_id)]
-                                      // }
-                                      // onChange={(e) => {
-                                      //   check(itm, ind, "", item.region_id);
-                                      // }}
-                                      // value={peopleInfo}
-                                      />
-                                      <label htmlFor={itm.id}>
-                                        {itm.name}
-                                      </label>
-                                    </div>
-                                  </>
+                        return (
+                          <div
+                            className="bim_accordian_wrapp"
+                            style={{ marginBottom: "6px" }}
+                            key={item.region_id}>
+                            <button
+                              className="bim_accordian_btn"
+                              onClick={() => {
+                                setToggle(item.region_id);
+                                handleRegionChange(
+                                  item.region_name,
+                                  item.region_id
                                 );
-                              })}
-                            </div>
-                          ) : (
-                            ""
-                          )}
-                        </div>
-                      );
-                    })
+                              }}>
+                              <p
+                                style={{
+                                  color:
+                                    item.region_id === toggle
+                                      ? "#ff8b00"
+                                      : "#000",
+                                  fontWeight:
+                                    item.region_id === toggle ? "500" : "300",
+                                }}>
+                                {item.region_name}
+                              </p>
+
+                              {item.region_id == toggle ? (
+                                <IoIosArrowUp size={20} color="#ff8b00" />
+                              ) : (
+                                <IoIosArrowDown size={20} />
+                              )}
+                            </button>
+                            {item.region_id == toggle ? (
+                              <div className="bim_accordian_mall_wrapp">
+                                {item.malls.map((itm, ind) => {
+                                  return (
+                                    <>
+                                      <div
+                                        key={itm.id}
+                                        style={{
+                                          display: "flex",
+                                          gap: "10px",
+                                          marginLeft: "10px",
+                                        }}>
+                                        <input
+                                          type="checkbox"
+                                          checked={selectedMalls.includes(
+                                            itm.name
+                                          )}
+                                          // value={peopleInfo}
+                                          onChange={(e) => {
+                                            // handleCheckboxChange(e, itm, ind);
+                                            handleMallChange(itm.name, itm.id);
+                                          }}
+
+                                          // type="checkbox"
+                                          // checked={
+                                          //   getcheck[(itm, ind, "", item.region_id)]
+                                          // }
+                                          // onChange={(e) => {
+                                          //   check(itm, ind, "", item.region_id);
+                                          // }}
+                                          // value={peopleInfo}
+                                        />
+                                        <label htmlFor={itm.id}>
+                                          {itm.name}
+                                        </label>
+                                      </div>
+                                    </>
+                                  );
+                                })}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        );
+                      })
                     : null}
                 </div>
 
@@ -601,10 +576,9 @@ const PromotionalBanner = ({ get_mall_auth_data, setTab, getTab }) => {
                     className="btn btn-orange"
                     onClick={() => {
                       closeMallModal();
-                      console.log("mallidarray", mallidarray);
-                      console.log("regionidarray", regionidarray);
-                    }}
-                  >
+                      // console.log("mallidarray", mallidarray);
+                      // console.log("regionidarray", regionidarray);
+                    }}>
                     Submit
                   </button>
                 </div>

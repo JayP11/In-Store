@@ -67,7 +67,7 @@ const StoreThankyou = ({ setTab, get_mall_auth_data }) => {
                 <div
                     className="mallpp_part2_card"
                     style={{
-                        backgroundImage: `url(${images.home_card_bg_3})`,
+                        backgroundImage: url`(${images.home_card_bg_3})`,
                         backgroundPosition: "center",
                     }}
                 >
@@ -95,7 +95,7 @@ const StoreThankyou = ({ setTab, get_mall_auth_data }) => {
                 <div
                     className="mallpp_part2_card"
                     style={{
-                        backgroundImage: `url(${images.home_card_bg_1})`,
+                        backgroundImage: url(`${images.home_card_bg_1}`),
                         backgroundPosition: "center",
                     }}
                 >

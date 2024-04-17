@@ -21,9 +21,8 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { BiSearch } from "react-icons/bi";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import Notification from "../../utils/Notification"
+import Notification from "../../utils/Notification";
 import { DateRangePicker } from "rsuite";
-
 
 const animatedComponents = makeAnimated();
 
@@ -55,7 +54,6 @@ const PromotionBannerCard = ({
   setTab,
   peopleInfo,
   setPeopleInfo,
-
   getweek,
 }) => {
   const [files, setFiles] = useState([]);
@@ -78,7 +76,6 @@ const PromotionBannerCard = ({
   const [endDate, setEndDate] = useState(new Date());
 
   const { allowedMaxDays, beforeToday, combine } = DateRangePicker;
-
 
   // const initialStartDate = new Date(); // Replace with your desired default start date
   // const initialEndDate = new Date();
@@ -145,7 +142,7 @@ const PromotionBannerCard = ({
     SetWeekName1(item.from_date ? item.from_date : "");
     SetWeekName2(item.to_date ? item.to_date : "");
     SetMallArray(item.multiple_malls ? item.multiple_malls : "");
-    console.log('jasy-->', item.from_date ? item.from_date : "");
+    // console.log('jasy-->', item.from_date ? item.from_date : "");
   }, []);
 
   const {
@@ -158,8 +155,6 @@ const PromotionBannerCard = ({
   const { get_brand_data, get_mall_data } = useMallContext();
 
   // select date funtion is start
-
-
 
   // Helper function to check if a date is a Monday
   const isMonday = (date) => {
@@ -201,7 +196,6 @@ const PromotionBannerCard = ({
     }
   };
 
-
   const onDateChage = (dates) => {
     const [start, end] = dates;
     setStartDate(start);
@@ -209,7 +203,11 @@ const PromotionBannerCard = ({
   };
 
   const handleDateChange = (startDate, endDate) => {
-
+    if ((startDate && endDate !== "") || (startDate && endDate !== null)) {
+      SetWeekCondation(true);
+    } else {
+      SetWeekCondation(false);
+    }
     setSelectedDates({ startDate, endDate });
   };
 
@@ -221,8 +219,8 @@ const PromotionBannerCard = ({
   const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } =
     useDropzone({
       onDrop: (acceptedFiles) => {
-        console.log("file type", files[0]);
-        console.log("acceptedFiles", acceptedFiles[0].File);
+        // console.log("file type", files[0]);
+        // console.log("acceptedFiles", acceptedFiles[0].File);
 
         {
           setFiles(
@@ -251,25 +249,109 @@ const PromotionBannerCard = ({
 
   // Update Promotion Banner Api
 
-  const UpdatePromotionBanner = async () => {
+  const [getweekcondation, SetWeekCondation] = useState(false);
 
+  // const UpdatePromotionBanner = async () => {
+  //   const { startDate, endDate } = selectedDates;
+
+  //   if (title == "" || undefined) {
+  //     Notification("error", "Error!", "Please Enter Title!");
+  //     return;
+  //   }  else if (weekname1 === "") {
+  //     Notification("error", "Error", "Please Enter Start Date");
+  //     return;
+  //   } else if (weekname2 === "") {
+  //     Notification("error", "Error", "Please Enter End Date");
+  //     return;
+  //   } else if (getmallarray.length < 0) {
+  //     Notification("error", "Error!", "Please Select Mall!");
+  //   }else if (BrandName == "" || undefined) {
+  //     Notification("error", "Error!", "Please Select Brand!");
+  //   } else if (CategoryId == "" || undefined) {
+  //     Notification("error", "Error!", "Please Select Category!");
+  //   } else {
+  //     const formdata = await new FormData();
+  //     await formdata.append("id", item.id);
+  //     await formdata.append("title", title);
+
+  //     if (gettrue === true) {
+  //       for (var i = 0; i < regionidarray.length; i++) {
+  //         await formdata.append("region_id[" + i + "]", regionidarray[i].id);
+  //       }
+  //       for (var i = 0; i < mallidarray.length; i++) {
+  //         await formdata.append("mall_id[" + i + "]", mallidarray[i].id);
+  //       }
+  //     } else {
+  //       for (var i = 0; i < getmallarray.length; i++) {
+  //         await formdata.append(
+  //           "region_id[" + i + "]",
+  //           getmallarray[i].region_id
+  //         );
+  //       }
+  //       for (var i = 0; i < getmallarray.length; i++) {
+  //         await formdata.append("mall_id[" + i + "]", getmallarray[i].mall_id);
+  //       }
+  //     }
+
+  //     await formdata.append("brand_id", BrandId);
+
+  //     await formdata.append("category_id", CategoryId);
+  //     if (getweekcondation === true) {
+  //       await formdata.append(
+  //         "from_date",
+  //         moment(startDate[0]).format("YYYY-MM-DD")
+  //       );
+  //       await formdata.append(
+  //         "to_date",
+  //         moment(startDate[1]).format("YYYY-MM-DD")
+  //       );
+  //     } else {
+  //       await formdata.append("from_date", weekname1);
+  //       await formdata.append("to_date", weekname2);
+  //     }
+
+  //     // await formdata.append("week_id", Week);
+  //     // await formdata.append("region_child_id[0]", "")
+  //     if (files[0] !== undefined) {
+  //       await formdata.append("image", files[0]);
+  //     }
+
+  //     // console.log("-=-=-=->", formdata);
+  //     const data = await UpdatePromotionBoardApi(formdata);
+  //     if (data) {
+  //       if (data.success === 1) {
+  //         // console.log("category-data", data);
+  //         Notification(
+  //           "success",
+  //           "Success!",
+  //           "Promotion Banner Updated Successfully!"
+  //         );
+  //         setTab(1);
+  //         // getLeaderboard();
+  //         // window.location.reload();
+  //       }
+  //     }
+
+  //     // console.log("test");
+  //   }
+  // };
+  // Deleate Leaderboard Api
+
+
+  const UpdatePromotionBanner = async () => {
     const { startDate, endDate } = selectedDates;
 
     if (title == "" || undefined) {
       Notification("error", "Error!", "Please Enter Title!");
       return;
-    } else if (mallidarray == "" || undefined) {
-      Notification("error", "Error!", "Please Select Mall!");
-    } else if (startDate == "" || startDate == undefined) {
+    } else if (weekname1 === "") {
       Notification("error", "Error", "Please Enter Start Date");
       return;
-    } else if (endDate == "" || endDate == undefined) {
+    } else if (weekname2 === "") {
       Notification("error", "Error", "Please Enter End Date");
       return;
-    } else if (regionidarray == "" || undefined) {
-      Notification("error", "Error!", "Please Select Region!");
-    } else if (BrandName == "" || undefined) {
-      Notification("error", "Error!", "Please Select Brand!");
+    } else if (getmallarray.length < 0) {
+      Notification("error", "Error!", "Please Select Mall!");
     } else if (CategoryId == "" || undefined) {
       Notification("error", "Error!", "Please Select Category!");
     } else {
@@ -277,18 +359,40 @@ const PromotionBannerCard = ({
       await formdata.append("id", item.id);
       await formdata.append("title", title);
 
-      for (var i = 0; i < regionidarray.length; i++) {
-        await formdata.append("region_id[" + i + "]", regionidarray[i].id);
-      }
-      for (var i = 0; i < mallidarray.length; i++) {
-        await formdata.append("mall_id[" + i + "]", mallidarray[i].id);
+      if (gettrue === true) {
+        for (var i = 0; i < regionidarray.length; i++) {
+          await formdata.append("region_id[" + i + "]", regionidarray[i].id);
+        }
+        for (var i = 0; i < mallidarray.length; i++) {
+          await formdata.append("mall_id[" + i + "]", mallidarray[i].id);
+        }
+      } else {
+        for (var i = 0; i < getmallarray.length; i++) {
+          await formdata.append(
+            "region_id[" + i + "]",
+            getmallarray[i].region_id
+          );
+        }
+        for (var i = 0; i < getmallarray.length; i++) {
+          await formdata.append("mall_id[" + i + "]", getmallarray[i].mall_id);
+        }
       }
 
-      await formdata.append("brand_id", BrandId);
 
       await formdata.append("category_id", CategoryId);
-      await formdata.append("from_date", moment(startDate[0]).format("YYYY-MM-DD"));
-      await formdata.append("to_date", moment(startDate[1]).format("YYYY-MM-DD"));
+      if (getweekcondation === true) {
+        await formdata.append(
+          "from_date",
+          moment(startDate[0]).format("YYYY-MM-DD")
+        );
+        await formdata.append(
+          "to_date",
+          moment(startDate[1]).format("YYYY-MM-DD")
+        );
+      } else {
+        await formdata.append("from_date", weekname1);
+        await formdata.append("to_date", weekname2);
+      }
 
       // await formdata.append("week_id", Week);
       // await formdata.append("region_child_id[0]", "")
@@ -296,39 +400,50 @@ const PromotionBannerCard = ({
         await formdata.append("image", files[0]);
       }
 
-      console.log("-=-=-=->", formdata);
+      // console.log("-=-=-=->", formdata);
       const data = await UpdatePromotionBoardApi(formdata);
       if (data) {
         if (data.success === 1) {
-          console.log("category-data", data);
-          Notification("success", "Success!", "Promotion Banner Updated Successfully!");
+          // console.log("category-data", data);
+          Notification(
+            "success",
+            "Success!",
+            "Promotion Banner Updated Successfully!"
+          );
           setTab(1);
           // getLeaderboard();
           // window.location.reload();
         }
       }
 
-      console.log("test");
+      // console.log("test");
     }
   };
-
-  // Deleate Leaderboard Api
-
   const DeletePromotionBanner = async () => {
-    console.log("test");
+    // console.log("test");
 
     const formdata = await new FormData();
     await formdata.append("id", item.id);
 
-    console.log("-=-=-=->", formdata);
+    // console.log("-=-=-=->", formdata);
     const data = await deletePromotionBannerApi(formdata);
     if (data) {
       if (data.success === 1) {
-        console.log("mall-data", data);
-        Notification("success", "Success!", "Promotion Banner Deleted Successfully!");
+        // console.log("mall-data", data);
+        Notification(
+          "success",
+          "Success!",
+          "Promotion Banner Deleted Successfully!"
+        );
 
         setTab(1);
         // getStore();
+      } else if (data.success === 0) {
+        Notification(
+          "error",
+          "Error!",
+          data.message
+        );
       }
     }
   };
@@ -344,7 +459,7 @@ const PromotionBannerCard = ({
     await formdata.append("qty", 1);
     await formdata.append("promotion_banner_id", item.id);
 
-    console.log("-=-=-=->", formdata);
+    // console.log("-=-=-=->", formdata);
     axios
       .post(add_store_cart, formdata, {
         headers: {
@@ -353,7 +468,7 @@ const PromotionBannerCard = ({
         },
       })
       .then((res) => {
-        console.log(JSON.stringify(res, null, 2));
+        // console.log(JSON.stringify(res, null, 2));
         window.location.reload(true);
       })
       .catch((err) => {
@@ -441,14 +556,13 @@ const PromotionBannerCard = ({
     setToggle(id);
   };
 
-
-  // 
+  //
 
   return (
     <>
       <div className="leaderboard-card-main-wrapp">
         {/* Leaderboard flex start */}
-        <div className="leaderboard-card-flex-wrapp">
+        <div className="leaderboard-card-flex-wrapp leaderboard-card-flex-wrapp-half">
           {/* Leaderboard first part responsive side start */}
           <div className="leaderboard-card-first-resp-main-wrapp">
             <p className="leaderboard-last-part-txt">
@@ -468,12 +582,12 @@ const PromotionBannerCard = ({
           {/* Leaderboard first part responsive side end*/}
 
           {/* Leaderboard part first start */}
-          <div className="leaderboard-card-part-first">
+          <div className="leaderboard-card-part-first leaderboard-card-part-first-half">
             {/* Leaderboad form start */}
 
             {/* Leaderboard inputbox start */}
             <div className="leaderboard-card-inpbox-wrapp">
-              <label className="leaderboard-card-lbl">Title:</label>
+              <label className="leaderboard-card-lbl">Title:<span className="star_require">*</span></label>
               <input
                 type="text"
                 className="leaderboard-card-inp"
@@ -514,39 +628,20 @@ const PromotionBannerCard = ({
                   </>
                 )}
               </div>
-              {/* <Select
-                            value={mallsOption}
-                            styles={{ width: "100%", padding: "0px" }}
-                            className="leaderboard-card-inp"
-                            closeMenuOnSelect={false}
-                            components={animatedComponents}
-                            // defaultValue={[colourOptions[4], colourOptions[5]]}
 
-                            isMulti
-                            options={multiple_week_data}
-                            onChange={setMallsOption}
-                        /> */}
-              {/* <button
-              className="leaderboard-card-inp"
-              style={{ color: "rgb(129 128 128)", textAlign: "start" }}
-              onClick={() => openMallModal()}
-            >
-              Select Mall
-            </button> */}
             </div>
             {/* Leaderboard inputbox end */}
 
             {/* Leaderboard inputbox start */}
-            <div className="leaderboard-card-inpbox-wrapp">
+            {/* <div className="leaderboard-card-inpbox-wrapp">
               <label className="leaderboard-card-lbl">Brand(s):</label>
               <div className="select-wrapper" style={{ width: "100%" }}>
                 <select
                   className="leaderboard-card-inp"
                   onChange={(e) => {
-                    console.log("rrr", e.target.value);
+                    // console.log("rrr", e.target.value);
                     setBrandName(e.target.value);
                     setBrandId(e.target.value);
-
                   }}
                 >
                   <option selected disabled value="">
@@ -564,38 +659,17 @@ const PromotionBannerCard = ({
                     })}
                 </select>
               </div>
-            </div>
+            </div> */}
             {/* Leaderboard inputbox end */}
             <div className="leaderboard-card-inpbox-wrapp">
-              <label className="leaderboard-card-lbl" htmlFor="">Week</label>
-              {/* <input
-              type="date"
-              value={eventEndDate}
-              onChange={(e) => setEventEndDate(e.target.value)}
-              name=""
-              id=""
-              className="input_box"
-            /> */}
-              {/* <DatePicker
-                selected={startDate}
-                onChange={onDateChage}
-                startDate={startDate}
-                endDate={endDate}
-                selectsRange
-                // selectsDisabledDaysInRange
-                // inline
-                monthsShown={2}
+              <label className="leaderboard-card-lbl" htmlFor="">
+                Week:<span className="star_require">*</span>
+              </label>
 
-
-                calendarStartDay={1}
-                className="leaderboard-card-inp"
-                placeholderText="Select your week"
-              /> */}
               <DateRangePicker
                 oneTap
                 hoverRange="week"
                 isoWeek
-
                 // defaultCalendarValue={weekname1 - weekname2}
                 placeholder={`${weekname1} - ${weekname2}`}
                 className="leaderboard-card-inp DateRangePicker_LeaderboardCard"
@@ -603,16 +677,14 @@ const PromotionBannerCard = ({
                 // endDate={moment(selectedDates.endDate).format('YYYY-MM-DD')}
                 onChange={handleDateChange}
                 disabledDate={combine(allowedMaxDays(7), beforeToday())}
-
-
               />
             </div>
             {/* Leaderboard inputbox start */}
             <div className="leaderboard-card-inpbox-wrapp">
-              <label className="leaderboard-card-lbl">Categories:</label>
+              <label className="leaderboard-card-lbl">Categories:<span className="star_require">*</span></label>
               <div className="select-wrapper" style={{ width: "100%" }}>
                 <select
-                  className="leaderboard-card-inp"
+                  className="leaderboard-card-inp cons_select_nav"
                   onChange={(e) => {
                     console.log("rrr", e.target.value);
                     setCategory(e.target.value);
@@ -730,10 +802,15 @@ const PromotionBannerCard = ({
                           marginBottom: "10px",
                         }}
                       />
-                      <h4>.PDF .JPG .PNG</h4>
+                      <h4>.JPG .PNG .GIF(1050 x 284 pixels)</h4>
+                      <p>(max 200kb)</p>
                       <p>You can also upload file by</p>
 
-                      <button type="button" className="click_upload_btn" style={{ marginBottom: "10px" }}>
+                      <button
+                        type="button"
+                        className="click_upload_btn"
+                        style={{ marginBottom: "10px",color:"var(--color-orange)",fontWeight:"600" }}
+                      >
                         click here
                       </button>
                       {/* <a href="">clicking here</a> */}
@@ -757,7 +834,11 @@ const PromotionBannerCard = ({
                       <h4>.PDF .JPG .PNG</h4>
                       <p>You can also upload file by</p>
 
-                      <button type="button" className="click_upload_btn" style={{ marginBottom: "10px" }}>
+                      <button
+                        type="button"
+                        className="click_upload_btn"
+                        style={{ marginBottom: "10px" }}
+                      >
                         click here
                       </button>
                       {/* <a href="">clicking here</a> */}
@@ -782,7 +863,7 @@ const PromotionBannerCard = ({
           {/* Leaderboard part second end */}
 
           {/* Leaderboard part third start */}
-          <div className="leaderboard-card-part-third">
+          <div className="leaderboard-card-part-third leaderboard-card-part-third-half">
             <button
               onClick={() => {
                 DeletePromotionBanner();
@@ -801,8 +882,8 @@ const PromotionBannerCard = ({
             <div className="leaderboard-btn-box">
               {item.cart_status === 0 ? (
                 <>
-                  <button
-                    className="btn btn-orange"
+                  <button style={{ padding: "0.4rem", fontSize: "16px" }}
+                    className="btn btn-black"
                     onClick={() => {
                       Addtocart();
                       // window.location.reload(true);
@@ -813,7 +894,7 @@ const PromotionBannerCard = ({
                 </>
               ) : (
                 <button
-                  className="btn btn-orange"
+                  className="btn btn-black"
                 // onClick={() => {
                 //   window.location.reload(true);
                 //   Addtocart();
@@ -835,7 +916,7 @@ const PromotionBannerCard = ({
             </button> */}
             <div className="leaderboard-btn-box">
               <button
-                className="btn btn-blue"
+                className="btn btn-orange"
                 onClick={() => UpdatePromotionBanner()}
               >
                 Update
@@ -845,12 +926,12 @@ const PromotionBannerCard = ({
           {/* Leaderboard part third end */}
 
           {/* Leaderboard last part responsive side start */}
-          <div className="leaderboard-card-sec-resp-main-wrapp">
+          <div className="leaderboard-card-sec-resp-main-wrapp leaderboard-card-sec-resp-main-wrapp_edited">
             <div className="leaderboard-btn-box">
               {item.cart_status === 0 ? (
                 <>
                   <button
-                    className="btn btn-orange"
+                    className="btn btn-black cartbtnblack"
                     onClick={() => {
                       Addtocart();
                       // window.location.reload(true);
@@ -861,25 +942,20 @@ const PromotionBannerCard = ({
                 </>
               ) : (
                 <button
-                  className="btn btn-orange"
-                // onClick={() => {
-                //   window.location.reload(true);
-                //   Addtocart();
-                // }}
-                >
+                  className="btn btn-black updatebtnorg"
+                  style={{ background: "black" }}>
                   Added
                 </button>
               )}
             </div>
-            {/* <Link className="leaderboard-delete-icon-btn">
-              <span className="leaderboard-extend-txt">Extend</span>{" "}
-              <img
-                src={images.extend_icon}
-                className="leaderboard-delete-icon"
-              />
-            </Link> */}
+
             <div className="leaderboard-btn-box">
-              <button className="btn btn-blue" onClick={() => UpdatePromotionBanner()}>Update</button>
+              <button
+                className="btn btn-orange updatebtnorg"
+                onClick={() => UpdatePromotionBanner()}
+              >
+                Update
+              </button>
             </div>
           </div>
           {/* Leaderboard last part responsive side end */}

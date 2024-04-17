@@ -1,29 +1,71 @@
 .cinema_upload_btn_inner_resp {
-  width: 350px;
-  display: flex;
-}
+    /* width: 350px; */
+    display: flex;
+    justify-content:space-between;
+    gap: 1rem;
+  }
 
-.cinemaaccsetting_main_wrapp {
-  margin: 4rem !important;
-}
-
-.cinemaaccsetting_form_single_input {
-  display: flex !important;
-  flex-direction: column-reverse;
-  align-items: flex-start !important;
-}
-
-@media screen and (max-width: 1335px) {
+  .mm_form_wrapp_cinema{
+    padding-left: 0rem;
+    padding-right: 0rem;
+  }
+  
   .cinemaaccsetting_main_wrapp {
-    margin: 2rem !important;
+    margin-top: 3rem !important;
+    margin-bottom: 3rem !important;
+    margin-left: 5rem !important;
+    margin-right: 5rem !important;
   }
-}
-@media screen and (max-width: 1150px) {
-  .cinema_upload_btn_wrapp_resp {
-    flex-direction: column-reverse !important;
+  
+  .cinemaaccsetting_form_single_input {
+    display: flex !important;
+    flex-direction: column-reverse;
+    /* align-items: flex-start !important; */
   }
 
-  .cinemaaccsetting_terms_bigview {
-    display: none;
+  .mm_form_single_input_cinema_Acc_setting {
+    min-width: 154px !important;
   }
-}
+  
+  @media screen and (max-width: 1335px) {
+    .cinemaaccsetting_main_wrapp {
+      margin: 2rem !important;
+    }
+
+    .mm_form_wrapp_cinema{
+      padding-right: 3rem !important;
+    }
+  }
+
+  @media screen and (max-width: 1365px) {
+
+    .mm_form_wrapp_cinema{
+      padding-right: 2rem !important;
+    }
+  }
+  @media screen and (max-width: 1150px) {
+    .cinema_upload_btn_wrapp_resp {
+      flex-direction: column-reverse !important;
+    }
+
+    .mm_form_wrapp_cinema{
+      align-items: center !important;
+    }
+  
+    .cinemaaccsetting_terms_bigview {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width:900px) {
+    .mm_form_wrapp_cinema{
+      padding-left: 0rem !important;
+      padding-right: 0rem !important;
+    }
+  }
+
+  @media screen and (max-width:768px) {
+    .cinemaaccsetting_main_wrapp{
+      margin-top: 5rem !important;
+    }
+  }

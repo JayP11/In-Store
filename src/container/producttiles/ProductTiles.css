@@ -11,12 +11,12 @@
 
 .leaderboard-span {
     font-weight: 300;
-    font-size: 40px;
+    font-size: 36px;
     color: var(--color-black);
 }
 
 .mall_name_wrapp-spacebetween {
-    justify-content: space-between;
+    justify-content: space-between !important;
 }
 
 @media screen and (max-width:500px) {

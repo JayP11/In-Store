@@ -20,7 +20,8 @@ import FaqPage from "./pages/faqpage/FaqPage";
 import Newpage from "./pages/newpage";
 import CinemaaHome from "./pages/cinemaahome/CinemaaHome";
 import CinemaPage from "./pages/cinemapage/CinemaPage";
-import Aboutinstore_Cinema from "./pages/aboutInStore_Cinema/AboutInStore_Cinema";
+import PrivacyPolicy from "./pages/privacypolicy/PrivacyPolicy";
+// import CinemaPage from "./pages/cinemapage/CinemaPage";
 
 // const firebaseConfig = {
 //   apiKey: "AIzaSyAE-ph5NvfT0S2LgYmL-QmCX6Y2pCPA6gA",
@@ -40,12 +41,14 @@ function App() {
       {/* <Navbar /> */}
       <Routes>
         {/* <Route path="/" element={<Homepage />} /> */}
-        <Route path="/aboutinstore_mall" element={<AboutInStorePage />} />
-        <Route path="/Aboutinstore_Cinema" element={<Aboutinstore_Cinema />} />
+        <Route path="/" element={<CinemaaHome />} />
+        <Route path="/about-instore" element={<AboutInStorePage />} />
         <Route path="/customer" element={<CustomerHomePage />} />
         <Route path="/retailer" element={<AfterLoginPage />} />
         <Route path="/mall" element={<MallHomePage />} />
-        <Route path="/" element={<CinemaaHome />} />
+        <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+
+        {/* <Route path="/CinemaaHome" element={<CinemaaHome />} /> */}
         <Route path="/CinemaPage" element={<CinemaPage />} />
         <Route element={<PrivateRoutes />}>
           <Route path="/profile-page" element={<ProfilePage />} />

@@ -1,28 +1,66 @@
 .product-tiles-card-main-wrapp {
-    width: 80%
-}
-
-@media screen and (max-width: 1230px) {
+    width: 80%;
+  }
+  
+  .leaderboard_card_part_first_Pro_tile_edit {
+    width: 65%;
+  }
+  
+  .leaderboard-card-flex-wrapp_edit {
+    gap: 7%;
+  }
+  
+  .leaderboard-card-sec-resp-main-wrapp_pro_tilee_btn_main_edit {
+    gap: 0.5rem;
+  }
+  
+  .product-tiles-card-main-wrapp_edit{
+      width: 90%;
+  }
+  
+  @media screen and (max-width: 1230px) {
     .product-tiles-card-main-wrapp {
-        width: 100%;
+      width: 100%;
+    }
+  
+    .leaderboard_card_part_first_Pro_tile_edit {
+      width: 100%;
     }
 
-    .product-tiles-card-sec-part {
-        width: 190px !important;
+    .product_tile_card_img_sec{
+      width: 235px !important;
     }
-}
 
-@media screen and (max-width: 1030px) {
+    .product_tile_card_part_sec2{
+      height: 230px !important;
+    }
+  
+    .leaderboard-card-flex-wrapp_edit {
+      padding: 1.5rem !important;
+    }
+  
+    .leaderboard-card-first-resp-main-wrapp_edit {
+      display: flex;
+      width: 100%;
+    }
+  
+    .leaderboard-card-sec-resp-main-wrapp_pro_tilee_btn_main_edit {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  
+  @media screen and (max-width: 1030px) {
     .leaderboard-filter-main-wrapp {
-        flex-direction: column;
-        gap: 15px;
+      flex-direction: column;
+      gap: 15px;
     }
-
+  
     .leaderboard-filter-part-first {
-        width: 100% !important;
+      width: 100% !important;
     }
-
+  
     .leaderboard-filter-part-sec {
-        width: 100% !important;
+      width: 100% !important;
     }
-}
+  }

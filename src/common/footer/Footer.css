@@ -68,3 +68,29 @@
 .footer_logo_img{
     width: 200px;
 }
+
+@media screen and (max-width:768px) {
+    .footer_sec2{
+        width: 100%;
+    }
+
+
+    .footer_base_wrapp {
+    
+        padding: 3rem 0rem 1.2rem 0rem;
+    }
+    
+}
+
+@media screen and (max-width:500px) {
+    .footer_sec2>a,
+.footer_sec2>p {
+    color: var(--color-white);
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.footer_sec3{
+    font-size: 12px;
+}
+}

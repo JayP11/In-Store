@@ -7,7 +7,7 @@
 
 .mall_part_1_heading {
     font-size: 40px;
-    font-weight: 800;
+    font-weight: 600;
     color: var(--color-black);
     margin-bottom: 1rem;
 }
@@ -62,28 +62,28 @@
 }
 
 .mallpp_part2_cardd3 {
-    width: 350px !important;
+    width: 355px !important;
     height: 210px !important;
     padding-left: 20px;
     padding-right: 20px;
 }
 
 .mallpp_part2_cardd4 {
-    width: 320px !important;
+    width: 323px !important;
     height: 190px !important;
     padding-left: 20px;
     padding-right: 20px;
 }
 
 .mallpp_part2_cardd5 {
-    width: 280px !important;
+    width: 283px !important;
     height: 170px !important;
     padding-left: 20px;
     padding-right: 20px;
 }
 
 .mallpp_part2_cardd6 {
-    width: 250px !important;
+    width: 275px !important;
     height: 165px !important;
     padding-left: 20px;
     padding-right: 20px;
@@ -143,7 +143,7 @@
 
 .mallpp_part2_card_heading {
     font-size: 20px;
-    font-weight: 800;
+    font-weight: 700;
     color: var(--color-white);
 }
 
@@ -532,6 +532,11 @@
     }
 }
 
+.mall_profilepage_padding{
+    padding-left: 3rem;
+    padding-right: 3rem;
+}
+
 .mall-profile-slider-off-margin {
     margin-left: 100px;
     margin-right: 100px;
@@ -639,6 +644,13 @@
 
     .mall-display-none7 {
         display: block;
+    }
+}
+
+@media screen and (max-width:960px) {
+    .mall_profilepage_padding{
+        padding-left: 0rem;
+        padding-right: 0rem;
     }
 }
 

@@ -17,6 +17,7 @@ const CustomerBrandCard = ({
   mainitem,
   getWishlist,
   getid,
+  setTab
 }) => {
   useEffect(() => {
     console.log("=>", data);
@@ -89,7 +90,7 @@ const CustomerBrandCard = ({
     <>
       <div className="cbc_main_wrapp">
         <div className="cbc_img_wrapp">
-          <img
+          <img onClick={()=>{setTab(3)}}
             src={data.products_data ? data.products_data.image_path : ""}
             // src={images.brand_page_hero}
             className="cbc_img"
@@ -132,8 +133,11 @@ const CustomerBrandCard = ({
           {data.products_data ? data.products_data.title : ""}{" "}
         </p>
         {/* <p className="cbc_name">fdgdfg </p> */}
-        <p className="cbc_price">
-          ${data.products_data ? data.products_data.price : ""}{" "}
+        <p className="cbc_price" style={{fontWeight:500}}>
+         R {data.products_data ? data.products_data.price : ""}{" "}
+        </p>
+        <p className="cbc_price" style={{fontWeight:500}}>
+          {data.products_data ? data.products_data.description : ""}{" "}
         </p>
         {/* <p className="cbc_price">$23213 </p> */}
         <p className="cbc_des">
@@ -144,7 +148,7 @@ const CustomerBrandCard = ({
             : ""}
           {/* madhav */}
         </p>
-        <p className="cbc_des">Only availble in stores</p>
+        <p className="cbc_des">Only Available In Store</p>
       </div>
     </>
   );

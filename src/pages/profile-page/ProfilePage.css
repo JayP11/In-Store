@@ -18,7 +18,7 @@
     position: -webkit-sticky;
     position: sticky;
     top: 5rem;
-    height: 100vh;
+    /* height: 100vh; */
     background-color: #E5E4E2;
     transition: width 0.5s ease-in;
 }
@@ -34,7 +34,7 @@
     position: -webkit-sticky;
     position: sticky;
     top: 5rem;
-    height: 100vh;
+    /* height: 100vh; */
     background-color: #e5e4e2;
     transition: width 0.5s ease-out;
     /* Only transitioning width */
@@ -55,7 +55,7 @@
     background: var(--color-orange2);
     padding: 1rem 0;
     text-align: left;
-    padding-left: 30%;
+    padding-left: 20%;
     /* border-bottom:1px solid #000 ; */
     font-size: 1rem;
     font-weight: 500;
@@ -63,6 +63,10 @@
     color: var(--color-white);
     position: relative;
     height: 70px;
+}
+
+.profile_sidebar_sig_btn_padding{
+    padding-left: 24%;
 }
 
 .profile_sidebar_sig_btn_right_arrow {

@@ -94,6 +94,53 @@ import CinemaHomeHero from "./cinemahomehero/CinemaHomeHero";
 import CinemaHomeWelcome from "./cinemahomewelcome/CinemaHomeWelcome";
 import CinemaHomeProductile from "./cinemahomeproductile/CinemaHomeProductile";
 import CinemaProRateCard from "./cinemaproratecard/CinemaProRateCard";
+import MallCart from "./mallCart/MallCart";
+import MallCart2 from "./mallCart2/MallCart2";
+import MallCheckout from "./mallcheckout/MallCheckout";
+import AddFacilities from "./addFacilites/AddFacilities";
+import FaqMall from "./faqmall/FaqMall";
+import MallCinema from "./mallcinema/MallCinema";
+import AddMallCinema from "./addmallcinema/AddMallCinema";
+import EditMallCinema from "./editmallcinema/EditMallCinema";
+import CinemaLeaderboard from "./cinemaleaderboard/CinemaLeaderboard";
+import CinemaAddLeaderboardBanner from "./cinemaaddleaderboardbanner/CinemaAddLeaderboardBanner";
+import CinemaPromotionalBanner from "./cinemapromotionalbanner/CinemaPromotionalBanner";
+import AddCinemaTiles from "./addcinematiles/AddCinemaTiles";
+import CinemaLandingpageTile from "./cinemalandingpagetile/CinemaLandingpageTile";
+import CinemaLandingPageLeaderboard from "./cinemalandingpageleaderboard/CinemaLandingPageLeaderboard";
+import AddCinemaLandingpageLeaderboard from "./addcinemalandingpageleaderboard/AddCinemaLandingpageLeaderboard";
+import CinemaAnalyticsBundles from "./cinemaanalyticsbundle/CinemaAnalyticsBundles";
+import AddCinemaAnalyticBundle from "./addcinemaanalyticbundle/AddCinemaAnalyticBundle";
+import UploadCinemaDirectory from "./uploadcinemadirectory/UploadCinemaDirectory";
+import LandingPageSquareTile from "./landingpagesquaretile/LandingPageSquareTile";
+import AddLandingPageSquareTile from "./addlandingpagesquaretile/AddLandingPageSquareTile";
+import CustomerContactDetail from './customercontactdetail/CustomerContactDetail';
+import FaqCinema from "./faqcinema/FaqCinema";
+import RetailerTrackAnalytics from "./retailerTrackAnalytics/RetailerTrackAnalytics";
+import RetailerProRateCard from "./retailerProRateCard/RetailerProRateCard";
+import RetailerFaqPage from "./retailerFaqPage/RetailerFaqPage";
+import RetailerThankYou from "./retailerThankYou/RetailerThankYou";
+import RetailerTQCard from "./retailerTQCard/RetailerTQCard";
+import RetailLandingpageTile from "./retailLandingpageTile/RetailLandingpageTile";
+import AddRetailLandingPageBanner from "./addRetailLandingPageBanner/AddRetailLandingPageBanner";
+import RetailerLandingPageLeaderboard from "./retailerLandingPageLeaderboard/RetailerLandingPageLeaderboard";
+import AddRetailerLandingpageLeaderboard from "./addRetailerLandingpageLeaderboard/AddRetailerLandingpageLeaderboard";
+import RetailLandingPageSquareTile from "./retailLandingPageSquareTile/RetailLandingPageSquareTile";
+import RetailerAddLandingPageSquareTile from "./retailerAddLandingPageSquareTile/RetailerAddLandingPageSquareTile"
+import NotificationMall from "./notificationMall/NotificationMall";
+import NotificationConsumer from "./notificationConsumer/NotificationConsumer";
+
+import Archives from "./archives/Archives";
+import BuyAnalytics from "./buyAnalytics/BuyAnalytics";
+import ArchivesBrand from "./archivesBrand/ArchivesBrand";
+import ArchivesCinema from "./archivesCinema/ArchivesCinema";
+
+import CinemaAnalytics from "./cinemaAnalytics/CinemaAnalytics";
+import BuyCinemaAnalytics from "./buyCinemaAnalytics/BuyCinemaAnalytics";
+import BrandAnalytics from "./brandAnalytics/BrandAnalytics";
+import BuyBrandAnalytics from "./buyBrandAnalytics/BuyBrandAnalytics";
+
+
 
 
 export {
@@ -186,9 +233,53 @@ export {
 
   // 12-12-23
   CinemaHomeBanner_Container,
-   CinemaHomeHero, 
-   CinemaHomeProductile,
-    CinemaHomeWelcome,
-    
-    CinemaProRateCard
+  CinemaHomeHero,
+  CinemaHomeProductile,
+  CinemaHomeWelcome,
+
+  CinemaProRateCard,
+  MallCart,
+  MallCart2,
+  MallCheckout,
+  AddFacilities,
+  FaqMall,
+  MallCinema,
+  AddMallCinema,
+  EditMallCinema,
+  CinemaLeaderboard,
+  CinemaAddLeaderboardBanner,
+  CinemaPromotionalBanner,
+  AddCinemaTiles,
+  CinemaLandingpageTile,
+  CinemaLandingPageLeaderboard,
+  AddCinemaLandingpageLeaderboard,
+  CinemaAnalyticsBundles,
+  AddCinemaAnalyticBundle,
+  UploadCinemaDirectory,
+  LandingPageSquareTile,
+  AddLandingPageSquareTile,
+  CustomerContactDetail,
+  FaqCinema,
+  RetailerTrackAnalytics,
+  RetailerProRateCard,
+  RetailerFaqPage,
+  RetailerThankYou,
+  RetailerTQCard,
+  RetailLandingpageTile,
+  AddRetailLandingPageBanner,
+  RetailerLandingPageLeaderboard,
+  AddRetailerLandingpageLeaderboard,
+  RetailLandingPageSquareTile,
+  RetailerAddLandingPageSquareTile,
+  NotificationMall,
+  NotificationConsumer,
+  Archives,
+  BuyAnalytics,
+  ArchivesBrand,
+  ArchivesCinema,
+  CinemaAnalytics,
+  BuyCinemaAnalytics,
+  BrandAnalytics,
+  BuyBrandAnalytics,
+
 };

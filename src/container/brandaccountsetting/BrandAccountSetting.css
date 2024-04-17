@@ -12,6 +12,14 @@
   font-weight: 300;
 }
 
+.mm_form_wrapp_retailer {
+  gap: 1rem;
+}
+
+.mm_form_single_input_res_display_none {
+  display: none;
+}
+
 /* Multi Select Color Change */
 
 .css-13cymwt-control {
@@ -19,11 +27,21 @@
   border: none !important;
 }
 
-.img-fluid {
-  /* object-fit: cover; */
+.mm_main_wrapp_Retail {
+  margin: 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
+.mm_form_input_wrapp_retailer {
+  width: 68%;
+}
 
+.cancelbtn {
+  background: none;
+  color: var(--color-black);
+}
 /* retailer account setting changes */
 
 @media screen and (max-width: 1335px) {
@@ -38,16 +56,20 @@
 
 @media screen and (max-width: 1335px) {
   .radio-btn-flex-brand {
-    flex-direction: column;
-    gap: 5px;
+    /* flex-direction: column; */
+    gap: 1rem;
   }
 }
 
 @media screen and (max-width: 1150px) {
   .mm_form_wrapp_retailer {
     flex-direction: column;
-    align-items: baseline;
+    align-items: center;
     gap: 50px;
+  }
+
+  .mm_form_single_input_res_display_none {
+    display: block;
   }
 
   .mm_form_input_wrapp_retailer {
@@ -66,22 +88,24 @@
 
   .radio-btn-flex-brand {
     flex-direction: row;
-    gap: 42px;
+    /* gap: 42px; */
+    justify-content: space-between;
   }
-
-
-
 }
 
-@media screen and (max-width:900px) {
+@media screen and (max-width: 900px) {
   .mm_form_wrapp_retailer {
     align-items: center;
   }
 }
 
-@media screen and (max-width:600px) {
+@media screen and (max-width: 600px) {
   .fs-des-resp2 {
     width: 100%;
+  }
+
+  .mm_main_wrapp_Retail {
+    margin: 2rem;
   }
 
   .mall_upload_btn_wrapp-resp {

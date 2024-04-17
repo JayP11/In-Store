@@ -107,7 +107,7 @@ const CustomerSingleBrandProducts = ({ getsingalmalldata, setTab, setBDetalis, b
         const formdata = new FormData();
         // await formdata.append("search", "");
         await formdata.append("mall_id", getsingalmalldata.id);
-        await formdata.append("retailer_id", getbdetalis.stores.retailer_id);
+        await formdata.append("store_id", getbdetalis.stores.id);
 
         fetch(product_banner_tiles_customer, {
             method: "POST",
@@ -190,12 +190,13 @@ const CustomerSingleBrandProducts = ({ getsingalmalldata, setTab, setBDetalis, b
 
         const formdata = new FormData();
         formdata.append("mall_id", id);
-        formdata.append("brand_id", getbdetalis.brand_id);
+        formdata.append("store_id", getbdetalis.stores?.id);
+        // formdata.append("brand_id", getbdetalis.brand_id);
 
         console.log("formdata", id, brandid);
 
         axios
-            .post(product_cus_tile, formdata, {
+            .post(product_banner_tiles_customer, formdata, {
                 headers: {
                     Accept: ACCEPT_HEADER,
                     Authorization: "Bearer " + token,
@@ -242,8 +243,8 @@ const CustomerSingleBrandProducts = ({ getsingalmalldata, setTab, setBDetalis, b
                     <CustomerHeroSecond getsingalmalldata={getsingalmalldata} />
                     <div className="mm_main_wrapp" style={{ marginTop: "3.2rem" }}>
                         <div className="customer_brands_wrapp">
-                            {get_list && get_list.length > 0
-                                ? get_list.map((item, index) => {
+                            {getlist && getlist.length > 0
+                                ? getlist.map((item, index) => {
                                     return (
                                         <CustomerSingleBrandProductCard
                                             data={item}
@@ -254,7 +255,7 @@ const CustomerSingleBrandProducts = ({ getsingalmalldata, setTab, setBDetalis, b
                                         />
                                     );
                                 })
-                                : null}
+                                : <p style={{fontSize:"20px",fontWeight:"600"}}>No Tiles found.</p>}
                             {/* <CustomerSingleBrandProductCard
                             // data={item}
                             getmovieapi={getmovielist}

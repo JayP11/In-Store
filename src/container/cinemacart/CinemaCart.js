@@ -1,30 +1,45 @@
 import React, { useEffect, useState } from "react";
 import "./CinemaCart.css";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import { BrandCartCard } from "../../components";
+import { BrandCartCard, CinemaCartCard } from "../../components";
 import axios from "axios";
 import { ACCEPT_HEADER, get_store_cart } from "../../utils/Constant";
+import ReactPlayer from "react-player";
 
 const AccordionData = [
   {
     id: 1,
-    name: "Leaderboards",
+    name: "Landing Page 1/2 Tile",
   },
   {
     id: 2,
-    name: "Promotional",
+    name: "Landing Page Square Tiles",
   },
   {
     id: 3,
-    name: "Product",
+    name: "Landing Page Leaderboard Banner",
   },
   {
     id: 4,
-    name: "Product Tiles",
+    name: "Leaderboard Banner Mall",
+  },
+  {
+    id: 5,
+    name: "Promotional Banner",
+  },
+  {
+    id: 6,
+    name: "Cinemas Product Tiles",
+  },
+  {
+    id: 7,
+    name: "Cinema Analytics Bundles",
   },
 ];
 
 const CinemaCart = ({ setTab, get_mall_auth_data }) => {
+  var img = require("../../assets/images/production_id_3752531 (1080p).mp4");
+
   const [toggle, setToggle] = useState(null);
   let handleToggle = (id) => {
     if (toggle === id) {
@@ -43,6 +58,10 @@ const CinemaCart = ({ setTab, get_mall_auth_data }) => {
   const [totalpro, SetTotalPro] = useState("");
   const [totalpduct, SetTotalPduct] = useState("");
   const [totalpducttil, SetTotalPducttil] = useState("");
+  const [totalsquare, SetTotalSquare] = useState("");
+  const [totalomebytwo, SetTotalOnebyTwo] = useState("");
+  const [totallandingleaderboard, SetLandingLeaderboard] = useState("");
+  const [totalbundleanalytic, SetBundleAnalytic] = useState("");
 
   const Get_cart = async () => {
     const token = JSON.parse(localStorage.getItem("is_token"));
@@ -62,6 +81,10 @@ const CinemaCart = ({ setTab, get_mall_auth_data }) => {
           SetTotalPro(res.data.total_promotion_banner_amt);
           SetTotalPduct(res.data.total_product_banner_amt);
           SetTotalPducttil(res.data.total_product_banner_tile_amt);
+          SetTotalSquare(res.data.total_landing_page_square_tile_amt);
+          SetTotalOnebyTwo(res.data.total_landing_page_tile_amt);
+          SetLandingLeaderboard(res.data.total_landing_page_leaderboard_amt);
+          SetBundleAnalytic(res.data.total_analitic_bundle_amt);
           SetLoad(false);
         } else {
           SetLoad(false);
@@ -78,30 +101,48 @@ const CinemaCart = ({ setTab, get_mall_auth_data }) => {
   const array_sort = (id) => {
     if (id == 1) {
       const numDescending = [...getnearStore].filter((a, b) =>
-        a.leaderboard_banner_id ? a.leaderboard_banner_id : ""
+        a.landing_page_tile_id ? a.landing_page_tile_id : ""
       );
       console.log("ffff", numDescending);
       SetSort_Array(numDescending);
     } else if (id == 2) {
       const numDescending = [...getnearStore].filter((a, b) =>
-        a.promotion_banner_id ? a.promotion_banner_id : ""
+        a.landing_page_square_tile_id ? a.landing_page_square_tile_id : ""
       );
       console.log("ffff", numDescending);
       SetSort_Array(numDescending);
     } else if (id == 3) {
       const numDescending = [...getnearStore].filter((a, b) =>
-        a.product_banner_id ? a.product_banner_id : ""
+        a.landing_page_leaderboard_id ? a.landing_page_leaderboard_id : ""
       );
       console.log("ffff", numDescending);
       SetSort_Array(numDescending);
     } else if (id == 4) {
       const numDescending = [...getnearStore].filter((a, b) =>
+        a.leaderboard_banner_id ? a.leaderboard_banner_id : ""
+      );
+      console.log("ffff", numDescending);
+      SetSort_Array(numDescending);
+    } else if (id == 5) {
+      const numDescending = [...getnearStore].filter((a, b) =>
+        a.promotion_banner_id ? a.promotion_banner_id : ""
+      );
+      console.log("ffff", numDescending);
+      SetSort_Array(numDescending);
+    } else if (id == 6) {
+      const numDescending = [...getnearStore].filter((a, b) =>
         a.product_banner_tile_id ? a.product_banner_tile_id : ""
       );
       console.log("ffff", numDescending);
       SetSort_Array(numDescending);
+    } else if (id == 7) {
+      const numDescending = [...getnearStore].filter((a, b) =>
+        a.analytic_bundle_id ? a.analytic_bundle_id : ""
+      );
+      console.log("ffff", numDescending);
+      SetSort_Array(numDescending);
     } else {
-      // null;
+      null;
     }
   };
 
@@ -115,20 +156,21 @@ const CinemaCart = ({ setTab, get_mall_auth_data }) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-          }}>
+          }}
+        >
           <div className="loader"></div>
         </div>
       ) : (
-        <div className="mm_main_wrapp mm_main_wrapp_cinema_checkout">
-          <div className="mall_name_wrapp">
-            {/* <p className="mall_name_heading">
+        <div className="mm_main_wrapp mm_main_wrapp_cinema_checkout mm_main_wrapp_cinema_checkoutt">
+          <div className="mall_name_wrapp" style={{ paddingLeft: "0rem" }}>
+            <p className="mall_name_heading">
               {get_mall_auth_data &&
-                get_mall_auth_data.retailers.name &&
-                get_mall_auth_data.retailers.name}
+                get_mall_auth_data.name &&
+                get_mall_auth_data.name}
               :{" "}
-            </p> */}
-            <p className="mall_name_heading">Sterkinikor</p>
-            <span>My Cart</span>
+            </p>
+            {/* <p className="mall_name_heading">Sterkinikor</p> */}
+            <span style={{fontWeight:"600"}}>My Cart</span>
           </div>
           <div className="mm_horizontal_line"></div>
 
@@ -142,21 +184,25 @@ const CinemaCart = ({ setTab, get_mall_auth_data }) => {
                         onClick={() => {
                           handleToggle(item.id);
                           array_sort(item.id);
-                        }}>
+                        }}
+                      >
                         <div
                           style={{
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
                             gap: "5px",
-                          }}>
+                          }}
+                        >
                           <p
+                            className="cinema-cart-oro-name"
                             style={{
                               color: item.id === toggle ? "#ff8b00" : "#000",
                               fontWeight: item.id === toggle ? "800" : "500",
                               fontSize: "22px",
                               letterSpacing: "0.5px",
-                            }}>
+                            }}
+                          >
                             {item.name}
                           </p>
                           {item.id === toggle ? (
@@ -167,35 +213,73 @@ const CinemaCart = ({ setTab, get_mall_auth_data }) => {
                         </div>
                         {item.id == 1 ? (
                           <p
+                            className="cinema-cart-oro-name"
                             style={{
                               fontWeight: item.id === toggle ? "800" : "600",
                               fontSize: "22px",
-                            }}>
-                            R {totallead}
+                            }}
+                          >
+                            R {totalomebytwo}
                           </p>
                         ) : item.id == 2 ? (
                           <p
+                            className="cinema-cart-oro-name"
                             style={{
                               fontWeight: item.id === toggle ? "800" : "600",
                               fontSize: "22px",
-                            }}>
-                            R {totalpro}
+                            }}
+                          >
+                            R {totalsquare}
                           </p>
                         ) : item.id == 3 ? (
                           <p
+                            className="cinema-cart-oro-name"
                             style={{
                               fontWeight: item.id === toggle ? "800" : "600",
                               fontSize: "22px",
-                            }}>
-                            R {totalpduct}
+                            }}
+                          >
+                            R {totallandingleaderboard}
                           </p>
                         ) : item.id == 4 ? (
                           <p
+                            className="cinema-cart-oro-name"
                             style={{
                               fontWeight: item.id === toggle ? "800" : "600",
                               fontSize: "22px",
-                            }}>
+                            }}
+                          >
+                            R {totallead}
+                          </p>
+                        ) : item.id == 5 ? (
+                          <p
+                            className="cinema-cart-oro-name"
+                            style={{
+                              fontWeight: item.id === toggle ? "800" : "600",
+                              fontSize: "22px",
+                            }}
+                          >
+                            R {totalpro}
+                          </p>
+                        ) : item.id == 6 ? (
+                          <p
+                            className="cinema-cart-oro-name"
+                            style={{
+                              fontWeight: item.id === toggle ? "800" : "600",
+                              fontSize: "22px",
+                            }}
+                          >
                             R {totalpducttil}
+                          </p>
+                        ) : item.id == 7 ? (
+                          <p
+                            className="cinema-cart-oro-name"
+                            style={{
+                              fontWeight: item.id === toggle ? "800" : "600",
+                              fontSize: "22px",
+                            }}
+                          >
+                            R {totalbundleanalytic}
                           </p>
                         ) : null}
                       </button>
@@ -221,7 +305,7 @@ const CinemaCart = ({ setTab, get_mall_auth_data }) => {
                           {sort_array && sort_array.length > 0
                             ? sort_array.map((mall, mindx) => {
                                 return (
-                                  <BrandCartCard
+                                  <CinemaCartCard
                                     item={mall}
                                     toggle={toggle}
                                     Get_cart={Get_cart}
@@ -239,19 +323,40 @@ const CinemaCart = ({ setTab, get_mall_auth_data }) => {
           </div>
 
           <div className="brandcart_total_wrapp">
-            <h4 className="h4">
-              Total R {totallead + totalpro + totalpduct + totalpducttil}{" "}
+            <h4 className="h4" style={{paddingRight:"0.8rem"}}>
+              Total R{" "}
+              {totalomebytwo +
+                totalsquare +
+                totallandingleaderboard +
+                totallead +
+                totalpro +
+                totalpducttil +
+                totalbundleanalytic}{" "}
             </h4>
-            <button
+            <button style={{marginRight:"0.9rem"}}
               onClick={() => {
-                setTab(12);
+                setTab(6);
               }}
-              className="btn btn-orange">
+              className="btn btn-orange"
+            >
               Proceed to checkout
             </button>
           </div>
         </div>
       )}
+
+      {/* <div style={{width:"200px",height:"200px"}}>
+                      <ReactPlayer className="landingpage_video"
+                        url={img}
+                        muted={true}
+                        autoplay={true}
+                        controls={true}
+                        playing={true}
+                        width="200px"
+                        height="200px"
+                  
+                      />
+                      </div> */}
     </div>
   );
 };

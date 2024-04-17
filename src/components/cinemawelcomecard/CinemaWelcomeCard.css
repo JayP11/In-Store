@@ -30,3 +30,13 @@
       font-size:30px;
     }
   }
+
+  @media screen and (max-width: 1180px) {
+
+    .wc_card_main_wrapp2 {
+      min-width: 330px !important;
+      height: 400px !important;
+    }
+  
+  }
+

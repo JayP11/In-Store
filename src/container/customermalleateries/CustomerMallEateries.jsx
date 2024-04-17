@@ -106,6 +106,33 @@ const CustomerMallEateries = ({ getsingalmalldata, setTab, setEDetalis }) => {
       });
   };
 
+  const BrandApiserch = async (value) => {
+    const token = await JSON.parse(localStorage.getItem("is_token"));
+    const formdata = new FormData();
+    await formdata.append("search", value);
+    await formdata.append("mall_id", getsingalmalldata.id);
+    // setLoading(true);
+
+    fetch(get_mall_customer_eateries + `per_page=3&page=1`, {
+      method: "POST",
+      body: formdata,
+      headers: {
+        Accept: ACCEPT_HEADER,
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("Brand_list", res.data);
+        // setTotalPages(res.data.last_page);
+        setEatList([...eatList, ...res.data.data]);
+        // setLoading(false);
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+  };
+
   return (
     <div>
       {loading === true ? (
@@ -127,18 +154,33 @@ const CustomerMallEateries = ({ getsingalmalldata, setTab, setEDetalis }) => {
           <div className="mm_main_wrapp" style={{ marginTop: "3rem" }}>
             {/* heading */}
             <div className="profile_head_center">
-              <h4 className="h3" style={{ textTransform: "capitalize" }}>
+              <h4
+                className="h3"
+                style={{ textTransform: "capitalize", fontWeight: "700" }}
+              >
                 {getsingalmalldata.name}
               </h4>{" "}
-              <span className="h3">eateries</span>
+              <span className="h3" style={{ fontWeight: "700" }}>
+                eateries
+              </span>
             </div>
             {/* filter */}
             <div
               className="mall_near_brand_filter_sec_wrap"
               style={{ justifyContent: "center" }}
             >
-              <div className="mall_near_brand_searchbar">
-                <input type="text" placeholder="Search" />
+              <div className="mall_near_brand_searchbar mall_near_eatery_searchbar">
+                <input
+                  type="text"
+                  placeholder="Search"
+                  onChange={(e) => {
+                    e.target.value.length > 0
+                      ? (BrandApiserch(e.target.value),
+                        setEatList([]),
+                        setPage(1))
+                      : (setEatList([]), setPage(1), BrandApi());
+                  }}
+                />
                 <HiOutlineSearch color="var(--color-orange)" size={18} />
               </div>
             </div>
@@ -146,26 +188,26 @@ const CustomerMallEateries = ({ getsingalmalldata, setTab, setEDetalis }) => {
             <div className="mall_near_brand_list_wrapp">
               {eatList && eatList.length > 0
                 ? eatList.map((brndItm) => {
-                  return (
-                    <button
-                      onClick={() => {
-                        // setBrandModalClose(true);
-                        SetBrandData(brndItm);
-                        setEDetalis(brndItm);
-                        setTab(27);
-                      }}
-                    >
-                      <BrandItmCard
-                        img={
-                          brndItm.store_logo_path === null
-                            ? images.sl4
-                            : brndItm.store_logo_path
-                        }
-                        key={brndItm.id}
-                      />
-                    </button>
-                  );
-                })
+                    return (
+                      <button
+                        onClick={() => {
+                          // setBrandModalClose(true);
+                          SetBrandData(brndItm);
+                          setEDetalis(brndItm);
+                          setTab(27);
+                        }}
+                      >
+                        <BrandItmCard
+                          img={
+                            brndItm.store_logo_path === null
+                              ? null
+                              : brndItm.store_logo_path
+                          }
+                          key={brndItm.id}
+                        />
+                      </button>
+                    );
+                  })
                 : null}
             </div>
             {/* loadmore btn */}

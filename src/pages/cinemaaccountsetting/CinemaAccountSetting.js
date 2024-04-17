@@ -8,8 +8,10 @@ import images from "../../constants/images";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import axios from "axios";
-import { ACCEPT_HEADER, get_mall, get_retailer } from "../../utils/Constant";
+import { ACCEPT_HEADER, get_mall, get_retailer, get_store_mall } from "../../utils/Constant";
 import Notification from "../../utils/Notification";
+import ReactModal from "react-modal";
+
 
 const options = [
   { value: "chocolate", label: "Chocolate" },
@@ -19,6 +21,25 @@ const options = [
 
 const animatedComponents = makeAnimated();
 
+
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    padding: "0px",
+    backgroundColor: "none",
+    border: "none",
+    borderRadius: "0px",
+  },
+  overlay: {
+    zIndex: 1000,
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
+  },
+};
 const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   const [getmallmasterid, setmallmasterid] = useState(
     get_mall_auth_data == null ||
@@ -40,8 +61,13 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   const [getbrandData, setBrandData] = useState(
     get_mall_auth_data && get_mall_auth_data
   );
-  const { UpdateMall, get_brand_data, get_mall_data, getBrand } =
+  const { UpdateMall, get_brand_data, get_mall_data, getBrand,getBrandMultiple,get_brand_data_multiple } =
     useMallContext();
+
+  const { UpdateCinema } =
+    useStoreContext();
+
+
 
   const {
     retailer_data,
@@ -49,7 +75,8 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
     multiple_week_data,
     getRetailerApi,
     getMultipleMall,
-    getStore,
+    getCinema,
+    cinema_mall_data
   } = useStoreContext();
 
   useEffect(() => {
@@ -67,6 +94,8 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   }, []);
 
   const [mallsOption, setMallsOption] = useState([]);
+  const [mallsOption2, setMallsOption2] = useState(get_mall_auth_data?.brands);
+
 
   const [mallWebsite, setMallWebsite] = useState(
     getbrandData.website ? getbrandData.website : ""
@@ -113,7 +142,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
     getbrandData.secondary_contact && getbrandData.secondary_contact
   );
 
-  const [getmode, setMode] = useState(getbrandData.type && getbrandData.type);
+  const [getmode,setMode] = useState(getbrandData.type && getbrandData.type);
 
   const [getmallname, setMallname] = useState(
     getbrandData.brand_id && getbrandData.brand_id
@@ -132,7 +161,8 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
       : get_mall_auth_data.brands.name
   );
 
-  const [isAcceptTerm, setIsAcceptTerm] = useState(false);
+  const [isAcceptTerm, setIsAcceptTerm] = useState(0);
+  const [isAcceptTerm2, setIsAcceptTerm2] = useState(0);
 
   const [brandadd, SetBrandAdd] = useState(
     getbrandData.address ? getbrandData.address : ""
@@ -160,6 +190,11 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   const [getcondation, SetCondation] = useState(false);
   const [getcondation1, SetCondation1] = useState(false);
   const [getmallarray, SetMallArray] = useState([]);
+  const [resetmodal, setResetModal] = useState(false);
+
+  function closeModal() {
+    setResetModal(false);
+  }
 
   useEffect(() => {
     console.log("files", files);
@@ -184,9 +219,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
     }
   };
 
-  const handleTermChange = (event) => {
-    setIsAcceptTerm((current) => !current);
-  };
+
 
   // logo dropzon
 
@@ -260,7 +293,9 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   const thumbs = files.map((file) => (
     <img
       src={file.preview}
-      style={{ width: "100%", height: "100%", maxHeight: "175px" }}
+      style={{ width: "100%", height: "100%", 
+      maxHeight: "175px"
+       }}
       className="img-fluid"
       alt="file"
     />
@@ -269,7 +304,9 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   const thumbs2 = files2.map((file) => (
     <img
       src={file.preview}
-      style={{ width: "100%", height: "100%", maxHeight: "175px" }}
+      style={{ width: "100%", height: "100%", 
+      // maxHeight: "175px"
+       }}
       className="img-fluid"
       alt="file"
     />
@@ -284,21 +321,101 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
     />
   ));
 
+  const handleTermChange = (e) => {
+    setIsAcceptTerm(1);
+    console.log("e.targate.value");
+  };
+
+  const handleTermChange2 = (e) => {
+    setIsAcceptTerm2(1);
+    console.log("e.targate.value");
+  };
+
+  const getStoreMall = async () => {
+    const token = JSON.parse(localStorage.getItem("is_token"));
+
+    axios
+      .get(get_store_mall, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((res) => {
+        console.log("ggg123", JSON.stringify(res.data, null, 2));
+        if (res.data.success == 1) {
+          setMallsOption(res.data.data);
+        } else {
+          null;
+        }
+      })
+      .catch((err) => {
+        console.log("err11", err);
+      });
+  };
+
+
   // update mall api
 
   const UpdateMallData = async () => {
-    {
-      if (mallsOption == "" || undefined) {
-        Notification("error", "Error", "Please Selct Mall");
+    if (getmode == "" || undefined) {
+      Notification("error", "Error", "Please Select Retailer Type");
+      return;
+    } else if (retailertype == "" || undefined) {
+      Notification("error", "Error", "Please Select Retailer");
+      return;
+    }  else if (brandadd == "" || undefined) {
+      Notification("error", "Error", "Please Enter Brand Address");
+      return;
+    } else if (mallsOption == "" || undefined) {
+      Notification("error", "Error", "Please Select Mall");
+      return;
+    }else if (mallWebsite == "" || undefined) {
+      Notification("error", "Error", "Please Enter Website URL");
+      return;
+    }
+    // else if (getbrand == "" || undefined) {
+    //   Notification("error", "Error", "Please Enter Brand Email");
+    //   return;
+    // }
+    else if (contactPerson == "" || undefined) {
+      Notification("error", "Error", "Please Enter Main Contact");
+      return;
+    }else if (contactNumber == "" || undefined) {
+      Notification("error", "Error", "Please Enter Main Email");
+      return;
+    }
+    else {
+      if (getmode == "" || undefined) {
+        Notification("error", "Error", "Please Select Retailer Type");
         return;
-      } else if (contactPerson == "" || undefined) {
-        Notification("error", "Error", "Please Enter Number");
+      } else if (retailertype == "" || undefined) {
+        Notification("error", "Error", "Please Select Retailer");
         return;
-      } else {
+      }  else if (brandadd == "" || undefined) {
+        Notification("error", "Error", "Please Enter Brand Address");
+        return;
+      } else if (mallWebsite == "" || undefined) {
+        Notification("error", "Error", "Please Enter Website URL");
+        return;
+      }else if (mallsOption == "" || undefined) {
+        Notification("error", "Error", "Please Select Mall");
+        return;
+      }else if (getbrand == "" || undefined) {
+        Notification("error", "Error", "Please Enter Brand Email");
+        return;
+      }else if (contactPerson == "" || undefined) {
+        Notification("error", "Error", "Please Enter Main Contact");
+        return;
+      }else if (contactNumber == "" || undefined) {
+        Notification("error", "Error", "Please Enter Main Email");
+        return;
+      }
+        else {
         const data = await new FormData();
         await data.append("retailer_id", Number(retailertype));
         await data.append("store_type", getmode);
-        await data.append("brand", getmallname);
+        // await data.append("brand", getmallname);
         await data.append("address", brandadd);
         await data.append("address_2", brandadd2);
         await data.append("address_3", brandadd3);
@@ -316,6 +433,12 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
         for (var i = 0; i < mallsOption.length; i++) {
           await data.append("mall_id[" + i + "]", mallsOption[i].value);
         }
+        if(getmode == 2) {
+          for (var i = 0; i < mallsOption2.length; i++) {
+            await data.append("brand[" + i + "]", mallsOption2[i].value);
+          }
+        }else{}
+      
         await data.append("terms_condition", isAcceptTerm === true ? 1 : 0);
         if (files[0] !== undefined) {
           await data.append("store_logo", files[0]);
@@ -330,7 +453,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
         } else {
         }
         console.log("-=-=-=->brand-update", data);
-        const data1 = await UpdateStore(data);
+        const data1 = await UpdateCinema(data);
         if (data1) {
           if (data1.success === 1) {
             console.log("mall-data", data1);
@@ -339,7 +462,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
               "Success!",
               "Account Setting Updated Successfully!"
             );
-            getStore();
+            getCinema();
             setTab(1);
           }
         }
@@ -349,6 +472,8 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
 
   useEffect(() => {
     getBrand(get_mall_auth_data.retailer_id);
+    getBrandMultiple(get_mall_auth_data.retailer_id);
+    getStoreMall();
   }, []);
   // get mall master
 
@@ -380,6 +505,35 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
         console.log("err11", err);
       });
   };
+
+  // Rest Function
+
+  const resetAccountData=()=>{
+    setMallname('')
+    setbrandname('');
+    SetBrandAdd('');
+    SetBrandAdd2('');
+    SetBrandAdd3('');
+    SetBrand('');
+    setMallWebsite('');
+   
+    setMallInsta('');
+    setMallfb('');
+    setContactPerson('');
+    // setContactNumber('');
+    SetSecondryEmail('');
+    SetScondryContect('');
+    setMallTwitter('');
+    setRetailertypename('');
+
+    SetCondation(true);
+    SetCondation1(true);
+   
+    // setFiles([]);
+    // setFiles2([]);
+    // setFiles3([]);
+    // setFiles4([]);
+  }
 
   return (
     <div>
@@ -451,7 +605,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                   width: "100%",
                   height: "100%",
                   maxHeight: "175px",
-                  objectFit: "contain",
+                  objectFit: "cover",
                 }}
                 // className="img-fluidb"
               />
@@ -467,16 +621,18 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
       </div>
       <div className="mm_main_wrapp cinemaaccsetting_main_wrapp">
         {/* mall management name start */}
-        <div className="mall_name_wrapp" style={{ paddingLeft: "0px" }}>
-          {/* <p className="mall_name_heading">{mainName}:</p> */}
-          <p className="mall_name_heading"> Ster Kinekor:</p>
-          <span>Account Settings</span>
+        <div className="mall_name_wrapp mall_mall_name_wrapp mall_name_wrapp_cinema" style={{paddingLeft:"0rem"}}>
+          <p className="mall_name_heading">{mainName}:</p>
+          {/* <p className="mall_name_heading"> Ster Kinekor:</p> */}
+          <span style={{fontWeight:600}}>Account Settings</span>
         </div>
         <div className="mm_horizontal_line"></div>
+        <div className="" style={{marginBottom:"2rem"}}></div>
         {/* mall management name end */}
 
         {/* mall management form start */}
-        <div className="mm_form_wrapp mm_form_wrapp_retailer">
+        <div className="mm_form_wrapp mm_form_wrapp_retailer mm_form_wrapp_cinema {
+">
           {/* text-input wrapp start */}
           <div
             className="mm_form_input_wrapp mm_form_input_wrapp_retailer"
@@ -510,7 +666,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
               </select>
             </div> */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Cinema type</label>
+              <label className="mm_form_single_input_cinema_Acc_setting" htmlFor="">Cinema type <span className="star_require">*</span></label>
 
               <div className="radio-btn-flex-brand">
                 <div className="radio-btn-inner-flex">
@@ -526,7 +682,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                     }}
                     // onChange={(e) => e.target.value}
                   />
-                  <label className="course-form-txt" for="male">
+                  <label  className="course-form-txt" for="male">
                     Independent Cinema
                   </label>
                 </div>
@@ -552,20 +708,21 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Cinema</label>
+              <label className="mm_form_single_input_cinema_Acc_setting" htmlFor="">Cinema <span className="star_require">*</span></label>
               <div className="select-wrapper" style={{ width: "100%" }}>
                 <select
                   className="leaderboard-card-inp"
                   onChange={(e) => {
                     setRetailertype(e.target.value);
                     setRetailertypename(e.target.value);
-                    getBrand(e.target.value);
+                    // getBrand(e.target.value);
+                    getBrandMultiple(e.target.value);
                   }}>
                   <option defaultValue value="">
                     {retailertypename}
                   </option>
-                  {retailer_data &&
-                    retailer_data.map((item, index) => {
+                  {cinema_mall_data &&
+                    cinema_mall_data.map((item, index) => {
                       return (
                         <>
                           {/* <option selected disabled value="">
@@ -580,15 +737,15 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                 </select>
               </div>
             </div>
-
-            <div className="mm_form_single_input">
-              <label htmlFor="">
-                Your Cinema <br />
+                    {getmode == 2 ? <>
+                      <div className="mm_form_single_input">
+              <label className="mm_form_single_input_cinema_Acc_setting" htmlFor="">
+                Your Cinema  <span className="star_require">*</span><br />{" "}
                 <span style={{ fontWeight: "300", fontSize: "13px" }}>
                   If applicable
                 </span>
               </label>
-              <div className="select-wrapper" style={{ width: "100%" }}>
+              {/* <div className="select-wrapper" style={{ width: "100%" }}>
                 <select
                   className="leaderboard-card-inp"
                   onChange={(e) => {
@@ -607,11 +764,26 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                       );
                     })}
                 </select>
-              </div>
+              </div> */}
+
+              <Select
+                value={mallsOption2}
+                styles={{ width: "100%", padding: "0px" }}
+                className="leaderboard-card-inp"
+                closeMenuOnSelect={false}
+                components={animatedComponents}
+                // defaultValue={[colourOptions[4], colourOptions[5]]}
+
+                isMulti
+                options={get_brand_data_multiple}
+                onChange={setMallsOption2}
+              />
             </div>
+                    </> : <></>}
+          
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Cinema Address</label>
+              <label className="mm_form_single_input_cinema_Acc_setting" htmlFor="">Cinema Address <span className="star_require">*</span></label>
               <input
                 type="text"
                 value={brandadd}
@@ -625,7 +797,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
 
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor=""></label>
+              <label className="mm_form_single_input_cinema_Acc_setting" htmlFor=""></label>
               <input
                 type="text"
                 value={brandadd2}
@@ -639,7 +811,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
 
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor=""></label>
+              <label className="mm_form_single_input_cinema_Acc_setting" htmlFor=""></label>
               <input
                 type="text"
                 value={brandadd3}
@@ -651,7 +823,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Select My Malls</label>
+              <label className="mm_form_single_input_cinema_Acc_setting" htmlFor="">Select My Malls <span className="star_require">*</span></label>
               {/* <select
                 className="leaderboard-card-inp"
                 onChange={(e) => {
@@ -689,7 +861,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Website URL</label>
+              <label className="mm_form_single_input_cinema_Acc_setting" htmlFor="">Website URL <span className="star_require">*</span></label>
               <input
                 type="text"
                 value={mallWebsite}
@@ -701,7 +873,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Brand Email</label>
+              <label className="mm_form_single_input_cinema_Acc_setting" htmlFor="">Brand Email <span className="star_require">*</span></label>
               <input
                 type="text"
                 value={getbrand}
@@ -714,7 +886,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
 
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Instagram</label>
+              <label className="mm_form_single_input_cinema_Acc_setting" htmlFor="">Instagram</label>
               <input
                 type="text"
                 value={mallInsta}
@@ -726,7 +898,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Facebook</label>
+              <label className="mm_form_single_input_cinema_Acc_setting" htmlFor="">Facebook</label>
               <input
                 type="text"
                 value={mallfb}
@@ -738,7 +910,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Twitter</label>
+              <label className="mm_form_single_input_cinema_Acc_setting" htmlFor="">Twitter</label>
               <input
                 type="text"
                 value={mallTwitter}
@@ -750,7 +922,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Main Contact</label>
+              <label className="mm_form_single_input_cinema_Acc_setting" htmlFor="">Main Contact <span className="star_require">*</span></label>
               <input
                 type="text"
                 value={contactPerson}
@@ -762,7 +934,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Main Email</label>
+              <label className="mm_form_single_input_cinema_Acc_setting" htmlFor="">Main Email <span className="star_require">*</span></label>
               <input
                 type="email"
                 value={contactNumber}
@@ -774,7 +946,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Secondary Contact</label>
+              <label className="mm_form_single_input_cinema_Acc_setting" htmlFor="">Secondary Contact</label>
               <input
                 type="number"
                 value={scondrycontect}
@@ -786,7 +958,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Secondary Email</label>
+              <label className="mm_form_single_input_cinema_Acc_setting" htmlFor="">Secondary Email</label>
               <input
                 type="email"
                 value={secondryemail}
@@ -797,67 +969,60 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
               />
             </div>
 
-            {/* <div>
+            <div className="mm_form_single_input">
+              <label className="mm_form_single_input_cinema_Acc_setting" htmlFor=""></label>
+              <span style={{fontSize:"14px",color:"#bbb"}}>*Required Fields including all image uploads.</span>
+            </div>
+
+            <div className="mm_form_single_input fs-des-resp">
+              <label className="mm_form_single_input_cinema_Acc_setting" htmlFor=""></label>
               <div className="signup_terms_wrapp">
-                <label htmlFor="" className="editfac_label"></label>
                 <input
                   type="checkbox"
-                  // value={gettermscondition}
-                  // onChange={(e) => settermscondition(1)}
+                  value={isAcceptTerm}
+                  onChange={handleTermChange}
+                  checked={isAcceptTerm == 1}
                 />
                 <p className="fs-des">
-                  I have read and agree to the &nbsp;
+                  I have read and agree to the{" "}
                   <a className="signup_terms_link">Privacy Policy</a>
                 </p>
               </div>
+            </div>
+
+            <div className="mm_form_single_input fs-des-resp" style={{marginTop:"-10px"}}>
+              <label className="mm_form_single_input_cinema_Acc_setting" htmlFor=""></label>
               <div className="signup_terms_wrapp">
-                <label htmlFor="" className="editfac_label"></label>
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                  value={isAcceptTerm2}
+                  onChange={handleTermChange2}
+                  checked={isAcceptTerm2 == 1}
+                />
                 <p className="fs-des">
                   I have read and agree to the{" "}
                   <a className="signup_terms_link">Terms and Conditions</a>
+                  {/* <a className="signup_terms_link">Privacy Policy</a> */}
                 </p>
               </div>
-            </div> */}
+            </div>
 
             {/* upload button */}
-            <div className="mm_form_single_input cinemaaccsetting_form_single_input">
-              <div>
-                <label htmlFor=""></label>
-                <div
-                  className="mall_upload_btn_wrapp"
-                  style={{ gap: "1rem", width: "55%" }}>
-                  <button
-                    className="btn btn-orange"
-                    onClick={() => UpdateMallData()}>
-                    Update
-                  </button>
-                  <button
-                    className="btn  btn-black"
-                    style={{ fontWeight: "600" }}>
-                    Reset
-                  </button>
-                </div>
-              </div>
-              <div className="cinemaaccsetting_terms_bigview">
-                <div className="signup_terms_wrapp">
-                  {/* <label htmlFor="" className="editfac_label"></label> */}
-                  <input type="checkbox" />
-                  <p className="fs-des">
-                    I have read and agree to the &nbsp;
-                    <a className="signup_terms_link">Privacy Policy</a>
-                  </p>
-                </div>
-                <div className="signup_terms_wrapp">
-                  {/* <label htmlFor="" className="editfac_label"></label> */}
-                  <input type="checkbox" />
-                  <p className="fs-des">
-                    I have read and agree to the{" "}
-                    <a className="signup_terms_link">Terms and Conditions</a>
-                  </p>
-                </div>
+            <div className="mm_form_single_input">
+              <label htmlFor=""></label>
+              <div className="mall_upload_btn_wrapp">
+                <button
+                  className="btn btn-orange"
+                  disabled={isAcceptTerm == 1 ? false : true}
+                  onClick={() => UpdateMallData()}
+                >
+                  Update
+                </button>
+                <button className="btn btn-black" style={{ fontWeight: "600", color: "#777" }} onClick={()=>{setResetModal(true)}}>Reset</button>
               </div>
             </div>
+
+          
           </div>
           {/* text-input wrapp end */}
 
@@ -878,7 +1043,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                 accept="image/jpeg, image/jpg, image/png, image/eps"
               /> */}
                 <h6 className="myprofile_upload_img_card_name">
-                  Upload the Shopping centre logo (200px x 200px)
+                  Upload the Cinema logo (200px x 200px)
                 </h6>
                 {getcondation === true ? (
                   <>
@@ -1027,7 +1192,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                 accept="image/jpeg, image/jpg, image/png, image/eps"
               /> */}
                 <h6 className="myprofile_upload_img_card_name">
-                  Upload the Shopping centre Banner (1300px x 275px)
+                  Upload the Cinema Banner (max 400kb)
                 </h6>
                 {getcondation1 === true ? (
                   <>
@@ -1245,12 +1410,15 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                 onClick={() => UpdateMallData()}>
                 Update
               </button>
-              <button className="btn btn-black" style={{ fontWeight: "600" }}>
+              <button
+                className="btn btn-black"
+                style={{ fontWeight: "600", color: "#777" }} onClick={()=>{setResetModal(true)}}>
                 Reset
               </button>
             </div>
             <div>
-              <div className="signup_terms_wrapp">
+              <div className="signup_terms_wrapp" style={{gap:"0px"}}>
+                <label htmlFor="" className=""></label>
                 {/* <label htmlFor="" className="editfac_label"></label> */}
                 <input type="checkbox" />
                 <p className="fs-des">
@@ -1270,6 +1438,51 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
           </div>
         </div>
       </div>
+
+      <ReactModal
+        isOpen={resetmodal}
+        // onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <div className="sd_model_wrapp sd_model_wrapp-delete" >
+          {/* edit and delete orange btns start */}
+          <div className="sd_model_edit_wrap">
+
+
+
+
+            <button onClick={closeModal}>
+              <img src={images.close} alt="" />
+            </button>
+
+          </div>
+          {/* edit and delete orange btns end */}
+
+          {/* <p>Are you sure you want to Reset all Data</p> */}
+          <p>Are you sure you want to reset the form? <br/>Note that all your data will be cleared from the form by selecting this option</p>
+          <div className="delete-modal-btn-box">
+            <button onClick={() => {
+              // setStore_id(itm.id);
+              resetAccountData();
+              setResetModal(false);
+            }} className="delete-modal-btn">
+              Yes
+            </button>
+            {/* onClick={() => {
+              // setStore_id(itm.id);
+              // DeleteMallStoreData(itm.id);
+              setDeleteModal(true);
+            }} */}
+
+            <button onClick={closeModal} className="delete-modal-btn">
+            No
+            </button>
+          </div>
+        </div>
+        {/* </div> */}
+      </ReactModal>
     </div>
   );
 };

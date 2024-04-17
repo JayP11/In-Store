@@ -1,6 +1,7 @@
 .wc_card_main_wrapp {
     width: 375px;
-    height: 400px;
+    /* height: 400px; */
+    height: 365px;
     border-top-right-radius: 26px;
     position: relative;
     margin: 0 auto;
@@ -30,6 +31,10 @@
     right: 23px;
 }
 
+.mall_cards_btn{
+    font-size: 20px !important;
+}
+
 .wc_text_wrapp {
     display: flex;
     flex-direction: column;
@@ -38,7 +43,8 @@
     text-align: left;
     color: var(--color-white);
     width: 84%;
-    height: 84%;
+    height: 91%;
+    /* height: 72%; */
     margin: auto;
     /* height: 100%; */
     gap: 7%;
@@ -54,7 +60,7 @@
 
 .wc_btn_wrapp>p {
     color: var(--color-white);
-    font-size: 20px;
+    font-size: 17px;
     font-weight: 600
 }
 
@@ -76,11 +82,11 @@
 } */
 
 @media (max-width: 720px) {
-    .wc_card_main_wrapp {
+    /* .wc_card_main_wrapp {
         width: 330px;
         height: 334px;
         min-width: 300px;
-    }
+    } */
 
     .wc_bottom_img {
         max-width: 180.23px;

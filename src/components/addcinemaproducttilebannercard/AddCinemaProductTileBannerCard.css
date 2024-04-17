@@ -1,0 +1,11 @@
+.leaderboard-card-part-first-cinema{
+    width: 48%;
+}
+
+
+@media screen and (max-width:500px) {
+    
+.leaderboard-last-part-txt{
+    font-size: 12px;
+}
+}

@@ -7,6 +7,8 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    margin-left: 5rem;
+    margin-right: 5rem;
 }
 
 .store-directory-part1 {
@@ -109,19 +111,60 @@
     margin-bottom: 0px !important;
 }
 
+
+@media screen and (max-width:1250px) {
+    .upl_store_dir_icon{
+        width: 20px;
+    }
+}
+@media screen and (max-width:1000px) {
+    .upl_store_dir_icon{
+        width: 25px;
+    }
+}
+@media screen and (max-width:900px) {
+    .upl_store_dir_icon{
+        width: 17px;
+    }
+}
+@media screen and (max-width:940px) {
+    .mall_name_wrapp_eatery_upload{
+        padding-left: 0rem;
+    }
+
+    .store-directory-card{
+        margin-left: 0rem;
+        margin-right: 0rem;
+    }
+}
+
 @media (max-width: 620px) {
     .store-directory-part3 {
-        flex-direction: column;
-        gap: 10px;
+        /* flex-direction: column; */
+        /* gap: 10px; */
+        width: 250px;
+    }
+
+    .upl_store_dir_icon{
+        width: 28px;
     }
 
     .store-directory-part4 {
-        align-self: flex-start;
-        width: 100%;
+        align-self: center;
+        width: 38%;
 
+    }
+
+    .store-directory-third-inner-part1{
+        width: fit-content;
     }
 
     .store-directory-part4>button {
         /* width: 90%; */
+    }
+
+    .store-dire-head{
+        font-size: 16px;
+        font-weight: 600 !important;
     }
 }

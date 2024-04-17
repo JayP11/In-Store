@@ -96,7 +96,7 @@
 .sign_input_wrapp > label {
   font-size: 14px;
   color: var(--color-black);
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .sign_input_wrapp > input {
@@ -150,6 +150,10 @@
 .signup_headign {
   align-self: center;
   letter-spacing: 0.6px;
+  font-size: 20px;
+  max-width: 360px;
+  text-align: center;
+  font-weight: 700 !important;
 }
 
 .signup_terms_wrapp {
@@ -179,6 +183,7 @@
   justify-content: flex-start;
   flex-direction: column;
   padding: 3rem;
+  padding-top: 1rem;
   color: var(--color-black);
   /* padding-left: 74px; */
   /* width: 460px; */

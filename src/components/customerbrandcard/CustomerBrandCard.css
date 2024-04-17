@@ -6,6 +6,7 @@
     width: 100%;
     gap: 8px;
     text-align: center;
+    justify-content: space-between;
 }
 
 .cbc_img_wrapp {

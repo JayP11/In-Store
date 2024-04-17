@@ -46,7 +46,7 @@
 
 .brandcc_dates {
   font-size: 14px;
-  font-weight: 300;
+  font-weight: 400;
   color: var(--color-red);
 }
 
@@ -126,6 +126,19 @@
   }
 }
 
+
+@media screen and (max-width:1035px) {
+  .brandcc_sec2-cinema{
+    width: 40%;
+  }
+}
+
+
+@media screen and (max-width:1035px) {
+  .brandcc_sec2-cinema{
+    width: 50%;
+  }
+}
 @media screen and (max-width:750px) {
   .brandcc_main_wrapp {
     flex-direction: column;

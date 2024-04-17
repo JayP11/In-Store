@@ -1,6 +1,6 @@
 .brand-checkout-subheading {
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 700;
   margin-bottom: 20px;
 }
 
@@ -22,6 +22,9 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  margin-top: 3rem;
 }
 
 .checkout-head-sub-part {
@@ -109,6 +112,34 @@
   margin-top: 0.5rem;
 }
 
+.checkout_brand_submit{
+  width: 250px;
+}
+
+@media screen and (max-width:1080px) {
+  .brand-checkout-main-flex-wrapp {
+    flex-direction: column;
+    gap: 25px;
+  }
+
+  .store_checkout_form_input_wrapp {
+    width: 100%;
+  }
+
+  .checkout-main-wrapp {
+    width: 100%;
+  }
+
+  .checkout-terms-part {
+    display: none;
+  }
+
+  .checkout-terms-part-responsive {
+    display: block;
+    width: 100%;
+  }
+}
+
 @media screen and (max-width: 900px) {
   .brand-checkout-main-flex-wrapp {
     flex-direction: column;
@@ -130,5 +161,24 @@
   .checkout-terms-part-responsive {
     display: block;
     width: 100%;
+  }
+}
+
+@media screen and (max-width:900px) {
+.mall_name_wrapp_check{
+  padding-left: 0rem !important;
+}
+}
+
+
+@media screen and (max-width: 500px) {
+  .brand-checkout-subheading{
+    font-size: 20px !important;
+    font-weight: 600 !important;
+  }
+
+  .brand-checkout-main-flex-wrapp{
+    padding-left: 0rem;
+    padding-right: 0rem;
   }
 }

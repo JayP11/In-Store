@@ -43,13 +43,14 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    margin-left: 1rem;
+    /* margin-left: 1rem; */
     position: relative;
 }
 
 .nav_profile {
     width: 26.5px;
     height: 25.5px;
+    border-radius: 100% !important;
 }
 
 .sidebar_logo {
@@ -312,7 +313,7 @@
     gap: 6px;
     position: absolute;
     top: 50px;
-    right: -30px;
+    right: -95px;
     z-index: 999;
     padding: 20px;
 }

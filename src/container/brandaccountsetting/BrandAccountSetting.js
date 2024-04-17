@@ -8,8 +8,11 @@ import images from "../../constants/images";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import axios from "axios";
-import { ACCEPT_HEADER, get_mall, get_retailer } from "../../utils/Constant";
+import { ACCEPT_HEADER, get_mall, get_retailer, get_store_mall } from "../../utils/Constant";
 import Notification from "../../utils/Notification";
+import { Link } from "react-router-dom";
+import ReactModal from "react-modal";
+
 
 const options = [
   { value: "chocolate", label: "Chocolate" },
@@ -18,6 +21,25 @@ const options = [
 ];
 
 const animatedComponents = makeAnimated();
+
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    padding: "0px",
+    backgroundColor: "none",
+    border: "none",
+    borderRadius: "0px",
+  },
+  overlay: {
+    zIndex: 1000,
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
+  },
+};
 
 const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   const [getmallmasterid, setmallmasterid] = useState(
@@ -40,7 +62,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   const [getbrandData, setBrandData] = useState(
     get_mall_auth_data && get_mall_auth_data
   );
-  const { UpdateMall, get_brand_data, get_mall_data, getBrand } =
+  const { UpdateMall, get_brand_data, get_mall_data, getBrand,getBrandMultiple,get_brand_data_multiple } =
     useMallContext();
 
   const {
@@ -67,6 +89,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   }, []);
 
   const [mallsOption, setMallsOption] = useState([]);
+  const [mallsOption2, setMallsOption2] = useState(get_mall_auth_data?.brands);
 
   const [mallWebsite, setMallWebsite] = useState(
     getbrandData.website ? getbrandData.website : ""
@@ -161,6 +184,14 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   const [getcondation1, SetCondation1] = useState(false);
   const [getmallarray, SetMallArray] = useState([]);
 
+  const [resetmodal, setResetModal] = useState(false);
+
+  function closeModal() {
+    setResetModal(false);
+  }
+
+  
+
   useEffect(() => {
     console.log("files", files);
     console.log("check getbrandData", getbrandData);
@@ -169,7 +200,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   const onHandleEmailChange = (e) => {
     let email = e.target.value;
     if (email === "" || regEx.test(email)) {
-      // setEmail(email);
+      setEmail(email);
     } else {
       return;
     }
@@ -269,7 +300,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   const thumbs2 = files2.map((file) => (
     <img
       src={file.preview}
-      style={{ width: "100%", height: "100%", maxHeight: "175px" }}
+      style={{ width: "100%", height: "100%", }}
       className="img-fluid"
       alt="file"
     />
@@ -288,17 +319,37 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
 
   const UpdateMallData = async () => {
     {
-      if (mallsOption == "" || undefined) {
-        Notification("error", "Error", "Please Selct Mall");
+      if (getmode == "" || undefined) {
+        Notification("error", "Error", "Please Select Retailer Type");
         return;
-      } else if (contactPerson == "" || undefined) {
-        Notification("error", "Error", "Please Enter Number");
+      } else if (retailertype == "" || undefined) {
+        Notification("error", "Error", "Please Select Retailer");
         return;
-      } else {
+      }  else if (brandadd == "" || undefined) {
+        Notification("error", "Error", "Please Enter Brand Address");
+        return;
+      } else if (mallsOption == "" || undefined) {
+        Notification("error", "Error", "Please Select Mall");
+        return;
+      }else if (mallWebsite == "" || undefined) {
+        Notification("error", "Error", "Please Enter Website URL");
+        return;
+      }
+      // else if (getbrand == "" || undefined) {
+      //   Notification("error", "Error", "Please Enter Brand Email");
+      //   return;
+      // }
+      else if (contactPerson == "" || undefined) {
+        Notification("error", "Error", "Please Enter Main Contact");
+        return;
+      }else if (contactNumber == "" || undefined) {
+        Notification("error", "Error", "Please Enter Main Email");
+        return;
+      }else {
         const data = await new FormData();
         await data.append("retailer_id", Number(retailertype));
         await data.append("store_type", getmode);
-        await data.append("brand", getmallname);
+        // await data.append("brand", getmallname);
         await data.append("address", brandadd);
         await data.append("address_2", brandadd2);
         await data.append("address_3", brandadd3);
@@ -316,6 +367,12 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
         for (var i = 0; i < mallsOption.length; i++) {
           await data.append("mall_id[" + i + "]", mallsOption[i].value);
         }
+        if(getmode == 2) {
+          for (var i = 0; i < mallsOption2.length; i++) {
+            await data.append("brand[" + i + "]", mallsOption2[i].value);
+          }
+        }else{}
+      
         await data.append("terms_condition", isAcceptTerm === true ? 1 : 0);
         if (files[0] !== undefined) {
           await data.append("store_logo", files[0]);
@@ -349,6 +406,8 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
 
   useEffect(() => {
     getBrand(get_mall_auth_data.retailer_id);
+    getBrandMultiple(get_mall_auth_data.retailer_id);
+    getStoreMall();
   }, []);
   // get mall master
 
@@ -357,6 +416,31 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   }, [getmalmastername]);
 
   const [getmall, SetMall] = useState("");
+  const [storeMall,SetStoreMall] = useState("");
+
+
+  const getStoreMall = async () => {
+    const token = JSON.parse(localStorage.getItem("is_token"));
+
+    axios
+      .get(get_store_mall, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((res) => {
+        console.log("ggg123", JSON.stringify(res.data, null, 2));
+        if (res.data.success == 1) {
+          setMallsOption(res.data.data);
+        } else {
+          null;
+        }
+      })
+      .catch((err) => {
+        console.log("err11", err);
+      });
+  };
 
   const getMallMaster = async () => {
     const token = JSON.parse(localStorage.getItem("is_token"));
@@ -373,13 +457,42 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
         if (res.data.success == 1) {
           SetMallArray(res.data.data);
         } else {
-          // null;
+          null;
         }
       })
       .catch((err) => {
         console.log("err11", err);
       });
   };
+
+
+  // Rest Function
+
+  const resetAccountData=()=>{
+    setMallname('')
+    setbrandname('');
+    SetBrandAdd('');
+    SetBrandAdd2('');
+    SetBrandAdd3('');
+    SetBrand('');
+    setMallWebsite('');
+   
+    setMallInsta('');
+    setMallfb('');
+    setContactPerson('');
+    // setContactNumber('');
+    SetSecondryEmail('');
+    SetScondryContect('');
+    setMallTwitter('');
+    SetCondation(true);
+    SetCondation1(true);
+    // setRetailertypename('');
+   
+    // setFiles([]);
+    // setFiles2([]);
+    // setFiles3([]);
+    // setFiles4([]);
+  }
 
   return (
     <>
@@ -422,7 +535,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
 
         {/* logo wrapp */}
         <div
-          className="band-inn-logo-wrapp"
+          className="band-inn-logo-wrapp band-inn-logo-wrapp-space-left"
           style={{ left: sidebaropen === false ? "5%" : "" }}
           {...getRootlogoProps()}>
           {/* <div style={{ width: '100%' }} {...getRootlogoProps()}> */}
@@ -453,7 +566,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                   maxHeight: "175px",
                   objectFit: "contain",
                 }}
-                // className="img-fluidb"
+              // className="img-fluidb"
               />
               <img
                 src={images.card_edit}
@@ -466,13 +579,13 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
           {/* </div> */}
         </div>
       </div>
-      <div className="mm_main_wrapp">
+      <div className="mm_main_wrapp mm_main_wrapp_Retail">
         {/* mall management name start */}
-        <div className="mall_name_wrapp">
+        <div className="mall_name_wrapp mall_mall_name_wrapp" style={{ paddingLeft: "0px" }}>
           <p className="mall_name_heading">{mainName}:</p>
-          <span>Account Settings</span>
+          <span style={{ fontWeight: "600" }}>Account Settings</span>
         </div>
-        <div className="mm_horizontal_line"></div>
+        {/* <div className="mm_horizontal_line"></div> */}
         {/* mall management name end */}
 
         {/* mall management form start */}
@@ -507,40 +620,8 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                   })}
               </select>
             </div> */}
-            {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Retailer</label>
-              <div className="select-wrapper" style={{ width: "100%" }}>
-                <select
-                  className="leaderboard-card-inp"
-                  onChange={(e) => {
-                    setRetailertype(e.target.value);
-                    setRetailertypename(e.target.value);
-                    getBrand(e.target.value);
-                  }}>
-                  <option defaultValue value="">
-                    {retailertypename}
-                  </option>
-                  {retailer_data &&
-                    retailer_data.map((item, index) => {
-                      return (
-                        <>
-                          {/* <option selected disabled value="">
-                      Auto-fill from database
-                    </option> */}
-                          <option value={item.id} key={index}>
-                            {item.name}
-                          </option>
-                        </>
-                      );
-                    })}
-                </select>
-              </div>
-            </div>
-
-            {/* single text-input */}
-            <div className="mm_form_single_input">
-              <label htmlFor="">Retailer type</label>
+              <label htmlFor="" className="mm_form_single_input_cinema_Acc_setting">Retailer type<span className="star_require">*</span></label>
 
               <div className="radio-btn-flex-brand">
                 <div className="radio-btn-inner-flex">
@@ -554,11 +635,10 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                       setMode(e.target.value);
                       console.log("-->", getmode);
                     }}
-                    // onChange={(e) => e.target.value}
                   />
-                  <label className="course-form-txt" for="male">
+                  <p className="" for="male">
                     Independent Retailer
-                  </label>
+                  </p>
                 </div>
 
                 <div className="radio-btn-inner-flex">
@@ -568,22 +648,92 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                     name="gender"
                     value="2"
                     checked={getmode == 2}
-                    // onChange={(e) => setMode(2)}
                     onChange={(e) => {
                       setMode(e.target.value);
                       console.log("-->", getmode);
                     }}
                   />
-                  <label className="course-form-txt" for="specifyColor">
-                    Group Retailer
-                  </label>
+                  <p for="specifyColor">Group Retailer</p>
                 </div>
               </div>
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="">
-                Your Brands <br /> <span>If applicable</span>
+              <label htmlFor="" className="mm_form_single_input_cinema_Acc_setting">Retailer<span className="star_require">*</span></label>
+              <div className="select-wrapper" style={{ width: "100%" }}>
+                <select
+                  className="leaderboard-card-inp"
+                  onChange={(e) => {
+                    setRetailertype(e.target.value);
+                    setRetailertypename(e.target.value);
+                    getBrandMultiple(e.target.value);
+                  }}>
+                  <option defaultValue value="">
+                    {retailertypename}
+                  </option>
+                  {retailer_data &&
+                    retailer_data.map((item, index) => {
+                      return (
+                        <>
+                          <option value={item.id} key={index}>
+                            {item.name}
+                          </option>
+                        </>
+                      );
+                    })}
+                </select>
+              </div>
+            </div>
+
+            {/* single text-input */}
+            {getmode == 2 ? <>
+              <div className="mm_form_single_input">
+              <label className="mm_form_single_input_cinema_Acc_setting" htmlFor="">
+                Your Cinema  <span className="star_require">*</span><br />{" "}
+                <span style={{ fontWeight: "300", fontSize: "13px" }}>
+                  If applicable
+                </span>
+              </label>
+              {/* <div className="select-wrapper" style={{ width: "100%" }}>
+                <select
+                  className="leaderboard-card-inp"
+                  onChange={(e) => {
+                    console.log("rrr", e.target.value);
+                    setMallname(e.target.value);
+                  }}>
+                  <option value="">{getbrandname}</option>
+                  {get_brand_data &&
+                    get_brand_data.map((item, index) => {
+                      return (
+                        <>
+                          <option value={item.id} key={index}>
+                            {item.name}
+                          </option>
+                        </>
+                      );
+                    })}
+                </select>
+              </div> */}
+
+              <Select
+                value={mallsOption2}
+                styles={{ width: "100%", padding: "0px" }}
+                className="leaderboard-card-inp"
+                closeMenuOnSelect={false}
+                components={animatedComponents}
+                // defaultValue={[colourOptions[4], colourOptions[5]]}
+
+                isMulti
+                options={get_brand_data_multiple}
+                onChange={setMallsOption2}
+              />
+            </div>
+            </> : <></>}
+            {/* <div className="mm_form_single_input">
+              <label htmlFor="" className="mm_form_single_input_cinema_Acc_setting">
+                Your Brands{" "}
+                <span className="star_require">*</span><br/>
+                <span className="course-form-txt">If applicable</span>
               </label>
               <div className="select-wrapper" style={{ width: "100%" }}>
                 <select
@@ -605,10 +755,24 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                     })}
                 </select>
               </div>
-            </div>
+
+              <Select
+                value={mallsOption2}
+                styles={{ width: "100%", padding: "0px" }}
+                className="leaderboard-card-inp"
+                closeMenuOnSelect={false}
+                components={animatedComponents}
+                // defaultValue={[colourOptions[4], colourOptions[5]]}
+
+                isMulti
+                options={get_brand_data_multiple}
+                onChange={setMallsOption2}
+              />
+
+            </div> */}
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Brand Address</label>
+              <label htmlFor="" className="mm_form_single_input_cinema_Acc_setting">Brand Address<span className="star_require">*</span></label>
               <input
                 type="text"
                 value={brandadd}
@@ -622,7 +786,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
 
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor=""></label>
+              <label htmlFor="" className="mm_form_single_input_cinema_Acc_setting"></label>
               <input
                 type="text"
                 value={brandadd2}
@@ -636,7 +800,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
 
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor=""></label>
+              <label htmlFor="" className="mm_form_single_input_cinema_Acc_setting"></label>
               <input
                 type="text"
                 value={brandadd3}
@@ -648,28 +812,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Select My Malls</label>
-              {/* <select
-                className="leaderboard-card-inp"
-                onChange={(e) => {
-                  SetMallDrop(e.target.value);
-                  console.log(e.target.value);
-                }}
-              >
-                {get_mall_data &&
-                  get_mall_data.map((item, index) => {
-                    return (
-                      <>
-                        <option selected disabled value="">
-                      Auto-fill from database
-                    </option>
-                        <option value={item.id} key={index}>
-                          {item.name}
-                        </option>
-                      </>
-                    );
-                  })}
-              </select> */}
+              <label htmlFor="" className="mm_form_single_input_cinema_Acc_setting">Select My Malls</label>
 
               <Select
                 value={mallsOption}
@@ -686,7 +829,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Website URL</label>
+              <label htmlFor="" className="mm_form_single_input_cinema_Acc_setting">Website URL<span className="star_require">*</span></label>
               <input
                 type="text"
                 value={mallWebsite}
@@ -698,7 +841,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Brand Email</label>
+              <label htmlFor="" className="mm_form_single_input_cinema_Acc_setting">Brand Email<span className="star_require">*</span></label>
               <input
                 type="text"
                 value={getbrand}
@@ -711,7 +854,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
 
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Instagram</label>
+              <label htmlFor="" className="mm_form_single_input_cinema_Acc_setting">Instagram</label>
               <input
                 type="text"
                 value={mallInsta}
@@ -723,7 +866,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Facebook</label>
+              <label htmlFor="" className="mm_form_single_input_cinema_Acc_setting">Facebook</label>
               <input
                 type="text"
                 value={mallfb}
@@ -735,7 +878,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Twitter</label>
+              <label htmlFor="" className="mm_form_single_input_cinema_Acc_setting">Twitter</label>
               <input
                 type="text"
                 value={mallTwitter}
@@ -747,7 +890,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Main Contact</label>
+              <label htmlFor="" className="mm_form_single_input_cinema_Acc_setting">Main Contact<span className="star_require">*</span></label>
               <input
                 type="text"
                 value={contactPerson}
@@ -759,7 +902,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Main Email</label>
+              <label htmlFor="" className="mm_form_single_input_cinema_Acc_setting">Main Email<span className="star_require">*</span></label>
               <input
                 type="email"
                 value={contactNumber}
@@ -771,7 +914,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Secondary Contact</label>
+              <label htmlFor="" className="mm_form_single_input_cinema_Acc_setting">Secondary Contact</label>
               <input
                 type="number"
                 value={scondrycontect}
@@ -781,9 +924,10 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                 className="input_box"
               />
             </div>
+           
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="">Secondary Email</label>
+              <label htmlFor="" className="mm_form_single_input_cinema_Acc_setting">Secondary Email</label>
               <input
                 type="email"
                 value={secondryemail}
@@ -793,36 +937,53 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                 className="input_box"
               />
             </div>
+
+            <div className="mm_form_single_input">
+              <label htmlFor="" className="mm_form_single_input_cinema_Acc_setting"></label>
+              <span style={{fontSize:"14px",color:"#bbb"}}>*Required Fields including all image uploads.</span>
+            </div>
             {/* mm terms condition wrapp */}
-            <div className="mm_form_single_input fs-des-resp">
-              <label htmlFor=""></label>
-              <div className="signup_terms_wrapp">
-                <input
-                  type="checkbox"
-                  value={isAcceptTerm}
-                  onChange={handleTermChange}
-                  checked={isAcceptTerm}
-                />
-                <p className="fs-des">
-                  I have read and agree to the{" "}
-                  <a className="signup_terms_link">Terms and Conditions</a> &{" "}
-                  <a className="signup_terms_link">Privacy Policy</a>
+            <div
+              className="mm_form_single_input fs-des-resp"
+              style={{ flexDirection: "column" }}>
+              <label htmlFor="" className="mm_form_single_input_cinema_Acc_setting"></label>
+              <div className="signup_terms_wrapp " style={{ gap: "10px" }}>
+                <label htmlFor="" className="editfac_label mm_form_single_input_cinema_Acc_setting"></label>
+                <input type="checkbox" />
+                <p className="fs-des"  style={{fontSize:"14px",fontWeight:"500"}}>
+                I can confirm that the above information is correct
                 </p>
               </div>
+              {/* <div className="signup_terms_wrapp " style={{ gap: "10px" }}>
+                <label htmlFor="" className="editfac_label mm_form_single_input_cinema_Acc_setting"></label>
+                <input type="checkbox" />
+                <p className="fs-des">
+                  I have read and agree to the &nbsp;
+                  <a className="signup_terms_link">Privacy Policy</a>
+                </p>
+              </div> */}
+              {/* <div className="signup_terms_wrapp" style={{ gap: "10px", marginTop: "0rem" }}>
+                <label htmlFor="" className="editfac_label mm_form_single_input_cinema_Acc_setting"></label>
+                <input type="checkbox" />
+                <p className="fs-des">
+                  I have read and agree to the{" "}
+                  <a className="signup_terms_link">Terms and Conditions</a>
+                </p>
+              </div> */}
             </div>
 
             {/* upload button */}
             <div className="mm_form_single_input">
-              <label htmlFor=""></label>
+              <label htmlFor="" className="mm_form_single_input_cinema_Acc_setting"></label>
               <div className="mall_upload_btn_wrapp">
                 <button
-                  className="btn btn-orange"
+                  className="btn btn-black"
                   onClick={() => UpdateMallData()}>
                   Update
                 </button>
                 <button
                   className="btn"
-                  style={{ color: "#777", fontWeight: "600" }}>
+                  style={{ color: "#777", fontWeight: "600" }} onClick={()=>{setResetModal(true)}}>
                   Reset
                 </button>
               </div>
@@ -847,7 +1008,8 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                 accept="image/jpeg, image/jpg, image/png, image/eps"
               /> */}
                 <h6 className="myprofile_upload_img_card_name">
-                  Upload the Shopping centre logo (200px x 200px)
+                  Upload the Brand logo
+                  <br /> (200px x 200px) <br/>(max 40kb)<span className="star_require">*</span>
                 </h6>
                 {getcondation === true ? (
                   <>
@@ -875,14 +1037,19 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                           <button
                             type="button"
                             className="click_upload_btn"
-                            style={{ marginBottom: "10px" }}>
+                            style={{
+                              marginBottom: "10px",
+                              color: "var(--color-orange)",
+                              fontWeight:"600",
+                            }}>
+                            {" "}
                             click here
                           </button>
                           {/* <a href="">clicking here</a> */}
                         </div>
                         <div className="btnn-main">
                           <button
-                            className="btn btn-orange mb_8"
+                            className="btn btn-black mb_8"
                             type="button"
                             onClick={() => {
                               // setFiles([]);
@@ -916,14 +1083,18 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                             <button
                               type="button"
                               className="click_upload_btn"
-                              style={{ marginBottom: "10px" }}>
+                              style={{
+                                marginBottom: "10px",
+                                color: "var(--color-orange)",
+                                fontWeight:"600",
+                              }}>
                               click here
                             </button>
                             {/* <a href="">clicking here</a> */}
                           </div>
                           <div className="btnn-main">
                             <button
-                              className="btn btn-orange mb_8"
+                              className="btn btn-black mb_8"
                               type="button"
                               onClick={() => {
                                 // setFiles([]);
@@ -932,11 +1103,11 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                             </button>
                           </div>
                         </div>
-                        <button
-                          className="btn btn-blue"
-                          onClick={() => setFiles([])}>
+                        {/* <button
+                          className="btn btn-blue cancelbtn"
+                          onClick={() => {setFiles([]);SetCondation(true);}}>
                           Cancel
-                        </button>
+                        </button> */}
                       </>
                     ) : (
                       <>
@@ -949,7 +1120,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                         </div>
                         <div className="btnn-main" style={{ width: "100%" }}>
                           <button
-                            className="btn btn-orange mb_8"
+                            className="btn btn-black mb_8"
                             type="button"
                             onClick={() => {
                               // setFiles([]);
@@ -970,7 +1141,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                   paddingRight: "5px",
                 }}>
                 <button
-                  className="btn btn-blue"
+                  className="btn btn-black cancelbtn"
                   onClick={() => setFiles([])}
                   style={{
                     marginBottom: "10px",
@@ -996,7 +1167,8 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                 accept="image/jpeg, image/jpg, image/png, image/eps"
               /> */}
                 <h6 className="myprofile_upload_img_card_name">
-                  Upload the Shopping centre Banner (1300px x 275px)
+                  Upload the Brand banner
+                  <br /> (1050px x 284px)<br/>(max 200kb)<span className="star_require">*</span>
                 </h6>
                 {getcondation1 === true ? (
                   <>
@@ -1024,14 +1196,18 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                           <button
                             type="button"
                             className="click_upload_btn"
-                            style={{ marginBottom: "10px" }}>
+                            style={{
+                              marginBottom: "10px",
+                              color: "var(--color-orange)",
+                              fontWeight:"600",
+                            }}>
                             click here
                           </button>
                           {/* <a href="">clicking here</a> */}
                         </div>
                         <div className="btnn-main">
                           <button
-                            className="btn btn-orange mb_8"
+                            className="btn mb_8 btn-black"
                             type="button"
                             onClick={() => {
                               // setFiles([]);
@@ -1065,14 +1241,18 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                             <button
                               type="button"
                               className="click_upload_btn"
-                              style={{ marginBottom: "10px" }}>
+                              style={{
+                                marginBottom: "10px",
+                                color: "var(--color-orange)",
+                                fontWeight:"600",
+                              }}>
                               click here
                             </button>
                             {/* <a href="">clicking here</a> */}
                           </div>
                           <div className="btnn-main">
                             <button
-                              className="btn btn-orange mb_8"
+                              className="btn btn-black mb_8"
                               type="button"
                               onClick={() => {
                                 // setFiles([]);
@@ -1081,11 +1261,11 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                             </button>
                           </div>
                         </div>
-                        <button
-                          className="btn btn-blue"
+                        {/* <button
+                          className="btn btn-blue cancelbtn"
                           onClick={() => setFiles2([])}>
                           Cancel
-                        </button>
+                        </button> */}
                       </>
                     ) : (
                       <>
@@ -1098,7 +1278,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                         </div>
                         <div className="btnn-main" style={{ width: "100%" }}>
                           <button
-                            className="btn btn-orange mb_8"
+                            className="btn btn-black mb_8"
                             type="button"
                             onClick={() => {
                               // setFiles([]);
@@ -1119,7 +1299,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                   paddingRight: "5px",
                 }}>
                 <button
-                  className="btn btn-blue"
+                  className="btn btn-black cancelbtn"
                   onClick={() => setFiles2([])}
                   style={{
                     marginBottom: "10px",
@@ -1131,11 +1311,9 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
               </div>
             </div>
             {/* single upload image */}
-            <div
+            {/* <div
               className="myprofile_inner_sec2"
               style={{
-                // border: "none",
-                // paddingBottom: "0px",
                 maxWidth: "250px",
               }}>
               <h4 style={{ marginBottom: "10px" }}>
@@ -1163,64 +1341,121 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                     <button
                       type="button"
                       className="click_upload_btn"
-                      style={{ marginBottom: "10px" }}>
+                      style={{
+                        marginBottom: "10px",
+                        color: "var(--color-orange)",
+                      }}>
                       click here
                     </button>
-                    {/* <a href="">clicking here</a> */}
                   </div>
                   <div className="btnn-main">
                     <button
-                      className="btn btn-orange"
+                      className="btn btn-black"
                       type="button"
-                      onClick={() => {
-                        // setFiles([]);
-                      }}
+                      onClick={() => {}}
                       style={{ marginBottom: "10px" }}>
                       Upload File
                     </button>
                   </div>
                 </div>
               )}
-              {/* <div className="myprofile_upload_img_btn_wrapp"> */}
-              <button className="btn btn-blue" onClick={() => setFiles3([])}>
+              <button
+                className="btn btn-black cancelbtn"
+                onClick={() => setFiles3([])}>
                 Cancel
               </button>
-              {/* </div> */}
-            </div>
+            </div> */}
           </div>
-          {/* upload images wrapp end */}
         </div>
         {/* mall management form end */}
 
-        <div
-          className="signup_terms_wrapp fs-des-resp2"
-          style={{ marginBottom: "20px", marginTop: "20px" }}>
-          <input
-            type="checkbox"
-            value={isAcceptTerm}
-            onChange={handleTermChange}
-            checked={isAcceptTerm == 1}
-          />
-          <p className="fs-des" style={{ fontWeight: "400", fontSize: "14px" }}>
-            I have read and agree to the{" "}
-            <a className="signup_terms_link">Terms and Conditions</a> &{" "}
-            <a className="signup_terms_link">Privacy Policy</a>
-          </p>
+        <div className="mm_form_single_input_res_display_none">
+          {/* <div className="signup_terms_wrapp" style={{ gap: "0px" }}>
+            <label htmlFor="" className=""></label> */}
+            {/* <label htmlFor="" className="editfac_label"></label> */}
+            {/* <input type="checkbox" />
+            <p className="fs-des">
+              I have read and agree to the &nbsp;
+              <a className="signup_terms_link">Privacy Policy</a>
+            </p>
+          </div> */}
+
+           <div className="signup_terms_wrapp" style={{ gap: "0px" }}>
+            <label htmlFor="" className=""></label>
+            {/* <label htmlFor="" className="editfac_label"></label> */}
+            <input type="checkbox" />
+            <p className="fs-des" style={{fontSize:"14px",fontWeight:"500"}}>
+            I can confirm that the above information is correct
+            </p>
+          </div>
+          {/* <div className="signup_terms_wrapp"> */}
+            {/* <label htmlFor="" className="editfac_label"></label> */}
+            {/* <input type="checkbox" />
+            <p className="fs-des">
+              I have read and agree to the{" "}
+              <a className="signup_terms_link">Terms and Conditions</a>
+            </p>
+          </div> */}
         </div>
 
         {/* upload images wrapp end */}
         <div className="mall_upload_btn_wrapp-resp">
           <button
-            className="btn btn-orange"
+            className="btn btn-black"
             disabled={isAcceptTerm == 1 ? false : true}
             onClick={() => UpdateMallData()}>
             Update
           </button>
-          <button className="btn" style={{ fontWeight: "600", color: "#777" }}>
+          <button className="btn" style={{ fontWeight: "600", color: "#777" }} onClick={()=>{setResetModal(true)}}>
             Reset
           </button>
         </div>
       </div>
+
+      <ReactModal
+        isOpen={resetmodal}
+        // onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <div className="sd_model_wrapp sd_model_wrapp-delete" >
+          {/* edit and delete orange btns start */}
+          <div className="sd_model_edit_wrap">
+
+
+
+
+            <button onClick={closeModal}>
+              <img src={images.close} alt="" />
+            </button>
+
+          </div>
+          {/* edit and delete orange btns end */}
+
+          {/* <p>Are you sure you want to Reset all Data</p> */}
+          <p>Are you sure you want to reset the form? <br/>Note that all your data will be cleared from the form by selecting this option</p>
+          <div className="delete-modal-btn-box">
+            <button onClick={() => {
+              // setStore_id(itm.id);
+              resetAccountData();
+              setResetModal(false);
+            }} className="delete-modal-btn">
+              Yes
+            </button>
+            {/* onClick={() => {
+              // setStore_id(itm.id);
+              // DeleteMallStoreData(itm.id);
+              setDeleteModal(true);
+            }} */}
+
+            <button onClick={closeModal} className="delete-modal-btn">
+            No
+            </button>
+          </div>
+        </div>
+        {/* </div> */}
+      </ReactModal>
     </>
   );
 };

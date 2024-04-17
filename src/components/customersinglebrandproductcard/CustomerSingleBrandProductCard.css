@@ -1,0 +1,8 @@
+.disc10_btn {
+    background-color: var(--color-orange);
+    padding: 0.2rem;
+    width: 100%;
+    color: var(--color-white);
+    font-weight: 700;
+    cursor: pointer;
+  }

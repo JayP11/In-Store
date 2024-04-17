@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { LeaderBoardCard, ProductBannerCard, RetailerNavigationBar } from "../../components";
+import { ProductBannerCard, RetailerNavigationBar } from "../../components";
 import images from "../../constants/images";
 import {
   ACCEPT_HEADER,
@@ -221,7 +221,6 @@ const ProductBanner = ({ get_mall_auth_data, setTab, getTab }) => {
     GetRegion();
     getCategoryApi();
     getWeekApi();
-
   }, []);
 
   const [getregion_array, SetRigion_Array] = useState([]);
@@ -241,7 +240,6 @@ const ProductBanner = ({ get_mall_auth_data, setTab, getTab }) => {
         if (res.data.success == 1) {
           SetRigion_Array(res.data.data);
         } else {
-          null;
         }
       })
       .catch((err) => {
@@ -293,13 +291,12 @@ const ProductBanner = ({ get_mall_auth_data, setTab, getTab }) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-          }}
-        >
+          }}>
           <div className="loader"></div>
         </div>
       ) : (
         <div className="mm_main_wrapp">
-          <div className="leaderboard-sub-wrapp">
+          <div className="leaderboard-sub-wrapp" style={{ gap: "1rem" }}>
             <RetailerNavigationBar
               title="Account Management"
               setTabType={getTab == 5 ? "Product Banner" : ""}
@@ -307,17 +304,33 @@ const ProductBanner = ({ get_mall_auth_data, setTab, getTab }) => {
             {/* LeaderBoard name start */}
             <div
               className="mall_name_wrapp mall_name_wrapp-spacebetween"
-              style={{ marginTop: "0px" }}
-            >
+              style={{ marginTop: "0px", paddingLeft: "0px" }}>
               <div className="leaderboard-inner-namebox">
                 <p className="mall_name_heading">{mainName}:</p>
-                <span className="leaderboard-span">Product Banners</span>
+                <span
+                  className="leaderboard-span"
+                  style={{ fontWeight: "600" }}>
+                  Brand Banners Slider
+                </span>
               </div>
-              <button onClick={() => setTab(22)} className="leaderboard-btn">
+              {/* <button onClick={() => setTab(22)} className="leaderboard-btn">
                 Add new{" "}
-                <img src={images.add_new} className="leaderboard-btn-icon" />
-              </button>
+                <img
+                  src={images.add_new}
+                  alt=""
+                  className="leaderboard-btn-icon"
+                />
+              </button> */}
             </div>
+            <p>
+              Purchase marketing space through our Leaderboard Banners below
+              (max 1 Leaderboard Banner per Reteiler per mall). There is a
+              limited amount of 5 banners per mall. Fist come, first serve.
+            </p>
+            <p style={{ color: "gray" }}>
+              Limited to three banner images per slider (If only one image is
+              uploaded, the banner will remain static).
+            </p>
             <div className="mm_horizontal_line"></div>
             {/* LeaderBoard  name end */}
 
@@ -326,8 +339,7 @@ const ProductBanner = ({ get_mall_auth_data, setTab, getTab }) => {
               <div className="leaderboard-filter-part-first">
                 <label
                   className="leaderboard-card-lbl"
-                  style={{ minWidth: "125px" }}
-                >
+                  style={{ minWidth: "125px" }}>
                   Filter by region:
                 </label>
                 <div className="select-wrapper" style={{ width: "100%" }}>
@@ -345,8 +357,7 @@ const ProductBanner = ({ get_mall_auth_data, setTab, getTab }) => {
               <div className="leaderboard-filter-part-sec">
                 <label
                   className="leaderboard-card-lbl"
-                  style={{ minWidth: "125px" }}
-                >
+                  style={{ minWidth: "125px" }}>
                   Filter by mall:
                 </label>
                 <div className="select-wrapper" style={{ width: "100%" }}>
@@ -373,27 +384,27 @@ const ProductBanner = ({ get_mall_auth_data, setTab, getTab }) => {
             {/* <LeaderBoardCard /> */}
             {getliast && getliast.length > 0
               ? getliast.map((mall, mindx) => {
-                return (
-                  <ProductBannerCard
-                    openMallModal={openMallModal}
-                    item={mall}
-                    mindx={mindx}
-                    setTab={setTab}
-                    getweek={getweek}
-                    setWeek={setWeek}
-                    peopleInfo={peopleInfo}
-                    regionidarray={regionidarray}
-                    mallidarray={mallidarray}
-                    selectedMalls={selectedMalls}
-                  />
-                );
-              })
+                  return (
+                    <ProductBannerCard
+                      openMallModal={openMallModal}
+                      item={mall}
+                      mindx={mindx}
+                      setTab={setTab}
+                      getweek={getweek}
+                      setWeek={setWeek}
+                      peopleInfo={peopleInfo}
+                      regionidarray={regionidarray}
+                      mallidarray={mallidarray}
+                      selectedMalls={selectedMalls}
+                    />
+                  );
+                })
               : null}
+              <span style={{fontSize:"14px",color:"#bbb",alignSelf:"flex-start",marginBottom:"0.7rem"}}>*Required Fields including all image uploads.</span>
             {totalPages !== page && (
               <button
                 className="view_more_btn"
-                onClick={() => setPage(page + 1)}
-              >
+                onClick={() => setPage(page + 1)}>
                 {loading ? "Loading..." : " Load More LeaderBoard"}
                 <BsChevronDown />
               </button>
@@ -402,10 +413,15 @@ const ProductBanner = ({ get_mall_auth_data, setTab, getTab }) => {
 
             {/* LeaderBoard Add New Button start */}
 
-            {getliast.length > 0 ? <Link to="" onClick={() => setTab(22)} className="leaderboard-btn">
-              Add new{" "}
-              <img src={images.add_new} className="leaderboard-btn-icon" />
-            </Link> : null}
+            {/* {getliast.length > 0 ? ( */}
+              <Link
+                to=""
+                onClick={() => setTab(22)}
+                className="leaderboard-btn">
+                Add new{" "}
+                <img src={images.add_new} className="leaderboard-btn-icon" />
+              </Link>
+            {/* ) : null} */}
 
             {/* LeaderBoard Add New Button end */}
           </div>
@@ -415,8 +431,7 @@ const ProductBanner = ({ get_mall_auth_data, setTab, getTab }) => {
             isOpen={mallMolalOpen}
             // onAfterOpen={afterOpenModal}
             onRequestClose={closeMallModal}
-            style={customStyles}
-          >
+            style={customStyles}>
             <div className="select_mall_main_wrapp">
               <div className="select_mall_base_wrapp">
                 {/* mall heading */}
@@ -474,26 +489,26 @@ const ProductBanner = ({ get_mall_auth_data, setTab, getTab }) => {
                 <div className="select_mall_tag_btns_wrapp">
                   {selectedMalls && selectedMalls.length > 0
                     ? selectedMalls.map((mall, mindx) => {
-                      // console.log("gggg", mall);
-                      return (
-                        <button
-                          className="select_mall_tag_single_btn"
-                          style={{ backgroundColor: "#4FBB10" }}
-                          key={mindx}
-                        // onClick={() => {
-                        //   handleMallChange(mall);
-                        //   // setPeopleInfo(
-                        //   //   peopleInfo.filter(
-                        //   //     (people) => people.name !== mall.name
-                        //   //   )
-                        //   // );
-                        // }}
-                        >
-                          {mall}
-                          {/* <IoIosClose className="select_mall_tag_single_btn_close" /> */}
-                        </button>
-                      );
-                    })
+                        // console.log("gggg", mall);
+                        return (
+                          <button
+                            className="select_mall_tag_single_btn"
+                            style={{ backgroundColor: "#4FBB10" }}
+                            key={mindx}
+                            // onClick={() => {
+                            //   handleMallChange(mall);
+                            //   // setPeopleInfo(
+                            //   //   peopleInfo.filter(
+                            //   //     (people) => people.name !== mall.name
+                            //   //   )
+                            //   // );
+                            // }}
+                          >
+                            {mall}
+                            {/* <IoIosClose className="select_mall_tag_single_btn_close" /> */}
+                          </button>
+                        );
+                      })
                     : null}
                 </div>
 
@@ -503,95 +518,90 @@ const ProductBanner = ({ get_mall_auth_data, setTab, getTab }) => {
                       fontSize: "18px",
                       alignSelf: "start",
                       marginBottom: "1rem",
-                    }}
-                  >
+                    }}>
                     Region
                   </p>
 
                   {getregion_array && getregion_array.length > 0
                     ? getregion_array.map((item, index) => {
-                      return (
-                        <div
-                          className="bim_accordian_wrapp"
-                          style={{ marginBottom: "6px" }}
-                          key={item.region_id}
-                        >
-                          <button
-                            className="bim_accordian_btn"
-                            onClick={() => {
-                              setToggle(item.region_id);
-                              handleRegionChange(
-                                item.region_name,
-                                item.region_id
-                              );
-                            }}
-                          >
-                            <p
-                              style={{
-                                color:
-                                  item.region_id === toggle
-                                    ? "#ff8b00"
-                                    : "#000",
-                                fontWeight:
-                                  item.region_id === toggle ? "500" : "300",
-                              }}
-                            >
-                              {item.region_name}
-                            </p>
-
-                            {item.region_id == toggle ? (
-                              <IoIosArrowUp size={20} color="#ff8b00" />
-                            ) : (
-                              <IoIosArrowDown size={20} />
-                            )}
-                          </button>
-                          {item.region_id == toggle ? (
-                            <div className="bim_accordian_mall_wrapp">
-                              {item.malls.map((itm, ind) => {
-                                return (
-                                  <>
-                                    <div
-                                      key={itm.id}
-                                      style={{
-                                        display: "flex",
-                                        gap: "10px",
-                                        marginLeft: "10px",
-                                      }}
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        checked={selectedMalls.includes(
-                                          itm.name
-                                        )}
-                                        // value={peopleInfo}
-                                        onChange={(e) => {
-                                          // handleCheckboxChange(e, itm, ind);
-                                          handleMallChange(itm.name, itm.id);
-                                        }}
-
-                                      // type="checkbox"
-                                      // checked={
-                                      //   getcheck[(itm, ind, "", item.region_id)]
-                                      // }
-                                      // onChange={(e) => {
-                                      //   check(itm, ind, "", item.region_id);
-                                      // }}
-                                      // value={peopleInfo}
-                                      />
-                                      <label htmlFor={itm.id}>
-                                        {itm.name}
-                                      </label>
-                                    </div>
-                                  </>
+                        return (
+                          <div
+                            className="bim_accordian_wrapp"
+                            style={{ marginBottom: "6px" }}
+                            key={item.region_id}>
+                            <button
+                              className="bim_accordian_btn"
+                              onClick={() => {
+                                setToggle(item.region_id);
+                                handleRegionChange(
+                                  item.region_name,
+                                  item.region_id
                                 );
-                              })}
-                            </div>
-                          ) : (
-                            ""
-                          )}
-                        </div>
-                      );
-                    })
+                              }}>
+                              <p
+                                style={{
+                                  color:
+                                    item.region_id === toggle
+                                      ? "#ff8b00"
+                                      : "#000",
+                                  fontWeight:
+                                    item.region_id === toggle ? "500" : "300",
+                                }}>
+                                {item.region_name}
+                              </p>
+
+                              {item.region_id == toggle ? (
+                                <IoIosArrowUp size={20} color="#ff8b00" />
+                              ) : (
+                                <IoIosArrowDown size={20} />
+                              )}
+                            </button>
+                            {item.region_id == toggle ? (
+                              <div className="bim_accordian_mall_wrapp">
+                                {item.malls.map((itm, ind) => {
+                                  return (
+                                    <>
+                                      <div
+                                        key={itm.id}
+                                        style={{
+                                          display: "flex",
+                                          gap: "10px",
+                                          marginLeft: "10px",
+                                        }}>
+                                        <input
+                                          type="checkbox"
+                                          checked={selectedMalls.includes(
+                                            itm.name
+                                          )}
+                                          // value={peopleInfo}
+                                          onChange={(e) => {
+                                            // handleCheckboxChange(e, itm, ind);
+                                            handleMallChange(itm.name, itm.id);
+                                          }}
+
+                                          // type="checkbox"
+                                          // checked={
+                                          //   getcheck[(itm, ind, "", item.region_id)]
+                                          // }
+                                          // onChange={(e) => {
+                                          //   check(itm, ind, "", item.region_id);
+                                          // }}
+                                          // value={peopleInfo}
+                                        />
+                                        <label htmlFor={itm.id}>
+                                          {itm.name}
+                                        </label>
+                                      </div>
+                                    </>
+                                  );
+                                })}
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        );
+                      })
                     : null}
                 </div>
 
@@ -602,8 +612,7 @@ const ProductBanner = ({ get_mall_auth_data, setTab, getTab }) => {
                       closeMallModal();
                       console.log("mallidarray", mallidarray);
                       console.log("regionidarray", regionidarray);
-                    }}
-                  >
+                    }}>
                     Submit
                   </button>
                 </div>

@@ -68,11 +68,12 @@ const FaqPage = () => {
         </div> */}
 
             <div
-              className="about_hero_wrapp about_hero_wrapp2"
+              className="faq_mall_main_wrapper about_hero_wrapp2"
               style={{
-                // backgroundImage: `url(${images.about_hero})`,
+                // backgroundImage: url(${images.about_hero}),
                 backgroundImage: `url(${
-                  getStoreData ? getStoreData.image_path : ""
+                  // getStoreData ? getStoreData.image_path : ""
+                  images.faq_banner
                 })`,
                 backgroundPosition: "center",
                 backgroundSize: "cover",

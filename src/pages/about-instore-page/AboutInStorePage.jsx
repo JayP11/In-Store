@@ -31,7 +31,7 @@ const AboutInStorePage = () => {
           setStoreData(res.data.data[0]);
           setLoading(false);
         } else {
-          // null;
+          null;
         }
       })
       .catch((err) => {
@@ -73,9 +73,8 @@ const AboutInStorePage = () => {
               className="about_hero_wrapp"
               style={{
                 // backgroundImage: `url(${images.about_hero})`,
-                backgroundImage: `url(${
-                  getStoreData ? getStoreData.image_path : ""
-                })`,
+                backgroundImage: `url(${getStoreData ? getStoreData.image_path : ""
+                  })`,
                 backgroundPosition: "center",
                 backgroundSize: "cover",
               }}>
@@ -91,12 +90,12 @@ const AboutInStorePage = () => {
                   <div className="apps_logos_wrapp">
                     {/* <img src={images.play_store_logo} alt="play store logo" /> */}
                     <img
-                      style={{ width: "155px", height: "46px" }}
+                      style={{ width: "155px", height: "46px",borderRadius:"8px" }}
                       src={getStoreData ? getStoreData.play_store_img_path : ""}
                       alt="play store logo"
                     />
                     <img
-                      style={{ width: "155px", height: "46px" }}
+                      style={{ width: "155px", height: "46px",borderRadius:"8px" }}
                       src={getStoreData ? getStoreData.app_store_img_path : ""}
                       alt="app store logo"
                     />
@@ -110,10 +109,10 @@ const AboutInStorePage = () => {
             {/* about in store start */}
             <div className="main_wrapp mt_16">
               <div className="container whayjoin_wrapp about-extra-gap-section">
-                <h1 className="h1 mb_10">
+                <h1 className="h1 mb_10" style={{fontWeight:"600"}}>
                   {getStoreData ? getStoreData.about_title : ""}
                 </h1>
-                <p className="mb_16">
+                <p className="mb_16" style={{fontSize:"14px"}}>
                   {getStoreData ? getStoreData.about_description : ""}
                   {/* Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
               nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam
@@ -129,7 +128,7 @@ const AboutInStorePage = () => {
                       alt=""
                     />
 
-                    <p>
+                    <p style={{fontSize:"14px"}}>
                       {getStoreData ? getStoreData.about_1 : ""}
 
                       {/* Shopping centre/Mall, promotions and activities are displayed
@@ -142,7 +141,7 @@ const AboutInStorePage = () => {
                       src={getStoreData ? getStoreData.about_image_2_path : ""}
                       alt=""
                     />
-                    <p>
+                    <p style={{fontSize:"14px"}}>
                       {getStoreData ? getStoreData.about_2 : ""}
                       {/* Users can view the shopping centre/Mall from anywhere */}
                     </p>
@@ -153,7 +152,7 @@ const AboutInStorePage = () => {
                       src={getStoreData ? getStoreData.about_image_3_path : ""}
                       alt=""
                     />
-                    <p>
+                    <p style={{fontSize:"14px"}}>
                       {getStoreData ? getStoreData.about_3 : ""}
                       {/* Multiple marketing initiatives, promo events, competitions can
                   be featured simultaneously on the platform. */}
@@ -165,7 +164,7 @@ const AboutInStorePage = () => {
                       src={getStoreData ? getStoreData.about_image_4_path : ""}
                       alt=""
                     />
-                    <p>
+                    <p style={{fontSize:"14px"}}>
                       {getStoreData ? getStoreData.about_4 : ""}
                       {/* Shopping centre/Mall can engage with users via notifications
                   for specials, sales, or events. */}
@@ -177,16 +176,16 @@ const AboutInStorePage = () => {
             {/* about instore end */}
 
             {/* about in store register part-1 start*/}
-            <div className="main_wrapp">
-              {/* <div className="main_wrapp registermall_main_wrapp bg-blue"> */}
+            {/* <div className="main_wrapp registermall_main_wrapp bg-blue"> */}
+            <div className="main_wrapp registermall_main_wrapp " style={{background:"#fff"}}>
               <div className="container registermall_base_wrapp">
-                <div className="registermall_sec1" style={{ color: "black" }}>
-                  <h2 className="h2">
+                <div className="registermall_sec1">
+                  <h2 className="h2"style={{color:"#000",fontWeight:"600"}}>
                     {getStoreData ? getStoreData.details_title_1 : ""}
                     {/* Malls Have More
                 <br /> Presence */}
                   </h2>
-                  <p>
+                  <p style={{color:"#000",fontSize:"14px",fontWeight:"400"}}>
                     {getStoreData ? getStoreData.details_description_1 : ""}
 
                     {/* Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed
@@ -195,9 +194,9 @@ const AboutInStorePage = () => {
                 nostrud exerci tation ullamcorper suscipit lobortis nisl ut
                 aliquip ex ea commodo. */}
                   </p>
-                  {/* <Link to="/mall" className="homepage-black-btn">
+                  <Link to="/mall" className="homepage-black-btn">
                     Register your mall
-                  </Link> */}
+                  </Link>
                 </div>
                 <div className="registermall_sec2">
                   <img
@@ -210,16 +209,15 @@ const AboutInStorePage = () => {
             {/* about in store register part-1 end*/}
 
             {/* about in store register part-2 start*/}
-            {/* <div className="main_wrapp registermall_main_wrapp bg-pink"> */}
-            <div className="main_wrapp">
+            <div className="main_wrapp registermall_main_wrapp" style={{background:"#fff"}}>
               <div className="container registermall_base_wrapp fd-rr">
-                <div className="registermall_sec1" style={{ color: "black" }}>
-                  <h2 className="h2">
+                <div className="registermall_sec1">
+                  <h2 className="h2" style={{color:"#000",fontWeight:"600"}}>
                     {getStoreData ? getStoreData.details_title_2 : ""}
                     {/* Stores Can Track
                 <br /> Customer Data */}
                   </h2>
-                  <p>
+                  <p style={{color:"#000", fontWeight:"400", fontSize:"14px"}}>
                     {getStoreData ? getStoreData.details_description_2 : ""}
 
                     {/* Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed
@@ -228,9 +226,9 @@ const AboutInStorePage = () => {
                 nostrud exerci tation ullamcorper suscipit lobortis nisl ut
                 aliquip ex ea commodo. */}
                   </p>
-                  {/* <Link to="/retailer" className="homepage-black-btn">
+                  <Link to="/retailer" className="homepage-black-btn">
                     Register your brand
-                  </Link> */}
+                  </Link>
                 </div>
                 <div className="registermall_sec2">
                   <img

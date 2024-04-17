@@ -103,6 +103,7 @@
     align-items: center;
     justify-content: center;
     width: 100%;
+    margin-top: 2rem;
 }
 
 .rating-star-icon {
@@ -121,6 +122,10 @@
     color: var(--color-orange);
 }
 
+
+.home_login_model_1sec_inner_cus_rating{
+    max-width: 500;
+}
 
 
 

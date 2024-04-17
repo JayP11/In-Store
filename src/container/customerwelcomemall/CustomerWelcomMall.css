@@ -5,7 +5,7 @@
 }
 
 .custwelmall-btn-card1 {
-    background-color: var(--color-orange);
+    background-color: var(--color-white);
     width: 250px;
     height: 90px;
     display: flex;
@@ -16,19 +16,19 @@
 }
 
 .custwelmall-card-icon {
-    width: 25px;
-    height: 25px;
-    color: var(--color-white);
+    width: 45px;
+    height: 45px;
+    color: var(--color-orange);
 }
 
 .custwelmall-card-txt {
-    color: var(--color-white);
+    color: var(--color-black);
     font-size: 16px;
-    font-weight: 800;
+    font-weight: 700;
 }
 
 .custwelmall-btn-card2 {
-    background-color: var(--color-pink);
+    background-color: var(--color-white);
     width: 250px;
     height: 90px;
     display: flex;
@@ -40,7 +40,7 @@
 
 
 .custwelmall-btn-card3 {
-    background-color: var(--color-dark-blue);
+    background-color: var(--color-white);
     width: 250px;
     height: 90px;
     display: flex;
@@ -52,7 +52,7 @@
 
 
 .custwelmall-btn-card4 {
-    background-color: var(--color-orange);
+    background-color: var(--color-white);
     width: 250px;
     height: 90px;
     display: flex;
@@ -64,7 +64,7 @@
 
 
 .custwelmall-btn-card5 {
-    background-color: var(--color-pink);
+    background-color: var(--color-white);
     width: 250px;
     height: 90px;
     display: flex;
@@ -75,13 +75,13 @@
 }
 
 .custwelmall-card-icon {
-    width: 25px;
-    height: 25px;
-    color: var(--color-white);
+    width: 45px;
+    height: 45px;
+    color: var(--color-orange);
 }
 
 .custwelmall-card-txt {
-    color: var(--color-white);
+    color: var(--color-black);
     font-size: 18px;
 }
 
@@ -95,13 +95,14 @@
     max-width: 850px;
     margin: 0 auto;
     margin-top: 20px;
+    margin-bottom: 1.5rem;
 }
 
 .custwelmall-contact-heading {
-    color: var(--color-orange);
+    color: var(--color-black);
     margin-bottom: 20px;
     font-size: 32px;
-    font-weight: 800;
+    font-weight: 600;
     text-transform: capitalizes;
 
 }
@@ -111,7 +112,7 @@
 }
 
 .custwelmall-contact-txt {
-    margin-bottom: 20px;
+    margin-bottom: 2rem;
     font-size: 18px;
 }
 
@@ -119,12 +120,12 @@
     display: flex;
     align-items: center;
     gap: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .custwelmall-contact-addr-heading {
     margin-bottom: 10px;
-    font-weight: 800;
+    font-weight: 600;
     font-size: 22px;
     text-transform: capitalize;
 }
@@ -144,6 +145,7 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    max-width: 900px;
 }
 
 .custwelmall-contact-social-part {
@@ -153,7 +155,7 @@
 }
 
 .custwelmall-social-name {
-    color: var(--color-orange);
+    color: var(--color-black);
     font-weight: 600;
     font-size: 18px;
 }
@@ -168,11 +170,28 @@
     display: flex;
     gap: 5px;
     align-items: center;
+    margin-bottom: 0.8rem;
 }
 
+
+.custwelmall-contact-detail-flex_addd{
+    max-width: 350px;
+}
 @media screen and (max-width: 1125px) {
     .custwelmall-contact-last-flex {
         gap: 35px;
+    }
+}
+
+@media screen and (max-width:940px) {
+    
+    .custwelmall-head{
+        font-size: 36px;
+    }
+
+    .custwelmall-contact-part-main-wrapp{
+        margin-bottom: 40px;
+        text-align: center;
     }
 }
 
@@ -191,5 +210,14 @@
     .custwelmall-contact-txt {
         text-align: center;
     }
+
+    .custwelmall-btn-card1{
+        width: 175px;
+    }
+    .custwelmall-btn-card1{ width: 175px;}
+    .custwelmall-btn-card2{ width: 175px;}
+    .custwelmall-btn-card3{ width: 175px;}
+    .custwelmall-btn-card4{ width: 175px;}
+    .custwelmall-btn-card5{ width: 175px;}
 
 }

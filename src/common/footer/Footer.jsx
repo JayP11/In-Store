@@ -11,11 +11,11 @@ const Footer = () => {
           <img src={images.instore_app_header_logo} alt=""  className='footer_logo_img'/>
         </div>
         <div className="footer_sec2">
-          <Link>Mall Registration</Link>
+          <Link to= 'mall'>Mall Registration</Link>
           <div className="foo_vl"></div>
-          <Link>Brand Registration</Link>
+          <Link to='/retailer'>Brand Registration</Link>
           <div className="foo_vl"></div>
-          <Link>Cinema Registration</Link>
+          <Link to= '/CinemaPage'>Cinema Registration</Link>
          
           {/* <div className="foo_vl"></div> */}
           <Link>Contact In-store</Link>
@@ -30,7 +30,7 @@ const Footer = () => {
           <div className="foo_vl"></div>
           <Link>Corporate T&C’s</Link>
           <div className="foo_vl"></div>
-          <Link>Privacy Policy</Link>
+          <Link to="/privacypolicy">Privacy Policy</Link>
         </div>
         <div className="footer_sec3">
           <p>© 2024 In-store App. All Rights Reserved.</p>

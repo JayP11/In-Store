@@ -8,7 +8,7 @@ const AddMallFacility = ({ get_mall_auth_data }) => {
             {/* mall management name start */}
             <div className="mall_name_wrapp">
                 <p className="mall_name_heading">{get_mall_auth_data.name}:</p>
-                <span>Add Facility</span>
+                <span style={{fontWeight:"600"}}>Add Facility</span>
             </div>
             <div className="mm_horizontal_line"></div>
             {/* mall management name end */}

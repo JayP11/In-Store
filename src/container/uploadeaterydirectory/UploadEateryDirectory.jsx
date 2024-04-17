@@ -6,6 +6,8 @@ import { AiOutlineCloudUpload } from 'react-icons/ai';
 import { MallHero } from '../../components';
 import { IoChevronBack } from 'react-icons/io5';
 import Notification from "../../utils/Notification"
+import images from '../../constants/images';
+import "./UploadEateryDirectory.css"
 
 
 const UploadEateryDirectory = ({ get_mall_auth_data, setTab, getTab }) => {
@@ -14,6 +16,18 @@ const UploadEateryDirectory = ({ get_mall_auth_data, setTab, getTab }) => {
     const [files, setFiles] = useState([]);
     const [filename, SetFileName] = useState("");
     const [load, SetLoad] = useState(false);
+    const [isAcceptTerm, setIsAcceptTerm] = useState(0);
+    const [isAcceptTerm2, setIsAcceptTerm2] = useState(0);
+
+
+    const handleTermChange = (e) => {
+        setIsAcceptTerm(1);
+        console.log("e.targate.value");
+    };
+    const handleTermChange2 = (e) => {
+        setIsAcceptTerm2(1);
+        console.log("e.targate.value");
+    };
 
     const DownTemp = async () => {
         const token = JSON.parse(localStorage.getItem("is_token"));
@@ -105,49 +119,67 @@ const UploadEateryDirectory = ({ get_mall_auth_data, setTab, getTab }) => {
     return (
         <>
             <MallHero get_mall_auth_data={get_mall_auth_data} />
-            <div className="mm_main_wrapp">
+            <div className="mm_main_wrapp ">
                 <div className='edit-brand-back-iconbox' onClick={() => setTab(4)}><IoChevronBack className='edit-brand-back-icon' /> <p className='edit-brand-back-txt'>Back</p></div>
-                <div className="mall_name_wrapp">
-                    <p className="mall_name_heading">
+                <div className="mall_name_wrapp mall_name_wrapp_eatery_upload mall_mall_name_wrapp">
+                    <p className="mall_name_heading mall_mall_name_heading">
                         {get_mall_auth_data.name && get_mall_auth_data.name} :
                     </p>
-                    <span>Upload Eatery Directory</span>
+                    <span className='mall_mall_name_heading' style={{ fontWeight: "600" }}>Upload Mall Eateries</span>
                 </div>
-                <div className="mm_horizontal_line"></div>
+                {/* <div className="mm_horizontal_line"></div> */}
+                <div className="" style={{ marginBottom: "2rem" }}></div>
                 <div className="store-directory-card">
                     <div className="store-directory-part1">
                         <div className="store-directory-first-inner-part1">
-                            <p className="store-dire-head">
+                            <p className="store-dire-head" style={{ fontWeight: "500" }}>
                                 How to upload an Excel file and display it via the spreadsheet
                                 control
                             </p>
-                            <ul>
-                                <li>
-                                    Download the In-store{" "}
-                                    <span
-                                        style={{
-                                            color: "var(--color-orange)",
-                                            fontWeight: "600",
-                                            cursor: "pointer",
-                                        }}
-                                    >
-                                        Excel template
-                                    </span>{" "}
-                                    file below
-                                </li>
-                                <li>Add your data to the In-store Excel file</li>
-                                <li>Save your Excel file with the shopping centre/Mall name</li>
-                                <li>Upload it for processing</li>
-                            </ul>
+                            <div>
+                                <div className="cinema_profile_bullet">
+                                    <div>●</div>
+                                    <p>
+                                        Download the In-store{" "}
+                                        <span
+                                            style={{
+                                                color: "var(--color-orange)",
+                                                fontWeight: "600",
+                                                cursor: "pointer",
+                                            }}
+                                        >
+                                            Excel template
+                                        </span>{" "}
+                                        file below
+                                    </p>
+                                </div>
+                                <div className="cinema_profile_bullet">
+                                    <div>●</div>
+                                    <p>Add your brand name, shop number, contact
+                                        number, contact email, shop trading hours, and
+                                        shop description to the In-store shop directory
+                                        template Excel file.</p>
+
+                                </div>
+                                <div className="cinema_profile_bullet">
+                                    <div>●</div>
+                                    <p>Save your Excel file with the shopping centre/Mall name</p>
+                                </div>
+                                <div className="cinema_profile_bullet">
+                                    <div>●</div>
+                                    <p>Upload it for processing</p>
+                                </div>
+                            </div>
                         </div>
                         <div className="store-directory-first-inner-part2">
-                            <button
-                                className="btn btn-orange"
+                            <button style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}
+                                className="btn btn-black"
                                 onClick={() => {
                                     DownTemp();
                                 }}
                             >
                                 Download Template
+                                <img src={images.download_upload_directory} style={{ width: "20px", height: "20px" }} />
                             </button>
                         </div>
                         {/* <p className="update-details-txt">Drag and drop the Event <br /> image here (250 x 250)</p>
@@ -177,8 +209,8 @@ const UploadEateryDirectory = ({ get_mall_auth_data, setTab, getTab }) => {
                                     }}
                                 />
 
-                                <h4 className="">.ELSX .CVS</h4>
-                                <p className="">You can also upload files by</p>
+                                <h4 className="" style={{fontWeight:"500"}}>.ELSX .CVS</h4>
+                                <p className="" style={{fontWeight:"500"}}>You can also upload files by</p>
                                 {filename === "" ? null : <p> {filename} </p>}
                                 <input
                                     {...getInputlogoProps()}
@@ -187,45 +219,77 @@ const UploadEateryDirectory = ({ get_mall_auth_data, setTab, getTab }) => {
                                     id="xlsFile"
                                     accept=".xls, .xlsx"
                                 />
-                                <button type="button" className="click_upload_btn" style={{ marginBottom: "10px" }}>
-                                    click here
+                                <button type="button" className="click_upload_btn" style={{ marginBottom: "10px", fontSize: "14px", }}>
+                                    clicking here
                                 </button>
                             </div>
                         </div>
                     )}
-                    <div className="store-directory-part3">
-                        <div className="store-directory-third-inner-part1">
-                            <button
-                                style={{
-                                    color: "var(--color-orange",
-                                    cursor: "pointer",
-                                    fontSize: "18px",
-                                    fontWeight: "600",
-                                }}
-                            //   onClick={() => setIsOpen(true)}
-                            ></button>
+                    <div className='upl_dir_la_flex_main'>
+                        <div className='upl_dir_la_flex'>
+                            <div className="store-directory-part3">
+                                <div className="store-directory-third-inner-part1">
+                                    <button
+                                        style={{
+                                            color: "var(--color-black",
+                                            cursor: "pointer",
+                                            fontSize: "18px",
+                                            fontWeight: "600",
+                                        }}
+                                    //   onClick={() => setIsOpen(true)}
+                                    ></button>
+                                </div>
+                                {load === true ? null : (
+                                    <button
+                                        className="btn btn-black mb-10"
+                                        disabled={isAcceptTerm == 1 ? false : true}
+
+                                        onClick={() => {
+                                            Uploadfile();
+                                        }}
+                                    >
+                                        Upload File
+                                    </button>
+                                )}
+                            </div>
+                            <div className="store-directory-part4" >
+                                <button
+                                    className="btn"
+                                    onClick={() => {
+                                        SetFileName("");
+                                        setFiles([]);
+                                    }}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
                         </div>
-                        {load === true ? null : (
-                            <button
-                                className="btn btn-orange mb-10"
-                                onClick={() => {
-                                    Uploadfile();
-                                }}
-                            >
-                                Upload File
-                            </button>
-                        )}
-                    </div>
-                    <div className="store-directory-part4">
-                        <button
-                            className="btn btn-blue"
-                            onClick={() => {
-                                SetFileName("");
-                                setFiles([]);
-                            }}
-                        >
-                            Cancel
-                        </button>
+                        <div>
+                            <div className="signup_terms_wrapp">
+                                <input
+                                    type="checkbox"
+                                    value={isAcceptTerm}
+                                    onChange={handleTermChange}
+                                    checked={isAcceptTerm == 1}
+                                />
+                                <p className="fs-des" style={{ fontWeight: "400", fontSize: "14px" }}>
+                                    I have read and agree to the{" "}
+                                    <a className="signup_terms_link">Terms and Conditions</a>
+                                </p>
+                            </div>
+                            <div className="signup_terms_wrapp" style={{ marginTop: "0.5rem" }}>
+                                <input
+                                    type="checkbox"
+                                    value={isAcceptTerm2}
+                                    onChange={handleTermChange2}
+                                    checked={isAcceptTerm2 == 1}
+                                />
+                                <p className="fs-des" style={{ fontWeight: "400", fontSize: "14px" }}>
+                                    I have read and agree to the{" "}
+                                    <a className="signup_terms_link">Privacy Policy</a>
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

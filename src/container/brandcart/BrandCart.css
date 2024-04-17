@@ -41,6 +41,17 @@
     width: fit-content;
 }
 
+.brand_carttt{
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+
+@media screen and(max-width:900px) {
+    .mall_name_wrapp_retailer_cart{
+        flex-direction: row;
+    }
+}
 @media screen and (max-width:450px) {
     .brandcart_total_wrapp{
         align-items: center;

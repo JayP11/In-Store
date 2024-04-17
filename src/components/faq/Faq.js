@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Faq.css";
 import { IoIosArrowDown } from "react-icons/io";
 import { Button } from "antd";
 import { useState } from "react";
 import CinemaWelcomeStoreCard from "../cinemawelcomestorecard/CinemaWelcomeStoreCard";
+import { ACCEPT_HEADER, get_faq } from "../../utils/Constant";
+import axios from "axios";
 
 const Data = [
   {
@@ -60,90 +62,101 @@ const Data = [
 const Faq = () => {
   const [getfaq1, setFaq1] = useState();
   const [getcon, SetCon] = useState(false);
+  const [getFaqArray, SetFaqArray] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+
+  useEffect(()=>{
+    getFaqData();
+  },[])
+
+  const getFaqData = async () => {
+    const token = JSON.parse(localStorage.getItem("is_token"));
+    setLoading(true);
+    axios
+      .get(get_faq, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((res) => {
+        console.log("ggg", JSON.stringify(res.data, null, 2));
+        if (res.data.success == 1) {
+          SetFaqArray(res.data.data);
+          setLoading(false);
+          // Notification("success", "Success!", "Mall Registerated Successfully!");
+        } else {
+          null;
+        }
+      })
+      .catch((err) => {
+        console.log("err11", err);
+        setLoading(false);
+      });
+  };
 
   return (
+    <>
+     {loading === true ? (
+        <div
+          style={{
+            width: "100%",
+            height: "80vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}>
+          <div className="loader"></div>
+        </div>
+      ) : (
     <div className="faq-main">
-      <div className="faq-heading-part">
-        <h2 className="faq-head">FAQs</h2>
-        <p className="faq-head-txt">
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
-          nonummy nibh.
-        </p>
-      </div>
-      <div className="faq-con">
-        <div className="faq-part-orange-main">
-          <div className="faq-orange-sub-part">
-            {Data &&
-              Data.map((item, index) => {
-                console.log("--->", item);
-                return (
-                  <>
-                    {item.color == 1 ? (
-                      <>
-                        <div className="faq-orange-main faq-black-main">
-                          <div className="faq-orange-que-flex">
-                            <p className="faq-orange-que">{item.title}</p>
-                            <Button
-                              className="faq-btn"
-                              onClick={() => {
-                                // setFaq1(item.id), SetCon(!getcon);
-                              }}>
-                              <IoIosArrowDown className="faq-icon-up" />
-                            </Button>
-                          </div>
-                          {item.id == getfaq1 && getcon === true ? (
-                            <p>
-                              <p className="faq-desc">{item.desc}</p>
-                            </p>
-                          ) : null}
-                        </div>
-                      </>
-                    ) : null}
-                  </>
-                );
-              })}
-          </div>
-        </div>
-        <div className="faq-part-black-main">
-          <div className="faq-orange-sub-part">
-            {Data &&
-              Data.map((item, index) => {
-                console.log("--->", item);
-                return (
-                  <>
-                    {item.color == 2 ? (
-                      <>
-                        <div className="faq-black-main">
-                          <div className="faq-orange-que-flex">
-                            <p className="faq-orange-que">{item.title}</p>
-                            <Button
-                              className="faq-btn"
-                              onClick={() => {
-                                setFaq1(item.id);
-                                SetCon(!getcon);
-                                console.log("index is", item.id);
-                              }}>
-                              <IoIosArrowDown className="faq-icon-up" />
-                            </Button>
-                          </div>
-
-                          {item.id == getfaq1 && getcon === true ? (
-                            <div>
-                              <p className="faq-desc">{item.desc}</p>
-                            </div>
-                          ) : null}
-                        </div>
-                      </>
-                    ) : null}
-                  </>
-                );
-              })}
-          </div>
-        </div>
-      </div>
-
-      {/* <CinemaWelcomeStoreCard WcBtn={true} /> */}
+    <div className="faq-heading-part">
+      <h2 className="faq-head">FAQs</h2>
+      <p className="faq-head-txt">
+        Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
+        nonummy nibh.
+      </p>
     </div>
+    <div className="faq-con">
+      {/* <div className="faq-part-orange-main">
+        <div className="faq-orange-sub-part"> */}
+          {getFaqArray &&
+            getFaqArray.map((item, index) => {
+              console.log("--->", item);
+              return (
+                <>
+                
+                    <>
+                      <div className="faq-orange-main faq-black-main">
+                        <div className="faq-orange-que-flex"  onClick={() => {
+                              setFaq1(item.id), SetCon(!getcon);
+                            }}>
+                          <p className="faq-orange-que">{item.name}</p>
+                          <Button
+                            className="faq-btn"
+                           >
+                            <IoIosArrowDown className="faq-icon-up" />
+                          </Button>
+                        </div>
+                        {item.id == getfaq1 && getcon === true ? (
+                          <p>
+                            <p className="faq-desc">{item.description}</p>
+                          </p>
+                        ) : null}
+                      </div>
+                    </>
+                 
+                </>
+              );
+            })}
+        {/* </div>
+      </div> */}
+   
+    </div>
+
+  </div> )}
+  </>
   );
 };
 

@@ -1,54 +1,83 @@
 .band-inn-logo-wrapp-space-left {
-    left: 450px;
-}
-
-@media screen and (max-width:1490px) {
+    left: 350px;
+  }
+  
+  .retailer-display-none4 {
+    padding-top: 4rem !important;
+    padding-left: 4rem !important;
+    margin: 0px !important;
+  }
+  
+  .retailer-display-none5 {
+    padding-top: 3rem !important;
+    padding-left: 5rem !important;
+    margin: 0px !important;
+  }
+  
+  .retailer-display-none6 {
+    padding-top: 4rem !important;
+    padding-left: 4rem !important;
+    margin: 0px !important;
+  }
+  
+  .retailer-display-none7 {
+    margin: 0px !important;
+    padding: 2rem !important;
+    padding-left: 3rem !important;
+    padding-top: 4rem !important;
+  }
+  
+  @media screen and (max-width: 1490px) {
     .mallpp_main_wrapp-resp {
-        width: 100% !important;
+      width: 100% !important;
     }
-}
-
-@media screen and (max-width:1195px) {
+  }
+  
+  @media screen and (max-width: 1195px) {
     .mallpp_main_wrapp-resp {
-        width: 85% !important;
+      width: 85% !important;
     }
-}
-
-@media screen and (max-width:975px) {
+  }
+  
+  @media screen and (max-width: 975px) {
     .mallpp_main_wrapp-resp {
-        width: 90% !important;
+      width: 90% !important;
     }
-}
-
-@media screen and (max-width:900px) {
+  }
+  
+  @media screen and (max-width: 900px) {
     .band-inn-logo-wrapp-space-left {
-        left: 5%;
+      left: 5%;
     }
-}
-
-@media screen and (max-width:768px) {
+  }
+  
+  @media screen and (max-width: 768px) {
     .band-inn-logo-wrapp {
-        position: absolute;
-        left: 5%;
-        top: 19%;
-        width: 140px;
-        height: 140px;
-        background: var(--color-white);
-        border-radius: 165px;
-        overflow: hidden;
+      position: absolute;
+      left: 5%;
+      top: 19%;
+      width: 140px;
+      height: 140px;
+      background: var(--color-white);
+      border-radius: 165px;
+      overflow: hidden;
     }
-}
-
-@media screen and (max-width:550px) {
+  }
+  
+  @media screen and (max-width: 550px) {
     .mall_part_1_heading {
-        font-size: 36px;
-
+      font-size: 36px;
     }
-}
-
-@media screen and (max-width:420px) {
+  }
+  
+  @media screen and (max-width: 520px) {
+    .retailer-display-none5 {
+      padding-left: 3rem !important;
+    }
+  }
+  
+  @media screen and (max-width: 420px) {
     .mall_part_1_heading {
-        font-size: 32px;
-
+      font-size: 32px;
     }
-}
+  }

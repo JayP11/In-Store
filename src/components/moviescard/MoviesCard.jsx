@@ -1,6 +1,7 @@
 import React from "react";
 import "./MoviesCard.css";
 import images from "../../constants/images";
+import { Link } from "react-router-dom";
 
 const MoviesCard = ({ item }) => {
     return (
@@ -20,6 +21,7 @@ const MoviesCard = ({ item }) => {
                     {item.genres ? item.genres.name : ""}{" "}
                 </p>
                 <a href={item.booking_url} className="movies-card-btn btn btn-black" target="_blank">Book now</a>
+                {/* <Link to={`${item.booking_url}`} target="_blank">Test</Link> */}
             </div>
         </div>
     );

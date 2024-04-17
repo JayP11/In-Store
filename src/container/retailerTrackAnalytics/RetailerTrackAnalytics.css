@@ -1,0 +1,13 @@
+.RetailerTrackAnalytics_main {
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  @media screen and (max-width: 950px) {
+    .RetailerTrackAnalytics_main {
+      padding: 1.5rem;
+      padding-top: 3rem;
+    }
+  }

@@ -1,3 +1,18 @@
 .DateRangePicker_LeaderboardCard ::placeholder {
     color: var(--color-black);
-}
+  }
+  @media screen and (max-width: 1230px) {
+    .leaderboard-card-sec-resp-main-wrapp_edited {
+      display: flex;
+      order: 1;
+      justify-content: flex-end;
+      gap: 1rem;
+      align-items: flex-end;
+      flex-direction: column;
+    }
+  
+    .cartbtnblack,
+    .updatebtnorg {
+      width: 160px;
+    }
+  }

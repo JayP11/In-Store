@@ -19,7 +19,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    font-weight: 800;
+    font-weight: 700;
     font-size: 20px;
     align-self: flex-end;
 }
@@ -102,7 +102,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: start;
+    justify-content:  flex-start;
     /* gap: 1rem; */
 }
 
@@ -119,7 +119,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    font-weight: 800;
+    font-weight: 600;
     font-size: 20px;
     align-self: flex-end;
 }
@@ -169,7 +169,7 @@
 
 @media screen and (max-width: 1385px) {
     .leaderboard-inner-namebox {
-        flex-direction: column;
+        /* flex-direction: column; */
     }
 
     .leaderboard-btn {
@@ -195,5 +195,10 @@
 
     .select_mall_base_wrapp {
         width: 80vw;
+    }
+
+    .img-fluid-width{
+        width: 65px !important;
+        height: 65px !important;
     }
 }

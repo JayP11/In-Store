@@ -52,7 +52,7 @@ const CustomerHomeWelcomeStore = ({ WcBtn, titie, des }) => {
     return (
         <div className="main_wrapp">
             <div className="container welcome_store_wrapp wel-sec-gap">
-                <h1 className="h1" style={{ marginBottom: "1rem" }}>
+                <h1 className="h1" style={{ marginBottom: "1rem",fontWeight:"600" }}>
                     {titie ? titie.welcome_title : "Welcome to In-storeeee"}
                 </h1>
                 <p>{des ? des.welcome_description : ""}</p>
@@ -82,23 +82,34 @@ const CustomerHomeWelcomeStore = ({ WcBtn, titie, des }) => {
                     {/* </Slider> */}
                     <div className="home-wel-card-flex">
                         <WelcomeCard
-                            img1={images.wcard_3}
+                            // img1={images.wcard_3}
                             h3="HEY MALL OWNERS"
-                            h4="EXPERIENCE SHOPPING ON A WHOLE NEW LEVEL"
-                            color="#d813a5"
-                            wc_btn={WcBtn ? "Register mall" : null}
+                            h4="LOREM IPSUM DOLOR SIT AMET CONSECTETUER"
+                            color="#000"
+                            
+                            wc_btn={WcBtn ? "Register your mall" : null}
                             wc_btnlink={WcBtn ? "/mall" : null}
                             style={{ margin: "0px" }}
                         />
                         <WelcomeCard
-                            img1={images.wcard_2}
+                            // img1={images.wcard_2}
                             h3="HEY RETAIL OWNERS"
-                            h4="TRACK <br /> VALUEABLE <br />  CUSTOMERDATA "
+                            h4="LOREM IPSUM DOLOR SIT AMET CONSECTETUER"
                             color="#ff8b00"
-                            wc_btn={WcBtn ? "Register brand" : null}
+                            wc_btn={WcBtn ? "Register your brand" : null}
                             wc_btnlink={WcBtn ? "/retailer" : null}
                             style={{ margin: "0px" }}
                         />{" "}
+                        <WelcomeCard
+                            // img1={images.wcard_3}
+                            h3="HEY CINEMA OWNERS"
+                            h4="LOREM IPSUM DOLOR SIT AMET CONSECTETUER"
+                            color="#000"
+                            
+                            wc_btn={WcBtn ? "Register your cinema" : null}
+                            wc_btnlink={WcBtn ? "/CinemaPage" : null}
+                            style={{ margin: "0px" }}
+                        />
                     </div>
                 </div>
             </div>

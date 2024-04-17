@@ -60,28 +60,101 @@ import {
   GET_MULTIPLE_Mall_BEGIN,
   GET_MULTIPLE_MALL_SUCCESS,
   GET_MULTIPLE_Mall_ERROR,
+  GET_MALL_CINEMA_BEGIN,
+  GET_CINEMA_MALL_SUCCESS,
+  GET_CINEMA_MALL_FAIL,
+  GET_MALL_CINEMA_SUCCESS,
+  GET_MALL_CINEMA_FAIL,
+  GET_CINEMA_BEGIN,
+  GET_CINEMA_SUCCESS,
+  GET_CINEMA_FAIL,
+  UPDATE_CINEMA_FAIL,
+  UPDATE_CINEMA_SUCCESS,
+  UPDATE_CINEMA_BEGIN,
+  GET_CINEMA_CATEGORY_BEGIN,
+  GET_CINEMA_CATEGORY_SUCCESS,
+  GET_CINEMA_CATEGORY_FAIL,
+  CREATE_LANDING_PAGE_TILE_FAIL,
+  CREATE_LANDING_PAGE_TILE_SUCCESS,
+  CREATE_LANDING_PAGE_TILE_BEGIN,
+  UPDATE_LANDING_PAGE_TILE_FAIL,
+  UPDATE_LANDING_PAGE_TILE_SUCCESS,
+  UPDATE_LANDING_PAGE_TILE_BEGIN,
+  DELETE_LANDING_PAGE_TILE_BEGIN,
+  DELETE_LANDING_PAGE_TILE_SUCCESS,
+  DELETE_LANDING_PAGE_TILE_FAIL,
+  CREATE_LANDING_PAGE_SQUARE_LEADERBOARD_FAIL,
+  CREATE_LANDING_PAGE_LEADERBOARD_SUCCESS,
+  CREATE_LANDING_PAGE_LEADERBOARD_BEGIN,
+  UPDATE_LANDING_PAGE_LEADERBOARD_FAIL,
+  UPDATE_LANDING_PAGE_LEADERBOARD_SUCCESS,
+  UPDATE_LANDING_PAGE_LEADERBOARD_BEGIN,
+  DELETE_LANDING_PAGE_LEADERBOARD_FAIL,
+  DELETE_LANDING_PAGE_LEADERBOARD_SUCCESS,
+  DELETE_LANDING_PAGE_LEADERBOARD_BEGIN,
+  DELETE_ANALYTICS_BUNDLE_BEGIN,
+  DELETE_ANALYTICS_BUNDLE_SUCCESS,
+  DELETE_ANALYTICS_BUNDLE_FAIL,
+  UPDATE_ANALYTICS_BUNDLE_FAIL,
+  UPDATE_ANALYTICS_BUNDLE_SUCCESS,
+  UPDATE_ANALYTICS_BUNDLE_BEGIN,
+  CREATE_ANALYTICS_BUNDLE_BEGIN,
+  CREATE__ANALYTICS_BUNDLE_SUCCESS,
+  CREATE_ANALYTICS_BUNDLE_FAIL,
+  CREATE_LANDING_PAGE_LEADERBOARD_FAIL,
+  CREATE_LANDING_PAGE_SQUARE_TILE_FAIL,
+  CREATE_LANDING_PAGE_SQUARE_TILE_SUCCESS,
+  CREATE_LANDING_PAGE_SQUARE_TILE_BEGIN,
+  UPDATE_LANDING_PAGE_SQUARE_TILE_FAIL,
+  UPDATE_LANDING_PAGE_SQUARE_TILE_SUCCESS,
+  UPDATE_LANDING_PAGE_SQUARE_TILE_BEGIN,
+  DELETE_LANDING_PAGE_SQUARE_TILE_BEGIN,
+  DELETE_LANDING_PAGE_SQUARE_TILE_SUCCESS,
+  DELETE_LANDING_PAGE_SQUARE_TILE_FAIL,
+  GET_STORE_CART_ERROR,
+  GET_STORE_CART_SUCCESS,
+  GET_STORE_CART_BEGIN
 } from "../Action";
 
 import {
   ACCEPT_HEADER,
+  cinema_register,
+  create_analytic_bundle,
+  create_landingpage_leaderboard,
+  create_landingpage_squaretile,
+  create_landingpagetile,
   create_leaderboard,
   create_product,
   create_productbanner,
   create_productbannertiles,
   create_promotion,
+  delete_analytic_bundle,
+  delete_landingpage_leaderboard,
+  delete_landingpage_squaretile,
+  delete_landingpagetile,
   delete_leaderboard,
   delete_productbanner,
   delete_productbannertiles,
   delete_promotion,
   get_category,
+  get_cinema,
+  get_cinema_category,
+  get_cinema_retailer,
   get_customer,
+  get_multiple_mall,
   get_retailer,
   get_store,
+  get_store_cart,
   get_store_mall,
   get_week,
   register_store,
   store_register,
+  update_analytic_bundle,
+  update_cinema,
   update_customer,
+  update_landingpage_leaderboard,
+  update_landingpage_squaretile,
+  update_landingpagetile,
   update_leaderboard,
   update_product,
   update_productbanner,
@@ -90,18 +163,32 @@ import {
   update_store,
 } from "../utils/Constant";
 import { useMallContext } from "./mall_context";
+import { json } from "react-router-dom";
 
 const initialState = {
   get_store_loading: false,
+  get_cinema_loading: false,
   register_store_loading: false,
   ratailer_data_loading: false,
+  cinema_mall_data_loading:false,
+  landingpage_leaderboard_data_loading:false,
+  landingpage_square_data_loading:false,
+  analytic_bundle_loading:false,
+  landingpage_leaderboard_data:[],
+  landingpage_square_data:[],
+  analytic_bundle_data:[],
   get_store_data: {},
+  get_cinema_data: {},
   register_store_data: {},
   retailer_data: [],
+  cinema_mall_data:[],
   category_data: [],
+  cinema_category_data: [],
   category_data_loading: false,
+  cinema_category_data_loading: false,
 
   brand_update_loading: false,
+  cinema_update_loading: false,
   delete_leaderboard_loading: false,
   delete_promotion_loading: false,
   delete_product_loading: false,
@@ -109,11 +196,22 @@ const initialState = {
   update_promotion_loading: false,
   update_product_loading: false,
   brand_update_data: {},
+  cinema_update_data: {},
   leaderboard_update_data: {},
+  cinemalandingpagetile_update_data: [],
+  cinemalandingpagetile_update_loading: false,
   promotion_update_data: {},
   product_update_data: {},
   create_leaderboard_data: {},
+  create_landing_page_tile_data: [],
+  create_landing_page_leaderboard_data: [],
+  create_landing_page_square_tile_data: [],
+  create_analytic_bundle_data: [],
   create_leaderboard_loading: false,
+  create_landing_page_tile_loading: false,
+  create_landing_page_leaderboard_loading: false,
+  create_landing_page_square_tile_loading: false,
+  create_analytic_bundle_loading: false,
   create_promotion_data: {},
   create_promotion_loading: false,
   create_product_data: {},
@@ -127,6 +225,9 @@ const initialState = {
   week_data: [],
   multiple_week_data: [],
   multiple_week_data_loading: false,
+  store_cart_data: [],
+  store_cart_data_loading: false,
+  store_cart_count: ''
 };
 
 const StoreContext = React.createContext();
@@ -136,11 +237,11 @@ export const StoreProvider = ({ children }) => {
 
   // register store
 
-  const setRegisterStore = async (params) => {
+  const setRegisterStore = async (formdata) => {
     const token = JSON.parse(localStorage.getItem("is_token"));
     dispatch({ type: REGISTER_STORE_BEGIN });
     try {
-      const response = await axios.post(store_register, params, {
+      const response = await axios.post(store_register, formdata, {
         headers: {
           Accept: ACCEPT_HEADER,
           Authorization: "Bearer " + token,
@@ -165,6 +266,37 @@ export const StoreProvider = ({ children }) => {
     }
   };
 
+    // register Cinema
+
+    const setRegisterCinema = async (formdata) => {
+      const token = JSON.parse(localStorage.getItem("is_token"));
+      dispatch({ type: REGISTER_STORE_BEGIN });
+      try {
+        const response = await axios.post(cinema_register, formdata, {
+          headers: {
+            Accept: ACCEPT_HEADER,
+            Authorization: "Bearer " + token,
+          },
+        });
+        const storeupdatedata = response.data;
+        console.log("====", response.data);
+        if (storeupdatedata.success == 1) {
+          dispatch({
+            type: REGISTER_STORE_SUCCESS,
+            payload: storeupdatedata,
+          });
+          localStorage.setItem("is_login", JSON.stringify(true));
+          Notification("success", "Success!", response.data.message);
+        } else {
+          Notification("error", "Error", response.data.message);
+        }
+        return response.data;
+      } catch (error) {
+        dispatch({ type: REGISTER_STORE_FAIL });
+        localStorage.setItem("is_login", JSON.stringify(false));
+      }
+    };
+
   // get store
 
   const getStore = async () => {
@@ -180,6 +312,8 @@ export const StoreProvider = ({ children }) => {
       const storedata = response.data;
       // console.log("br̥and-data-context", response.data);
       if (storedata.success == 1) {
+        // localStorage.setItem("cusimg", response.data.data.cus_profile_path);
+
         dispatch({ type: GET_STORE_SUCCESS, payload: response.data });
       }
       return response.data;
@@ -188,6 +322,58 @@ export const StoreProvider = ({ children }) => {
       dispatch({ type: GET_STORE_FAIL });
     }
   };
+
+
+   // get store cart
+
+   const getStoreCartApi = async () => {
+    const token = JSON.parse(localStorage.getItem("is_token"));
+    dispatch({ type: GET_STORE_CART_BEGIN });
+    try {
+      const response = await axios.get(get_store_cart, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      });
+      const storecartdata = response.data;
+      console.log("store cart data are", response.data.total_count);
+      if (storecartdata.success == 1) {
+        localStorage.setItem("storecartcount", JSON.stringify(response.data.total_count));
+
+        dispatch({ type: GET_STORE_CART_SUCCESS, payload: response.data });
+      }
+      return response.data;
+    } catch (error) {
+      console.log("errr".err);
+      dispatch({ type: GET_STORE_CART_ERROR });
+    }
+  };
+
+
+    // get cinema
+
+    const getCinema = async () => {
+      const token = JSON.parse(localStorage.getItem("is_token"));
+      dispatch({ type: GET_CINEMA_BEGIN });
+      try {
+        const response = await axios.get(get_cinema, {
+          headers: {
+            Accept: ACCEPT_HEADER,
+            Authorization: "Bearer " + token,
+          },
+        });
+        const cinemadata = response.data;
+        // console.log("br̥and-data-context", response.data);
+        if (cinemadata.success == 1) {
+          dispatch({ type: GET_CINEMA_SUCCESS, payload: response.data });
+        }
+        return response.data;
+      } catch (error) {
+        console.log("errr".err);
+        dispatch({ type: GET_CINEMA_FAIL });
+      }
+    };
 
   // get retailer
 
@@ -216,6 +402,33 @@ export const StoreProvider = ({ children }) => {
     }
   };
 
+    // get Cinema Name
+
+    const getCinemaNameApi = async (id) => {
+      // const token = JSON.parse(localStorage.getItem("is_token"));
+  
+      var formdata = new FormData();
+      formdata.append("mall_id", id);
+  
+      dispatch({ type: GET_MALL_CINEMA_BEGIN });
+      try {
+        const response = await axios.post(get_cinema_retailer, formdata, {
+          headers: {
+            Accept: ACCEPT_HEADER,
+            // Authorization: "Bearer " + token,
+          },
+        });
+        const cinemamalldata = response.data;
+        console.log("retailer-data is", response.data);
+        if (cinemamalldata.success == 1) {
+          dispatch({ type: GET_MALL_CINEMA_SUCCESS, payload: cinemamalldata });
+        }
+        return response.data;
+      } catch (error) {
+        dispatch({ type: GET_MALL_CINEMA_FAIL });
+      }
+    };
+
   // get category
 
   const getCategoryApi = async () => {
@@ -238,6 +451,29 @@ export const StoreProvider = ({ children }) => {
       dispatch({ type: GET_CATEGORY_FAIL });
     }
   };
+
+    // get cinema category
+
+    const getCinemaCategoryApi = async () => {
+      const token = JSON.parse(localStorage.getItem("is_token"));
+      dispatch({ type: GET_CINEMA_CATEGORY_BEGIN });
+      try {
+        const response = await axios.get(get_cinema_category, {
+          headers: {
+            Accept: ACCEPT_HEADER,
+            Authorization: "Bearer " + token,
+          },
+        });
+        const cinemacategorydata = response.data;
+        console.log("cinema category-data is", response.data);
+        if (cinemacategorydata.success == 1) {
+          dispatch({ type: GET_CINEMA_CATEGORY_SUCCESS, payload: cinemacategorydata });
+        }
+        return response.data;
+      } catch (error) {
+        dispatch({ type: GET_CINEMA_CATEGORY_FAIL });
+      }
+    };
 
   // get weeek
 
@@ -268,7 +504,7 @@ export const StoreProvider = ({ children }) => {
     const token = JSON.parse(localStorage.getItem("is_token"));
     dispatch({ type: GET_MULTIPLE_Mall_BEGIN });
     try {
-      const response = await axios.get(get_store_mall, {
+      const response = await axios.get(get_multiple_mall, {
         headers: {
           Accept: ACCEPT_HEADER,
           Authorization: "Bearer " + token,
@@ -309,6 +545,28 @@ export const StoreProvider = ({ children }) => {
     }
   };
 
+  const UpdateCinema = async (params) => {
+    const token = JSON.parse(localStorage.getItem("is_token"));
+    dispatch({ type: UPDATE_CINEMA_BEGIN });
+    try {
+      const response = await axios.post(update_cinema, params, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      });
+      const cinemadata = response.data;
+      console.log("update-cinema-data", response.data);
+      if (cinemadata.success == 1) {
+        dispatch({ type: UPDATE_CINEMA_SUCCESS, payload: response.data });
+      }
+      return response.data;
+    } catch (error) {
+      console.log("errr", error);
+      dispatch({ type: UPDATE_CINEMA_FAIL });
+    }
+  };
+
   // Delete LeaderBoard Api
 
   const deleteLeaderBoardApi = async (formdata) => {
@@ -330,6 +588,94 @@ export const StoreProvider = ({ children }) => {
     } catch (error) {
       console.log("errr", error);
       dispatch({ type: DELETE_LEADERBOARD_FAIL });
+    }
+  };
+
+  const deleteLandingpageTileApi = async (formdata) => {
+    const token = JSON.parse(localStorage.getItem("is_token"));
+    dispatch({ type: DELETE_LANDING_PAGE_TILE_BEGIN });
+    try {
+      const response = await axios.post(delete_landingpagetile, formdata, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      });
+      const storedata = response.data;
+      console.log("updtae-barnd-data", response.data);
+      if (storedata.success == 1) {
+        dispatch({ type: DELETE_LANDING_PAGE_TILE_SUCCESS, payload: response.data });
+      }
+      return response.data;
+    } catch (error) {
+      console.log("errr", error);
+      dispatch({ type: DELETE_LANDING_PAGE_TILE_FAIL });
+    }
+  };
+
+  const deleteLandingpagSquareTileApi = async (formdata) => {
+    const token = JSON.parse(localStorage.getItem("is_token"));
+    dispatch({ type: DELETE_LANDING_PAGE_SQUARE_TILE_BEGIN });
+    try {
+      const response = await axios.post(delete_landingpage_squaretile, formdata, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      });
+      const storedata = response.data;
+      console.log("updtae-barnd-data", response.data);
+      if (storedata.success == 1) {
+        dispatch({ type: DELETE_LANDING_PAGE_SQUARE_TILE_SUCCESS, payload: response.data });
+      }
+      return response.data;
+    } catch (error) {
+      console.log("errr", error);
+      dispatch({ type: DELETE_LANDING_PAGE_SQUARE_TILE_FAIL });
+    }
+  };
+
+  const deleteLandingpageLeaderboardApi = async (formdata) => {
+    const token = JSON.parse(localStorage.getItem("is_token"));
+    dispatch({ type: DELETE_LANDING_PAGE_LEADERBOARD_BEGIN });
+    try {
+      const response = await axios.post(delete_landingpage_leaderboard, formdata, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      });
+      const storedata = response.data;
+      console.log("updtae-barnd-data", response.data);
+      if (storedata.success == 1) {
+        dispatch({ type: DELETE_LANDING_PAGE_LEADERBOARD_SUCCESS, payload: response.data });
+      }
+      return response.data;
+    } catch (error) {
+      console.log("errr", error);
+      dispatch({ type: DELETE_LANDING_PAGE_LEADERBOARD_FAIL });
+    }
+  };
+
+  const deleteAnalyticsBundleApi = async (formdata) => {
+    const token = JSON.parse(localStorage.getItem("is_token"));
+    dispatch({ type: DELETE_ANALYTICS_BUNDLE_BEGIN });
+    try {
+      const response = await axios.post(delete_analytic_bundle, formdata, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      });
+      const storedata = response.data;
+      console.log("updtae-barnd-data", response.data);
+      if (storedata.success == 1) {
+        dispatch({ type: DELETE_ANALYTICS_BUNDLE_SUCCESS, payload: response.data });
+      }
+      return response.data;
+    } catch (error) {
+      console.log("errr", error);
+      dispatch({ type: DELETE_ANALYTICS_BUNDLE_FAIL });
     }
   };
 
@@ -414,6 +760,108 @@ export const StoreProvider = ({ children }) => {
     }
   };
 
+
+  const UpdateLandingpageTileApi = async (formdata) => {
+    const token = JSON.parse(localStorage.getItem("is_token"));
+    dispatch({ type: UPDATE_LANDING_PAGE_TILE_BEGIN });
+    try {
+      const response = await axios.post(update_landingpagetile, formdata, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      });
+      const updtaelandingpagetiledata = response.data;
+      console.log("updtae-leaderboard-data", response.data);
+      if (updtaelandingpagetiledata.success == 1) {
+        dispatch({
+          type: UPDATE_LANDING_PAGE_TILE_SUCCESS,
+          payload: response.data,
+        });
+      }
+      return response.data;
+    } catch (error) {
+      console.log("errr", error);
+      dispatch({ type: UPDATE_LANDING_PAGE_TILE_FAIL });
+    }
+  };
+
+  const UpdateLandingpageSquareTileApi = async (formdata) => {
+    const token = JSON.parse(localStorage.getItem("is_token"));
+    dispatch({ type: UPDATE_LANDING_PAGE_SQUARE_TILE_BEGIN });
+    try {
+      const response = await axios.post(update_landingpage_squaretile, formdata, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      });
+      const updtaelandingpagesquaredata = response.data;
+      console.log("updtae-leaderboard-data", response.data);
+      if (updtaelandingpagesquaredata.success == 1) {
+        dispatch({
+          type: UPDATE_LANDING_PAGE_SQUARE_TILE_SUCCESS,
+          payload: response.data,
+        });
+      }
+      return response.data;
+    } catch (error) {
+      console.log("errr", error);
+      dispatch({ type: UPDATE_LANDING_PAGE_SQUARE_TILE_FAIL });
+    }
+  };
+
+  const UpdateLandingpageLeaderApi = async (formdata) => {
+    const token = JSON.parse(localStorage.getItem("is_token"));
+    dispatch({ type: UPDATE_LANDING_PAGE_LEADERBOARD_BEGIN });
+    try {
+      const response = await axios.post(update_landingpage_leaderboard, formdata, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      });
+      const updtaelandingpagetiledata = response.data;
+      console.log("updtae-leaderboard-data", response.data);
+      if (updtaelandingpagetiledata.success == 1) {
+        dispatch({
+          type: UPDATE_LANDING_PAGE_LEADERBOARD_SUCCESS,
+          payload: response.data,
+        });
+      }
+      return response.data;
+    } catch (error) {
+      console.log("errr", error);
+      dispatch({ type: UPDATE_LANDING_PAGE_LEADERBOARD_FAIL });
+    }
+  };
+
+  // Update Analytics Bundle
+
+  const UpdateAnaluticBundleApi = async (formdata) => {
+    const token = JSON.parse(localStorage.getItem("is_token"));
+    dispatch({ type: UPDATE_ANALYTICS_BUNDLE_BEGIN });
+    try {
+      const response = await axios.post(update_analytic_bundle, formdata, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      });
+      const updtaeanalyticbundledata = response.data;
+      console.log("updtae-leaderboard-data", response.data);
+      if (updtaeanalyticbundledata.success == 1) {
+        dispatch({
+          type: UPDATE_ANALYTICS_BUNDLE_SUCCESS,
+          payload: response.data,
+        });
+      }
+      return response.data;
+    } catch (error) {
+      console.log("errr", error);
+      dispatch({ type: UPDATE_ANALYTICS_BUNDLE_FAIL });
+    }
+  };
   // Update Leaderboard
 
   const UpdatePromotionBoardApi = async (formdata) => {
@@ -495,6 +943,114 @@ export const StoreProvider = ({ children }) => {
       dispatch({ type: CREATE_LEADERBOARD_BANNER_FAIL });
     }
   };
+
+    // Create Landing Page Tile Banner
+
+    const CreateLandingPageTileApi = async (formdata) => {
+      const token = JSON.parse(localStorage.getItem("is_token"));
+      dispatch({ type: CREATE_LANDING_PAGE_TILE_BEGIN });
+      try {
+        const response = await axios.post(create_landingpagetile, formdata, {
+          headers: {
+            Accept: ACCEPT_HEADER,
+            Authorization: "Bearer " + token,
+          },
+        });
+        const createlandingtiledata = response.data;
+        console.log("create-landingpagetile-data", response.data);
+        if (createlandingtiledata.success == 1) {
+          dispatch({
+            type: CREATE_LANDING_PAGE_TILE_SUCCESS,
+            payload: response.data,
+          });
+        }
+        return response.data;
+      } catch (error) {
+        console.log("errr", error);
+        dispatch({ type: CREATE_LANDING_PAGE_TILE_FAIL });
+      }
+    };
+
+
+        // Create Landing Page Tile Banner
+
+        const CreateLandingPageSquareTileApi = async (formdata) => {
+          const token = JSON.parse(localStorage.getItem("is_token"));
+          dispatch({ type: CREATE_LANDING_PAGE_SQUARE_TILE_BEGIN });
+          try {
+            const response = await axios.post(create_landingpage_squaretile, formdata, {
+              headers: {
+                Accept: ACCEPT_HEADER,
+                Authorization: "Bearer " + token,
+              },
+            });
+            const createlandingsquaretile = response.data;
+            console.log("create-landingpagetile-data", response.data);
+            if (createlandingsquaretile.success == 1) {
+              dispatch({
+                type: CREATE_LANDING_PAGE_SQUARE_TILE_SUCCESS,
+                payload: response.data,
+              });
+            }
+            return response.data;
+          } catch (error) {
+            console.log("errr", error);
+            dispatch({ type: CREATE_LANDING_PAGE_SQUARE_TILE_FAIL });
+          }
+        };
+     // Create Analytic Bundle
+
+     const CreateAnalyticBundleApi = async (formdata) => {
+      const token = JSON.parse(localStorage.getItem("is_token"));
+      dispatch({ type: CREATE_ANALYTICS_BUNDLE_BEGIN });
+      try {
+        const response = await axios.post(create_analytic_bundle, formdata, {
+          headers: {
+            Accept: ACCEPT_HEADER,
+            Authorization: "Bearer " + token,
+          },
+        });
+        const createanalyticbundledata = response.data;
+        console.log("create-analyticbundle-data", response.data);
+        if (createanalyticbundledata.success == 1) {
+          dispatch({
+            type: CREATE__ANALYTICS_BUNDLE_SUCCESS,
+            payload: response.data,
+          });
+        }
+        return response.data;
+      } catch (error) {
+        console.log("errr", error);
+        dispatch({ type: CREATE_ANALYTICS_BUNDLE_FAIL });
+      }
+    };
+
+        // Create CreateLandingPageLeaderboard
+
+        const CreateLandingPageLeaderboard = async (formdata) => {
+          const token = JSON.parse(localStorage.getItem("is_token"));
+          dispatch({ type: CREATE_LANDING_PAGE_LEADERBOARD_BEGIN });
+          try {
+            const response = await axios.post(create_landingpage_leaderboard, formdata, {
+              headers: {
+                Accept: ACCEPT_HEADER,
+                Authorization: "Bearer " + token,
+              },
+            });
+            const createlandingleaderboarddata = response.data;
+            console.log("create-landingpageleaderboard-data", response.data);
+            if (createlandingleaderboarddata.success == 1) {
+              dispatch({
+                type: CREATE_LANDING_PAGE_LEADERBOARD_SUCCESS,
+                payload: response.data,
+              });
+            }
+            return response.data;
+          } catch (error) {
+            console.log("errr", error);
+            dispatch({ type: CREATE_LANDING_PAGE_LEADERBOARD_FAIL });
+          }
+        };
 
   // Create Promotion Banner
 
@@ -637,6 +1193,11 @@ export const StoreProvider = ({ children }) => {
     getCategoryApi();
     getWeekApi();
     getMultipleMall();
+    getCinema();
+    getCinemaCategoryApi();
+    getStoreCartApi();
+
+    
   }, []);
 
   return (
@@ -645,15 +1206,19 @@ export const StoreProvider = ({ children }) => {
         ...state,
         setRegisterStore,
         getStore,
+        getCinema,
         getRetailerApi,
         UpdateStore,
         deleteLeaderBoardApi,
+        deleteLandingpageTileApi,
+        deleteLandingpagSquareTileApi,
         deletePromotionBannerApi,
         deleteProductBannerApi,
         UpdateLeaderBoardApi,
         UpdatePromotionBoardApi,
         UpdateProductBoardApi,
         CreateLeaderBoardApi,
+        CreateLandingPageTileApi,
         CreatePromotionBoardApi,
         CreateProductBoardApi,
         CreateProductTileApi,
@@ -661,7 +1226,23 @@ export const StoreProvider = ({ children }) => {
         UpdateProductTilesApi,
         getMultipleMall,
         getCategoryApi,
+        getCinemaCategoryApi,
         getWeekApi,
+        setRegisterCinema,
+        getCinemaNameApi,
+        UpdateCinema,
+        CreateLandingPageLeaderboard,
+        UpdateLandingpageTileApi,
+        UpdateLandingpageSquareTileApi,
+        
+        UpdateLandingpageLeaderApi,
+        deleteLandingpageLeaderboardApi,
+        deleteAnalyticsBundleApi,
+        UpdateAnaluticBundleApi,
+        CreateAnalyticBundleApi,
+        CreateLandingPageSquareTileApi,
+        getStoreCartApi,
+        
       }}>
       {children}
     </StoreContext.Provider>

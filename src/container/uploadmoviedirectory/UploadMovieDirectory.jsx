@@ -141,13 +141,15 @@ const UploadMovieDirectory = ({ get_mall_auth_data, setTab, getTab }) => {
                             </ul>
                         </div>
                         <div className="store-directory-first-inner-part2">
-                            <button
+                            <button style={{display:"flex",gap:"0.5rem",alignItems:"center"}}
                                 className="btn btn-orange"
                                 onClick={() => {
                                     DownTemp();
                                 }}
                             >
                                 Download Template
+                                <img src={images.download_upload_directory} style={{width:"20px",height:"20px"}}/>
+
                             </button>
                         </div>
                         {/* <p className="update-details-txt">Drag and drop the Event <br /> image here (250 x 250)</p>

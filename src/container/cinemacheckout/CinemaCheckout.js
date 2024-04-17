@@ -26,19 +26,31 @@ import {
 const AccordionData = [
   {
     id: 1,
-    city: "Leaderboard Banners ",
+    name: "Landing Page 1/2 Tile",
   },
   {
     id: 2,
-    city: "Promotional Banners",
+    name: "Landing Page Square Tiles",
   },
   {
     id: 3,
-    city: "Product Banners",
+    name: "Landing Page Leaderboard Banner",
   },
   {
     id: 4,
-    city: "Product Tiles",
+    name: "Leaderboard Banner Mall",
+  },
+  {
+    id: 5,
+    name: "Promotional Banner",
+  },
+  {
+    id: 6,
+    name: "Cinemas Product Tiles",
+  },
+  {
+    id: 7,
+    name: "Cinema Analytics Bundles",
   },
 ];
 const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
@@ -47,6 +59,10 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
   const [totalpro, SetTotalPro] = useState("");
   const [totalpduct, SetTotalPduct] = useState("");
   const [totalpducttil, SetTotalPducttil] = useState("");
+  const [totalsquare, SetTotalSquare] = useState("");
+  const [totalomebytwo, SetTotalOnebyTwo] = useState("");
+  const [totallandingleaderboard, SetLandingLeaderboard] = useState("");
+  const [totalbundleanalytic, SetBundleAnalytic] = useState("");
   const [modalIsOpen4, setIsOpen4] = useState(false);
 
   useEffect(() => {
@@ -92,6 +108,10 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
           SetTotalPro(res.data.total_promotion_banner_amt);
           SetTotalPduct(res.data.total_product_banner_amt);
           SetTotalPducttil(res.data.total_product_banner_tile_amt);
+          SetTotalSquare(res.data.total_landing_page_square_tile_amt);
+          SetTotalOnebyTwo(res.data.total_landing_page_tile_amt);
+          SetLandingLeaderboard(res.data.total_landing_page_leaderboard_amt);
+          SetBundleAnalytic(res.data.total_analitic_bundle_amt);
           SetLoad(false);
         } else {
           SetLoad(false);
@@ -108,29 +128,47 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
   const array_sort = (id) => {
     if (id == 1) {
       const numDescending = [...getnearStore].filter((a, b) =>
-        a.leaderboard_banner_id ? a.leaderboard_banner_id : ""
+        a.landing_page_tile_id ? a.landing_page_tile_id : ""
       );
       console.log("ffff", numDescending);
       SetSort_Array(numDescending);
     } else if (id == 2) {
       const numDescending = [...getnearStore].filter((a, b) =>
-        a.promotion_banner_id ? a.promotion_banner_id : ""
+        a.landing_page_square_tile_id ? a.landing_page_square_tile_id : ""
       );
       console.log("ffff", numDescending);
       SetSort_Array(numDescending);
     } else if (id == 3) {
       const numDescending = [...getnearStore].filter((a, b) =>
-        a.product_banner_id ? a.product_banner_id : ""
+        a.landing_page_leaderboard_id ? a.landing_page_leaderboard_id : ""
       );
       console.log("ffff", numDescending);
       SetSort_Array(numDescending);
     } else if (id == 4) {
       const numDescending = [...getnearStore].filter((a, b) =>
+        a.leaderboard_banner_id ? a.leaderboard_banner_id : ""
+      );
+      console.log("ffff", numDescending);
+      SetSort_Array(numDescending);
+    } else if (id == 5) {
+      const numDescending = [...getnearStore].filter((a, b) =>
+        a.promotion_banner_id ? a.promotion_banner_id : ""
+      );
+      console.log("ffff", numDescending);
+      SetSort_Array(numDescending);
+    } else if (id == 6) {
+      const numDescending = [...getnearStore].filter((a, b) =>
         a.product_banner_tile_id ? a.product_banner_tile_id : ""
       );
       console.log("ffff", numDescending);
       SetSort_Array(numDescending);
-    } else {
+    } else if (id == 7) {
+      const numDescending = [...getnearStore].filter((a, b) =>
+        a.analytic_bundle_id ? a.analytic_bundle_id : ""
+      );
+      console.log("ffff", numDescending);
+      SetSort_Array(numDescending);
+    }else {
       null;
     }
   };
@@ -253,10 +291,20 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
   const [paymode, SetPyMode] = useState(1);
   const [checkout_id, setCheckout_id] = useState("");
 
-  const [isAcceptTerm, setIsAcceptTerm] = useState(false);
+  const [isAcceptTerm, setIsAcceptTerm] = useState(0);
+  const [isAcceptTerm2, setIsAcceptTerm2] = useState(0);
 
-  const handleTermChange = (event) => {
-    setIsAcceptTerm((current) => !current);
+  // const handleTermChange = (event) => {
+  //   setIsAcceptTerm((current) => !current);
+  // };
+
+  const handleTermChange = (e) => {
+    setIsAcceptTerm(1);
+    console.log("e.targate.value");
+  };
+  const handleTermChange2 = (e) => {
+    setIsAcceptTerm2(1);
+    console.log("e.targate.value");
   };
 
   function closeModal4() {
@@ -296,9 +344,35 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
       })
       .then((res) => {
         console.log(JSON.stringify(res.data.data, null, 2));
-        displayRazorpay(res.data.data.checkout_id);
+        if(res.data.success === 1) {
+          displayRazorpay(res.data.data.checkout_id);
+
+          SetCheckId(res.data.data.checkout_id);
+          SetFrist_mall("");
+          SetLast_mall("");
+          SetComPname("");
+          SetComRegi("");
+          SetPhysicalAdd("");
+          SetPhysicalAdd1("");
+          SetPCode("");
+          SetNumber("");
+          SetEmailAdd("");
+          SetCardName("");
+          SetCardNumber("");
+          SetCardCode("");
+          SetCardDate("");
+          setBrandName("");
+          setMode("");
+          setBrandId("");
+        } else if(res.data.success === 0){
+          Notification(
+            "error",
+            "Error!",
+            res.data.message
+          );
+        }
         // check_data(res.data.data.checkout_id);
-        SetCheckId(res.data.data.checkout_id);
+       
       })
       .catch((err) => {
         console.log("err11", err);
@@ -369,26 +443,26 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
   }
 
   return (
-    <div className="mm_main_wrapp mm_main_wrapp_cinema_checkout">
+    <div className="mm_main_wrapp mm_main_wrapp_cinema_checkout mm_main_wrapp_cinema_checkoutt">
       {/* mall management name start */}
-      <div className="mall_name_wrapp">
-        {/* <p className="mall_name_heading">
+      <div className="mall_name_wrapp" style={{paddingLeft:"0rem"}}>
+        <p className="mall_name_heading">
           {" "}
           {get_mall_auth_data &&
             get_mall_auth_data.retailers.name &&
             get_mall_auth_data.retailers.name}
           :
-        </p> */}
-        <p className="mall_name_heading">Sterkinikor</p>
-        <span>Checkout</span>
+        </p>
+        {/* <p className="mall_name_heading">Sterkinikor</p> */}
+        <span style={{fontWeight:"600"}}>Checkout</span>
       </div>
       <div className="mm_horizontal_line"></div>
       {/* mall management name end */}
 
       {/* mall management form start */}
 
-      <div className="brand-checkout-main-flex-wrapp">
-        <div className="store_checkout_form_input_wrapp">
+      <div className="brand-checkout-main-flex-wrapp cinema-checkout-main-flex-wrapp">
+        <div className="store_checkout_form_input_wrapp cinema_checkout_form_input_wrapp">
           {/* text-input wrapp start */}
           <div className="">
             <p className="brand-checkout-subheading">Billing Details</p>
@@ -553,147 +627,11 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
               />
             </div>
 
-            {/* single text-input */}
-            {/* <div
-                            className="mm_form_single_input store-checkout-form-flex-column"
-                            style={{ alignItems: "flex-start" }}
-                        >
-                            <label htmlFor="">Payment methods</label>
-                            <div className="checkout-payment-method-imgbox">
-                                <button
-                                    onClick={() => {
-                                        SetPyMode(1);
-                                    }}
-                                >
-                                    <img
-                                        src={images.checkout_payment_method1}
-                                        className="checkout-payment-method-img"
-                                        style={{ opacity: paymode == 1 ? "0.5" : "1" }}
-                                    />
-                                </button>
-                                <button
-                                    onClick={() => {
-                                        SetPyMode(2);
-                                    }}
-                                >
-                                    <img
-                                        src={images.checkout_payment_method2}
-                                        className="checkout-payment-method-img"
-                                        style={{ opacity: paymode == 2 ? "0.5" : "1" }}
-                                    />
-                                </button>
-                                <button
-                                    onClick={() => {
-                                        SetPyMode(3);
-                                    }}
-                                >
-                                    <img
-                                        src={images.checkout_payment_method3}
-                                        className="checkout-payment-method-img"
-                                        style={{ opacity: paymode == 3 ? "0.5" : "1" }}
-                                    />
-                                </button>
-                                <button
-                                    onClick={() => {
-                                        SetPyMode(4);
-                                    }}
-                                >
-                                    <img
-                                        src={images.checkout_payment_method4}
-                                        className="checkout-payment-method-img"
-                                        style={{ opacity: paymode == 4 ? "0.5" : "1" }}
-                                    />
-                                </button>
-                            </div>
-                        </div> */}
-            {/* <div
-                            className="mm_form_single_input store-checkout-form-flex-column"
-                            style={{ alignItems: "flex-start" }}
-                        >
-                            <label htmlFor="">Name Of card</label>
-                            <input
-                                type="email"
-                                value={cardnum}
-                                onChange={(e) => SetCardName(e.target.value)}
-                                name=""
-                                id=""
-                                className="input_box"
-                            />
-                        </div> */}
-            {/* <div
-                            className="mm_form_single_input store-checkout-form-flex-column"
-                            style={{ alignItems: "flex-start" }}
-                        >
-                            <label htmlFor="">Card Number</label>
-                            <input
-                                type="email"
-                                value={cardnumber}
-                                onChange={(e) => SetCardNumber(e.target.value)}
-                                name=""
-                                id=""
-                                className="input_box"
-                            />
-                        </div> */}
-            {/* <div
-                            className="mm_form_single_input store-checkout-form-flex-column"
-                            style={{ alignItems: "flex-start" }}
-                        >
-                            <label htmlFor="">Expirey date</label>
-                            <input
-                                type="date"
-                                value={carddate}
-                                onChange={(e) => SetCardDate(e.target.value)}
-                                name=""
-                                id=""
-                                className="input_box"
-                            />
-                        </div> */}
-            {/* <div
-                            className="mm_form_single_input store-checkout-form-flex-column"
-                            style={{ alignItems: "flex-start" }}
-                        >
-                            <label htmlFor="">CVC code</label>
-                            <input
-                                type="email"
-                                value={cardcode}
-                                onChange={(e) => SetCardCode(e.target.value)}
-                                name=""
-                                id=""
-                                className="input_box"
-                            />
-                        </div> */}
 
-            {/* <div className="radio-btn-flex-brand">
-                            <div className="radio-btn-inner-flex">
-                                <input
-                                    type="radio"
-                                    id="Online"
-                                    name="gender"
-                                    value={getmode}
-                                    onChange={(e) => setMode(1)}
-                                />
-                                <label className="course-form-txt" for="male">
-                                    success
-                                </label>
-                            </div>
-
-                            <div className="radio-btn-inner-flex">
-                                <input
-                                    type="radio"
-                                    id="In-Person"
-                                    name="gender"
-                                    value={getmode}
-                                    onChange={(e) => setMode(2)}
-                                />
-                                <label className="course-form-txt" for="specifyColor">
-                                    Fail{" "}
-                                </label>
-                            </div>
-                        </div> */}
 
             {/* mm terms condition wrapp */}
             <div className="checkout-terms-part">
-              <div className="mm_form_single_input">
+              <div className="mm_form_single_input" style={{flexDirection:"column",gap:"0px"}}>
                 {/* <label htmlFor=""></label> */}
                 <div
                   className="signup_terms_wrapp"
@@ -707,8 +645,22 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
                   />
                   <p className="fs-des">
                     I have read and agree to the{" "}
-                    <a className="signup_terms_link">Terms and Conditions</a> &{" "}
                     <a className="signup_terms_link">Privacy Policy</a>
+                  </p>
+                </div>
+                <div
+                  className="signup_terms_wrapp"
+                  style={{ marginBottom: "10px" }}
+                >
+                  <input
+                    type="checkbox"
+                    value={isAcceptTerm2}
+                    onChange={handleTermChange2}
+                    checked={isAcceptTerm2}
+                  />
+                  <p className="fs-des">
+                    I have read and agree to the{" "}
+                    <a className="signup_terms_link">Terms and Conditions</a>
                   </p>
                 </div>
               </div>
@@ -721,11 +673,12 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
                   style={{
                     width: "100% !important",
                     display: "block !important",
+                    marginTop:"20px",
                   }}
                 >
                   <button
                     className="btn btn-orange" style={{backgroundColor:"#000"}}
-                    // onClick={() => Place_Order()}
+                    onClick={() => Place_Order()}
                     // onClick={() => setIsOpen4(true)}
                   >
                     Submit Order
@@ -738,7 +691,7 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
         </div>
         {/*     Checkout second part */}
 
-        <div className="checkout-main-wrapp">
+        <div className="checkout-main-wrapp cinemaa-checkout-main-wrapp">
           <p className="brand-checkout-subheading">Summary</p>
           <div className="checkout-dropdown-main-wrapp">
             {AccordionData && AccordionData.length > 0
@@ -746,15 +699,16 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
                   return (
                     <>
                       <button
-                        className="checkout-head-sub-part"
+                        className="checkout-head-sub-part checkout-head-sub-part-cinema"
+                        
                         onClick={() => {
                           handleToggle(item.id);
                           array_sort(item.id);
                         }}
                       >
                         <div className="checkout-heading-txt-part">
-                          <p className="checkout-heading-txt">
-                            {item.city}
+                          <p className="checkout-heading-txt checkout-head-sub-part-cinema">
+                            {item.name}
                  
                             {item.id === toggle ? (
                               <IoIosArrowUp size={20} color="#ff8b00" />
@@ -764,13 +718,21 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
                           </p>
                         </div>
                         {item.id == 1 ? (
-                          <p className="checkout-price">R {totallead}</p>
+                          <>
+                          <p className="checkout-price">R {totalomebytwo}</p>
+                          </>
                         ) : item.id == 2 ? (
-                          <p className="checkout-price">R {totalpro}</p>
+                          <p className="checkout-price">R {totalsquare}</p>
                         ) : item.id == 3 ? (
-                          <p className="checkout-price">R {totalpduct}</p>
+                          <p className="checkout-price">R {totallandingleaderboard}</p>
                         ) : item.id == 4 ? (
+                          <p className="checkout-price">R {totallead}</p>
+                        ) : item.id == 5 ? (
+                          <p className="checkout-price">R {totalpro}</p>
+                        ) : item.id == 6 ? (
                           <p className="checkout-price">R {totalpducttil}</p>
+                        ) : item.id == 7 ? (
+                          <p className="checkout-price">R {totalbundleanalytic}</p>
                         ) : null}
                       </button>
 
@@ -781,19 +743,34 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
                               <>
                                 {item.id == 1 ? (
                                   <button key={itm.id}>
-                                    {itm.leaderboards.title}
+                                    {itm.landingpagetiles.title}
                                   </button>
                                 ) : item.id == 2 ? (
                                   <button key={itm.id}>
-                                    {itm.promotionbanners.description}
+                                    {itm.landingpagesquaretiles.title}
                                   </button>
                                 ) : item.id == 3 ? (
                                   <button key={itm.id}>
-                                    {itm.productbanners.description}
+                                    {itm.landingpageleaderborads.title}
                                   </button>
                                 ) : item.id == 4 ? (
                                   <button key={itm.id}>
+                                    {itm.leaderboards.title}
+                                  </button>
+                                ) :  item.id == 5 ? (
+                                  <button key={itm.id}>
+                                    {itm.promotionbanners.description}
+                                  </button>
+                                ) : item.id == 6 ? (
+                                  <button key={itm.id}>
                                     {itm.productbannertiles.title}
+                                  </button>
+                                ) : item.id == 7 ? (
+                                  <button key={itm.id} style={{textAlign:"start"}}>
+                                    {itm.analyticbundles.option1}<br/>
+                                    {itm.analyticbundles.option2}<br/>
+                                    {itm.analyticbundles.option3}<br/>
+                                    {itm.analyticbundles.option4}<br/>
                                   </button>
                                 ) : null}
                               </>
@@ -808,7 +785,7 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
             <div className="checkout-totalbox">
               <p className="checkout-total-txt">Total</p>
               <p className="checkout-total-txt">
-                R {totallead + totalpro + totalpduct + totalpducttil}
+               R {totalomebytwo + totalsquare + totallandingleaderboard + totallead + totalpro + totalpducttil + totalbundleanalytic}{" "}
               </p>
             </div>
           </div>
@@ -816,17 +793,36 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
 
         {/* mm terms condition wrapp */}
         <div className="checkout-terms-part-responsive">
-          <div className="mm_form_single_input">
+          <div className="mm_form_single_input" style={{flexDirection:"column",gap:"0px"}}>
             {/* <label htmlFor=""></label> */}
             <div
               className="signup_terms_wrapp"
-              style={{ marginBottom: "10px" }}
+              // style={{ marginBottom: "10px" }}
             >
-              <input type="checkbox" />
+               <input
+                    type="checkbox"
+                    value={isAcceptTerm}
+                    onChange={handleTermChange}
+                    checked={isAcceptTerm}
+                  />
               <p className="fs-des">
                 I have read and agree to the{" "}
-                <a className="signup_terms_link">Terms and Conditions</a> &{" "}
                 <a className="signup_terms_link">Privacy Policy</a>
+              </p>
+            </div>
+            <div
+              className="signup_terms_wrapp"
+              // style={{ marginBottom: "10px" }}
+            >
+               <input
+                    type="checkbox"
+                    value={isAcceptTerm2}
+                    onChange={handleTermChange2}
+                    checked={isAcceptTerm2}
+                  />
+              <p className="fs-des">
+                I have read and agree to the{" "}
+                <a className="signup_terms_link">Terms and Conditions</a>
               </p>
             </div>
           </div>
@@ -848,11 +844,12 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
                   style={{
                     width: "100% !important",
                     display: "block !important",
+                    marginTop:"20px",
                   }}
                 >
                   <button
                     className="btn btn-orange" style={{backgroundColor:"#000"}}
-                    // onClick={() => Place_Order()}
+                    onClick={() => Place_Order()}
                     // onClick={() => setIsOpen4(true)}
                   >
                     Submit Order

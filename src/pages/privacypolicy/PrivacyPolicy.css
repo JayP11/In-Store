@@ -1,0 +1,13 @@
+.privacy_policy_con{
+    max-width: 1140px;
+    margin: 0 auto;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+@media screen and (max-width:1150px) {
+    .privacy_policy_con{
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}

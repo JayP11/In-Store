@@ -59,6 +59,15 @@ import {
   DELETE_FACILITY_BEGIN,
   DELETE_FACILITY_SUCCESS,
   DELETE_FACILITY_FAIL,
+  UPDATE_MALL_CINEMA_FAIL,
+  UPDATE_MALL_CINEMA_SUCCESS,
+  UPDATE_MALL_CINEMA_BEGIN,
+  GET_Mall_CART_ERROR,
+  GET_MALL_CART_SUCCESS,
+  GET_Mall_CART_BEGIN,
+  GET_BRAND_MULTIPLE_BEGIN,
+  GET_BRAND_MULTIPLE_SUCCESS,
+  GET_BRAND_MULTIPLE_FAIL,
 } from "../Action";
 import {
   ACCEPT_HEADER,
@@ -67,6 +76,7 @@ import {
   get_facility,
   get_mall,
   get_mall_auth_wise,
+  get_mall_cart,
   get_retailer_brand,
   get_store_mall_wise,
   login,
@@ -80,6 +90,8 @@ import {
   mall_update_store,
   register,
   register_mall,
+  retailer_brand_multiple,
+  update_cinema_manual,
   update_facility,
   update_mall,
 } from "../utils/Constant";
@@ -118,6 +130,7 @@ const initialState = {
   get_mall_auth_loading: false,
   get_mall_data: [],
   get_brand_data: [],
+  get_brand_data_multiple: [],
   get_mall_store_data: [],
   get_mall_auth_data: {},
   add_event_loading: false,
@@ -130,6 +143,9 @@ const initialState = {
   get_facility_data: [],
   update_facility_loading: false,
   delete_facility_loading: false,
+  get_mall_cart_data: [],
+  get_mall_cart_data_count: '',
+  get_mall_cart_loading: false,
   role: getRole(),
 };
 
@@ -211,12 +227,38 @@ export const MallProvider = ({ children }) => {
       dispatch({ type: GET_MALL_FAIL });
     }
   };
+  // get mall cart
+
+  const getMallCartApi = async () => {
+    console.log("check123");
+    const token = JSON.parse(localStorage.getItem("is_token"));
+    dispatch({ type: GET_Mall_CART_BEGIN });
+    try {
+      const response = await axios.get(get_mall_cart, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer" + token,
+        },
+      });
+      const mallcartdata = response.data;
+      console.log("mall cart response data", response.data);
+      if (mallcartdata.success == 1) {
+        localStorage.setItem("mallcartcount", response.data.total_count);
+
+        dispatch({ type: GET_MALL_CART_SUCCESS, payload: mallcartdata });
+      }
+      return response.data;
+    } catch (error) {
+      dispatch({ type: GET_Mall_CART_ERROR });
+    }
+  };
 
   // get-brand api start
 
   const getBrand = async (id) => {
     var formdata = new FormData();
     formdata.append("retailer_id", id);
+    console.log("idddd",id);
     dispatch({ type: GET_BRAND_BEGIN });
     try {
       const response = await axios.post(get_retailer_brand, formdata, {
@@ -235,6 +277,31 @@ export const MallProvider = ({ children }) => {
       return response.data;
     } catch (error) {
       dispatch({ type: GET_BRAND_FAIL });
+    }
+  };
+
+  const getBrandMultiple = async (id) => {
+    var formdata = new FormData();
+    formdata.append("retailer_id", id);
+    console.log("idddd",id);
+    dispatch({ type: GET_BRAND_MULTIPLE_BEGIN });
+    try {
+      const response = await axios.post(retailer_brand_multiple, formdata, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+        },
+      });
+      const getbrand = response.data;
+      console.log(
+        "response.data get multiple brand----->>>",
+        JSON.stringify(response.data, null, 2)
+      );
+      if (getbrand.success == 1) {
+        dispatch({ type: GET_BRAND_MULTIPLE_SUCCESS, payload: getbrand });
+      }
+      return response.data;
+    } catch (error) {
+      dispatch({ type: GET_BRAND_MULTIPLE_FAIL });
     }
   };
 
@@ -425,6 +492,30 @@ export const MallProvider = ({ children }) => {
       return response.data;
     } catch (error) {
       dispatch({ type: UPDATE_MALL_STORE_FAIL });
+    }
+  };
+
+  const UpdateCinemaStore = async (params) => {
+    const token = JSON.parse(localStorage.getItem("is_token"));
+    dispatch({ type: UPDATE_MALL_CINEMA_BEGIN });
+    try {
+      const response = await axios.post(update_cinema_manual, params, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer" + token,
+        },
+      });
+      const updatemallstoredata = response.data;
+      // console.log("====", response.data);
+      if (updatemallstoredata.success == 1) {
+        dispatch({
+          type: UPDATE_MALL_CINEMA_SUCCESS,
+          payload: updatemallstoredata,
+        });
+      }
+      return response.data;
+    } catch (error) {
+      dispatch({ type: UPDATE_MALL_CINEMA_FAIL });
     }
   };
 
@@ -687,6 +778,7 @@ export const MallProvider = ({ children }) => {
     getMallWiseStore();
     getMallAuthWise();
     getFacilityApi();
+    // getMallCartApi();
   }, []);
 
   return (
@@ -695,6 +787,7 @@ export const MallProvider = ({ children }) => {
         ...state,
         setMallRegister,
         // setLogin,
+        getBrandMultiple,
         logoutUser,
         getMall,
         getBrand,
@@ -702,6 +795,7 @@ export const MallProvider = ({ children }) => {
         getMallAuthWise,
         UpdateMall,
         UpdateMallStore,
+        UpdateCinemaStore,
         AddEventMall,
         UpdateEventMall,
         AddMallStore,
@@ -713,6 +807,7 @@ export const MallProvider = ({ children }) => {
         UpdataFacilityApi,
         DeleteFacilityApi,
         getFacilityApi,
+        getMallCartApi,
       }}
     >
       {children}
