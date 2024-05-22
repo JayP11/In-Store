@@ -1,6 +1,10 @@
 .DateRangePicker_LeaderboardCard ::placeholder {
     color: var(--color-black);
   }
+
+  .leaderboard-card-part-sec-prom{
+    width: 400px;
+  }
   @media screen and (max-width: 1230px) {
     .leaderboard-card-sec-resp-main-wrapp_edited {
       display: flex;
@@ -14,5 +18,15 @@
     .cartbtnblack,
     .updatebtnorg {
       width: 160px;
+    }
+
+    .leaderboard-card-part-sec-prom{
+      align-self: center;
+    }
+  }
+
+  @media screen and (max-width:465px) {
+    .leaderboard-card-part-sec-prom{
+      width: 100%;
     }
   }

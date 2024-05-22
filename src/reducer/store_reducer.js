@@ -104,6 +104,9 @@ import {
   GET_STORE_CART_BEGIN,
   GET_STORE_CART_SUCCESS,
   GET_STORE_CART_ERROR,
+  GET_CATEGORY_EATERY_FAIL,
+  GET_CATEGORY_EATERY_SUCCESS,
+  GET_CATEGORY_EATERY_BEGIN,
 } from "../Action";
 const store_reducer = (state, action) => {
   // REGISTER STORE
@@ -238,6 +241,25 @@ const store_reducer = (state, action) => {
 
   if (action.type === GET_CATEGORY_FAIL) {
     return { ...state, category_data_loading: false };
+  }
+
+   // GET Category Eatery
+
+   if (action.type === GET_CATEGORY_EATERY_BEGIN) {
+    return { ...state, category_eatery_data_loading: true };
+  }
+
+  if (action.type === GET_CATEGORY_EATERY_SUCCESS) {
+    return {
+      ...state,
+      category_eatery_data_loading: false,
+      category_eatery_data: action.payload.data,
+      // contact_number: action.payload.data.contact_number,
+    };
+  }
+
+  if (action.type === GET_CATEGORY_EATERY_FAIL) {
+    return { ...state, category_eatery_data_loading: false };
   }
 
   // GET Cinema Category

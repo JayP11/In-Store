@@ -6,13 +6,16 @@ import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { useMallContext } from "../../context/mall_context";
 import { useAuthContext } from "../../context/auth_context";
 import { useStoreContext } from "../../context/store_context";
-import { AiFillHeart } from "react-icons/ai";
+import { AiFillHeart, AiOutlineClose } from "react-icons/ai";
 import { IoClose } from "react-icons/io5";
 import ReactModal from "react-modal";
 import { GrClose } from "react-icons/gr";
-import { ACCEPT_HEADER, get_category, product_banner_tiles_customer } from "../../utils/Constant";
+import { ACCEPT_HEADER, add_rating, get_category, product_banner_tiles_customer } from "../../utils/Constant";
 import axios from "axios";
 import { RiNotification4Fill } from "react-icons/ri";
+import Rating from "react-rating";
+import Notification from "../../utils/Notification";
+
 
 const customStyles = {
   content: {
@@ -40,6 +43,7 @@ const CustomerNavbar = ({ setTab, getsingalmalldata, SetNavBarData, SetNavBarDat
   const [modalIsOpen2, setIsOpen2] = useState(false);
   const [modalIsOpen3, setIsOpen3] = useState(false);
   const [modalIsOpen4, setIsOpen4] = useState(false);
+  const [modalIsOpen5, setIsOpen5] = useState(false);
   const [modalIsOpenBrand, setModalIsOpenBrand] = useState(false);
 
   const [getcustomerDropdown, setCustomerDropdown] = useState(false);
@@ -63,6 +67,8 @@ const CustomerNavbar = ({ setTab, getsingalmalldata, SetNavBarData, SetNavBarDat
   const [getcatid, SetCatId] = useState();
   const [getdprodata, SetProdata] = useState();
   const [searchValue, setSearchValue] = useState();
+  const [getrating, setRating] = useState("");
+
 
   const { setMallRegister, is_login, is_token, logoutUser, role } =
     useMallContext();
@@ -268,6 +274,11 @@ const CustomerNavbar = ({ setTab, getsingalmalldata, SetNavBarData, SetNavBarDat
   function closeModal3() {
     setIsOpen3(false);
   }
+  function closeModal5() {
+    setIsOpen5(false);
+  }
+
+  
 
   function closeModal4() {
     setIsOpen4(false);
@@ -308,6 +319,42 @@ const CustomerNavbar = ({ setTab, getsingalmalldata, SetNavBarData, SetNavBarDat
         console.log("err11", err);
       });
   };
+
+  // Add Rating Api
+
+  const addRating = async () => {
+    const token = await JSON.parse(localStorage.getItem("is_token"));
+
+    if (getrating == "" || undefined) {
+      Notification("error","Error!", "Please give rating");
+    }else{
+    const formdata = await new FormData();
+    formdata.append("mall_id",getsingalmalldata.id);
+    formdata.append("rating", getrating);
+
+
+    try {
+      const response = await axios.post(add_rating, formdata, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      if (response.data.success == 1) {
+        // setTab(4);
+        setIsOpen5(false);
+        logout();
+        // getMallList();
+        // window.location.reload(true);
+
+       }
+      return response.data;
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+}
 
 
   // Filter Api
@@ -546,9 +593,9 @@ const CustomerNavbar = ({ setTab, getsingalmalldata, SetNavBarData, SetNavBarDat
 
                         {/* {is_login === true ? (<><Link onClick={logout}>Logout</Link></>) : (<></>)} */}
                         {login === "true" ? (
-                          <button
+                          <button className="navbar-acc-menu-link"
                             style={{ textAlign: "start" }}
-                            onClick={logout}>
+                            onClick={()=>{setIsOpen5(true)}}>
                             Logout
                           </button>
                         ) : null}
@@ -736,7 +783,7 @@ const CustomerNavbar = ({ setTab, getsingalmalldata, SetNavBarData, SetNavBarDat
 
                     <Link>Help</Link>
                     {login === "true" ? (
-                      <Link onClick={logout}>Logout</Link>
+                      <Link onClick={()=>{setIsOpen5(true)}}>Logout</Link>
                     ) : (
                       <></>
                     )}
@@ -851,6 +898,76 @@ const CustomerNavbar = ({ setTab, getsingalmalldata, SetNavBarData, SetNavBarDat
             }}>
             Register
           </button>
+        </div>
+      </ReactModal>
+
+
+      {/* Rating Modal */}
+
+      <ReactModal
+        isOpen={modalIsOpen5}
+        // onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal5}
+        style={customStyles}
+      >
+        <div className="home_login_model_1sec_inner home_login_model_1sec_inner_cus_rating mall_rating_pading_resp" style={{padding:"2rem"}}>
+          <button className="signup_modal_close" onClick={closeModal5}>
+            {/* <span
+              style={{ fontSize: "16px" }}
+              className="brand-lable-radio-btn-txt"
+            >
+              Cancel
+            </span>{" "} */}
+            <AiOutlineClose color="black" />
+          </button>
+          <div className="f-b900 fs-22 mb_16 signup_headign" style={{ marginTop: "40px",fontSize:"23px",textAlign:"center" }}>How was the {getsingalmalldata?.name}?</div>
+          <p style={{ textAlign: "center", width: "100%",fontSize:"17px" }}>We would really appreciate your feedback!</p>
+
+
+          <div className="rating-star-box">
+            {/* <AiFillStar className="rating-star-icon" key={index}
+              onClick={() => handleRatingClick(index + 1)}
+              color={index + 1 <= rating ? '#ffc107' : '#e4e5e9'} /> */}
+            {/* <AiFillStar className="rating-star-icon" />
+            <AiFillStar className="rating-star-icon" />
+            <AiFillStar className="rating-star-icon" />
+            <AiFillStar className="rating-star-iconn" /> */}
+            <Rating
+              emptySymbol={<img src={images.graystar} className="icon" style={{marginRight:"20px"}} />}
+              fullSymbol={<img src={images.orangestar} className="icon" style={{marginRight:"20px"}}/>}
+              onClick={(e) => {
+                console.log('hhh', e);
+                setRating(e)
+              }}
+            />
+          </div>
+          <div className="sign_input_wrapp">
+
+            {/* <div className="signup_terms_wrapp">
+              <input
+                type="checkbox"
+                value={isAcceptTerm}
+                onChange={handleTermChange}
+                checked={isAcceptTerm}
+              />
+              <p className="fs-des">
+                I have read and agree to the{" "}
+                <a className="signup_terms_link">Terms and Conditions</a> &{" "}
+                <a className="signup_terms_link">Privacy Policy</a>
+              </p>
+            </div> */}
+            <div style={{ height: "1px", background: "#aaa", width: '100%', marginTop: "20px", marginBottom: "20px" }}></div>
+
+            {/* <button className="signup_model_forgate">Forgot password?</button> */}
+          </div>
+          <button
+            className="btn btn-orange mb_16"
+            onClick={() => addRating()}
+            // disabled={isAcceptTerm ? false : true}
+          >
+            Submit
+          </button>
+
         </div>
       </ReactModal>
     </>

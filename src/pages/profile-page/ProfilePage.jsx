@@ -284,7 +284,7 @@ const ProfilePage = () => {
         </div>
       )} */}
       <Helmet>
-        <title>Profile | In-Store</title>
+        <title>Mall Dashboard | In-Store</title>
       </Helmet>
 
       <div>

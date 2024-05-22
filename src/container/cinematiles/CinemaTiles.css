@@ -4,16 +4,16 @@
 }   
 
 .leaderboard-sub-wrapp-cinema{
-    padding-left: 5rem;
-    padding-right: 5rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
     margin-left: 0rem;
     margin-right: 0rem;
 }
 
 @media screen and (max-width:1385px) {
     .leaderboard-sub-wrapp-cinema{
-        padding-right:3rem;
-        padding-left: 3rem;
+        padding-right:2rem;
+        padding-left: 2rem;
     }
 }
 

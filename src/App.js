@@ -58,6 +58,7 @@ function App() {
           <Route path="/CinemaDashboard" element={<CinemaDashboard />} />
           <Route path="/FaqPage" element={<FaqPage />} />
           <Route path="/Newpage" element={<Newpage />} />
+
         </Route>
       </Routes>
       <Footer />

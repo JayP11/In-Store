@@ -282,3 +282,17 @@ export const get_privacy_policy = BaseUrl + "get-privacy-policy";
 export const mall_create_analitic_bundle = BaseUrl + "mall-create-analitic-bundle";
 export const retailer_brand_multiple = BaseUrl + "retailer-brand-multiple";
 
+
+// for banners filter
+
+export const get_store_region_authwise = BaseUrl + "get-store-region-authwise";
+export const store_mall_from_region = BaseUrl + "store-mall-from-region";
+export const filter_leaderboard = BaseUrl + "filter-leaderboard?";
+export const filter_promotions = BaseUrl + "filter-promotions?";
+export const filter_productbanner = BaseUrl + "filter-productbanner?";
+export const filter_producttilesbanner = BaseUrl + "filter-producttilesbanner?";
+
+// Eatery Category
+export const get_eatery_category = BaseUrl + "get-eatery-category";
+
+

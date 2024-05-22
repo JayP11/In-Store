@@ -106,7 +106,8 @@ import AddRetailerLandingpageLeaderboardCard from "./addRetailerLandingpageLeade
 import RetailerLandingPageLeaderboardCard from "./retailerLandingPageLeaderboardCard/RetailerLandingPageLeaderboardCard"
 import StoreCCard from "./storeccard/StoreCCard";
 import AddRetailerLandingPageTileCard from "./addretailerlandingpagetilecard/AddRetailerLandingPageTileCard";
-import AddCinemaLeaderBoardCard from "./addcinemaleaderboardcard/AddCinemaLeaderBoardCard"
+import AddCinemaLeaderBoardCard from "./addcinemaleaderboardcard/AddCinemaLeaderBoardCard";
+import CustomerSingleEateriesProducts from "./customersingleeateriesproducts/CustomerSingleEateriesProducts";
 
 
 
@@ -209,5 +210,6 @@ export {
   RetailerLandingPageLeaderboardCard,
   StoreCCard,
   AddRetailerLandingPageTileCard,
-  AddCinemaLeaderBoardCard
+  AddCinemaLeaderBoardCard,
+  CustomerSingleEateriesProducts
 };

@@ -337,7 +337,11 @@
 
     .mall_name_heading,
     .mall_name_wrapp>span {
-        font-size: 2rem;
+        font-size: 1.7rem;
+    }
+
+    .edit_event_resp_star{
+        min-width: 0px !important;
     }
 
     .mm_main_wrapp {
@@ -436,6 +440,10 @@
     .mall_mall_name_wrapp_2{
         padding-right: 0rem !important;
     }
+
+    .btn_eatery_res{
+        justify-content: center;
+    }
 }
 
 @media screen and (max-width:900px) {
@@ -471,6 +479,8 @@
     /* width:200px; */
     margin-top: 1rem;
     margin-bottom: 1rem;
+    width: 200px;
+    align-self: center;
 }
 
 .radio-btn-flex-brand-mall{
@@ -496,6 +506,7 @@ flex-direction: row !important;
     .indep-side-show-event{
         margin-left: 25px;
         justify-content: start;
+        margin-bottom: 10px;
     }
 
     .brand-resp-show-btn-event{

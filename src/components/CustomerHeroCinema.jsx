@@ -12,7 +12,7 @@ const CustomerHeroCinema = ({getlist2}) => {
             : getlist2 && getlist2.store_banner_path
         }
         alt=""
-        className="mall_hero_banner_img"
+        className="mall_hero_banner_img img_fluid_position"
       />
       <div className="mall_hero_logo_wrapp">
         <img

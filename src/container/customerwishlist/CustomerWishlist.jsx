@@ -152,7 +152,7 @@ const CustomerWishlist = ({setTab}) => {
                             </p>
 
                             <div className="find-my-way-btn-flex">
-                    <button className="find-my-way-btn wish_btn_find_way">Find my way</button>
+                    <button className="find-my-way-btn wish_btn_find_way" onClick={()=>{setTab(29)}}>Find my way</button>
                     <BsArrowRight className="find-my-way-btn-arrow find-my-way-btn-arrow_wish" />
                   </div>
                   </div>

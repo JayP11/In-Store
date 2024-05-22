@@ -56,6 +56,9 @@ const PromotionBannerCard = ({
   setPeopleInfo,
   getweek,
 }) => {
+
+  const eateryvalue = JSON.parse(localStorage.getItem("iseatery"));
+
   const [files, setFiles] = useState([]);
   const [title, setTitle] = useState("");
   const [BrandName, setBrandName] = useState("");
@@ -148,6 +151,7 @@ const PromotionBannerCard = ({
   const {
     UpdatePromotionBoardApi,
     category_data,
+    category_eatery_data,
     deletePromotionBannerApi,
     multiple_week_data,
     week_data,
@@ -216,27 +220,84 @@ const PromotionBannerCard = ({
 
   // logo dropzon
 
-  const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } =
-    useDropzone({
-      onDrop: (acceptedFiles) => {
-        // console.log("file type", files[0]);
-        // console.log("acceptedFiles", acceptedFiles[0].File);
+  // const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } =
+  //   useDropzone({
+  //     onDrop: (acceptedFiles) => {
+  //       // console.log("file type", files[0]);
+  //       // console.log("acceptedFiles", acceptedFiles[0].File);
 
-        {
-          setFiles(
-            acceptedFiles.map((file) =>
-              Object.assign(file, {
-                preview: URL.createObjectURL(file),
-              })
-            )
-          );
-        }
-        setCondition(true);
-        if (acceptedFiles.length === 0) {
-          window.location.reload(true);
-        }
-      },
-    });
+  //       {
+  //         setFiles(
+  //           acceptedFiles.map((file) =>
+  //             Object.assign(file, {
+  //               preview: URL.createObjectURL(file),
+  //             })
+  //           )
+  //         );
+  //       }
+  //       setCondition(true);
+  //       if (acceptedFiles.length === 0) {
+  //         window.location.reload(true);
+  //       }
+  //     },
+  //   });
+
+  const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } =
+  useDropzone({
+    onDrop: async (acceptedFiles) => {
+      setCondition(true);
+
+      const maxSizeKB = 200; // Maximum size limit in KB
+      const maxSizeBytes = maxSizeKB * 1024; // Convert KB to bytes
+
+      const filteredFiles = await Promise.all(
+        acceptedFiles.map(async (file) => {
+          const isSizeValid = file.size <= maxSizeBytes; // Limit size to 50KB (in bytes)
+          const isImage = file.type.startsWith("image/"); // Check if it's an image file
+
+          if (!isImage || !isSizeValid) {
+            return null; // Skip files that are not images or exceed size limit
+          }
+
+          // Load image and wait for it to load
+          const img = new Image();
+          img.src = URL.createObjectURL(file);
+          await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+          });
+
+          // Check image dimensions
+          const isDimensionsValid = img.width == 1050 && img.height == 550;
+
+          return isDimensionsValid ? file : null; // Return file if dimensions are valid, otherwise skip it
+        })
+      );
+
+      // Filter out null values (files that were skipped)
+      const validFiles = filteredFiles.filter((file) => file !== null);
+
+      setFiles(
+        validFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        )
+      );
+
+      if (validFiles.length !== acceptedFiles.length) {
+        Notification(
+          "error",
+          "Error!",
+          "Some files exceed the maximum size limit of 200KB or do not meet the dimension requirements of 1050x550 pixels and will not be uploaded."
+        );
+      }
+
+      if (acceptedFiles.length === 0) {
+        window.location.reload(true);
+      }
+    },
+  });
 
   const thumbs = files.map((file) => (
     <img
@@ -566,7 +627,7 @@ const PromotionBannerCard = ({
           {/* Leaderboard first part responsive side start */}
           <div className="leaderboard-card-first-resp-main-wrapp">
             <p className="leaderboard-last-part-txt">
-              Service fee will apply if canceled
+              {/* Service fee will apply if canceled */}
             </p>
             <button
               className="leaderboard-
@@ -582,7 +643,7 @@ const PromotionBannerCard = ({
           {/* Leaderboard first part responsive side end*/}
 
           {/* Leaderboard part first start */}
-          <div className="leaderboard-card-part-first leaderboard-card-part-first-half">
+          <div className="leaderboard-card-part-first">
             {/* Leaderboad form start */}
 
             {/* Leaderboard inputbox start */}
@@ -694,6 +755,18 @@ const PromotionBannerCard = ({
                   <option selected disabled value="">
                     {Category}
                   </option>
+                  {eateryvalue == 1 ? <>
+                    {category_eatery_data &&
+                      category_eatery_data.map((item, index) => {
+                      return (
+                        <>
+                          <option value={item.id} key={index}>
+                            {item.name}
+                          </option>
+                        </>
+                      );
+                    })}
+                  </> : <>
                   {category_data &&
                     category_data.map((item, index) => {
                       return (
@@ -704,6 +777,8 @@ const PromotionBannerCard = ({
                         </>
                       );
                     })}
+                  </>}
+                
                 </select>
               </div>
             </div>
@@ -779,7 +854,7 @@ const PromotionBannerCard = ({
           {/* Leaderboard part first end */}
 
           {/* Leaderboard part second start */}
-          <div className="leaderboard-card-part-sec" {...getRootlogoProps()}>
+          <div className="leaderboard-card-part-sec leaderboard-card-part-sec-prom" {...getRootlogoProps()}>
             <input
               {...getInputlogoProps()}
               accept="image/jpeg, image/jpg, image/png, image/eps"
@@ -788,7 +863,7 @@ const PromotionBannerCard = ({
             {getcondition === true ? (
               <>
                 {files && files.length > 0 ? (
-                  <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl">
+                  <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl myprofile_inner_sec2_img_upload_border">
                     {thumbs}
                   </div>
                 ) : (
@@ -802,7 +877,7 @@ const PromotionBannerCard = ({
                           marginBottom: "10px",
                         }}
                       />
-                      <h4>.JPG .PNG .GIF(1050 x 284 pixels)</h4>
+                      <h4>.JPG .PNG .GIF(1050 x 550 pixels)</h4>
                       <p>(max 200kb)</p>
                       <p>You can also upload file by</p>
 
@@ -845,7 +920,7 @@ const PromotionBannerCard = ({
                     </div>
                   </div>
                 ) : (
-                  <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl">
+                  <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl myprofile_inner_sec2_img_upload_border">
                     <img
                       src={item.image_path}
                       style={{ width: "100%", height: "100%" }}
@@ -877,7 +952,7 @@ const PromotionBannerCard = ({
               />
             </button>
             <p className="leaderboard-last-part-txt">
-              Service fee will apply if canceled
+              {/* Service fee will apply if canceled */}
             </p>
             <div className="leaderboard-btn-box">
               {item.cart_status === 0 ? (

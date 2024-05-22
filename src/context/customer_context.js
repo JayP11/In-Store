@@ -69,8 +69,7 @@ export const CustomerProvider = ({ children }) => {
         },
       });
       const customerdata = response.data;
-      console.log("customer-data123", response.data.data.cus_profile_path);
-      if (customerdata.success == 1) {
+       if (customerdata.success == 1) {
         localStorage.setItem("cusimg", response.data.data.cus_profile_path);
         dispatch({ type: GET_CUSTOMER_SUCCESS, payload: customerdata });
       }

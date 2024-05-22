@@ -144,7 +144,7 @@ const EditStoreDetail = ({
   };
   const handleTermChange2 = (e) => {
     setIsAcceptTerm2(1);
-    console.log("e.targate.value"); 
+    console.log("e.targate.value");
   };
 
   // const onHandleNumberChange = (e) => {
@@ -197,18 +197,18 @@ const EditStoreDetail = ({
     } else if (retailerType == "" || undefined) {
       Notification("error", "Error!", "Please Select any one retailer type!");
       return;
-    } 
+    }
     else if (mallsOption.length <= 0 && retailerType == 2) {
       Notification("error", "Error!", "Please Select any Brand otherwise select Independent Retailer!");
       return;
-    } 
+    }
     else if (storeNumber == "" || undefined) {
       Notification("error", "Error!", "Please Enter Store Number!");
       return;
     } else if (storeCategory == "" || undefined) {
       Notification("error", "Error!", "Please Select Store Category!");
       return;
-    } 
+    }
     // else if (storeLevel == "" || undefined) {
     //   Notification("error", "Error!", "Please Select Store Level!");
     //   return;
@@ -216,12 +216,12 @@ const EditStoreDetail = ({
     else if (getnumber == "" || undefined) {
       Notification("error", "Error!", "Please Enter Number!");
       return;
-    } 
+    }
     // else if (getContactPerson == "" || undefined) {
     //   Notification("error", "Error!", "Please Enter Contact Person Name!");
     //   return;
     // }
-     else if (getemail == "" || undefined) {
+    else if (getemail == "" || undefined) {
       Notification("error", "Error!", "Please Enter Email!");
       return;
     } else if (storeDes == "" || undefined) {
@@ -238,13 +238,13 @@ const EditStoreDetail = ({
       await formdata.append("email", getemail);
       await formdata.append("description", storeDes);
       await formdata.append("category_id", storeCategory);
-        await formdata.append("terms_condition", isAcceptTerm);
-        await formdata.append("privacy_policy", isAcceptTerm2);
+      await formdata.append("terms_condition", isAcceptTerm);
+      await formdata.append("privacy_policy", isAcceptTerm2);
 
-        if(retailerType == 2) {
-          for (var i = 0; i < mallsOption.length; i++) {
-              await formdata.append("brand_id[" + i + "]", mallsOption[i].value);
-            }
+      if (retailerType == 2) {
+        for (var i = 0; i < mallsOption.length; i++) {
+          await formdata.append("brand_id[" + i + "]", mallsOption[i].value);
+        }
       }
       if (files[0] !== undefined) {
         await formdata.append("store_logo", files[0]);
@@ -273,6 +273,11 @@ const EditStoreDetail = ({
         if (data.success === 1) {
           console.log("mall-data", data);
           Notification("success", "Success!", "Brand Updated Successfully!");
+          setTab(3);
+          // getStoreList();
+        }else if (data.success === 0) {
+          console.log("mall-data", data);
+          Notification("error", "Error!", data.message);
           setTab(3);
           // getStoreList();
         }
@@ -326,7 +331,7 @@ const EditStoreDetail = ({
   const thumbs = files.map((file) => (
     <img
       src={file.preview}
-      style={{ width: "100%", height: "100%", maxHeight: "175px",filter:"grayscale(100%)" }}
+      style={{ width: "100%", height: "100%", maxHeight: "175px", filter: "grayscale(100%)" }}
       className="img-fluid"
       alt="file"
     />
@@ -394,24 +399,24 @@ const EditStoreDetail = ({
     const token = JSON.parse(localStorage.getItem("is_token"));
 
     axios
-        .get(get_brand_multiple, {
-            headers: {
-                Accept: ACCEPT_HEADER,
-                Authorization: "Bearer " + token,
-            },
-        })
-        .then((res) => {
-            console.log("get multiple brand data", JSON.stringify(res.data, null, 2));
-            if (res.data.success == 1) {
-                setMultipleBrand(res.data.data);
-            } else {
-                null;
-            }
-        })
-        .catch((err) => {
-            console.log("err11", err);
-        });
-};
+      .get(get_brand_multiple, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((res) => {
+        console.log("get multiple brand data", JSON.stringify(res.data, null, 2));
+        if (res.data.success == 1) {
+          setMultipleBrand(res.data.data);
+        } else {
+          null;
+        }
+      })
+      .catch((err) => {
+        console.log("err11", err);
+      });
+  };
 
   return (
     <>
@@ -421,11 +426,12 @@ const EditStoreDetail = ({
         <div className='edit-brand-back-iconbox' onClick={() => setTab(3)}><IoChevronBack className='edit-brand-back-icon' /> <p className='edit-brand-back-txt'>Back</p></div>
         {/* mall management name start */}
         <div className="mall_name_wrapp mm_form_wrapp_name_padding">
-          <p className="mall_name_heading">{getsingleStoreData.name ? getsingleStoreData.name : ""}:</p>
-          <span style={{fontWeight:"600"}}>Edit Brand</span>
+          {/* <p className="mall_name_heading">{getsingleStoreData.name ? getsingleStoreData.name : ""}:</p> */}
+          <p className="mall_name_heading">{get_mall_auth_data.name}:</p>
+          <span style={{ fontWeight: "600" }}>Edit Brand</span>
         </div>
         {/* <div className="mm_horizontal_line"></div> */}
-        <div className="" style={{marginTop:"2rem"}}></div>
+        <div className="" style={{ marginTop: "2rem" }}></div>
         {/* mall management name end */}
 
         {/* mall management form start */}
@@ -433,7 +439,7 @@ const EditStoreDetail = ({
           {/* text-input wrapp start */}
           <div className="mm_form_input_wrapp">
 
-          {/* <div className="signup_terms_wrapp indep-side">
+            {/* <div className="signup_terms_wrapp indep-side">
               <div className="mm_form_single_input">
                 <label htmlFor="" style={{ minWidth: "153px" }}>Retailer type</label>
 
@@ -525,23 +531,23 @@ const EditStoreDetail = ({
             {/* single text-input */}
 
             {retailerType == 2 ? <>
-                            <div className="mm_form_single_input">
-              <label htmlFor="" className="" style={{minWidth:"148px"}}>Select Brands</label>
+              <div className="mm_form_single_input">
+                <label htmlFor="" className="" style={{ minWidth: "148px" }}>Select Brands</label>
 
-              <Select
-                value={mallsOption}
-                styles={{ width: "100%", padding: "0px" }}
-                className="leaderboard-card-inp"
-                closeMenuOnSelect={false}
-                components={animatedComponents}
-                // defaultValue={[getBrandList]}
-                // defaultValue={getBrandList}                
-                isMulti
-                options={getMultipleBrand}
-                onChange={setMallsOption}
-              />
-            </div>
-                        </>: <></>}
+                <Select
+                  value={mallsOption}
+                  styles={{ width: "100%", padding: "0px" }}
+                  className="leaderboard-card-inp"
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                  // defaultValue={[getBrandList]}
+                  // defaultValue={getBrandList}                
+                  isMulti
+                  options={getMultipleBrand}
+                  onChange={setMallsOption}
+                />
+              </div>
+            </> : <></>}
             <div className="mm_form_single_input">
               <label htmlFor="" style={{ minWidth: "153px" }}>Category<span className="star_require">*</span></label>
               <div className="select-wrapper" style={{ width: "100%" }}>
@@ -892,7 +898,7 @@ const EditStoreDetail = ({
               <label htmlFor="" style={{ minWidth: "153px" }}>
 
               </label>
-              <span style={{fontSize:"14px",color:"#bbb"}}>*Required Fields including all image uploads.</span>
+              <span style={{ fontSize: "14px", color: "#bbb" }}>*Required Fields including all image uploads.</span>
             </div>
 
             {/* <div className="signup_terms_wrapp indep-side">
@@ -936,38 +942,38 @@ const EditStoreDetail = ({
 
 
             {/* text-area sec end */}
-            
+
 
             <div className="mm_form_single_input mb_8">
               <label htmlFor="" style={{ minWidth: "153px" }}></label>
               <div>
-              <div className="signup_terms_wrapp indep-side">
-                <input
-                  type="checkbox"
-                  value={isAcceptTerm}
-                  onChange={handleTermChange}
-                  checked={isAcceptTerm}
-                />
+                <div className="signup_terms_wrapp indep-side">
+                  <input
+                    type="checkbox"
+                    value={isAcceptTerm}
+                    onChange={handleTermChange}
+                    checked={isAcceptTerm}
+                  />
 
-                <p className="fs-des">
-                  I have read and agree to the{" "}
-                  <a className="signup_terms_link">Privacy Policy</a>
-                </p>
-              </div>
+                  <p className="fs-des">
+                    I have read and agree to the{" "}
+                    <a className="signup_terms_link">Privacy Policy</a>
+                  </p>
+                </div>
 
-              <div className="signup_terms_wrapp indep-side">
-                <input
-                  type="checkbox"
-                  value={isAcceptTerm2}
-                  onChange={handleTermChange2}
-                  checked={isAcceptTerm2}
-                />
+                <div className="signup_terms_wrapp indep-side">
+                  <input
+                    type="checkbox"
+                    value={isAcceptTerm2}
+                    onChange={handleTermChange2}
+                    checked={isAcceptTerm2}
+                  />
 
-                <p className="fs-des">
-                  I have read and agree to the{" "}
-                  <a className="signup_terms_link">Terms and Conditions</a>
-                </p>
-              </div>
+                  <p className="fs-des">
+                    I have read and agree to the{" "}
+                    <a className="signup_terms_link">Terms and Conditions</a>
+                  </p>
+                </div>
               </div>
             </div>
             <div className="mm_form_single_input brand-resp-btn">
@@ -976,8 +982,9 @@ const EditStoreDetail = ({
                 <button
                   className="btn btn-black"
                   onClick={() => UpdateMallStoreData()}
+                  disabled={isAcceptTerm == 1 && isAcceptTerm2 ==1 ? false : true}
 
-                  style={{ marginTop: "20px", width: "200px",marginLeft:"10px" }}
+                  style={{ marginTop: "20px", width: "200px", marginLeft: "10px" }}
                 >
                   Update
 
@@ -997,11 +1004,11 @@ const EditStoreDetail = ({
                 {...getInputlogoProps()}
                 accept="image/jpeg, image/jpg, image/png, image/eps"
               /> */}
-                  <h4 style={{ marginBottom: "10px",fontSize:"14px",fontWeight:"600" }} className="myprofile_upload_img_card_name">Upload black and white <br />
-                  Brand logo <br/>
-                  (200 x 200 pixels)<br/>(max 40kb)<span className="star_require">*</span>
+                  <h4 style={{ marginBottom: "10px", fontSize: "14px", fontWeight: "600" }} className="myprofile_upload_img_card_name">Upload black and white <br />
+                    Brand logo <br />
+                    (200 x 200 pixels)<br />(max 40kb)<span className="star_require">*</span>
 
-                  <br/> </h4>
+                    <br /> </h4>
                   {getcondition === true ?
 
                     <>
@@ -1017,7 +1024,7 @@ const EditStoreDetail = ({
                                 marginBottom: "10px",
                               }}
                             />
-                            <h4>.PDF .JPG .PNG</h4>
+                            <h4>.JPG .PNG</h4>
                             <p>You can also upload file by</p>
                             {/* <input
                               {...getRootLogoProps()}
@@ -1057,7 +1064,7 @@ const EditStoreDetail = ({
                                   marginBottom: "10px",
                                 }}
                               />
-                              <h4>.PDF .JPG .PNG</h4>
+                              <h4>.JPG .PNG</h4>
                               <p>You can also upload file by</p>
                               {/* <input
                                 {...getRootLogoProps()}
@@ -1092,7 +1099,7 @@ const EditStoreDetail = ({
 
                             <img
                               src={getsingleStoreData.store_logo_path}
-                              style={{ width: "100%", height: "100%",filter:"grayscale(100%)" }}
+                              style={{ width: "100%", height: "100%", filter: "grayscale(100%)" }}
                               className="img-fluidb"
                             />
 
@@ -1127,9 +1134,9 @@ const EditStoreDetail = ({
               </div>
             </div>
             {/* upload images wrapp end */}
-            <p className="upload_img_instr">All Brand logo’s to be uploaded <br/>
-in black and white format <br/>
-(no colour logo’s)</p> 
+            <p className="upload_img_instr">All Brand logo’s to be uploaded <br />
+              in black and white format <br />
+              (no colour logo’s)</p>
             {/* upload images wrapp start */}
             <div className="mm_img_upload_wrapp" style={{ width: "100%" }}>
               {/* single upload image */}
@@ -1140,8 +1147,8 @@ in black and white format <br/>
                 {...getInputlogoProps()}
                 accept="image/jpeg, image/jpg, image/png, image/eps"
               /> */}
-                  <h4 style={{ marginBottom: "10px" }} className="myprofile_upload_img_card_name">Upload the brand banner <br />
-                    (1300 x 275 pixels)</h4>
+                  <h5 style={{ marginBottom: "10px", fontSize: "14px", fontWeight: "600" }}>Upload black and white <br />
+                    Brand banner <br /> (2560 x 475 pixels) <br /> (max 200kb)<span className="star_require">*</span></h5>
                   {getcondition2 === true ?
 
                     <>
@@ -1157,7 +1164,7 @@ in black and white format <br/>
                                 marginBottom: "10px",
                               }}
                             />
-                            <h4>.PDF .JPG .PNG</h4>
+                            <h4>.JPG .PNG</h4>
                             <p>You can also upload file by</p>
                             {/* <input
                               {...getRootLogoProps()}
@@ -1197,7 +1204,7 @@ in black and white format <br/>
                                   marginBottom: "10px",
                                 }}
                               />
-                              <h4>.PDF .JPG .PNG</h4>
+                              <h4>.JPG .PNG</h4>
                               <p>You can also upload file by</p>
                               {/* <input
                                 {...getRootBannerProps()}
@@ -1303,6 +1310,8 @@ in black and white format <br/>
           <button
             className="btn btn-black"
             onClick={() => UpdateMallStoreData()}
+            disabled={isAcceptTerm == 1 && isAcceptTerm2 ==1 ? false : true}
+
             style={{ width: "200px" }}
           >
             Update

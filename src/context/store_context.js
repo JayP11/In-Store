@@ -113,7 +113,10 @@ import {
   DELETE_LANDING_PAGE_SQUARE_TILE_FAIL,
   GET_STORE_CART_ERROR,
   GET_STORE_CART_SUCCESS,
-  GET_STORE_CART_BEGIN
+  GET_STORE_CART_BEGIN,
+  GET_CATEGORY_EATERY_BEGIN,
+  GET_CATEGORY_EATERY_SUCCESS,
+  GET_CATEGORY_EATERY_FAIL
 } from "../Action";
 
 import {
@@ -141,6 +144,7 @@ import {
   get_cinema_category,
   get_cinema_retailer,
   get_customer,
+  get_eatery_category,
   get_multiple_mall,
   get_retailer,
   get_store,
@@ -183,8 +187,10 @@ const initialState = {
   retailer_data: [],
   cinema_mall_data:[],
   category_data: [],
+  category_eatery_data: [],
   cinema_category_data: [],
   category_data_loading: false,
+  category_eatery_data_loading: false,
   cinema_category_data_loading: false,
 
   brand_update_loading: false,
@@ -230,8 +236,16 @@ const initialState = {
   store_cart_count: ''
 };
 
+
+
+
 const StoreContext = React.createContext();
 export const StoreProvider = ({ children }) => {
+
+  const eateryvalue = JSON.parse(localStorage.getItem("iseatery"));
+
+  console.log("eateryvalue123",eateryvalue);
+
   const [state, dispatch] = useReducer(store_reducer, initialState);
   // const { is_login, is_token } = useStoreContext();
 
@@ -377,11 +391,16 @@ export const StoreProvider = ({ children }) => {
 
   // get retailer
 
-  const getRetailerApi = async (id) => {
+  const getRetailerApi = async (id,id2) => {
     // const token = JSON.parse(localStorage.getItem("is_token"));
-
+    console.log("is_eatery123",id2);
     var formdata = new FormData();
     formdata.append("mall_id", id);
+    if(id2 === true || id2 == 1){
+    formdata.append("is_eatery", true);
+    }else{
+
+    }
 
     dispatch({ type: GET_RETAILER_BEGIN });
     try {
@@ -442,13 +461,32 @@ export const StoreProvider = ({ children }) => {
         },
       });
       const categorydata = response.data;
-      console.log("category-data is", response.data);
-      if (categorydata.success == 1) {
+       if (categorydata.success == 1) {
         dispatch({ type: GET_CATEGORY_SUCCESS, payload: categorydata });
       }
       return response.data;
     } catch (error) {
       dispatch({ type: GET_CATEGORY_FAIL });
+    }
+  };
+
+  const getCategoryEateryApi = async () => {
+    const token = JSON.parse(localStorage.getItem("is_token"));
+    dispatch({ type: GET_CATEGORY_EATERY_BEGIN });
+    try {
+      const response = await axios.get(get_eatery_category, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      });
+      const categorydataeatery = response.data;
+        if (categorydataeatery.success == 1) {
+        dispatch({ type: GET_CATEGORY_EATERY_SUCCESS, payload: categorydataeatery });
+      }
+      return response.data;
+    } catch (error) {
+      dispatch({ type: GET_CATEGORY_EATERY_FAIL });
     }
   };
 
@@ -465,8 +503,7 @@ export const StoreProvider = ({ children }) => {
           },
         });
         const cinemacategorydata = response.data;
-        console.log("cinema category-data is", response.data);
-        if (cinemacategorydata.success == 1) {
+         if (cinemacategorydata.success == 1) {
           dispatch({ type: GET_CINEMA_CATEGORY_SUCCESS, payload: cinemacategorydata });
         }
         return response.data;
@@ -488,8 +525,7 @@ export const StoreProvider = ({ children }) => {
         },
       });
       const weekdata = response.data;
-      console.log("week-data is", response.data);
-      if (weekdata.success == 1) {
+       if (weekdata.success == 1) {
         dispatch({ type: GET_WEEK_SUCCESS, payload: weekdata });
       }
       return response.data;
@@ -1190,13 +1226,17 @@ export const StoreProvider = ({ children }) => {
   useEffect(() => {
     getStore();
     getRetailerApi();
-    getCategoryApi();
+    if(eateryvalue == 1){
+      getCategoryEateryApi();
+    }else{
+      getCategoryApi();
+
+    }
     getWeekApi();
     getMultipleMall();
     getCinema();
     getCinemaCategoryApi();
     getStoreCartApi();
-
     
   }, []);
 

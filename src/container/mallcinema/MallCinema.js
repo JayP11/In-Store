@@ -313,7 +313,7 @@ const MallCinema = ({
           <div className="sd_model_wrapp">
             {/* edit and delete orange btns start */}
             <div className="sd_model_edit_wrap">
-              {getsingleStoreData.type == 2 ? (
+              {/* {getsingleStoreData.type == 2 ? (
                 <button
                   className="sd_modal_edit_btn_wrapp"
                   onClick={() => {
@@ -324,7 +324,7 @@ const MallCinema = ({
                   <img src={images.edit_orange} alt="" />
                   <p>Upload</p>
                 </button>
-              ) : null}
+              ) : null} */}
 
               <button
                 className="sd_modal_edit_btn_wrapp" style={{paddingTop:"2rem"}}

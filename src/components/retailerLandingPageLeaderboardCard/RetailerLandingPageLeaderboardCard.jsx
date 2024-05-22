@@ -241,32 +241,89 @@ const RetailerLandingPageLeaderboardCard = ({
 
   // logo dropzon
 
+  // const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } =
+  //   useDropzone({
+  //     onDrop: (acceptedFiles) => {
+  //       SetCondation(true);
+  //       const filteredFiles = acceptedFiles.filter(file => file.size <= 200000); // Limit size to 200KB (in bytes)
+
+
+  //       {
+  //         setFiles(
+  //           filteredFiles.map((file) =>
+  //             Object.assign(file, {
+  //               preview: URL.createObjectURL(file),
+  //             })
+  //           )
+  //         );
+  //         if (filteredFiles.length !== acceptedFiles.length) {
+  //           // Notification('');
+  //           Notification("error","Error!", "Some files exceed the maximum size limit of 200KB and will not be uploaded.");
+  //         }
+  //       }
+
+  //       if (acceptedFiles.length === 0) {
+  //         window.location.reload(true);
+  //       }
+  //     },
+  //   });
+
   const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } =
-    useDropzone({
-      onDrop: (acceptedFiles) => {
-        SetCondation(true);
-        const filteredFiles = acceptedFiles.filter(file => file.size <= 200000); // Limit size to 200KB (in bytes)
+  useDropzone({
+    onDrop: async (acceptedFiles) => {
+      SetCondation(true);
 
+      const maxSizeKB = 200; // Maximum size limit in KB
+      const maxSizeBytes = maxSizeKB * 1024; // Convert KB to bytes
 
-        {
-          setFiles(
-            filteredFiles.map((file) =>
-              Object.assign(file, {
-                preview: URL.createObjectURL(file),
-              })
-            )
-          );
-          if (filteredFiles.length !== acceptedFiles.length) {
-            // Notification('');
-            Notification("error","Error!", "Some files exceed the maximum size limit of 200KB and will not be uploaded.");
+      const filteredFiles = await Promise.all(
+        acceptedFiles.map(async (file) => {
+          const isSizeValid = file.size <= maxSizeBytes; // Limit size to 50KB (in bytes)
+          const isImage = file.type.startsWith("image/"); // Check if it's an image file
+
+          if (!isImage || !isSizeValid) {
+            return null; // Skip files that are not images or exceed size limit
           }
-        }
 
-        if (acceptedFiles.length === 0) {
-          window.location.reload(true);
-        }
-      },
-    });
+          // Load image and wait for it to load
+          const img = new Image();
+          img.src = URL.createObjectURL(file);
+          await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+          });
+
+          // Check image dimensions
+          const isDimensionsValid = img.width == 1380 && img.height == 367;
+
+          return isDimensionsValid ? file : null; // Return file if dimensions are valid, otherwise skip it
+        })
+      );
+
+      // Filter out null values (files that were skipped)
+      const validFiles = filteredFiles.filter((file) => file !== null);
+
+      setFiles(
+        validFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        )
+      );
+
+      if (validFiles.length !== acceptedFiles.length) {
+        Notification(
+          "error",
+          "Error!",
+          "Some files exceed the maximum size limit of 200KB or do not meet the dimension requirements of 1380x367 pixels and will not be uploaded."
+        );
+      }
+
+      if (acceptedFiles.length === 0) {
+        window.location.reload(true);
+      }
+    },
+  });
 
   const thumbs = files.map((file) => (
     <img
@@ -586,7 +643,7 @@ const RetailerLandingPageLeaderboardCard = ({
           {/* Leaderboard first part responsive side start */}
           <div className="leaderboard-card-first-resp-main-wrapp">
             <p className="leaderboard-last-part-txt">
-              Service fee will apply if canceled
+              {/* Service fee will apply if canceled */}
             </p>
             <button className="leaderboard-delete-icon-btn">
               cancel{" "}
@@ -821,7 +878,7 @@ const RetailerLandingPageLeaderboardCard = ({
             {getcondation === true ? (
               <>
                 {files && files.length > 0 ? (
-                  <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl">
+                  <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl myprofile_inner_sec2_img_upload_border">
                     {thumbs}
                   </div>
                 ) : (
@@ -835,7 +892,8 @@ const RetailerLandingPageLeaderboardCard = ({
                           marginBottom: "10px",
                         }}
                       />
-                      <h4>.PDF .JPG .PNG</h4>
+                      <h4>.JPG .PNG .GIF (1380 x 367 pixels)</h4>
+                      <p>(max 200kb)</p>
                       <p>You can also upload file by</p>
                       {/* <input
                       {...getInputlogoProps()}
@@ -844,7 +902,7 @@ const RetailerLandingPageLeaderboardCard = ({
                       <button
                         type="button"
                         className="click_upload_btn"
-                        style={{ marginBottom: "10px" }}
+                        style={{ marginBottom: "10px",color:"var(--color-orange)",fontWeight:"600" }}
                       >
                         click here
                       </button>
@@ -885,7 +943,7 @@ const RetailerLandingPageLeaderboardCard = ({
                   </div>
                 ) : (
                   <>
-                    <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl">
+                    <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl myprofile_inner_sec2_img_upload_border">
                       <img
                         src={item.image_path}
                         style={{ width: "100%", height: "100%" }}
@@ -916,7 +974,7 @@ const RetailerLandingPageLeaderboardCard = ({
               />
             </button>
             <p className="leaderboard-last-part-txt">
-              Service fee will apply if canceled
+              {/* Service fee will apply if canceled */}
             </p>
             <div className="leaderboard-btn-box">
               {item.cart_status === 0 ? (

@@ -7,6 +7,8 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import images from "../../constants/images";
 import ReactModal from "react-modal";
 import axios from "axios";
+import Notification from "../../utils/Notification";
+
 
 import {
   ACCEPT_HEADER,
@@ -271,15 +273,15 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
   );
 
   const { region_data } = useAuthContext();
-  const [frist_mall, SetFrist_mall] = useState("");
-  const [last_mall, SetLast_mall] = useState("");
-  const [compname, SetComPname] = useState("");
+  const [frist_mall, SetFrist_mall] = useState(get_mall_auth_data?.first_name);
+  const [last_mall, SetLast_mall] = useState(get_mall_auth_data?.last_name);
+  const [compname, SetComPname] = useState(get_mall_auth_data?.name);
   const [comregi, SetComRegi] = useState("");
-  const [physicaladd, SetPhysicalAdd] = useState("");
-  const [physicaladd1, SetPhysicalAdd1] = useState("");
+  const [physicaladd, SetPhysicalAdd] = useState(get_mall_auth_data?.address);
+  const [physicaladd1, SetPhysicalAdd1] = useState(get_mall_auth_data?.address_2);
   const [pcode, SetPCode] = useState("");
-  const [number, SetNumber] = useState("");
-  const [emailadd, SetEmailAdd] = useState("");
+  const [number, SetNumber] = useState(get_mall_auth_data?.number);
+  const [emailadd, SetEmailAdd] = useState(get_mall_auth_data?.email);
   const [cardnum, SetCardName] = useState("");
   const [cardnumber, SetCardNumber] = useState("");
   const [cardcode, SetCardCode] = useState("");
@@ -314,6 +316,36 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
   const [checkid, SetCheckId] = useState("");
 
   const Place_Order = async () => {
+    if(frist_mall == ""){
+      Notification("error", "Error!", "Please Enter First Name!");
+      return;
+  }else if(last_mall === ""){
+    Notification("error", "Error!", "Please Enter Second Name!");
+
+  }else if(compname === ""){
+    Notification("error", "Error!", "Please Enter Company Name!");
+
+  }else if(comregi === ""){
+    Notification("error", "Error!", "Please Enter Company Registration!");
+
+  }else if(BrandId === ""){
+    Notification("error", "Error!", "Please Select Region!");
+
+  }else if(physicaladd === ""){
+    Notification("error", "Error!", "Please Enter Address!");
+
+  }else if(physicaladd1 === ""){
+    Notification("error", "Error!", "Please Enter Address1!");
+  }else if(pcode === ""){
+    Notification("error", "Error!", "Please Enter Postal Code!");
+
+  }else if(number === ""){
+    Notification("error", "Error!", "Please Enter Number!");
+
+  }else if(emailadd === ""){
+    Notification("error", "Error!", "Please Enter Email!");
+
+  }else{
     const token = JSON.parse(localStorage.getItem("is_token"));
 
     const formdata = await new FormData();
@@ -377,6 +409,7 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
       .catch((err) => {
         console.log("err11", err);
       });
+    }
   };
 
   const check_data = async (id) => {
@@ -448,9 +481,12 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
       <div className="mall_name_wrapp" style={{paddingLeft:"0rem"}}>
         <p className="mall_name_heading">
           {" "}
-          {get_mall_auth_data &&
+          {/* {get_mall_auth_data &&
             get_mall_auth_data.retailers.name &&
-            get_mall_auth_data.retailers.name}
+            get_mall_auth_data.retailers.name} */}
+            {get_mall_auth_data &&
+                get_mall_auth_data.name &&
+                get_mall_auth_data.name}
           :
         </p>
         {/* <p className="mall_name_heading">Sterkinikor</p> */}
@@ -469,7 +505,7 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
             {/* single text-input */}
             <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
               <div className="mm_form_single_input store-checkout-form-flex-column">
-                <label htmlFor="">First Name</label>
+                <label htmlFor="">First Name<span className="star_require">*</span></label>
                 <input
                   type="text"
                   value={frist_mall}
@@ -480,7 +516,7 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
                 />
               </div>
               <div className="mm_form_single_input store-checkout-form-flex-column">
-                <label htmlFor="">Last Name</label>
+                <label htmlFor="">Last Name<span className="star_require">*</span></label>
                 <input
                   type="text"
                   value={last_mall}
@@ -497,7 +533,7 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
               className="mm_form_single_input store-checkout-form-flex-column"
               style={{ alignItems: "flex-start" }}
             >
-              <label htmlFor="">Company Name</label>
+              <label htmlFor="">Company Name<span className="star_require">*</span></label>
               <input
                 type="text"
                 value={compname}
@@ -509,7 +545,7 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input store-checkout-form-flex-column">
-              <label htmlFor="">Company Registration</label>
+              <label htmlFor="">Company Registration<span className="star_require">*</span></label>
               <input
                 type="text"
                 value={comregi}
@@ -534,7 +570,7 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
           </div> */}
             {/* single text-input */}
             <div className="mm_form_single_input store-checkout-form-flex-column">
-              <label htmlFor="">Region</label>
+              <label htmlFor="">Region<span className="star_require">*</span></label>
               <div className="select-wrapper" style={{ width: "100%" }}>
                 <select
                   className="leaderboard-card-inp"
@@ -562,7 +598,7 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input store-checkout-form-flex-column">
-              <label htmlFor="">Physical Address</label>
+              <label htmlFor="">Physical Address<span className="star_require">*</span></label>
               <input
                 type="text"
                 value={physicaladd}
@@ -574,7 +610,7 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
               />
             </div>
             <div className="mm_form_single_input store-checkout-form-flex-column">
-              <label htmlFor="">Physical Address 1</label>
+              <label htmlFor="">Physical Address 1<span className="star_require">*</span></label>
               <input
                 type="text"
                 value={physicaladd1}
@@ -588,7 +624,7 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
 
             {/* single text-input */}
             <div className="mm_form_single_input store-checkout-form-flex-column">
-              <label htmlFor="">Postal code</label>
+              <label htmlFor="">Postal code<span className="star_require">*</span></label>
               <input
                 type="number"
                 value={pcode}
@@ -600,10 +636,11 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input store-checkout-form-flex-column">
-              <label htmlFor="">Contact Number</label>
+              <label htmlFor="">Contact Number<span className="star_require">*</span></label>
               <input
                 type="number"
                 value={number}
+                maxLength={10}  
                 onChange={(e) => SetNumber(e.target.value)}
                 name=""
                 id=""
@@ -616,7 +653,7 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
               className="mm_form_single_input store-checkout-form-flex-column"
               style={{ alignItems: "flex-start" }}
             >
-              <label htmlFor="">Email Address</label>
+              <label htmlFor="">Email Address<span className="star_require">*</span></label>
               <input
                 type="email"
                 value={emailadd}
@@ -677,7 +714,11 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
                   }}
                 >
                   <button
-                    className="btn btn-orange" style={{backgroundColor:"#000"}}
+                    className="btn btn-orange" style=
+                    {{backgroundColor:"#000",
+                    
+                    }}
+                    disabled={isAcceptTerm == 1 &&  isAcceptTerm2 == 1 ? false : true}
                     onClick={() => Place_Order()}
                     // onClick={() => setIsOpen4(true)}
                   >
@@ -851,6 +892,7 @@ const StoreCheckout = ({ get_mall_auth_data, setTab }) => {
                     className="btn btn-orange" style={{backgroundColor:"#000"}}
                     onClick={() => Place_Order()}
                     // onClick={() => setIsOpen4(true)}
+                    disabled={isAcceptTerm == 1 &&  isAcceptTerm2 == 1 ? false : true}
                   >
                     Submit Order
                   </button>

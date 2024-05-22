@@ -69,7 +69,11 @@ const BrandHeroEdit = ({ get_mall_auth_data, sidebaropen,setTab }) => {
   ));
 
   return (
-    <div>
+    <div className={`${
+      get_mall_auth_data.store_banner_path 
+         ? "banner_all_wrap" : "banner_all_wrap_height"
+         
+     }`}>
       <div className="brand-hero-edit-main-wrapp" onClick={()=>{setTab(2)}}
       //  {...getRootbannerProps()}
        >
@@ -92,8 +96,8 @@ const BrandHeroEdit = ({ get_mall_auth_data, sidebaropen,setTab }) => {
           <>
             <img
               src={get_mall_auth_data?.store_banner_path}
-              style={{ width: "100%", height: "100%" }}
-              className="img-fluid"
+              style={{ width: "100%", height: "100%"}}
+              className="img-fluid img_fluid_position"
             />
             <img
               src={images.card_edit}
@@ -138,6 +142,7 @@ const BrandHeroEdit = ({ get_mall_auth_data, sidebaropen,setTab }) => {
                 height: "100%",
                 maxHeight: "175px",
                 objectFit: "contain",
+                
               }}
               // className="img-fluidb"
             />

@@ -313,18 +313,7 @@ const CinemaAnalytics = ({ setTab,get_mall_auth_data }) => {
                   })
                 : null}
 
-                <div style={{ width: "300px" }}>
-                          <button
-                            className="btn btn-orange"
-                            onClick={() => {
-                              CreateLeaderBoardBanner(item.id);
-                            }}>
-                            <img src={images.basket_white} alt="basket_white" />
-                            &nbsp; Buy Analytics Bundles
-                          </button>
-                        </div>
-
-                <div style={{ paddingTop: "2rem" }}>
+                <div style={{ paddingTop: "1.5rem" }}>
                           <p>
                             <span
                               style={{
@@ -336,6 +325,19 @@ const CinemaAnalytics = ({ setTab,get_mall_auth_data }) => {
                             &nbsp; apply.
                           </p>
                         </div>
+
+                <div style={{ width: "300px" }}>
+                          <button
+                            className="btn btn-orange"
+                            onClick={() => {
+                              CreateLeaderBoardBanner(item.id);
+                            }}>
+                            <img src={images.basket_white} alt="basket_white" />
+                            &nbsp; Buy Analytics Bundles
+                          </button>
+                        </div>
+
+             
 
                   
 

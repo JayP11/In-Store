@@ -17,6 +17,10 @@
   .product-tiles-card-main-wrapp_edit{
       width: 90%;
   }
+
+  .leaderboard-card-part-third-half_tile{
+    width: 165px;
+  }
   
   @media screen and (max-width: 1230px) {
     .product-tiles-card-main-wrapp {

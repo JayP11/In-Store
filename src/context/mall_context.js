@@ -190,8 +190,7 @@ export const MallProvider = ({ children }) => {
         },
       });
       const logindata = response.data;
-      console.log("login data", response.data);
-      if (logindata.success == 1) {
+       if (logindata.success == 1) {
         dispatch({ type: LOGIN_SUCCESS, payload: logindata });
         localStorage.setItem("is_login", JSON.stringify(true));
         localStorage.setItem("is_token", JSON.stringify(logindata.token));
@@ -218,8 +217,7 @@ export const MallProvider = ({ children }) => {
         },
       });
       const malldata = response.data;
-      console.log("response.data", response.data);
-      if (malldata.success == 1) {
+       if (malldata.success == 1) {
         dispatch({ type: GET_MALL_SUCCESS, payload: malldata });
       }
       return response.data;
@@ -320,8 +318,7 @@ export const MallProvider = ({ children }) => {
         },
       });
       const mallstoredata = response.data;
-      // console.log('mall wise data', response.data)
-      if (mallstoredata.success == 1) {
+       if (mallstoredata.success == 1) {
         dispatch({ type: GET_MALL_WISE_STORE_SUCCESS, payload: mallstoredata });
       }
       if (
@@ -389,8 +386,7 @@ export const MallProvider = ({ children }) => {
         },
       });
       const mallauthdata = response.data;
-      console.log("mall wise data----print-nathi-thatu-kmmm", response.data);
-      if (mallauthdata.success == 1) {
+       if (mallauthdata.success == 1) {
         localStorage.setItem("mallmainname", response.data.data.name);
         dispatch({ type: GET_MALL_AUTH_SUCCESS, payload: mallauthdata });
       }
@@ -432,8 +428,7 @@ export const MallProvider = ({ children }) => {
         },
       });
       const updatemalldata = response.data;
-      // console.log("====", response.data);
-      if (updatemalldata.success == 1) {
+       if (updatemalldata.success == 1) {
         dispatch({ type: UPDATE_MALL_SUCCESS, payload: updatemalldata });
         getMallAuthWise();
       }
@@ -690,8 +685,7 @@ export const MallProvider = ({ children }) => {
         },
       });
       const getfacilitydata = response.data;
-      console.log("facility-data", response.data);
-      if (getfacilitydata.success == 1) {
+       if (getfacilitydata.success == 1) {
         dispatch({ type: GET_MALL_FACILITY_SUCCESS, payload: getfacilitydata });
       }
       return response.data;

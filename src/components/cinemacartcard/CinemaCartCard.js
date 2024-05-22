@@ -40,7 +40,14 @@ const CinemaCartCard = ({ item, toggle, Get_cart, setToggle }) => {
 
   return (
     <div className="brandcc_main_wrapp">
-      <div className="brandcc_sec1">
+      <div 
+      // className="brandcc_sec1"
+      className={`${
+                  toggle == 6 ?
+                     "brandcc_sec1_protile"
+                    : "brandcc_sec1"
+                }`}
+      >
         {toggle == 1 ? (
           <img
             src={item.landingpagetiles ? item.landingpagetiles.image_path : ""}
@@ -84,7 +91,7 @@ const CinemaCartCard = ({ item, toggle, Get_cart, setToggle }) => {
             src={item.promotionbanners ? item.promotionbanners.image_path : ""}
           />
         ) : toggle == 6 ? (
-          <img
+          <img style={{width:"100%",height:"100%"}}
             src={
               item.productbannertiles ? item.productbannertiles.image_path : ""
             }

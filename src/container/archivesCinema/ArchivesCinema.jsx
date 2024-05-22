@@ -14,11 +14,14 @@ const ArchivesCinema = ({ setTab,get_mall_auth_data }) => {
   const [getCartData, setCartData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [mainName, setMainName] = useState(
+    // get_mall_auth_data &&
+    //   get_mall_auth_data.retailers &&
+    //   get_mall_auth_data.retailers.name !== null
+    //   ? get_mall_auth_data.retailers.name
+    //   : ""
     get_mall_auth_data &&
-      get_mall_auth_data.retailers &&
-      get_mall_auth_data.retailers.name !== null
-      ? get_mall_auth_data.retailers.name
-      : ""
+      get_mall_auth_data.name &&
+      get_mall_auth_data.name
   );
 
   useEffect(() => {

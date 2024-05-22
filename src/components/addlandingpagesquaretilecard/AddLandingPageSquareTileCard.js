@@ -34,8 +34,13 @@ const AddLandingPageSquareTileCard = ({
     // console.log("mallidarray", mallidarray);
   }, [gatweek]);
 
-  const { CreateLeaderBoardApi, category_data, multiple_week_data,cinema_category_data,CreateLandingPageSquareTileApi } =
-    useStoreContext();
+  const {
+    CreateLeaderBoardApi,
+    category_data,
+    multiple_week_data,
+    cinema_category_data,
+    CreateLandingPageSquareTileApi,
+  } = useStoreContext();
   const { get_brand_data, get_mall_data } = useMallContext();
   const [files, setFiles] = useState([]);
   const [title, setTitle] = useState("");
@@ -78,18 +83,10 @@ const AddLandingPageSquareTileCard = ({
     }
   };
 
-  // const handleDateChange = (dates) => {
-  //   const [start, end] = dates;
-  //   setStartDate(start);
-  //   setEndDate(end);
-  // };
-
   const handleDateChange = (startDate, endDate) => {
     console.log("==>", startDate, endDate);
     setSelectedDates({ startDate, endDate });
   };
-
-
 
   const maxDate = startDate ? new Date(startDate) : null;
   if (maxDate) {
@@ -171,97 +168,88 @@ const AddLandingPageSquareTileCard = ({
     getMondaysInMonth("");
   }, []);
 
-  // select date funtion is end
-
-  // logo dropzon
-  const [getuploadnumber, SetUploadNumber] = useState(false)
+  const [getuploadnumber, SetUploadNumber] = useState(false);
 
   const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } =
-  useDropzone({
-    maxFiles :8,
-    onDrop: (acceptedFiles) => {
-      for (let i = 0; i < acceptedFiles.length; i++) {
-        if(acceptedFiles.length> 1) {     
-        if(acceptedFiles[i].type === 'image/gif' || acceptedFiles[i].type === 'video/mp4'){
-         
+    useDropzone({
+      maxFiles: 1,
+      onDrop: async (acceptedFiles) => {
+        const maxSizeKB = 50;
+        const maxSizeBytes = maxSizeKB * 1024;
+
+        const filteredFiles = await Promise.all(
+          acceptedFiles.map(async (file) => {
+            const isSizeValid = file.size <= maxSizeBytes; // Limit size to 50KB (in bytes)
+            const isImage = file.type.startsWith("image/"); // Check if it's an image file
+
+            if (!isImage || !isSizeValid) {
+              return null;
+            }
+
+            // Load image and wait for it to load
+            const img = new Image();
+            img.src = URL.createObjectURL(file);
+            await new Promise((resolve, reject) => {
+              img.onload = resolve;
+              img.onerror = reject;
+            });
+
+            // Check image dimensions
+            const isDimensionsValid = img.width == 232 && img.height == 232;
+
+            return isDimensionsValid ? file : null; // Return file if dimensions are valid, otherwise skip it
+          })
+        );
+        const validFiles = filteredFiles.filter((file) => file !== null);
+
+        setFiles(
+          validFiles.map((file) =>
+            Object.assign(file, {
+              preview: URL.createObjectURL(file),
+            })
+          )
+        );
+
+        if (validFiles.length !== acceptedFiles.length) {
           Notification(
             "error",
             "Error!",
-            "Please Select maximum 1 gif OR 8 images!"
-          );
-          
-          SetUploadNumber(true)
-        }else{
-          {
-            setFiles(
-              acceptedFiles.map((file) =>
-                Object.assign(file, {
-                  preview: URL.createObjectURL(file),
-                })
-              )
-            );
-          }
-          if (acceptedFiles.length === 0) {
-            // window.location.reload(true);
-            Notification(
-              "error",
-              "Error!",
-              "Please Select maximum 8 images!"
-            );
-  
-          }
-          SetUploadNumber(false)
-        }
-      }else{
-        {
-          setFiles(
-            acceptedFiles.map((file) =>
-              Object.assign(file, {
-                preview: URL.createObjectURL(file),
-              })
-            )
+            "Some files exceed the maximum size limit of 50KB or do not meet the dimension requirements of 232x232 pixels and will not be uploaded."
           );
         }
+
         if (acceptedFiles.length === 0) {
-          // window.location.reload(true);
-          Notification(
-            "error",
-            "Error!",
-            "Please Select maximum 8 images!"
-          );
-
+          window.location.reload(true);
         }
-        SetUploadNumber(false)
-      }
-        
-      }
-
-    },
-  });
+      },
+    });
 
   const thumbs = files.map((file) => (
     <>
-    {file.type === "video/mp4" ? <>
-    <ReactPlayer
-          url={file.preview}
-          muted={true}
-          autoplay={true}
-          controls={false}
-          playing={true}
-          width="75px"
-          height="75px"
-          // autoplay={playing}
-          // onReady={handlePlayerReady}
+      {file.type === "video/mp4" ? (
+        <>
+          <ReactPlayer
+            url={file.preview}
+            muted={true}
+            autoplay={true}
+            controls={false}
+            playing={true}
+            width="210px"
+            height="210px"
+            // autoplay={playing}
+            // onReady={handlePlayerReady}
+          />
+        </>
+      ) : (
+        <img
+          src={file.preview}
+          style={{ width: "210px", height: "210px" }}
+          className="img-fluidb img-fluid-width"
+          alt="file"
         />
-    </>:     <img
-      src={file.preview}
-      style={{ width: "75px", height: "75px" }}
-      className="img-fluidb img-fluid-width"
-      alt="file"
-    /> }
-</>
+      )}
+    </>
   ));
-
 
   // Create Promotion Banner Api
 
@@ -340,7 +328,7 @@ const AddLandingPageSquareTileCard = ({
   //   }
   // };
 
-    const CreateLeaderBoardBanner = async () => {
+  const CreateLeaderBoardBanner = async () => {
     console.log("test");
 
     const { startDate, endDate } = selectedDates;
@@ -351,26 +339,27 @@ const AddLandingPageSquareTileCard = ({
     } else if (endDate == "" || endDate == undefined) {
       Notification("error", "Error", "Please Enter End Date");
       return;
-    }  else if (files == "" || undefined) {
+    } else if (files == "" || undefined) {
       Notification("error", "Error!", "Please Upload Image!");
-    }else {
+    } else {
       const formdata = await new FormData();
       // await formdata.append("id", item.id)
-   
 
-    
       // await formdata.append("week_id", gatweek);
       await formdata.append(
         "from_date",
         moment(startDate[0]).format("YYYY-MM-DD")
       );
-      await formdata.append("to_date", moment(startDate[1]).format("YYYY-MM-DD"));
+      await formdata.append(
+        "to_date",
+        moment(startDate[1]).format("YYYY-MM-DD")
+      );
 
       if (files[0] !== undefined) {
         for (var j = 0; j < files.length; j++) {
-            console.log("----->>",files[0]);
-            await formdata.append("image[" + j + "]", files[j]);
-          }
+          console.log("----->>", files[0]);
+          await formdata.append("image[" + j + "]", files[j]);
+        }
         // await formdata.append("image", files[0]);
       }
 
@@ -387,12 +376,8 @@ const AddLandingPageSquareTileCard = ({
           setTab(46);
           // getLeaderboard();
           // window.location.reload();
-        } else if (data.success === 0){
-          Notification(
-            "error",
-            "Error!",
-            data.message
-          );
+        } else if (data.success === 0) {
+          Notification("error", "Error!", data.message);
         }
       }
     }
@@ -429,11 +414,11 @@ const AddLandingPageSquareTileCard = ({
   return (
     <div className="leaderboard-card-main-wrapp">
       {/* Leaderboard flex start */}
-      <div className="leaderboard-card-flex-wrapp">
+      <div className="leaderboard-card-flex-wrapp leaderboard-card-flex-wrapp-half">
         {/* Leaderboard first part responsive side start */}
         <div className="leaderboard-card-first-resp-main-wrapp">
           <p className="leaderboard-last-part-txt">
-            Service fee will apply if canceled
+            {/* Service fee will apply if canceled */}
           </p>
           {/* <Link className="leaderboard-delete-icon-btn">
                         cancel{" "}
@@ -443,7 +428,7 @@ const AddLandingPageSquareTileCard = ({
         {/* Leaderboard first part responsive side end*/}
 
         {/* Leaderboard part first start */}
-        <div className="leaderboard-card-part-first">
+        <div className="leaderboard-card-part-first leaderboard-card-part-first-half">
           {/* Leaderboad form start */}
 
           {/* Leaderboard inputbox start */}
@@ -676,11 +661,22 @@ const AddLandingPageSquareTileCard = ({
         {/* Leaderboard part first end */}
 
         {/* Leaderboard part second start */}
-        <div className="leaderboard-card-part-sec leaderboard-card-part-sec-chng">
+        <div
+          style={{ width: "210px" }}
+          className="leaderboard-card-part-sec leaderboard-card-part-sec-chng">
           {/* <div className="myprofile_inner_sec2"> */}
 
           {files && files.length > 0 ? (
-            <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl" style={{display:"flex",flexDirection:"row", alignItems:"center",gap:"5px",flexWrap:"wrap"}}>
+            <div
+              className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl myprofile_inner_sec2_img_upload_border"
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                gap: "5px",
+                flexWrap: "wrap",
+                height: "210px",
+              }}>
               {thumbs}
             </div>
           ) : (
@@ -694,8 +690,13 @@ const AddLandingPageSquareTileCard = ({
                     marginBottom: "10px",
                   }}
                 />
-                <h4>.PDF .JPG .PNG</h4>
-                <p>You can also upload file by</p>
+                <h4 style={{ fontSize: "14px" }}>
+                  .JPG .PNG .GIF (232 x 232 px)
+                </h4>
+                <p style={{ fontSize: "14px" }}>(max 50kb)</p>
+
+                <p style={{ fontSize: "14px" }}>You can also upload file by</p>
+
                 <input
                   {...getInputlogoProps()}
                   accept="image/jpeg, image/jpg, image/png, image/eps,'video/*',"
@@ -722,17 +723,17 @@ const AddLandingPageSquareTileCard = ({
                         <img src={images.delete_icon} className="leaderboard-delete-icon" />
                     </Link> */}
           <p className="leaderboard-last-part-txt">
-            Service fee will apply if canceled
+            {/* Service fee will apply if canceled */}
           </p>
           {/* <Link className="leaderboard-delete-icon-btn">
                         <span className="leaderboard-extend-txt">Extend</span>{" "}
                         <img src={images.extend_icon} className="leaderboard-delete-icon" />
                     </Link> */}
           <div className="leaderboard-btn-box">
-            <button style={{fontSize:"16px",padding:"0.4rem" }}
+            <button
+              style={{ fontSize: "16px", padding: "0.4rem" }}
               className="btn btn-orange"
-              disabled={getuploadnumber=== true? true: false}
-
+              disabled={getuploadnumber === true ? true : false}
               onClick={() => CreateLeaderBoardBanner()}>
               Publish
             </button>
@@ -749,8 +750,7 @@ const AddLandingPageSquareTileCard = ({
           <div className="leaderboard-btn-box">
             <button
               className="btn btn-orange"
-              disabled={getuploadnumber=== true? true: false}
-
+              disabled={getuploadnumber === true ? true : false}
               onClick={() => CreateLeaderBoardBanner()}>
               Publish
             </button>

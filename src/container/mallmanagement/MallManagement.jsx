@@ -38,8 +38,20 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   const [files2, setFiles2] = useState([]);
   const [files3, setFiles3] = useState([]);
   const [files4, setFiles4] = useState([]);
+    const [imagecheck, setImageCheck] = useState(false);
+
+
 
   // console.log("check get_mall_auth_data", get_mall_auth_data);
+
+  useEffect(()=>{
+    if(get_mall_auth_data.banner_mall_path){
+      setImageCheck(true);
+    }else{
+      setImageCheck(false);
+
+    }
+  },[])
 
   useEffect(() => {
     console.log(
@@ -241,16 +253,62 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
 
   const { getRootProps: getRootMapProps, getInputProps: getInputMapProps } =
     useDropzone({
-      onDrop: (acceptedFiles) => {
+      onDrop: async (acceptedFiles) => {
         console.log("acceptedFiles", acceptedFiles);
+        const maxSizeKB = 349; // Maximum size limit in KB
+        const maxSizeBytes = maxSizeKB * 1024; // Convert KB to bytes
+
+        const filteredFiles = await Promise.all(
+          acceptedFiles.map(async (file) => {
+            const isSizeValid = file.size <= maxSizeBytes; // Limit size to 50KB (in bytes)
+            const isImage = file.type.startsWith("image/"); // Check if it's an image file
+  
+            if (!isImage || !isSizeValid) {
+              return null; // Skip files that are not images or exceed size limit
+            }
+  
+            // Load image and wait for it to load
+            const img = new Image();
+            img.src = URL.createObjectURL(file);
+            await new Promise((resolve, reject) => {
+              img.onload = resolve;
+              img.onerror = reject;
+            });
+  
+            // Check image dimensions
+            const isDimensionsValid = img.width == 1050 && img.height == 284;
+            if(isDimensionsValid){
+              setImageCheck(true)
+            }else{
+              setImageCheck(false)
+            }  
+            return isDimensionsValid ? file : null; // Return file if dimensions are valid, otherwise skip it
+          })
+        );
+  
+        // Filter out null values (files that were skipped)
+        const validFiles = filteredFiles.filter((file) => file !== null);
         {
           setFiles2(
-            acceptedFiles.map((file) =>
+            validFiles.map((file) =>
               Object.assign(file, {
                 preview: URL.createObjectURL(file),
               })
             )
           );
+
+          if (validFiles.length !== acceptedFiles.length) {
+            if(validFiles.length !== acceptedFiles.length){
+              setImageCheck(false)
+            }else{
+              setImageCheck(true)
+            }
+            Notification(
+              "error",
+              "Error!",
+              "Some files exceed the maximum size limit of 200KB or do not meet the dimension requirements of 1050x284 pixels and will not be uploaded."
+            );
+          }
         }
         SetCondation1(true);
         if (acceptedFiles.length === 0) {
@@ -265,16 +323,54 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
     getRootProps: getRootBannerProps,
     getInputProps: getInputBannerProps,
   } = useDropzone({
-    onDrop: (acceptedFiles) => {
+    onDrop: async (acceptedFiles) => {
       console.log("acceptedFiles", acceptedFiles);
+      
+      const maxSizeKB = 200; // Maximum size limit in KB
+      const maxSizeBytes = maxSizeKB * 1024; // Convert KB to bytes
+
+      const filteredFiles = await Promise.all(
+        acceptedFiles.map(async (file) => {
+          const isSizeValid = file.size <= maxSizeBytes; // Limit size to 50KB (in bytes)
+          const isImage = file.type.startsWith("image/"); // Check if it's an image file
+
+          if (!isImage || !isSizeValid) {
+            return null; // Skip files that are not images or exceed size limit
+          }
+
+          // Load image and wait for it to load
+          const img = new Image();
+          img.src = URL.createObjectURL(file);
+          await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+          });
+
+          // Check image dimensions
+          const isDimensionsValid = img.width == 720 && img.height == 200;
+
+          return isDimensionsValid ? file : null; // Return file if dimensions are valid, otherwise skip it
+        })
+      );
+
+      // Filter out null values (files that were skipped)
+      const validFiles = filteredFiles.filter((file) => file !== null);
       {
         setFiles3(
-          acceptedFiles.map((file) =>
+          validFiles.map((file) =>
             Object.assign(file, {
               preview: URL.createObjectURL(file),
             })
           )
         );
+
+        if (validFiles.length !== acceptedFiles.length) {
+          Notification(
+            "error",
+            "Error!",
+            "Some files exceed the maximum size limit of 00mb or do not meet the dimension requirements of 720x200 pixels and will not be uploaded."
+          );
+        }
       }
       SetCondation2(true);
 
@@ -288,16 +384,53 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: "image/*",
-    onDrop: (acceptedFiles) => {
+    onDrop: async (acceptedFiles) => {
       console.log("acceptedFiles", acceptedFiles);
+      const maxSizeKB = 200; // Maximum size limit in KB
+      const maxSizeBytes = maxSizeKB * 1024; // Convert KB to bytes
+
+      const filteredFiles = await Promise.all(
+        acceptedFiles.map(async (file) => {
+          const isSizeValid = file.size <= maxSizeBytes; // Limit size to 50KB (in bytes)
+          const isImage = file.type.startsWith("image/"); // Check if it's an image file
+
+          if (!isImage || !isSizeValid) {
+            return null; // Skip files that are not images or exceed size limit
+          }
+
+          // Load image and wait for it to load
+          const img = new Image();
+          img.src = URL.createObjectURL(file);
+          await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+          });
+
+          // Check image dimensions
+          const isDimensionsValid = img.width == 1900 && img.height == 780;
+
+          return isDimensionsValid ? file : null; // Return file if dimensions are valid, otherwise skip it
+        })
+      );
+
+      // Filter out null values (files that were skipped)
+      const validFiles = filteredFiles.filter((file) => file !== null);
       {
         setFiles4(
-          acceptedFiles.map((file) =>
+          validFiles.map((file) =>
             Object.assign(file, {
               preview: URL.createObjectURL(file),
             })
           )
         );
+
+        if (validFiles.length !== acceptedFiles.length) {
+          Notification(
+            "error",
+            "Error!",
+            "Some files exceed the maximum size limit of 00mb or do not meet the dimension requirements of 1900x780 pixels and will not be uploaded."
+          );
+        }
       }
       SetCondation3(true);
 
@@ -517,7 +650,11 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   return (
     <>
       {/* <MallHeroEdit thumbs={thumbs} /> */}
-      <div>
+      <div className={`${
+                 imagecheck === true
+                    ? "banner_all_wrap" : "banner_all_wrap_height"
+                    
+                }`}>
         <div className="brand-hero-edit-main-wrapp" {...getRootMapProps()}>
           <input
             {...getInputMapProps()}
@@ -542,8 +679,8 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             <>
               <img
                 src={get_mall_auth_data.banner_mall_path}
-                style={{ width: "100%", height: "100%", }}
-                className="img-fluid"
+                style={{ width: "100%", height: "100%"}}
+                className="img-fluid img_fluid_position"
               />
               <img src={images.card_edit} alt="" style={{ position: "absolute", top: "105px", right: "100px" }} className="mall-hero-edit-icon edit-icon-positon-resp" />
             </>
@@ -1247,7 +1384,7 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
               <div className="mall_upload_btn_wrapp">
                 <button
                   className="btn btn-black"
-                  disabled={isAcceptTerm == 1 ? false : true}
+                  disabled={isAcceptTerm == 1 && isAcceptTerm2 ==1 ? false : true}
                   onClick={() => UpdateMallData()}
                 >
                   Update
@@ -1524,7 +1661,7 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                 }
               </div>
               <div style={{ display: "flex", alingitem: "center", paddingLeft: "5px", paddingRight: "5px" }}>
-                <button className="btn" onClick={() => setFiles2([])} style={{ marginBottom: "10px", marginLeft: "10px", marginRight: "10px" }}>
+                <button className="btn" onClick={() =>{ setFiles2([]),setImageCheck(false)}} style={{ marginBottom: "10px", marginLeft: "10px", marginRight: "10px" }}>
                   Cancel
                 </button>
               </div>
@@ -1560,10 +1697,10 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                           />
                           <h4>.PDF .JPG .PNG</h4>
                           <p>You can also upload file by</p>
-                          <input
+                          {/* <input
                             {...getRootBannerProps()}
                             accept="image/jpeg, image/jpg, image/png, image/eps"
-                          />
+                          /> */}
                           <button type="button" className="click_upload_btn" style={{ marginBottom: "10px", color: "var(--color-orange)",fontWeight:"600" }}>
                             click here
                           </button>
@@ -1833,7 +1970,7 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
           <div className="mall_upload_btn_wrapp-resp">
             <button
               className="btn btn-black"
-              disabled={isAcceptTerm == 1 ? false : true}
+              disabled={isAcceptTerm == 1 && isAcceptTerm2 ==1 ? false : true}
               onClick={() => UpdateMallData()}
             >
               Update

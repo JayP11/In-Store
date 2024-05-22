@@ -345,7 +345,7 @@ const RetailerProRateCard = ({
                         <MdKeyboardArrowRight style={{ fontSize: "20px" }} />
                       </div>
                     </div>
-                    <div className="RetailerProRateCard_card_black_main" style={{background:"#fff"}}>
+                    <div className="RetailerProRateCard_card_black_main RetailerProRateCard_card_black_main_display_none" style={{background:"#fff"}}>
                       <div>
                         <b className="pro_card_head"> Brand Analytics</b>
                         <br />

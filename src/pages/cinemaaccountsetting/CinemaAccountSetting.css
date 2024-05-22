@@ -23,6 +23,16 @@
     /* align-items: flex-start !important; */
   }
 
+  .banner_all_wrap_height{
+    min-height: 275px;
+    background-color: #dedede;
+  }
+
+  .banner_all_wrap_{
+    min-height: 100%;
+    background-color: #fff;
+  }
+
   .mm_form_single_input_cinema_Acc_setting {
     min-width: 154px !important;
   }

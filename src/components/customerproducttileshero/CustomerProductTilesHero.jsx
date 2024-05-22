@@ -38,14 +38,20 @@ const CustomerProductTilesHero = ({ item,getlist1,sidebaropen }) => {
         // </div>
         <div >
         <div style={{position:"relative",width:"100%"}}>
-            <img
+            {/* <img
                 src={item.stores ? item.stores.store_banner_path : images.brand_banner}
                 alt=""
-                className="mall_hero_banner_img product-tiles-hero-img" style={{height:"30vh"}}
+                className="mall_hero_banner_img product-tiles-hero-img img_fluid_position" style={{height:"30vh"}}
+            /> */}
+            <img
+                src={item.image_path ? item.image_path : images.brand_banner}
+                alt=""
+                className="mall_hero_banner_img product-tiles-hero-img img_fluid_position" 
+                // style={{height:"30vh"}}
             />
-            <div className="mall_hero_logo_wrapp" style={{top:"16%"}}>
+            {/* <div className="mall_hero_logo_wrapp" style={{top:"16%"}}>
                 <img src={item.stores ? item.stores.store_logo_path : images.sl13} alt="" />
-            </div>
+            </div> */}
         </div>
         </div>
 

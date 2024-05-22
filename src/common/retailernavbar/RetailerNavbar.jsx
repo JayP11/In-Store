@@ -80,7 +80,7 @@ const animatedComponents = makeAnimated();
 const RetailerNavbar = ({ setTab }) => {
   let navigate = useNavigate();
   const location = useLocation();
-  const { setLogin, setMallRegister, RegisterCustomer,region_data } = useAuthContext();
+  const { setLogin, setMallRegister, RegisterCustomer, region_data } = useAuthContext();
 
   const [getcustomerDropdown, setCustomerDropdown] = useState(false);
   const [getregisterCustomerOpen, setRegisterCustomerOpen] = useState(false);
@@ -103,6 +103,7 @@ const RetailerNavbar = ({ setTab }) => {
 
   const [profile, setProfile] = useState("");
   const [isAcceptTerm, setIsAcceptTerm] = useState(false);
+  const [isAcceptTerm5, setIsAcceptTerm5] = useState(false);
   const [getMultipleBrand, setMultipleBrand] = useState([]);
   const [mallsOption, setMallsOption] = useState([]);
 
@@ -137,7 +138,7 @@ const RetailerNavbar = ({ setTab }) => {
     useState(false);
   const [getvat_no, setvat_no] = useState("");
   const [getearh_no, setearh_no] = useState("");
-  const [getaddretailername , setAddRetailerName] = useState("");
+  const [getaddretailername, setAddRetailerName] = useState("");
   const [getModal, setModal] = useState(false);
 
 
@@ -160,7 +161,7 @@ const RetailerNavbar = ({ setTab }) => {
     const customerimg = localStorage.getItem("cusimg");
     const getcartconttotal = localStorage.getItem("storecartcount");
     setcusimg(JSON.parse(customerimg));
-    console.log("cart counttttt",getcartconttotal);
+    console.log("cart counttttt", getcartconttotal);
     setCartCount(JSON.parse(getcartconttotal));
     SetLogin(islogin);
   }, []);
@@ -191,6 +192,10 @@ const RetailerNavbar = ({ setTab }) => {
 
   const handleTermChange = (event) => {
     setIsAcceptTerm((current) => !current);
+  };
+  const handleTermChange5 = (event) => {
+    setIsAcceptTerm5((current) => !current);
+    console.log("sssddds", isAcceptTerm5);
   };
 
   const togglePasswordVisibility = () => {
@@ -291,24 +296,24 @@ const RetailerNavbar = ({ setTab }) => {
     const token = JSON.parse(localStorage.getItem("is_token"));
 
     axios
-        .get(get_brand_multiple, {
-            headers: {
-                Accept: ACCEPT_HEADER,
-                Authorization: "Bearer " + token,
-            },
-        })
-        .then((res) => {
-            console.log("get multiple brand data", JSON.stringify(res.data, null, 2));
-            if (res.data.success == 1) {
-                setMultipleBrand(res.data.data);
-            } else {
-                null;
-            }
-        })
-        .catch((err) => {
-            console.log("err11", err);
-        });
-};
+      .get(get_brand_multiple, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((res) => {
+        console.log("get multiple brand data", JSON.stringify(res.data, null, 2));
+        if (res.data.success == 1) {
+          setMultipleBrand(res.data.data);
+        } else {
+          null;
+        }
+      })
+      .catch((err) => {
+        console.log("err11", err);
+      });
+  };
   const SigninCustomerGoogle = async (gmail, type, data) => {
     if (gmail === "") {
       alert("Enter the Email......!");
@@ -410,7 +415,7 @@ const RetailerNavbar = ({ setTab }) => {
         last_name: getlastname,
         terms_condition: isAcceptTerm,
         lat: position.latitude,
-        long: position.longitude,
+        log: position.longitude,
       };
 
       // console.log("-=-=-=->", params);
@@ -428,7 +433,7 @@ const RetailerNavbar = ({ setTab }) => {
     }
   };
 
-  console.log("getmallname",getmallname);
+  console.log("getmallname", getmallname);
   // Signup Brand
 
   const SigninBrand = async (type) => {
@@ -438,7 +443,7 @@ const RetailerNavbar = ({ setTab }) => {
     } else if (getgender === "") {
       alert("Select Retailer type......!");
       return;
-    }  
+    }
     // else if (getgender == 2 && mallsOption.length <=0) {
     //   alert("Please Select any Brand otherwise select Independent Retailer");
     //   return;
@@ -459,10 +464,10 @@ const RetailerNavbar = ({ setTab }) => {
       alert("Enter the password....!");
       return;
     } else {
- 
+
 
       const formdata = await new FormData();
-      
+
       await formdata.append("mall_id", getmallmasterid);
 
       // }else{}
@@ -474,19 +479,20 @@ const RetailerNavbar = ({ setTab }) => {
       }
       await formdata.append("company_reg_no", getcompanyregnumber);
       await formdata.append("vat_no", getvat_no);
-      
+
       await formdata.append("role", 3);
       await formdata.append("email", getemail);
       await formdata.append("password", getpassword);
       await formdata.append("first_name", getfirstname);
       await formdata.append("last_name", getlastname);
       await formdata.append("terms_condition", isAcceptTerm);
-    
-      await formdata.append("company_reg_document",files[0]);
-      await formdata.append("vat_document",files2[0]);
-      console.log("aaa",JSON.stringify(formdata,null,2));
+      await formdata.append("is_eatery", isAcceptTerm5);
+
+      await formdata.append("company_reg_document", files[0]);
+      await formdata.append("vat_document", files2[0]);
+      console.log("aaa", JSON.stringify(formdata, null, 2));
       const data = await setRegisterStore(formdata);
-      
+
       if (data) {
         if (data.success === 1) {
           // console.log("register-data", data);
@@ -504,20 +510,20 @@ const RetailerNavbar = ({ setTab }) => {
   };
 
 
-       // var params = {
-      //   // mall_id: getmallname,
-        
-      //   mall_id: getmallmasterid,
-      //   retailer_id: retailertype,
-      //   store_type: getgender,
-      //   brand: getmallname,
-      //   first_name: getfirstname,
-      //   last_name: getlastname,
-      //   email: getemail,
-      //   role: 3,
-      //   password: getpassword,
-      //   terms_condition: isAcceptTerm,
-      // };
+  // var params = {
+  //   // mall_id: getmallname,
+
+  //   mall_id: getmallmasterid,
+  //   retailer_id: retailertype,
+  //   store_type: getgender,
+  //   brand: getmallname,
+  //   first_name: getfirstname,
+  //   last_name: getlastname,
+  //   email: getemail,
+  //   role: 3,
+  //   password: getpassword,
+  //   terms_condition: isAcceptTerm,
+  // };
 
 
   // Signup Cinema
@@ -825,18 +831,18 @@ const RetailerNavbar = ({ setTab }) => {
       },
     });
 
-    const handleOptionChange = (event) => {
+  const handleOptionChange = (event) => {
 
-      const value = event.target.value;
-      console.log("value are", value);
-  
-      const [id, brand_id] = value.split("_");
-      console.log("ID:", id); // Output: ID: 39
-      console.log("Brand ID:", brand_id); // Output: Brand ID: 101
-      setRetailertype(id);
-      getBrand(id);
-      setMallname(brand_id);
-    };
+    const value = event.target.value;
+    console.log("value are", value);
+
+    const [id, brand_id] = value.split("_");
+    console.log("ID:", id); // Output: ID: 39
+    console.log("Brand ID:", brand_id); // Output: Brand ID: 101
+    setRetailertype(id);
+    getBrand(id);
+    setMallname(brand_id);
+  };
 
 
 
@@ -994,7 +1000,7 @@ const RetailerNavbar = ({ setTab }) => {
                                                 {/* {is_login === true ? (<><Link onClick={logout}>Logout</Link></>) : (<></>)} */}
 
                           {login === "true" ? (
-                            <button
+                            <button className="navbar-acc-menu-link "
                               style={{ textAlign: "start" }}
                               onClick={logout}>
                               Logout
@@ -1093,7 +1099,7 @@ const RetailerNavbar = ({ setTab }) => {
                           <Link className="navbar-acc-menu-link">Help</Link>
                           {/* {is_login === true ? (<><Link onClick={logout}>Logout</Link></>) : (<></>)} */}
                           {login === "true" ? (
-                            <button
+                            <button className="navbar-acc-menu-link "
                               style={{ textAlign: "start" }}
                               onClick={logout}>
                               Logout
@@ -1173,13 +1179,13 @@ const RetailerNavbar = ({ setTab }) => {
               )} */}
 
               {login === "true" && getrole == 3 ? (
-                  <div style={{ position: "relative" }}>
-                    <Link to="" onClick={()=>{setTab(9)}}>
-                      <img src={images.cart_black} className="cart-icon-img" />
-                    </Link>
-                    <div className="cart-digit-main">{store_cart_count ? store_cart_count : "0"}</div>
-                  </div>
-                ) : null}
+                <div style={{ position: "relative" }}>
+                  <Link to="" onClick={() => { setTab(9) }}>
+                    <img src={images.cart_black} className="cart-icon-img" />
+                  </Link>
+                  <div className="cart-digit-main">{store_cart_count ? store_cart_count : "0"}</div>
+                </div>
+              ) : null}
             </div>
 
             <button
@@ -1197,14 +1203,14 @@ const RetailerNavbar = ({ setTab }) => {
           </div>
           {getsidebarOpen && (
             <div className="nav_sidebar_wrapp">
-            {login === "true" && getrole == 3 ? (
-                  <div style={{ position: "relative",alignSelf:"flex-end",marginRight:"15px" }}>
-                    <Link to="" onClick={()=>{setTab(9);setSidebarOpen(!getsidebarOpen);}}>
-                      <img src={images.cart_black} className="cart-icon-img" />
-                    </Link>
-                    <div className="cart-digit-main">{store_cart_count ? store_cart_count : "0"}</div>
-                  </div>
-                ) : null}
+              {login === "true" && getrole == 3 ? (
+                <div style={{ position: "relative", alignSelf: "flex-end", marginRight: "15px" }}>
+                  <Link to="" onClick={() => { setTab(9); setSidebarOpen(!getsidebarOpen); }}>
+                    <img src={images.cart_black} className="cart-icon-img" />
+                  </Link>
+                  <div className="cart-digit-main">{store_cart_count ? store_cart_count : "0"}</div>
+                </div>
+              ) : null}
               <Link to="/">Home</Link>
               {login === "true" && getrole == 2 ? (
                 <Link to="/profile-page" className="navbar-acc-menu-link">
@@ -1641,20 +1647,20 @@ const RetailerNavbar = ({ setTab }) => {
       {/* Brand Register Modal Start */}
       <ReactModal
         isOpen={registerModalIsOpenBrand}
- 
+
         onRequestClose={closeModalBrand}
         style={customStyles}>
         <div className="home_model_4wrapp">
           <button
             className="signup_modal_close"
-          
+
             onClick={() => {
               setRegisterModalIsOpenBrand(false);
             }}>
             <span
               style={{ fontSize: "16px" }}
               className="brand-lable-radio-btn-txt">
-           
+
             </span>{" "}
             <GrClose />
           </button>
@@ -1662,7 +1668,7 @@ const RetailerNavbar = ({ setTab }) => {
             Register to In-store
           </button>
           <div className="radio-btn-flex sign_input_wrapp_padding_less">
-        
+
             <div className="radio-btn-inner-flex">
               <input
                 type="radio"
@@ -1683,7 +1689,7 @@ const RetailerNavbar = ({ setTab }) => {
                 type="radio"
                 id="In-Person"
                 name="gender"
-             
+
                 value={getgender}
                 onChange={(e) => setGender(2)}
               />
@@ -1694,9 +1700,9 @@ const RetailerNavbar = ({ setTab }) => {
           </div>
           <div className="sign_input_wrapp sign_input_wrapp_padding_less">
             <label htmlFor="mall">Mall Name</label>
-            
+
             <select
-              className="leaderboard-card-inp "
+              className="leaderboard-card-inp"
               onChange={(e) => {
                 setmallmasterid(e.target.value);
                 getRetailerApi(e.target.value);
@@ -1706,7 +1712,6 @@ const RetailerNavbar = ({ setTab }) => {
                 getmallarray.map((item, index) => {
                   return (
                     <>
-                      
                       <option value={item.id} key={index}>
                         {item.name} {item.id} &nbsp;&nbsp;&nbsp;{" "}
                         {item.from_date} &nbsp;&nbsp;&nbsp; {item.to_date}
@@ -1742,7 +1747,7 @@ const RetailerNavbar = ({ setTab }) => {
             </select>
           </div>
 
-    
+
 
           {/* <div className="sign_input_wrapp sign_input_wrapp_padding_less">
             <label htmlFor="first-name">Brands (if applicable)</label>
@@ -1834,7 +1839,7 @@ const RetailerNavbar = ({ setTab }) => {
               onClick={() => {
                 brandLoginModalOpen(true);
                 setRegisterModalIsOpenBrand(false);
-                
+
               }}
               className="signup_terms_link">
               login here
@@ -1866,21 +1871,21 @@ const RetailerNavbar = ({ setTab }) => {
                 <IoClose />
               </button>
             </div>
-            <div className="tab_btn_main" style={{height:"0px"}}>
-            {signButn == 2 ? null :
-            <button
-                onClick={() => {
-                  SetregButn(1);
-                  SetboldButn(1);
-                }}
-                style={{
-                  backgroundColor: regButn == 1 ? "white" : "#dad9d8",
-                  fontWeight: boldButn == 1 ? "600" : "200",
-                }}
-                className="tab_btn_styling">
-                Mall Login / Sign Up
-              </button> }
-                {/* {signButn == 2 ? 
+            <div className="tab_btn_main" style={{ height: "0px" }}>
+              {signButn == 2 ? null :
+                <button
+                  onClick={() => {
+                    SetregButn(1);
+                    SetboldButn(1);
+                  }}
+                  style={{
+                    backgroundColor: regButn == 1 ? "white" : "#dad9d8",
+                    fontWeight: boldButn == 1 ? "600" : "200",
+                  }}
+                  className="tab_btn_styling">
+                  Mall Login / Sign Up
+                </button>}
+              {/* {signButn == 2 ? 
                   <button
                   onClick={() => {
                     // setbrandModalIsOpen3(true);
@@ -1895,7 +1900,7 @@ const RetailerNavbar = ({ setTab }) => {
                   Brand Login / Sign Up
                 </button> : null
                 } */}
-              
+
               {signButn == 2 ? null : <button
                 onClick={() => {
                   //  setCustLoginModalIsOpen3(true);
@@ -1910,7 +1915,7 @@ const RetailerNavbar = ({ setTab }) => {
                 className="tab_btn_styling">
                 Consumer Login / Sign Up
               </button>}
-              
+
               {signButn == 2 ? null : <button
                 onClick={() => {
                   //  setCustLoginModalIsOpen3(true);
@@ -1925,7 +1930,7 @@ const RetailerNavbar = ({ setTab }) => {
                 className="tab_btn_styling">
                 Cinema Login / Sign Up
               </button>}
-              
+
             </div>
           </div>
           {regButn == 1 ? (
@@ -2104,9 +2109,19 @@ const RetailerNavbar = ({ setTab }) => {
                 {/* <GrClose /> */}
               </button>
               <h3 className="f-b900 fs-22 mb_16 signup_headign">
-              Brand Registration to In-store for Retailers
+                Brand Registration to In-store for Retailers
               </h3>
-
+              {/* <div className="signup_terms_wrapp" style={{ marginBottom: "1rem" }}>
+                <input
+                  type="checkbox"
+                  value={isAcceptTerm5}
+                  onChange={handleTermChange5}
+                  checked={isAcceptTerm5}
+                />
+                <p className="fs-des">
+                  Is it eatery?
+                </p>
+              </div> */}
               <div className="radio-btn-flex sign_input_wrapp_padding_less">
                 {/* <label className="course-form-txt course-form-margin-right">
               Mode Of Delivery:
@@ -2145,83 +2160,86 @@ const RetailerNavbar = ({ setTab }) => {
               </div>
               <div className="sign_input_wrapp sign_input_wrapp_padding_less">
                 <label htmlFor="mall">Mall Name<span className="star_require">*</span></label>
-                <div className="select-wrapper" style={{width:"100%"}}>
+                <div className="select-wrapper" style={{ width: "100%" }}>
 
-                <select
-                  className="leaderboard-card-inp cons_select_nav"
-                  onChange={(e) => {
-                    setmallmasterid(e.target.value);
-                    getRetailerApi(e.target.value);
-                    console.log(e.target.value);
-                  }}>
-                  {getmallarray2 &&
-                    getmallarray2.map((item, index) => {
-                      return (
-                        <>
-                          {/* <option selected disabled value=""></option> */}
-                          <option value={item.id} key={index}>
-                            {item.name} &nbsp;&nbsp;&nbsp;{" "}
-                            {item.from_date} &nbsp;&nbsp;&nbsp; {item.to_date}
-                          </option>
-                        </>
-                      );
-                    })}
-                </select>
+                  <select
+                    className="leaderboard-card-inp cons_select_nav"
+                    onChange={(e) => {
+                      const selectedValue = e.target.value; // Value from the select element
+                      const additionalValue = "your_additional_value"; // Additional value to pass
+
+                      setmallmasterid(selectedValue);
+                      getRetailerApi(selectedValue, isAcceptTerm5); // Pass both values to the function
+                      console.log(selectedValue);
+                    }}>
+                    {getmallarray2 &&
+                      getmallarray2.map((item, index) => {
+                        return (
+                          <>
+                            {/* <option selected disabled value=""></option> */}
+                            <option value={item.id} key={index}>
+                              {item.name} &nbsp;&nbsp;&nbsp;{" "}
+                              {item.from_date} &nbsp;&nbsp;&nbsp; {item.to_date}
+                            </option>
+                          </>
+                        );
+                      })}
+                  </select>
                 </div>
               </div>
               <div className="sign_input_wrapp sign_input_wrapp_padding_less">
                 <label htmlFor="mall">Retailer Name<span className="star_require">*</span></label>
-                <div className="select-wrapper" style={{width:"100%"}}>
+                <div className="select-wrapper" style={{ width: "100%" }}>
 
-                <select
-                  className="leaderboard-card-inp cons_select_nav"
-                  onChange={(e) => {
-                    // setRetailertype(e.target.value);
-                    // console.log("retailertype is", retailertype);
-                    // getBrand(e.target.value);
-                    // console.log(e.target.value);
-                    handleOptionChange(e);
+                  <select
+                    className="leaderboard-card-inp cons_select_nav"
+                    onChange={(e) => {
+                      // setRetailertype(e.target.value);
+                      // console.log("retailertype is", retailertype);
+                      // getBrand(e.target.value);
+                      // console.log(e.target.value);
+                      handleOptionChange(e);
 
-                  }}>
-                  <option defaultValue value=""></option>
-                  {retailer_data &&
-                    retailer_data.map((item, index) => {
-                      return (
-                        <>
-                          <option value={`${item.id}_${item.brand_id}`} key={index}>
-                            {item.name}
-                          </option>
-                        </>
-                      );
-                    })}
-                </select>
+                    }}>
+                    <option defaultValue value=""></option>
+                    {retailer_data &&
+                      retailer_data.map((item, index) => {
+                        return (
+                          <>
+                            <option value={`${item.id}_${item.brand_id}`} key={index}>
+                              {item.name}
+                            </option>
+                          </>
+                        );
+                      })}
+                  </select>
                 </div>
               </div>
 
               <div className="sign_input_wrapp sign_input_wrapp_padding_less">
                 <label htmlFor="first-name">Brands (if applicable)<span className="star_require">*</span></label>
-                <div className="select-wrapper" style={{width:"100%"}}>
+                <div className="select-wrapper" style={{ width: "100%" }}>
 
-                <select
-                  className="leaderboard-card-inp cons_select_nav"
-                  onChange={(e) => {
-                    setMallname(e.target.value);
-                    console.log(e.target.value);
-                  }}>
-                  {get_brand_data &&
-                    get_brand_data.map((item, index) => {
-                      return (
-                        <>
-                          {/* <option selected disabled value="">
+                  <select
+                    className="leaderboard-card-inp cons_select_nav"
+                    onChange={(e) => {
+                      setMallname(e.target.value);
+                      console.log(e.target.value);
+                    }}>
+                    {get_brand_data &&
+                      get_brand_data.map((item, index) => {
+                        return (
+                          <>
+                            {/* <option selected disabled value="">
                       Auto-fill from database
                     </option> */}
-                          <option value={item.id} key={index}>
-                            {item.name}
-                          </option>
-                        </>
-                      );
-                    })}
-                </select>
+                            <option value={item.id} key={index}>
+                              {item.name}
+                            </option>
+                          </>
+                        );
+                      })}
+                  </select>
                 </div>
               </div>
               {/* <div className="sign_input_wrapp sign_input_wrapp_padding_less">
@@ -2302,7 +2320,7 @@ const RetailerNavbar = ({ setTab }) => {
       
         </>} */}
 
-          {/* <div className="sign_input_wrapp sign_input_wrapp_padding_less">
+              {/* <div className="sign_input_wrapp sign_input_wrapp_padding_less">
             <label htmlFor="first-name">Brands (if applicable)</label>
             <select
               className="leaderboard-card-inp"
@@ -2405,7 +2423,7 @@ const RetailerNavbar = ({ setTab }) => {
                 </button>
               </div>
 
-              <span style={{fontSize:"14px",color:"#bbb",alignSelf:"flex-start",marginBottom:"0.7rem"}}>*Required Fields including all document uploads.</span>
+              <span style={{ fontSize: "14px", color: "#bbb", alignSelf: "flex-start", marginBottom: "0.7rem" }}>*Required Fields including all document uploads.</span>
               <div className="signup_terms_wrapp mb_16">
                 <input
                   type="checkbox"
@@ -2733,7 +2751,7 @@ const RetailerNavbar = ({ setTab }) => {
                     })}
                 </select>
               </div>
-             
+
 
               {/* <div className="sign_input_wrapp sign_input_wrapp_padding_less">
                 <label htmlFor="mall">Cinema Name</label>
@@ -2921,8 +2939,8 @@ const RetailerNavbar = ({ setTab }) => {
                 <IoClose />
               </button>
             </div>
-            <div className="tab_btn_main" style={{height:"0px"}}>
-            {signButn == 2 ? null :  <button
+            <div className="tab_btn_main" style={{ height: "0px" }}>
+              {signButn == 2 ? null : <button
                 onClick={() => {
                   SetsignButn(1);
                   SetboldButn(1);
@@ -2934,7 +2952,7 @@ const RetailerNavbar = ({ setTab }) => {
                 className="tab_btn_styling">
                 Mall Login / Sign Up
               </button>}
-             
+
               {/* {signButn == 2 ? 
               <button
                 onClick={() => {
@@ -2948,35 +2966,35 @@ const RetailerNavbar = ({ setTab }) => {
                 className="tab_btn_styling">
                 Brand Login / Sign Up
               </button> : null } */}
-              
-              {signButn == 2 ? null : 
-              <button
-                onClick={() => {
-                  SetsignButn(3);
-                  SetboldButn(3);
-                }}
-                style={{
-                  backgroundColor: signButn == 3 ? "white" : "#dad9d8",
-                  fontWeight: boldButn == 3 ? "600" : "200",
-                }}
-                className="tab_btn_styling">
-                Consumer Login / Sign Up
-              </button>}
-              
-              {signButn ==2 ? null :
-              <button
-                onClick={() => {
-                  SetsignButn(4);
-                  SetboldButn(4);
-                }}
-                style={{
-                  backgroundColor: signButn == 4 ? "white" : "#dad9d8",
-                  fontWeight: boldButn == 4 ? "600" : "200",
-                }}
-                className="tab_btn_styling">
-                Cinema Login / Sign Up
-              </button> }
-              
+
+              {signButn == 2 ? null :
+                <button
+                  onClick={() => {
+                    SetsignButn(3);
+                    SetboldButn(3);
+                  }}
+                  style={{
+                    backgroundColor: signButn == 3 ? "white" : "#dad9d8",
+                    fontWeight: boldButn == 3 ? "600" : "200",
+                  }}
+                  className="tab_btn_styling">
+                  Consumer Login / Sign Up
+                </button>}
+
+              {signButn == 2 ? null :
+                <button
+                  onClick={() => {
+                    SetsignButn(4);
+                    SetboldButn(4);
+                  }}
+                  style={{
+                    backgroundColor: signButn == 4 ? "white" : "#dad9d8",
+                    fontWeight: boldButn == 4 ? "600" : "200",
+                  }}
+                  className="tab_btn_styling">
+                  Cinema Login / Sign Up
+                </button>}
+
             </div>
           </div>
           {signButn == 1 ? (
@@ -3136,24 +3154,24 @@ const RetailerNavbar = ({ setTab }) => {
                 </LoginSocialGoogle>
 
                 <button
-                    className="mb_8 modal-social-btn "
+                  className="mb_8 modal-social-btn "
+                  style={{
+                    justifyContent: "center",
+                    width: "100%",
+                    color: "var(--color-gray)",
+                    fontWeight: "600",
+                    fontSize: "16px",
+                  }}>
+                  <FaApple
+                    color="var(--color-gray)"
                     style={{
-                      justifyContent: "center",
-                      width: "100%",
-                      color: "var(--color-gray)",
-                      fontWeight: "600",
-                      fontSize: "16px",
-                    }}>
-                    <FaApple
-                      color="var(--color-gray)"
-                      style={{
-                        marginRight: "8px",
-                        fontSize: "18px",
-                        marginBottom: "-2px",
-                      }}
-                    />
-                    Continue with Apple
-                  </button>
+                      marginRight: "8px",
+                      fontSize: "18px",
+                      marginBottom: "-2px",
+                    }}
+                  />
+                  Continue with Apple
+                </button>
 
               </div>
               <button
@@ -3328,24 +3346,24 @@ const RetailerNavbar = ({ setTab }) => {
                 </LoginSocialGoogle>
 
                 <button
-                    className="mb_8 modal-social-btn "
+                  className="mb_8 modal-social-btn "
+                  style={{
+                    justifyContent: "center",
+                    width: "100%",
+                    color: "var(--color-gray)",
+                    fontWeight: "600",
+                    fontSize: "16px",
+                  }}>
+                  <FaApple
+                    color="var(--color-gray)"
                     style={{
-                      justifyContent: "center",
-                      width: "100%",
-                      color: "var(--color-gray)",
-                      fontWeight: "600",
-                      fontSize: "16px",
-                    }}>
-                    <FaApple
-                      color="var(--color-gray)"
-                      style={{
-                        marginRight: "8px",
-                        fontSize: "18px",
-                        marginBottom: "-2px",
-                      }}
-                    />
-                    Continue with Apple
-                  </button>
+                      marginRight: "8px",
+                      fontSize: "18px",
+                      marginBottom: "-2px",
+                    }}
+                  />
+                  Continue with Apple
+                </button>
 
               </div>
               {/* <button
@@ -3353,7 +3371,7 @@ const RetailerNavbar = ({ setTab }) => {
                 style={{ alignSelf: "center" }}>
                 Not Registered Yet?
               </button> */}
-              <button style={{marginTop:"1rem"}}
+              <button style={{ marginTop: "1rem" }}
                 onClick={() => {
                   setIsOpen3(false);
                   setIsOpen(true);
@@ -3521,24 +3539,24 @@ const RetailerNavbar = ({ setTab }) => {
                 </LoginSocialGoogle>
 
                 <button
-                    className="mb_8 modal-social-btn "
+                  className="mb_8 modal-social-btn "
+                  style={{
+                    justifyContent: "center",
+                    width: "100%",
+                    color: "var(--color-gray)",
+                    fontWeight: "600",
+                    fontSize: "16px",
+                  }}>
+                  <FaApple
+                    color="var(--color-gray)"
                     style={{
-                      justifyContent: "center",
-                      width: "100%",
-                      color: "var(--color-gray)",
-                      fontWeight: "600",
-                      fontSize: "16px",
-                    }}>
-                    <FaApple
-                      color="var(--color-gray)"
-                      style={{
-                        marginRight: "8px",
-                        fontSize: "18px",
-                        marginBottom: "-2px",
-                      }}
-                    />
-                    Continue with Apple
-                  </button>
+                      marginRight: "8px",
+                      fontSize: "18px",
+                      marginBottom: "-2px",
+                    }}
+                  />
+                  Continue with Apple
+                </button>
 
               </div>
               <button
@@ -3714,24 +3732,24 @@ const RetailerNavbar = ({ setTab }) => {
                 </LoginSocialGoogle>
 
                 <button
-                    className="mb_8 modal-social-btn "
+                  className="mb_8 modal-social-btn "
+                  style={{
+                    justifyContent: "center",
+                    width: "100%",
+                    color: "var(--color-gray)",
+                    fontWeight: "600",
+                    fontSize: "16px",
+                  }}>
+                  <FaApple
+                    color="var(--color-gray)"
                     style={{
-                      justifyContent: "center",
-                      width: "100%",
-                      color: "var(--color-gray)",
-                      fontWeight: "600",
-                      fontSize: "16px",
-                    }}>
-                    <FaApple
-                      color="var(--color-gray)"
-                      style={{
-                        marginRight: "8px",
-                        fontSize: "18px",
-                        marginBottom: "-2px",
-                      }}
-                    />
-                    Continue with Apple
-                  </button>
+                      marginRight: "8px",
+                      fontSize: "18px",
+                      marginBottom: "-2px",
+                    }}
+                  />
+                  Continue with Apple
+                </button>
 
               </div>
               <button

@@ -40,7 +40,11 @@ const customStyles = {
 };
 
 const ProductTilesCard = ({ item, setTab, getweek }) => {
-  const { DeleteProductTileApi, category_data, UpdateProductTilesApi } =
+
+  const eateryvalue = JSON.parse(localStorage.getItem("iseatery"));
+
+  
+  const { DeleteProductTileApi, category_data, UpdateProductTilesApi,category_eatery_data } =
     useStoreContext();
 
   const [selectedImage, setSelectedImage] = useState(null);
@@ -78,6 +82,7 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
   const [weekname2, SetWeekName2] = useState("");
   const [getTag, setTag] = useState("");
   const [size, setSize] = useState("");
+  const [qrDiscount, setQrDiscount] = useState("");
 
   const [selectedDates, setSelectedDates] = useState({
     startDate: null,
@@ -90,6 +95,7 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
 
   // const [deletemodalstate, setDleteModalstate] = useState(false);
   const [getcondition, setCondition] = useState(false);
+  const [getcondition2, setCondition2] = useState(false);
 
   useEffect(() => {
     GetRegion();
@@ -136,33 +142,91 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
     SetWeekName1(item.weeks ? item.weeks.from_date : "");
     SetWeekName2(item.weeks ? item.weeks.to_date : "");
     SetMallArray(item.multiple_malls ? item.multiple_malls : "");
+    setQrDiscount(item.qr_discount ? item.qr_discount : "");
   }, []);
 
   // logo dropzon
 
-  const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } =
-    useDropzone({
-      onDrop: (acceptedFiles) => {
-        {
-          const filteredFiles = acceptedFiles.filter(file => file.size <= 50000); // Limit size to 50KB (in bytes)
+  // const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } =
+  //   useDropzone({
+  //     onDrop: (acceptedFiles) => {
+  //       {
+  //         const filteredFiles = acceptedFiles.filter(file => file.size <= 50000); // Limit size to 50KB (in bytes)
 
-          setFiles(
-            filteredFiles.map((file) =>
-              Object.assign(file, {
-                preview: URL.createObjectURL(file),
-              })
-            )
-          );
-          if (filteredFiles.length !== acceptedFiles.length) {
-            Notification("error","Error!", "Some files exceed the maximum size limit of 50KB and will not be uploaded.");
+  //         setFiles(
+  //           filteredFiles.map((file) =>
+  //             Object.assign(file, {
+  //               preview: URL.createObjectURL(file),
+  //             })
+  //           )
+  //         );
+  //         if (filteredFiles.length !== acceptedFiles.length) {
+  //           Notification("error","Error!", "Some files exceed the maximum size limit of 50KB and will not be uploaded.");
+  //         }
+  //       }
+  //       setCondition(true);
+  //       if (acceptedFiles.length === 0) {
+  //         window.location.reload(true);
+  //       }
+  //     },
+  //   });
+
+  const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } =
+  useDropzone({
+    onDrop: async (acceptedFiles) => {  
+      setCondition(true);
+
+      const maxSizeKB = 50; // Maximum size limit in KB
+      const maxSizeBytes = maxSizeKB * 1024; // Convert KB to bytes
+
+      const filteredFiles = await Promise.all(
+        acceptedFiles.map(async (file) => {
+          const isSizeValid = file.size <= maxSizeBytes; // Limit size to 50KB (in bytes)
+          const isImage = file.type.startsWith("image/"); // Check if it's an image file
+
+          if (!isImage || !isSizeValid) {
+            return null; // Skip files that are not images or exceed size limit
           }
-        }
-        setCondition(true);
-        if (acceptedFiles.length === 0) {
-          window.location.reload(true);
-        }
-      },
-    });
+
+          // Load image and wait for it to load
+          const img = new Image();
+          img.src = URL.createObjectURL(file);
+          await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+          });
+
+          // Check image dimensions
+          const isDimensionsValid = img.width == 354 && img.height == 350;
+
+          return isDimensionsValid ? file : null; // Return file if dimensions are valid, otherwise skip it
+        })
+      );
+
+      // Filter out null values (files that were skipped)
+      const validFiles = filteredFiles.filter((file) => file !== null);
+
+      setFiles(
+        validFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        )
+      );
+
+      if (validFiles.length !== acceptedFiles.length) {
+        Notification(
+          "error",
+          "Error!",
+          "Some files exceed the maximum size limit of 50KB or do not meet the dimension requirements of 354x350 pixels and will not be uploaded."
+        );
+      }
+
+      if (acceptedFiles.length === 0) {
+        window.location.reload(true);
+      }
+    },
+  });
 
   const thumbs = files.map((file) => (
     <img
@@ -175,24 +239,83 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
 
   // QR Code
 
+  // const { getRootProps: getRootlogoPropsQr, getInputProps: getInputlogoPropsQr } =
+  //   useDropzone({
+  //     onDrop: (acceptedFiles) => {
+  //       setCondition2(true);
+
+  //       {
+  //         setFilesQr(
+  //           acceptedFiles.map((file) =>
+  //             Object.assign(file, {
+  //               preview: URL.createObjectURL(file),
+  //             })
+  //           )
+  //         );
+  //       }
+  //       setCondition(true);
+  //       if (acceptedFiles.length === 0) {
+  //         window.location.reload(true);
+  //       }
+  //     },
+  //   });
+
   const { getRootProps: getRootlogoPropsQr, getInputProps: getInputlogoPropsQr } =
-    useDropzone({
-      onDrop: (acceptedFiles) => {
-        {
-          setFilesQr(
-            acceptedFiles.map((file) =>
-              Object.assign(file, {
-                preview: URL.createObjectURL(file),
-              })
-            )
-          );
-        }
-        // setCondition(true);
-        // if (acceptedFiles.length === 0) {
-        //   window.location.reload(true);
-        // }
-      },
-    });
+  useDropzone({
+    onDrop: async (acceptedFiles) => {  
+      setCondition2(true);
+
+      const maxSizeKB = 50; // Maximum size limit in KB
+      const maxSizeBytes = maxSizeKB * 1024; // Convert KB to bytes
+
+      const filteredFiles = await Promise.all(
+        acceptedFiles.map(async (file) => {
+          const isSizeValid = file.size <= maxSizeBytes; // Limit size to 50KB (in bytes)
+          const isImage = file.type.startsWith("image/"); // Check if it's an image file
+
+          if (!isImage || !isSizeValid) {
+            return null; // Skip files that are not images or exceed size limit
+          }
+
+          // Load image and wait for it to load
+          const img = new Image();
+          img.src = URL.createObjectURL(file);
+          await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+          });
+
+          // Check image dimensions
+          const isDimensionsValid = img.width == 150 && img.height == 150;
+
+          return isDimensionsValid ? file : null; // Return file if dimensions are valid, otherwise skip it
+        })
+      );
+
+      // Filter out null values (files that were skipped)
+      const validFiles = filteredFiles.filter((file) => file !== null);
+
+      setFilesQr(
+        validFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        )
+      );
+
+      if (validFiles.length !== acceptedFiles.length) {
+        Notification(
+          "error",
+          "Error!",
+          "Some files exceed the maximum size limit of 50KB or do not meet the dimension requirements of 150x150 pixels and will not be uploaded."
+        );
+      }
+
+      if (acceptedFiles.length === 0) {
+        window.location.reload(true);
+      }
+    },
+  });
 
   const thumbsqr = filesqr.map((file) => (
     <img
@@ -328,10 +451,12 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
     } else if (getmallarray.length < 0) {
       Notification("error", "Error!", "Please Select Mall!");
       return;
-    } else if (BrandName == "" || undefined) {
-      Notification("error", "Error!", "Please Select Brand!");
-      return;
-    } else if (getTag == "" || undefined) {
+    } 
+    // else if (BrandName == "" || undefined) {
+    //   Notification("error", "Error!", "Please Select Brand!");
+    //   return;
+    // } 
+    else if (getTag == "" || undefined) {
       Notification("error", "Error!", "Please Enter Tags!");
       return;
     }
@@ -349,6 +474,7 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
       const formdata = await new FormData();
       await formdata.append("id", item.id);
       await formdata.append("title", title);
+      await formdata.append("qr_discount", qrDiscount);
       if (gettrue === true) {
         for (var i = 0; i < regionidarray.length; i++) {
           await formdata.append("region_id[" + i + "]", regionidarray[i].id);
@@ -389,6 +515,9 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
       await formdata.append("region_child_id[0]", "");
       if (files[0] !== undefined) {
         await formdata.append("image", files[0]);
+      }
+      if (filesqr[0] !== undefined) {
+        await formdata.append("qr_code_image", filesqr[0]);
       }
 
       const data = await UpdateProductTilesApi(formdata);
@@ -444,7 +573,13 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
       })
       .then((res) => {
         // console.log(JSON.stringify(res, null, 2));
-        window.location.reload(true);
+        // window.location.reload(true);
+        if (res.data.success == 1){
+          window.location.reload(true);
+          Notification("success", "Success!", "Add to cart Successfully!");
+        } else if(res.data.success == 0){
+          Notification("success", "Success!", res.data.message);
+        }
       })
       .catch((err) => {
         console.log("err11", err);
@@ -544,7 +679,7 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
           {/* Leaderboard first part responsive side start */}
           <div className="leaderboard-card-first-resp-main-wrapp leaderboard-card-first-resp-main-wrapp_edit">
             <p className="leaderboard-last-part-txt">
-              Service fee will apply if canceled
+              {/* Service fee will apply if canceled */}
             </p>
             <button
               className="leaderboard-delete-icon-btn"
@@ -564,7 +699,7 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
             {/* Leaderboad form start */}
             {/* Leaderboard inputbox start */}
             <div className="leaderboard-card-inpbox-wrapp">
-              <label className="leaderboard-card-lbl">
+              <label className="leaderboard-card-lbl" style={{minWidth:"125px"}}>
                 Title:<span className="star_require">*</span>
               </label>
               <input
@@ -577,8 +712,8 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
             </div>
             {/* Leaderboard inputbox end */}
             {/* Leaderboard inputbox start */}
-            {/* <div className="leaderboard-card-inpbox-wrapp">
-              <label className="leaderboard-card-lbl">
+            <div className="leaderboard-card-inpbox-wrapp">
+              <label className="leaderboard-card-lbl" style={{minWidth:"125px"}}>
                 Mall(s)<span className="star_require">*</span>:
               </label>
               <div
@@ -607,7 +742,7 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
                   </>
                 )}
               </div>
-            </div> */}
+            </div>
 
             {/* <div className="leaderboard-card-inpbox-wrapp">
               <label className="leaderboard-card-lbl">
@@ -637,7 +772,7 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
               </div>
             </div> */}
             <div className="leaderboard-card-inpbox-wrapp">
-              <label className="leaderboard-card-lbl">
+              <label className="leaderboard-card-lbl" style={{minWidth:"125px"}}>
                 Categories:<span className="star_require">*</span>
               </label>
               <div className="select-wrapper" style={{ width: "100%" }}>
@@ -650,6 +785,18 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
                   <option selected disabled value="">
                     {Category}
                   </option>
+                  {eateryvalue == 1 ? <>
+                    {category_eatery_data &&
+                      category_eatery_data.map((item, index) => {
+                      return (
+                        <>
+                          <option value={item.id} key={index}>
+                            {item.name}
+                          </option>
+                        </>
+                      );
+                    })}
+                  </> : <>
                   {category_data &&
                     category_data.map((item, index) => {
                       return (
@@ -660,13 +807,15 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
                         </>
                       );
                     })}
+                  </>}
+                 
                 </select>
               </div>
             </div>
 
             {/* Price */}
             <div className="leaderboard-card-inpbox-wrapp">
-              <label className="leaderboard-card-lbl">
+              <label className="leaderboard-card-lbl" style={{minWidth:"125px"}}>
                 Price:<span className="star_require">*</span>
               </label>
               <input
@@ -681,7 +830,7 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
 
             {/* Desc */}
             <div className="leaderboard-card-inpbox-wrapp">
-              <label className="leaderboard-card-lbl">
+              <label className="leaderboard-card-lbl" style={{minWidth:"125px"}}>
                 Description:<span className="star_require">*</span>
               </label>
               <textarea
@@ -694,8 +843,8 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
             </div>
             {/* Desc end */}
             {/* Tags */}
-            <div className="leaderboard-card-inpbox-wrapp">
-              <label className="leaderboard-card-lbl">
+            <div className="leaderboard-card-inpbox-wrapp" >
+              <label className="leaderboard-card-lbl" style={{minWidth:"125px"}}>
                 Tags:<span className="star_require">*</span>
                 <br />
                 <span style={{ fontSize: "9px" }}>[seperated by commas]</span>
@@ -711,7 +860,7 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
             {/* Tags end */}
             {/* Size */}
             <div className="leaderboard-card-inpbox-wrapp">
-              <label className="leaderboard-card-lbl">Sizes:</label>
+              <label className="leaderboard-card-lbl" style={{minWidth:"125px"}}>Sizes:</label>
               <input
                 style={{ height: "30px" }}
                 className="leaderboard-card-inp"
@@ -724,7 +873,7 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
 
             {/* Duration */}
             <div className="leaderboard-card-inpbox-wrapp">
-              <label className="leaderboard-card-lbl" htmlFor="">
+              <label className="leaderboard-card-lbl" htmlFor="" style={{minWidth:"125px"}}>
                 Duration:<span className="star_require">*</span>
               </label>
 
@@ -739,20 +888,20 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
               />
             </div>
             {/* Duration  end */}
-            {/* <div className="leaderboard-card-inpbox-wrapp">
-              <label className="leaderboard-card-lbl" htmlFor="">
+            <div className="leaderboard-card-inpbox-wrapp">
+              <label className="leaderboard-card-lbl" htmlFor="" style={{minWidth:"125px"}}>
                 Discount QR Code:
               </label>
               <input
                 type="text"
                 className="leaderboard-card-inp"
                 placeholder="10% Discount"
-                // value={Price}
-                // onChange={(e) => setPrice(e.target.value)}
+                value={qrDiscount}
+                onChange={(e) => setQrDiscount(e.target.value)}
               />
-            </div> */}
-            {/* <div className="leaderboard-card-inpbox-wrapp">
-              <label className="leaderboard-card-lbl" htmlFor="">
+            </div>
+            <div className="leaderboard-card-inpbox-wrapp">
+              <label className="leaderboard-card-lbl" htmlFor="" style={{minWidth:"125px"}}>
               </label>
               <div  {...getRootlogoPropsQr()}>
                 <button
@@ -780,7 +929,7 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
                   <br /> (150 x 150 pixels (max 50kb))
                 </span>
               </div>
-            </div> */}
+            </div>
 
             {/* Leaderboard inputbox start */}
             {/* <div className="leaderboard-card-inpbox-wrapp">
@@ -833,7 +982,7 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
               {getcondition === true ? (
                 <>
                   {files && files.length > 0 ? (
-                    <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl">
+                    <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl myprofile_inner_sec2_img_upload_border">
                       {thumbs}
                     </div>
                   ) : (
@@ -896,7 +1045,7 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
                       </div>
                     </div>
                   ) : (
-                    <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl">
+                    <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl myprofile_inner_sec2_img_upload_border">
                       <img
                         alt=""
                         src={item.image_path}
@@ -908,12 +1057,12 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
                 </>
               )}
             </div>
-            {/* <div
-              className="leaderboard-card-part-sec2"
+            <div
+              className="leaderboard-card-part-sec product-tiles-card-sec-part product_tile_card_img_sec"
               style={{
                 width: "200px",
                 height: "200px",
-                padding:"1rem",
+                // padding:"1rem",
               }}>
               {selectedImage && (
                 <button
@@ -923,17 +1072,103 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
                 </button>
               )}
             
-                <div style={{ position: "relative",width:"200px",height:"200px",border:"none", }}>
+                {/* <div style={{ position: "relative",width:"200px",height:"200px",border:"none", }}>
                  
                  {thumbsqr}
-                </div>
+                </div> */}
+
+                <div
+              className="product-tiles-card-sec-part product_tile_card_img_sec"
+              style={{ width: "200px", height: "200px"}}
+              {...getRootlogoPropsQr()}>
+              <input
+                {...getInputlogoPropsQr()}
+                accept="image/jpeg, image/jpg, image/png, image/eps"
+              />
+              {getcondition2 === true ? (
+                <>
+                  {filesqr && filesqr.length > 0 ? (
+                    <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl myprofile_inner_sec2_img_upload_border" style={{border:"none"}}>
+                      {thumbsqr}
+                    </div>
+                  ) : (
+                    <div style={{ width: "100%" }}>
+                      {/* <div className="leaderboard-card-part-sec2 product_tile_card_part_sec2" style={{textAlign:"center",paddingLeft:"1.1rem",paddingRight:"1.1rem"}}>
+                        <AiOutlineCloudUpload
+                          style={{
+                            width: "60px",
+                            height: "60px",
+                            color: "var(--color-orange)",
+                            marginBottom: "10px",
+                          }}
+                        />
+                        <h4 style={{ fontSize: "14px" }}>.JPG .PNG .GIF (350 x 354 pixels)</h4>
+                        <p style={{ fontSize: "14px" }}>
+                          (max 50kb)
+                        </p>
+                        <p style={{ fontSize: "14px" }}>
+                          You can also upload file by
+                        </p>
+
+                        <button
+                          type="button"
+                          className="click_upload_btn"
+                          style={{ marginBottom: "10px",color:"var(--color-orange)",fontWeight:"600"}}>
+                          click here
+                        </button>
+                      </div> */}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <>
+                  {item.qr_image_path === null ? (
+                    <div style={{ width: "100%" }}>
+                      {/* <div className="leaderboard-card-part-sec2" style={{ paddingLeft: "1.1rem", paddingRight: "1.1rem", textAlign: "center" }}>
+                        <AiOutlineCloudUpload
+                          style={{
+                            width: "60px",
+                            height: "60px",
+                            color: "var(--color-orange)",
+                            marginBottom: "10px",
+                          }}
+                        />
+                        <h4 style={{ fontSize: "14px" }}>.JPG .PNG .GIF (354 x 350 pixels)</h4>
+                        <p style={{ fontSize: "14px" }}>
+                          (max 50kb)
+                        </p>
+                        <p style={{ fontSize: "14px" }}>
+                          You can also upload file by
+                        </p>
+
+                        <button
+                          type="button"
+                          className="click_upload_btn"
+                          style={{ marginBottom: "10px", color: "var(--color-orange)", fontWeight: "600" }}>
+                          click here
+                        </button>
+                      </div> */}
+                    </div>
+                  ) : (
+                    <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl myprofile_inner_sec2_img_upload_border">
+                      <img
+                        alt=""
+                        src={item.qr_image_path}
+                        style={{ width: "100%", height: "100%" }}
+                        className="img-fluidb"
+                      />
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
               
-            </div> */}
+            </div>
           </div>
           {/* Leaderboard part second end */}
 
           {/* Leaderboard part third start */}
-          <div className="leaderboard-card-part-third" style={{ width: "20%" }}>
+          <div className="leaderboard-card-part-third leaderboard-card-part-third-half_tile" >
             <button
               className="leaderboard-delete-icon-btn"
               onClick={() => DeleteProductTilesboard()}>
@@ -945,7 +1180,7 @@ const ProductTilesCard = ({ item, setTab, getweek }) => {
               />
             </button>
             <p className="leaderboard-last-part-txt">
-              Service fee will apply if canceled
+              {/* Service fee will apply if canceled */}
             </p>
             <div className="leaderboard-btn-box">
               {item.cart_status === 0 ? (

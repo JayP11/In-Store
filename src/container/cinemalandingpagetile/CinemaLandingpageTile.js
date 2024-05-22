@@ -133,11 +133,17 @@ const CinemaLandingpageTile = ({ get_mall_auth_data, setTab, gettab }) => {
   const [mainName, setMainName] = useState();
 
   useEffect(()=>{
-   setMainName(get_mall_auth_data &&
-    get_mall_auth_data.retailers &&
-    get_mall_auth_data.retailers.name !== null
-    ? get_mall_auth_data.retailers.name
-    : "abc")
+   setMainName(
+    // get_mall_auth_data &&
+    // get_mall_auth_data.retailers &&
+    // get_mall_auth_data.retailers.name !== null
+    // ? get_mall_auth_data.retailers.name
+    // : "abc"
+
+    get_mall_auth_data &&
+      get_mall_auth_data.name &&
+      get_mall_auth_data.name
+  )
   },[])
 
   const { getCategoryApi, getWeekApi } = useStoreContext();

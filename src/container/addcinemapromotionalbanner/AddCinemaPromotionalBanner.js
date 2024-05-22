@@ -237,11 +237,14 @@ const AddCinemaPromotionalBanner = ({ get_mall_auth_data, setTab }) => {
     };
 
     const [mainName, setMainName] = useState(
+        // get_mall_auth_data &&
+        //     get_mall_auth_data.retailers &&
+        //     get_mall_auth_data.retailers.name !== null
+        //     ? get_mall_auth_data.retailers.name
+        //     : ""
         get_mall_auth_data &&
-            get_mall_auth_data.retailers &&
-            get_mall_auth_data.retailers.name !== null
-            ? get_mall_auth_data.retailers.name
-            : ""
+        get_mall_auth_data.name &&
+        get_mall_auth_data.name
     );
 
 
@@ -277,15 +280,15 @@ const AddCinemaPromotionalBanner = ({ get_mall_auth_data, setTab }) => {
                 {/* LeaderBoard subheading end */}
 
                 {/* Add Leaderboard card start */}
-                <AddCinemaPromotionalBannerCard 
-                openMallModal={openMallModal} 
-                setTab={setTab} 
-                gateweek={gateweek} 
-                seteweek={setWeek} 
-                peopleInfo={peopleInfo}
-                regionidarray={regionidarray}
-                mallidarray={mallidarray}
-                selectedMalls={selectedMalls} />
+                <AddCinemaPromotionalBannerCard
+                    openMallModal={openMallModal}
+                    setTab={setTab}
+                    gateweek={gateweek}
+                    seteweek={setWeek}
+                    peopleInfo={peopleInfo}
+                    regionidarray={regionidarray}
+                    mallidarray={mallidarray}
+                    selectedMalls={selectedMalls} />
 
                 <span style={{ fontSize: "14px", color: "#bbb", alignSelf: "flex-start", marginBottom: "0.7rem" }}>*Required Fields including all image uploads.</span>
                 {/* Add Leaderboard card end */}

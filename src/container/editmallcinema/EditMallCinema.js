@@ -383,7 +383,8 @@ const EditMallCinema = ({
         <div className='edit-brand-back-iconbox' onClick={() => setTab(28)}><IoChevronBack className='edit-brand-back-icon' /> <p className='edit-brand-back-txt'>Back</p></div>
         {/* mall management name start */}
         <div className="mall_name_wrapp mm_form_wrapp_name_padding">
-          <p className="mall_name_heading">{getsingleStoreData.name ? getsingleStoreData.name : ""}:</p>
+          {/* <p className="mall_name_heading">{getsingleStoreData.name ? getsingleStoreData.name : ""}:</p> */}
+          <p className="mall_name_heading">{get_mall_auth_data?.name}:</p>
           <span style={{ fontWeight: "600" }}>Edit Cinema</span>
         </div>
         {/* <div className="mm_horizontal_line"></div> */}
@@ -623,6 +624,8 @@ const EditMallCinema = ({
               <div className="mm_form_single_input brand-resp-btn">
                 <label htmlFor="" style={{ minWidth: "166px" }}></label>
                 <button
+                                  disabled={isAcceptTerm == 1 && isAcceptTerm2 ==1 ? false : true}
+
                   className="btn btn-black"
                   onClick={() => UpdateMallStoreData()}
 
@@ -786,8 +789,8 @@ const EditMallCinema = ({
                 {...getInputlogoProps()}
                 accept="image/jpeg, image/jpg, image/png, image/eps"
               /> */}
-                  <h4 style={{ marginBottom: "10px" }} className="myprofile_upload_img_card_name">Upload the cinema logo <br />
-                    (200 x 200 pixels)</h4>
+                  <h4 style={{ marginBottom: "10px" }} className="myprofile_upload_img_card_name">Upload the cinema banner <br />
+                    (1050 x 284 pixels)</h4>
                   {getcondition2 === true ?
 
                     <>
@@ -947,6 +950,8 @@ const EditMallCinema = ({
         </div>
         <div className="mm_form_single_input brand-resp-show-btn">
           <button
+            disabled={isAcceptTerm == 1 && isAcceptTerm2 ==1 ? false : true}
+
             className="btn btn-black"
             onClick={() => UpdateMallStoreData()}
             style={{ width: "200px" }}

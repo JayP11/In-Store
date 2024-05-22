@@ -126,13 +126,13 @@ const CustomerBrandCard = ({ data, getmovieapi, replce, mainitem, getWishlist, g
         </div>
         <p className="cbc_name">{data.title ? data.title : ""} </p>
         {/* <p className="cbc_name">fdgdfg </p> */}
-        <p className="cbc_price">${data.price ? data.price : ""} </p>
+        <p className="cbc_price">R{data.price ? data.price : ""} </p>
         <p className="cbc_price">{data.description ? data.description : ""} </p>
         {/* <p className="cbc_price">$23213 </p> */}
         <p className="cbc_des">
           {data.stores ? (data.stores.name ? data.stores.name : "") : ""}
         </p>
-        <p className="cbc_des">Only availble in stores</p>
+        <p className="cbc_des">Only available in stores</p>
       </div>
     </>
   );

@@ -154,7 +154,7 @@ const CustomerHomePage = () => {
   };
 
   <Helmet>
-    <title>In-store</title>
+    <title> Customer In-store</title>
     <meta property="og:image" content="%PUBLIC_URL%/logo512.png" />
   </Helmet>;
 

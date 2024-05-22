@@ -291,7 +291,8 @@ const AddCinemaTilesCard = ({
       })
       .then((res) => {
         console.log(JSON.stringify(res, null, 2));
-        window.location.reload(true);
+       
+       
       })
       .catch((err) => {
         console.log("err11", err);
@@ -390,9 +391,9 @@ const AddCinemaTilesCard = ({
         <div className="leaderboard-card-flex-wrapp">
           {/* Leaderboard first part responsive side start */}
           <div className="leaderboard-card-first-resp-main-wrapp">
-            <p className="leaderboard-last-part-txt">
+            {/* <p className="leaderboard-last-part-txt">
               Service fee will apply if canceled
-            </p>
+            </p> */}
             <button
               className="leaderboard-delete-icon-btn"
               onClick={() => DeleteProductTilesboard()}
@@ -703,7 +704,7 @@ const AddCinemaTilesCard = ({
               />
             </button>
             <p className="leaderboard-last-part-txt">
-              Service fee will apply if canceled
+              {/* Service fee will apply if canceled */}
             </p>
             <div className="leaderboard-btn-box">
               {item.cart_status === 0 ? (

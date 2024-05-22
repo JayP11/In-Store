@@ -111,11 +111,11 @@ const AddMallCinema = ({
     const handleTermChange2 = (e) => {
         setIsAcceptTerm(1);
         console.log("e.targate.value");
-      };
-      const handleTermChange3 = (e) => {
+    };
+    const handleTermChange3 = (e) => {
         setIsAcceptTerm2(1);
         console.log("e.targate.value");
-      };
+    };
     // update mall store api
 
     const AddStoreNallData = async () => {
@@ -145,10 +145,13 @@ const AddMallCinema = ({
         if (storeName == "" || undefined) {
             Notification("error", "Error!", "Please Enter Cinema Name!");
             return;
-        }  else if (mallsOption.length <= 0) {
+        } else if (retailerType == "" || undefined) {
+            Notification("error", "Error!", "Please Select any one retailer type!");
+            return;
+        } else if (mallsOption.length <= 0 && retailerType == 2) {
             Notification("error", "Error!", "Please Select any Brand otherwise select Independent Retailer!");
             return;
-          } else if (number == "" || undefined) {
+        } else if (number == "" || undefined) {
             Notification("error", "Error!", "Please Enter Number!");
             return;
         }
@@ -166,12 +169,12 @@ const AddMallCinema = ({
             console.log('number--->', number);
             const formdata = await new FormData();
             await formdata.append("name", storeName);
-           
+
             await formdata.append("contact_no", number);
             await formdata.append("email", email);
             await formdata.append("description", storeDes);
 
-          
+
             await formdata.append("type", retailerType);
             await formdata.append("terms_condition", isAcceptTerm);
             await formdata.append("privacy_policy", isAcceptTerm2);
@@ -185,10 +188,10 @@ const AddMallCinema = ({
 
             }
 
-            if(retailerType == 2) {
+            if (retailerType == 2) {
                 for (var i = 0; i < mallsOption.length; i++) {
                     await formdata.append("brand_id[" + i + "]", mallsOption[i].value);
-                  }
+                }
             }
 
             // }
@@ -345,24 +348,24 @@ const AddMallCinema = ({
 
 
             <div className="mm_main_wrapp">
-                <div className='edit-brand-back-iconbox' onClick={() => setTab(28)}><IoChevronBack className='edit-brand-back-icon' /> 
-                <p className='edit-brand-back-txt'>Back</p></div>
+                <div className='edit-brand-back-iconbox' onClick={() => setTab(28)}><IoChevronBack className='edit-brand-back-icon' />
+                    <p className='edit-brand-back-txt'>Back</p></div>
                 {/* mall management name start */}
                 <div className="mall_name_wrapp mm_form_wrapp_name_padding">
                     <p className="mall_name_heading">{get_mall_auth_data.name ? get_mall_auth_data.name : ""}:</p>
-                    <span style={{fontWeight:700}}>Add Cinema</span>
+                    <span style={{ fontWeight: 700 }}>Add Cinema</span>
                 </div>
                 {/* <div className="mm_horizontal_line"></div> */}
-                <div className="" style={{marginTop:"2rem"}}></div>
+                <div className="" style={{ marginTop: "2rem" }}></div>
                 {/* mall management name end */}
 
                 {/* mall management form start */}
                 <div className="mm_form_wrapp mm_form_wrapp_add_brand_mall mm_form_wrapp_padding">
                     {/* text-input wrapp start */}
                     <div className="mm_form_input_wrapp">
-                    <div className="signup_terms_wrapp indep-side">
+                        <div className="signup_terms_wrapp indep-side">
                             <div className="mm_form_single_input">
-                                <label htmlFor="" style={{minWidth: "166px"}}>Retailer type</label>
+                                <label htmlFor="" style={{ minWidth: "166px" }}>Retailer type</label>
 
                                 <div className="radio-btn-flex-brand radio-btn-flex-brand-mall">
                                     <div className="radio-btn-inner-flex">
@@ -399,7 +402,7 @@ const AddMallCinema = ({
 
                         {/* single text-input */}
                         <div className="mm_form_single_input">
-                            <label htmlFor="" style={{minWidth: "166px"}}>Cinema Name<span className="star_require">*</span></label>
+                            <label htmlFor="" style={{ minWidth: "166px" }}>Cinema Name<span className="star_require">*</span></label>
                             <input
                                 type="text"
                                 value={storeName}
@@ -453,25 +456,25 @@ const AddMallCinema = ({
 
                         {retailerType == 2 ? <>
                             <div className="mm_form_single_input">
-              <label htmlFor="" className="" style={{minWidth:"160px"}}>Select Brands<span className="star_require">*</span></label>
+                                <label htmlFor="" className="" style={{ minWidth: "160px" }}>Select Brands<span className="star_require">*</span></label>
 
-              <Select
-                value={mallsOption}
-                styles={{ width: "100%", padding: "0px" }}
-                className="leaderboard-card-inp"
-                closeMenuOnSelect={false}
-                components={animatedComponents}
-                // defaultValue={[colourOptions[4], colourOptions[5]]}
+                                <Select
+                                    value={mallsOption}
+                                    styles={{ width: "100%", padding: "0px" }}
+                                    className="leaderboard-card-inp"
+                                    closeMenuOnSelect={false}
+                                    components={animatedComponents}
+                                    // defaultValue={[colourOptions[4], colourOptions[5]]}
 
-                isMulti
-                options={getMultipleBrand}
-                onChange={setMallsOption}
-              />
-            </div>
-                        </>: <></>}
+                                    isMulti
+                                    options={getMultipleBrand}
+                                    onChange={setMallsOption}
+                                />
+                            </div>
+                        </> : <></>}
                         {/* single text-input */}
                         <div className="mm_form_single_input">
-                            <label htmlFor="" style={{minWidth: "166px"}}>Contact Number<span className="star_require">*</span></label>
+                            <label htmlFor="" style={{ minWidth: "166px" }}>Contact Number<span className="star_require">*</span></label>
                             <input
                                 type="text"
                                 onChange={(e) => onHandleNumberChange(e)}
@@ -505,10 +508,10 @@ const AddMallCinema = ({
                             />
                         </div> */}
                         {/* single text-input */}
-                        
+
                         {/* single text-input */}
                         <div className="mm_form_single_input">
-                            <label htmlFor="" style={{minWidth: "166px"}}>Email Address<span className="star_require">*</span></label>
+                            <label htmlFor="" style={{ minWidth: "166px" }}>Email Address<span className="star_require">*</span></label>
                             <input
                                 type="email"
                                 onChange={(e) => onHandleEmailChange(e)}
@@ -518,7 +521,7 @@ const AddMallCinema = ({
                             />
                         </div>
 
-                       
+
                         {/* tranding sec end */}
 
                         {/* text-area sec start */}
@@ -526,7 +529,7 @@ const AddMallCinema = ({
                             className="mm_form_single_input"
                             style={{ alignItems: "flex-start" }}
                         >
-                            <label htmlFor="" style={{minWidth: "166px"}}>Cinema Description<span className="star_require">*</span></label>
+                            <label htmlFor="" style={{ minWidth: "166px" }}>Cinema Description<span className="star_require">*</span></label>
                             <textarea
                                 type="text"
                                 value={storeDes}
@@ -541,9 +544,9 @@ const AddMallCinema = ({
                             className="mm_form_single_input"
                             style={{ alignItems: "flex-start" }}
                         >
-                            <label htmlFor="" style={{minWidth: "166px"}}></label>
-                            <span style={{fontSize:"14px",color:"#bbb"}}>*Required Fields including all image uploads.</span>
-                           
+                            <label htmlFor="" style={{ minWidth: "166px" }}></label>
+                            <span style={{ fontSize: "14px", color: "#bbb" }}>*Required Fields including all image uploads.</span>
+
                         </div>
 
 
@@ -564,7 +567,7 @@ const AddMallCinema = ({
                             </div>
                         </div> */}
 
-                    
+
 
                         <div className="signup_terms_wrapp indep-side-show">
                             <div className="mm_form_single_input" style={{ flexDirection: "column", alignItems: "start" }}>
@@ -604,7 +607,7 @@ const AddMallCinema = ({
                         </div>
 
                         <div className="mm_form_single_input mb_8">
-                            <label htmlFor="" style={{ minWidth: "166px"}}></label>
+                            <label htmlFor="" style={{ minWidth: "166px" }}></label>
                             <div className="signup_terms_wrapp indep-side">
                                 <input
                                     type="checkbox"
@@ -620,8 +623,8 @@ const AddMallCinema = ({
                             </div>
                         </div>
                         <div className="mm_form_single_input mb_8">
-                            <label htmlFor="" style={{ minWidth: "166px"}}></label>
-                            <div className="signup_terms_wrapp indep-side" style={{marginTop:"-12px"}}>
+                            <label htmlFor="" style={{ minWidth: "166px" }}></label>
+                            <div className="signup_terms_wrapp indep-side" style={{ marginTop: "-12px" }}>
                                 <input
                                     type="checkbox"
                                     value={isAcceptTerm2}
@@ -637,9 +640,11 @@ const AddMallCinema = ({
                         </div>
                         {/* text-area sec end */}
                         <div className="mm_form_single_input mb_8">
-                            <label htmlFor="" style={{ minWidth: "166px"}}></label>
+                            <label htmlFor="" style={{ minWidth: "166px" }}></label>
                             <div className="mm_form_single_input brand-resp-btn">
                                 <button
+                                                  disabled={isAcceptTerm == 1 && isAcceptTerm2 ==1 ? false : true}
+
                                     className="btn btn-black"
                                     onClick={() => AddStoreNallData()}
                                     style={{ width: "200px" }}
@@ -708,15 +713,15 @@ const AddMallCinema = ({
                             </div>
                         </div>
                         {/* upload images wrapp end */}
-                            <p className="upload_img_instr">All Brand logo’s to be uploaded <br/>
-in black and white format <br/>
-(no colour logo’s)</p> 
+                        <p className="upload_img_instr">All Brand logo’s to be uploaded <br />
+                            in black and white format <br />
+                            (no colour logo’s)</p>
                         {/* upload images wrapp start */}
                         <div className="mm_img_upload_wrapp" style={{ width: "100%" }}>
                             {/* single upload image */}
                             <div className="myprofile_inner_sec2">
                                 <h4 style={{ marginBottom: "10px" }}>Upload the cinema banner <br />
-                                    (200 x 200 pixels)</h4>
+                                    (1050 x 284 pixels)</h4>
                                 {files2 && files2.length > 0 ? (
                                     <div className="myprofile_inner_sec2_img_upload">{thumbs2}</div>
                                 ) : (
@@ -801,7 +806,7 @@ in black and white format <br/>
                     </p>
 
                 </div>
-                <div className="signup_terms_wrapp indep-side-show" style={{marginTop:"-12px"}}>
+                <div className="signup_terms_wrapp indep-side-show" style={{ marginTop: "-12px" }}>
                     <input
                         type="checkbox"
                         value={isAcceptTerm2}

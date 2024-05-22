@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { AiOutlineCloudUpload } from "react-icons/ai";
-import { ACCEPT_HEADER, get_category, mall_update_eatery } from "../utils/Constant";
+import { ACCEPT_HEADER, get_brand_multiple, get_category, get_eatery_category, mall_update_eatery } from "../utils/Constant";
 import axios from "axios";
 import { useMallContext } from "../context/mall_context";
 import Notification from "../utils/Notification";
 import { MallHero } from "../components";
 import { IoChevronBack } from "react-icons/io5";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
+
+const animatedComponents = makeAnimated();
+
 
 const EditEateriesDetails = ({
   getsingleStoreData,
@@ -45,7 +50,7 @@ const EditEateriesDetails = ({
     ? ""
     : getsingleStoreData.categorys.name)
   const [getcontactNo, setContactNo] = useState(
-    getsingleStoreData.number ? getsingleStoreData.number : ""
+    getsingleStoreData.contact_no ? getsingleStoreData.contact_no : ""
   );
   const [getstoreLevel, setStoreLevel] = useState(
     getsingleStoreData.store_level ? getsingleStoreData.store_level : ""
@@ -87,13 +92,22 @@ const EditEateriesDetails = ({
   const [holidayToTime, setHolidayToTime] = useState(
     getsingleStoreData.holiday_to_time ? getsingleStoreData.holiday_to_time : ""
   );
+  const [mallsOption, setMallsOption] = useState(
+    getsingleStoreData.brands ? getsingleStoreData.brands : ""
+  );
+  const [retailerType, setRetailerType] = useState(getsingleStoreData.type && getsingleStoreData.type);
+
   const [termsCond, setTermsCond] = useState(1);
   const [getcondition, setcondition] = useState(false);
   const [getcondition2, setcondition2] = useState(false);
   const [catarray, SetArray] = useState([]);
+  
 
   const [isAcceptTerm, setIsAcceptTerm] = useState(0);
   const [isAcceptTerm2, setIsAcceptTerm2] = useState(0);
+
+  const [getMultipleBrand, setMultipleBrand] = useState([]);
+
 
   const handleTermChange = (e) => {
     setIsAcceptTerm(1);
@@ -131,7 +145,7 @@ const EditEateriesDetails = ({
     const token = JSON.parse(localStorage.getItem("is_token"));
 
     axios
-      .get(get_category, {
+      .get(get_eatery_category, {
         headers: {
           Accept: ACCEPT_HEADER,
           Authorization: "Bearer " + token,
@@ -155,7 +169,13 @@ const EditEateriesDetails = ({
     if (getstoreName == "" || undefined) {
       Notification("error", "Error", "Please Enter Eatery Name");
       return;
-    } else if (storeCategory == "" || undefined) {
+    }  else if (retailerType == "" || undefined) {
+      Notification("error", "Error!", "Please Select any one retailer type!");
+      return;
+    } else if (mallsOption.length <= 0 && retailerType == 2) {
+      Notification("error", "Error!", "Please Select any Brand otherwise select Independent Retailer!");
+      return;
+    }else if (storeCategory == "" || undefined) {
       Notification("error", "Error!", "Please Select Eatery Category!");
       return;
     } else if (getstoreNo == "" || undefined) {
@@ -190,14 +210,15 @@ const EditEateriesDetails = ({
     } else {
       console.log("eatery id is", getstore_is);
       const formdata = await new FormData();
-      await formdata.append("eatery_id", getstore_is);
+      await formdata.append("id", getstore_is);
       await formdata.append("name", getstoreName);
 
       await formdata.append("store_no", getstoreNo);
       await formdata.append("store_level", getstoreLevel);
       await formdata.append("category_id", storeCategory);
 
-      await formdata.append("number", getcontactNo);
+      // await formdata.append("number", getcontactNo);
+      await formdata.append("contact_no", getcontactNo);
       await formdata.append("contact_person", getstoreContactPerson);
       await formdata.append("email", getemail);
       await formdata.append("mon_fri_from_time", monFromTime);
@@ -211,6 +232,13 @@ const EditEateriesDetails = ({
       await formdata.append("description", getstoreDes);
       await formdata.append("terms_condition", isAcceptTerm);
       await formdata.append("privacy_policy", isAcceptTerm2);
+      await formdata.append("type", retailerType);
+      if (retailerType == 2) {
+        for (var i = 0; i < mallsOption.length; i++) {
+          await formdata.append("brand_id[" + i + "]", mallsOption[i].value);
+        }
+      }
+
       if (files[0] !== undefined) {
         await formdata.append("store_logo", files[0]);
       } else {
@@ -296,6 +324,33 @@ const EditEateriesDetails = ({
 
   console.log("test", getstoreName);
 
+  useEffect(()=>{
+    getMutipleBrand();
+  },[])
+
+  const getMutipleBrand = async () => {
+    const token = JSON.parse(localStorage.getItem("is_token"));
+
+    axios
+      .get(get_brand_multiple, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((res) => {
+        console.log("get multiple brand data", JSON.stringify(res.data, null, 2));
+        if (res.data.success == 1) {
+          setMultipleBrand(res.data.data);
+        } else {
+          null;
+        }
+      })
+      .catch((err) => {
+        console.log("err11", err);
+      });
+  };
+
   return (
     <>
       <MallHero get_mall_auth_data={get_mall_auth_data} />
@@ -318,6 +373,45 @@ const EditEateriesDetails = ({
         <div className="mm_form_wrapp mm_form_wrapp_add_brand_mall mm_form_wrapp_padding">
           {/* text-input wrapp start */}
           <div className="mm_form_input_wrapp">
+
+          <div className="signup_terms_wrapp indep-side">
+              <div className="mm_form_single_input">
+                <label htmlFor="" style={{ minWidth: "162px" }}>Retailer type</label>
+
+                <div className="radio-btn-flex-brand">
+                  <div className="radio-btn-inner-flex">
+                    <input
+                      type="radio"
+                      id="Online"
+                      name="gender"
+                      value="1"
+                      checked={retailerType == 1}
+                      onChange={(e) => { setRetailerType(e.target.value); console.log("-->", retailerType); }}
+                    // onChange={(e) => { setRetailerType(1); console.log("-->", retailerType); }}
+
+                    />
+                    <label className="course-form-txt" for="male">
+                      Independent Retailer
+                    </label>
+                  </div>
+
+                  <div className="radio-btn-inner-flex">
+                    <input
+                      type="radio"
+                      id="In-Person"
+                      name="gender"
+                      value="2"
+                      checked={retailerType == 2}
+                      onChange={(e) => { setRetailerType(e.target.value); console.log("-->", retailerType); }}
+                    />
+                    <label className="course-form-txt" for="specifyColor">
+                      Group Retailer
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+            </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
               <label htmlFor="" style={{ minWidth: "162px" }}>
@@ -333,6 +427,25 @@ const EditEateriesDetails = ({
               />
             </div>
             {/* single text-input */}
+
+            {retailerType == 2 ? <>
+              <div className="mm_form_single_input">
+                <label htmlFor="" className="" style={{ minWidth: "162px" }}>Select Brands</label>
+
+                <Select
+                  value={mallsOption}
+                  styles={{ width: "100%", padding: "0px" }}
+                  className="leaderboard-card-inp"
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                  // defaultValue={[getBrandList]}
+                  // defaultValue={getBrandList}                
+                  isMulti
+                  options={getMultipleBrand}
+                  onChange={setMallsOption}
+                />
+              </div>
+            </> : <></>}
 
             <div className="mm_form_single_input">
               <label htmlFor="" style={{ minWidth: "162px" }}>Category<span className="star_require">*</span></label>
@@ -756,7 +869,7 @@ const EditEateriesDetails = ({
                                 marginBottom: "10px",
                               }}
                             />
-                            <h4>.PDF .JPG .PNG</h4>
+                            <h4>.JPG .PNG</h4>
                             <p>You can also upload file by</p>
                             {/* <input
                               {...getRootLogoProps()}
@@ -796,7 +909,7 @@ const EditEateriesDetails = ({
                                   marginBottom: "10px",
                                 }}
                               />
-                              <h4>.PDF .JPG .PNG</h4>
+                              <h4>.JPG .PNG</h4>
                               <p>You can also upload file by</p>
                               {/* <input
                                 {...getRootLogoProps()}
@@ -877,10 +990,8 @@ const EditEateriesDetails = ({
                 {...getInputlogoProps()}
                 accept="image/jpeg, image/jpg, image/png, image/eps"
               /> */}
-                  <h4 style={{ marginBottom: "10px", fontSize: "14px", fontWeight: "600" }} className="myprofile_upload_img_card_name">
-                    Upload the Eatery banner<br />
-                    (1300 x 275 pixels)<span className="star_require">*</span>
-                  </h4>
+              <h4 style={{ marginBottom: "10px", fontSize: "14px", fontWeight: "600" }} className="myprofile_upload_img_card_name">Upload the Eatery banner  <br />
+                  (1050px x 284px) <br /> (max 200kb)<span className="star_require">*</span></h4>
                   {getcondition2 === true ?
 
                     <>
@@ -896,7 +1007,7 @@ const EditEateriesDetails = ({
                                 marginBottom: "10px",
                               }}
                             />
-                            <h4>.PDF .JPG .PNG</h4>
+                            <h4>.JPG .PNG</h4>
                             <p>You can also upload file by</p>
                             {/* <input
                               {...getRootLogoProps()}
@@ -924,7 +1035,7 @@ const EditEateriesDetails = ({
                     </>
                     :
                     <>
-                      {getsingleStoreData.store_banner_path === null ?
+                      {getsingleStoreData.banner_store_path === null ?
                         <>
                           <div style={{ width: "100%" }}>
                             <div className="myprofile_inner_sec2_img_upload">
@@ -936,7 +1047,7 @@ const EditEateriesDetails = ({
                                   marginBottom: "10px",
                                 }}
                               />
-                              <h4>.PDF .JPG .PNG</h4>
+                              <h4>.JPG .PNG</h4>
                               <p>You can also upload file by</p>
                               {/* <input
                                 {...getRootBannerProps()}
@@ -970,7 +1081,7 @@ const EditEateriesDetails = ({
 
 
                             <img
-                              src={getsingleStoreData.store_banner_path}
+                              src={getsingleStoreData.banner_store_path}
                               style={{ width: "100%", height: "100%" }}
                               className="img-fluidb"
                             />
@@ -1036,12 +1147,15 @@ const EditEateriesDetails = ({
           </p>
 
         </div>
-        <div className="mm_form_single_input mb_8">
+        <div className="mm_form_single_input mb_8 btn_eatery_res">
           <label htmlFor="" style={{ minWidth: "234px" }}></label>
           <button
+                            disabled={isAcceptTerm == 1 && isAcceptTerm2 ==1 ? false : true}
+
             style={{ marginTop: "20px", width: "200px" }}
             className="btn btn-black"
             onClick={() => {
+
               // addEateries();
               editEateries();
               console.log("smnbsmdb");

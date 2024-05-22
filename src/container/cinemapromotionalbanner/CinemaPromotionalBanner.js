@@ -4,8 +4,11 @@ import images from "../../constants/images";
 import { Link } from "react-router-dom";
 import {
   ACCEPT_HEADER,
+  filter_promotions,
   get_promotion,
   get_region_mall,
+  get_store_region_authwise,
+  store_mall_from_region,
 } from "../../utils/Constant";
 import { BsChevronDown } from "react-icons/bs";
 import { IoIosArrowDown, IoIosArrowUp, IoIosClose } from "react-icons/io";
@@ -125,19 +128,51 @@ const CinemaPromotionalBanner = ({ get_mall_auth_data, setTab,gettab }) => {
   const perPage = 3;
   const [totalPages, setTotalPages] = useState(1);
   const [page, setPage] = useState(1);
+
+  const perPage2 = 3;
+  const [totalPages2, setTotalPages2] = useState(1);
+  const [page2, setPage2] = useState(1);
+
   const [getliast, SetLiast] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [regionsOption, setregionsOption] = useState([]);
+  const [mallsOption, setMallOptions] = useState([]);
+
+  const [getregion_arrayfilter, SetRigion_Arrayfilter] = useState([]);
+
+  const [getMallsOptions, setMallsOptions] = useState([]);
+  const [getfilterData, setfilterData] = useState([]);
+  const [getMallsRegion2, setMallsRegion2] = useState([]);
   const [mainName, setMainName] = useState(
+    // get_mall_auth_data &&
+    //   get_mall_auth_data.retailers &&
+    //   get_mall_auth_data.retailers.name !== null
+    //   ? get_mall_auth_data.retailers.name
+    //   : ""
     get_mall_auth_data &&
-      get_mall_auth_data.retailers &&
-      get_mall_auth_data.retailers.name !== null
-      ? get_mall_auth_data.retailers.name
-      : ""
+      get_mall_auth_data.name &&
+      get_mall_auth_data.name
   );
 
   useEffect(() => {
     getPromation();
   }, [page]);
+
+  const stateMultipleChange = async (selectedOption) => {
+    setregionsOption(selectedOption);
+
+    await UpdateRegionFilter(selectedOption);
+    await setMallsRegion2(selectedOption);
+    console.log("Selected Option:", selectedOption);
+  };
+
+  const stateMultipleChange2 = async (selectedOption) => {
+    setMallOptions(selectedOption);
+
+    await LeaderboadFilter(selectedOption);
+
+    console.log("Selected Option:", selectedOption);
+  };
 
   const getPromation = async () => {
     const token = await JSON.parse(localStorage.getItem("is_token"));
@@ -158,6 +193,61 @@ const CinemaPromotionalBanner = ({ get_mall_auth_data, setTab,gettab }) => {
         setTotalPages(res.data.last_page);
         SetLiast([...getliast, ...res.data.data]);
         setLoading(false);
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+  };
+
+  const UpdateRegionFilter = async (selectedOption) => {
+    const token = JSON.parse(localStorage.getItem("is_token"));
+
+    const formdata = new FormData();
+    selectedOption.forEach((option, index) => {
+      formdata.append(`region_id[${index}]`, option.value);
+    });
+
+    try {
+      const res = await axios.post(store_mall_from_region, formdata, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      });
+      console.log(JSON.stringify(res, null, 2));
+      setMallsOptions(res.data.data);
+    } catch (err) {
+      console.log("err11", err);
+    }
+  };
+
+  const LeaderboadFilter = async (selectedOption) => {
+    const token = await JSON.parse(localStorage.getItem("is_token"));
+    const formdata = new FormData();
+    getMallsRegion2.forEach((option, index) => {
+      formdata.append(`region_id[${index}]`, option.value);
+    });
+    selectedOption.forEach((option, index) => {
+      formdata.append(`mall_id[${index}]`, option.value);
+    });
+
+    setLoading(true);
+    fetch(filter_promotions + `per_page=${perPage2}&page=${page2}`, {
+      method: "POST",
+      body: formdata,
+      headers: {
+        Accept: ACCEPT_HEADER,
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("ffff", res.data.last_page);
+        setTotalPages2(res.data.last_page);
+        // setProList2([...getfilterData, ...res.data.data]);
+        SetLiast([...getfilterData, ...res.data.data]);
+        setLoading(false);
+        console.log("123",getfilterData);
       })
       .catch((err) => {
         console.log("err", err);
@@ -219,6 +309,7 @@ const CinemaPromotionalBanner = ({ get_mall_auth_data, setTab,gettab }) => {
   };
 
   useEffect(() => {
+    GetRegionFilter();
     GetRegion();
     getCategoryApi();
     getWeekApi();
@@ -243,6 +334,27 @@ const CinemaPromotionalBanner = ({ get_mall_auth_data, setTab,gettab }) => {
           SetRigion_Array(res.data.data);
         } else {
           null;
+        }
+      })
+      .catch((err) => {
+        console.log("err11", err);
+      });
+  };
+
+  const GetRegionFilter = async () => {
+    const token = JSON.parse(localStorage.getItem("is_token"));
+
+    axios
+      .get(get_store_region_authwise, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((res) => {
+        if (res.data.success == 1) {
+          SetRigion_Arrayfilter(res.data.data);
+        } else {
         }
       })
       .catch((err) => {
@@ -331,38 +443,65 @@ const CinemaPromotionalBanner = ({ get_mall_auth_data, setTab,gettab }) => {
               <div className="leaderboard-filter-part-first">
                 <label
                   className="leaderboard-card-lbl"
-                  style={{ minWidth: "125px" }}
-                >
+                  style={{ minWidth: "125px" }}>
                   Filter by region:
                 </label>
-                <div className="select-wrapper" style={{ width: "100%" }}>
-                  <select className="leaderboard-card-inp">
-                    <option selected disabled value="">
-                      Select region
-                    </option>
-                    <option value="1">ONE SIZE</option>
-                    <option value="2">TWO SIZE</option>
-                    <option value="3">THREE SIZE</option>
-                  </select>
+                <div
+                  //  className="select-wrapper" 
+                  style={{ width: "100%" }}
+                >
+                  <Select
+
+                    value={regionsOption}
+                    styles={{ width: "100%", padding: "0px", borderRadius: "4px" }}
+                    className="leaderboard-card-inp"
+                    closeMenuOnSelect={false}
+                    components={animatedComponents}
+                    // defaultValue={[colourOptions[4], colourOptions[5]]}
+
+                    isMulti
+                    options={getregion_arrayfilter}
+                    // onChange={setregionsOption}
+                    onChange={stateMultipleChange}
+                  />
                 </div>
               </div>
 
               <div className="leaderboard-filter-part-sec">
                 <label
                   className="leaderboard-card-lbl"
-                  style={{ minWidth: "125px" }}
-                >
+                  style={{ minWidth: "125px" }}>
                   Filter by mall:
                 </label>
-                <div className="select-wrapper" style={{ width: "100%" }}>
-                  <select className="leaderboard-card-inp">
-                    <option selected disabled value="">
-                      Select mall
-                    </option>
-                    <option value="1">ONE SIZE</option>
-                    <option value="2">TWO SIZE</option>
-                    <option value="3">THREE SIZE</option>
-                  </select>
+                <div
+                  // className="select-wrapper" 
+                  style={{ width: "100%" }}>
+                  <Select
+
+                    value={mallsOption}
+                    styles={{ width: "100%", padding: "0px", borderRadius: "4px" }}
+                    className="leaderboard-card-inp"
+                    closeMenuOnSelect={false}
+                    components={animatedComponents}
+                    // defaultValue={[colourOptions[4], colourOptions[5]]}
+
+                    isMulti
+                    options={getMallsOptions}
+                    // onChange={setregionsOption}
+                    onChange={stateMultipleChange2}
+                  />
+                  {/* <Select
+                value={mallsOption}
+                styles={{ width: "100%", padding: "0px" }}
+                className="leaderboard-card-inp"
+                closeMenuOnSelect={false}
+                components={animatedComponents}
+                // defaultValue={[colourOptions[4], colourOptions[5]]}
+
+                isMulti
+                options={multiple_week_data}
+                onChange={setMallsOption}
+              /> */}
                 </div>
               </div>
             </div>
@@ -405,6 +544,16 @@ const CinemaPromotionalBanner = ({ get_mall_auth_data, setTab,gettab }) => {
                 <BsChevronDown />
               </button>
             )}
+
+            {totalPages2 !== page2 && (
+              <button
+                className="view_more_btn"
+                onClick={() => setPage2(page2 + 1)}>
+                {loading ? "Loading..." : " Load More LeaderBoard"}
+                <BsChevronDown />
+              </button>
+            )}
+
             {/* LeaderBoard Card Component end */}
 
             {/* LeaderBoard Add New Button start */}

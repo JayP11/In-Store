@@ -16,6 +16,21 @@
     width: 100%;
 }
 
+.mall_name_wrapp_retailer_cart {
+    display: flex;
+    align-items: baseline;
+    justify-content: left;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 6px;
+    padding-left: 5rem;
+
+}
+
+.retailer_cart_span{
+    font-size: 40px;
+}
+
 .brand_cart_itm_name_wrapp {
     display: flex;
     justify-content: space-between;
@@ -49,11 +64,22 @@
 
 @media screen and(max-width:900px) {
     .mall_name_wrapp_retailer_cart{
-        flex-direction: row;
+        flex-direction: row !important;
+    }
+}
+
+@media screen and (max-width:575px) {
+    .brand_carttt{
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
     }
 }
 @media screen and (max-width:450px) {
     .brandcart_total_wrapp{
         align-items: center;
+    }
+
+    .retailer_cart_span{
+        font-size: 32px;
     }
 }

@@ -71,14 +71,14 @@ const MallAddEvents = ({
 
     const [isAcceptTerm, setIsAcceptTerm] = useState(0);
     const [isAcceptTerm2, setIsAcceptTerm2] = useState(0);
-  
+
     const handleTermChange = (e) => {
-      setIsAcceptTerm(1);
-      console.log("e.targate.value");
+        setIsAcceptTerm(1);
+        console.log("e.targate.value");
     };
     const handleTermChange2 = (e) => {
-      setIsAcceptTerm2(1);
-      console.log("e.targate.value"); 
+        setIsAcceptTerm2(1);
+        console.log("e.targate.value");
     };
 
 
@@ -190,10 +190,10 @@ const MallAddEvents = ({
                     {/* <p className="mall_name_heading">{get_mall_auth_data.name && get_mall_auth_data.name}:</p> */}
                     <p className="mall_name_heading">{get_main_name}:</p>
 
-                    <span style={{fontWeight:"600"}}>Add Events</span>
+                    <span style={{ fontWeight: "600" }}>Add Events</span>
                 </div>
                 {/* <div className="mm_horizontal_line"></div> */}
-                <div className="" style={{marginBottom:"2rem"}}></div>
+                <div className="" style={{ marginBottom: "2rem" }}></div>
                 {/* mall management name end */}
 
                 {/* mall management form start */}
@@ -292,8 +292,8 @@ const MallAddEvents = ({
                             className="mm_form_single_input"
                             style={{ alignItems: "flex-start" }}
                         >
-                            <label htmlFor="" style={{ minWidth: "157px" }}></label>
-                            <span style={{fontSize:"14px",color:"#bbb"}}>*Required Fields including all image uploads.</span>
+                            <label htmlFor="" style={{ minWidth: "157px" }} className='edit_event_resp_star'></label>
+                            <span style={{ fontSize: "14px", color: "#bbb" }}>*Required Fields including all image uploads.</span>
                         </div>
                         {/* text-area sec end */}
 
@@ -301,12 +301,12 @@ const MallAddEvents = ({
                         <div className="mm_form_single_input mb_8">
                             <label htmlFor=""></label>
                             <div className="signup_terms_wrapp indep-side">
-                            <input
-                  type="checkbox"
-                  value={isAcceptTerm}
-                  onChange={handleTermChange}
-                  checked={isAcceptTerm}
-                />
+                                <input
+                                    type="checkbox"
+                                    value={isAcceptTerm}
+                                    onChange={handleTermChange}
+                                    checked={isAcceptTerm}
+                                />
                                 <p className="fs-des">
                                     I have read and agree to the{" "}
                                     <a className="signup_terms_link">Privacy Policy</a>
@@ -316,14 +316,13 @@ const MallAddEvents = ({
 
                         <div className="mm_form_single_input mb_8">
                             <label htmlFor=""></label>
-                            <div className="signup_terms_wrapp indep-side" style={{marginTop:"-12px"}}>
-                                <input type="checkbox" onChange={(e) => <input
-                  type="checkbox"
-                  value={isAcceptTerm2}
-                  onChange={handleTermChange2}
-                  checked={isAcceptTerm2}
-                />}
+                            <div className="signup_terms_wrapp indep-side" style={{ marginTop: "-12px" }}>
+                                <input type="checkbox"
+                                    value={isAcceptTerm2}
+                                    onChange={handleTermChange2}
+                                    checked={isAcceptTerm2}
                                 />
+                                
                                 <p className="fs-des">
                                     I have read and agree to the{" "}
                                     <a className="signup_terms_link">Terms and Conditions</a>
@@ -340,6 +339,8 @@ const MallAddEvents = ({
                                 className="btn btn-black"
                                 style={{ alignSelf: "start", maxWidth: "180px" }}
                                 onClick={() => malladdevent()}
+                                disabled={isAcceptTerm == 1 && isAcceptTerm2 == 1 ? false : true}
+
                             >
                                 Publish
                             </button>
@@ -352,10 +353,8 @@ const MallAddEvents = ({
                     <div className="mm_img_upload_wrapp">
                         {/* single upload image */}
                         <div className="myprofile_inner_sec2">
-                            <h4 style={{ marginBottom: "10px" }} className='myprofile_upload_img_card_name'>
-                                Upload the Event image <br />
-                                (200 x 150 pixels)
-                            </h4>
+                            <h4 style={{ marginBottom: "10px", fontSize: "14px", fontWeight: "600" }} className="myprofile_upload_img_card_name">
+                                Upload the Event logo <br /> (200 x 200 pixels) <br /> (max 40kb)<span className="star_require">*</span></h4>
                             {files && files.length > 0 ? (
                                 <div className="myprofile_inner_sec2_img_upload">{thumbs}</div>
                             ) : (
@@ -409,11 +408,11 @@ const MallAddEvents = ({
                     <label htmlFor=""></label>
                     <div className="signup_terms_wrapp indep-side-show indep-side-show-event">
                         <input type="checkbox" onChange={(e) => <input
-                  type="checkbox"
-                  value={isAcceptTerm}
-                  onChange={handleTermChange}
-                  checked={isAcceptTerm}
-                />}
+                            type="checkbox"
+                            value={isAcceptTerm}
+                            onChange={handleTermChange}
+                            checked={isAcceptTerm == 1}
+                        />}
                         />
                         <p className="fs-des">
                             I have read and agree to the{" "}
@@ -423,14 +422,14 @@ const MallAddEvents = ({
                 </div>
                 <div className="mm_form_single_input mb_8">
                     <label htmlFor=""></label>
-                    <div className="signup_terms_wrapp indep-side-show indep-side-show-event" style={{marginTop:"-12px"}}>
-                        <input type="checkbox" onChange={(e) => 
-                        <input
-                  type="checkbox"
-                  value={isAcceptTerm2}
-                  onChange={handleTermChange2}
-                  checked={isAcceptTerm2}
-                />}
+                    <div className="signup_terms_wrapp indep-side-show indep-side-show-event" style={{ marginTop: "-12px" }}>
+                        <input type="checkbox" onChange={(e) =>
+                            <input
+                                type="checkbox"
+                                value={isAcceptTerm2}
+                                onChange={handleTermChange2}
+                                checked={isAcceptTerm2 == 1}
+                            />}
                         />
                         <p className="fs-des">
                             I have read and agree to the{" "}
@@ -445,6 +444,8 @@ const MallAddEvents = ({
                         className="btn btn-black"
                         style={{ alignSelf: "start", maxWidth: "150px" }}
                         onClick={() => malladdevent()}
+                        disabled={isAcceptTerm == 1 && isAcceptTerm2 ==1 ? false : true}
+
                     >
                         Publish
                     </button>

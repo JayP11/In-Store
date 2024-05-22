@@ -248,31 +248,88 @@ const CinemaLeaderBoardCrad = ({
 
   // logo dropzon
 
+  // const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } =
+  //   useDropzone({
+  //     onDrop: (acceptedFiles) => {
+  //       SetCondation(true);
+  //       const filteredFiles = acceptedFiles.filter(file => file.size <= 200000); // Limit size to 200KB (in bytes)
+
+  //       {
+  //         setFiles(
+  //           filteredFiles.map((file) =>
+  //             Object.assign(file, {
+  //               preview: URL.createObjectURL(file),
+  //             })
+  //           )
+  //         );
+  //         if (filteredFiles.length !== acceptedFiles.length) {
+  //           // Notification('');
+  //           Notification("error", "Error!", "Some files exceed the maximum size limit of 100KB and will not be uploaded.");
+  //         }
+  //       }
+
+  //       if (acceptedFiles.length === 0) {
+  //         window.location.reload(true);
+  //       }
+  //     },
+  //   });
+
   const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } =
-    useDropzone({
-      onDrop: (acceptedFiles) => {
-        SetCondation(true);
-        const filteredFiles = acceptedFiles.filter(file => file.size <= 200000); // Limit size to 200KB (in bytes)
+  useDropzone({
+    onDrop: async (acceptedFiles) => {
+      SetCondation(true);
 
-        {
-          setFiles(
-            filteredFiles.map((file) =>
-              Object.assign(file, {
-                preview: URL.createObjectURL(file),
-              })
-            )
-          );
-          if (filteredFiles.length !== acceptedFiles.length) {
-            // Notification('');
-            Notification("error", "Error!", "Some files exceed the maximum size limit of 100KB and will not be uploaded.");
+      const maxSizeKB = 200; // Maximum size limit in KB
+      const maxSizeBytes = maxSizeKB * 1024; // Convert KB to bytes
+
+      const filteredFiles = await Promise.all(
+        acceptedFiles.map(async (file) => {
+          const isSizeValid = file.size <= maxSizeBytes; // Limit size to 50KB (in bytes)
+          const isImage = file.type.startsWith("image/"); // Check if it's an image file
+
+          if (!isImage || !isSizeValid) {
+            return null; // Skip files that are not images or exceed size limit
           }
-        }
 
-        if (acceptedFiles.length === 0) {
-          window.location.reload(true);
-        }
-      },
-    });
+          // Load image and wait for it to load
+          const img = new Image();
+          img.src = URL.createObjectURL(file);
+          await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+          });
+
+          // Check image dimensions
+          const isDimensionsValid = img.width == 1050 && img.height == 284;
+
+          return isDimensionsValid ? file : null; // Return file if dimensions are valid, otherwise skip it
+        })
+      );
+
+      // Filter out null values (files that were skipped)
+      const validFiles = filteredFiles.filter((file) => file !== null);
+
+      setFiles(
+        validFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        )
+      );
+
+      if (validFiles.length !== acceptedFiles.length) {
+        Notification(
+          "error",
+          "Error!",
+          "Some files exceed the maximum size limit of 200KB or do not meet the dimension requirements of 1050x284 pixels and will not be uploaded."
+        );
+      }
+
+      if (acceptedFiles.length === 0) {
+        window.location.reload(true);
+      }
+    },
+  });
 
   const thumbs = files.map((file) => (
     <img
@@ -523,11 +580,11 @@ const CinemaLeaderBoardCrad = ({
     <>
       <div className="leaderboard-card-main-wrapp">
         {/* Leaderboard flex start */}
-        <div className="leaderboard-card-flex-wrapp">
+        <div className="leaderboard-card-flex-wrapp leaderboard-card-flex-wrapp-half">
           {/* Leaderboard first part responsive side start */}
           <div className="leaderboard-card-first-resp-main-wrapp">
             <p className="leaderboard-last-part-txt">
-              Service fee will apply if canceled
+              {/* Service fee will apply if canceled */}
             </p>
             <button className="leaderboard-delete-icon-btn">
               cancel{" "}
@@ -545,7 +602,7 @@ const CinemaLeaderBoardCrad = ({
 
             {/* Leaderboard inputbox start */}
             <div className="leaderboard-card-inpbox-wrapp">
-              <label className="leaderboard-card-lbl">Title:</label>
+              <label className="leaderboard-card-lbl">Title:<span className="star_require">*</span></label>
               <input
                 type="text"
                 className="leaderboard-card-inp"
@@ -558,7 +615,7 @@ const CinemaLeaderBoardCrad = ({
 
             {/* Leaderboard inputbox start */}
             <div className="leaderboard-card-inpbox-wrapp">
-              <label className="leaderboard-card-lbl">Mall(s):</label>
+              <label className="leaderboard-card-lbl">Mall(s):<span className="star_require">*</span></label>
               <div
                 onClick={() => {
                   openMallModal();
@@ -655,7 +712,7 @@ const CinemaLeaderBoardCrad = ({
             </div> */}
 
             <div className="leaderboard-card-inpbox-wrapp">
-              <label className="leaderboard-card-lbl">Categories:</label>
+              <label className="leaderboard-card-lbl">Categories:<span className="star_require">*</span></label>
               <div className="select-wrapper" style={{ width: "100%" }}>
                 <select
                   className="leaderboard-card-inp"
@@ -751,7 +808,7 @@ const CinemaLeaderBoardCrad = ({
           {/* Leaderboard part first end */}
 
           {/* Leaderboard part second start */}
-          <div className="leaderboard-card-part-sec leaderboard-card-part-sec-chng" {...getRootlogoProps()}>
+          <div className="leaderboard-card-part-sec leaderboard-card-part-sec-chng " {...getRootlogoProps()}>
             <input
               {...getInputlogoProps()}
               accept="image/jpeg, image/jpg, image/png, image/eps"
@@ -760,7 +817,7 @@ const CinemaLeaderBoardCrad = ({
             {getcondation === true ? (
               <>
                 {files && files.length > 0 ? (
-                  <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl">
+                  <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl myprofile_inner_sec2_img_upload_border">
                     {thumbs}
                   </div>
                 ) : (
@@ -822,7 +879,7 @@ const CinemaLeaderBoardCrad = ({
                   </div>
                 ) : (
                   <>
-                    <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl">
+                    <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl myprofile_inner_sec2_img_upload_border">
                       <img
                         src={item.image_path}
                         style={{ width: "100%", height: "100%" }}
@@ -839,7 +896,7 @@ const CinemaLeaderBoardCrad = ({
           {/* Leaderboard part second end */}
 
           {/* Leaderboard part third start */}
-          <div className="leaderboard-card-part-third leaderboard-card-part-third-chng">
+          <div className="leaderboard-card-part-third leaderboard-card-part-third-chng leaderboard-card-part-third-half">
             <button
               onClick={() => {
                 DeleteLeaderboard();
@@ -852,7 +909,7 @@ const CinemaLeaderBoardCrad = ({
               />
             </button>
             <p className="leaderboard-last-part-txt">
-              Service fee will apply if canceled
+              {/* Service fee will apply if canceled */}
             </p>
             <div className="leaderboard-btn-box">
               {item.cart_status === 0 ? (

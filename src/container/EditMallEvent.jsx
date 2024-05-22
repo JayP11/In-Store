@@ -98,7 +98,7 @@ const EditMallEvent = ({
         );
         await formdata.append("description", eventDescription);
         if (files[0] !== undefined) {
-          await formdata.append("store_logo", files[0]);
+          await formdata.append("image", files[0]);
         } else {
         }
         await formdata.append("terms_condition", isAcceptTerm);
@@ -299,7 +299,9 @@ const EditMallEvent = ({
               className="mm_form_single_input"
               style={{ alignItems: "flex-start" }}
             >
-              <label htmlFor="" style={{minWidth:"157px"}}><span className="star_require">*</span></label>
+              <label htmlFor="" style={{minWidth:"157px"}} className="edit_event_resp_star">
+              {/* <span className="star_require">*</span> */}
+              </label>
               <span style={{fontSize:"14px",color:"#bbb"}}>*Required Fields including all image uploads.</span>
             </div>
             {/* text-area sec end */}
@@ -344,11 +346,13 @@ const EditMallEvent = ({
             <div className="mm_form_single_input brand-resp-btn">
               <label htmlFor=""></label>
               <button
+                                disabled={isAcceptTerm == 1 && isAcceptTerm2 ==1 ? false : true}
+
                 className="btn btn-black"
                 style={{ alignSelf: "start", maxWidth: "150px" }}
                 onClick={() => UpdateMallEventData()}
               >
-                Publish
+                Update
               </button>
             </div>
             {/* upload btn end */}
@@ -365,10 +369,8 @@ const EditMallEvent = ({
                 {...getInputlogoProps()}
                 accept="image/jpeg, image/jpg, image/png, image/eps"
               /> */}
-                <h4 style={{ marginBottom: "10px" }} className="myprofile_upload_img_card_name">
-                  Upload the Event logo <br />
-                  (200 x 200 pixels)
-                </h4>
+              <h4 style={{ marginBottom: "10px", fontSize: "14px", fontWeight: "600" }} className="myprofile_upload_img_card_name">
+                  Upload the Event logo <br /> (200 x 200 pixels) <br /> (max 40kb)<span className="star_require">*</span></h4>
                 {getcondation === true ?
 
                   <>
@@ -532,11 +534,13 @@ const EditMallEvent = ({
         <div className="mm_form_single_input brand-resp-show-btn brand-resp-show-btn-event">
           <label htmlFor=""></label>
           <button
+                            disabled={isAcceptTerm == 1 && isAcceptTerm2 ==1 ? false : true}
+
             className="btn btn-black"
             style={{ alignSelf: "start", maxWidth: "150px" }}
             onClick={() => UpdateMallEventData()}
           >
-            Publish
+            Update
           </button>
         </div>
 

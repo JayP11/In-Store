@@ -62,7 +62,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   const [getbrandData, setBrandData] = useState(
     get_mall_auth_data && get_mall_auth_data
   );
-  const { UpdateMall, get_brand_data, get_mall_data, getBrand,getBrandMultiple,get_brand_data_multiple } =
+  const { UpdateMall, get_brand_data, get_mall_data, getBrand, getBrandMultiple, get_brand_data_multiple } =
     useMallContext();
 
   const {
@@ -85,10 +85,11 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
 
   useEffect(() => {
     console.log("get-store-data", get_mall_auth_data);
-    getRetailerApi(getmallmasterid);
+    getRetailerApi(getmallmasterid,get_mall_auth_data?.is_eatery);
   }, []);
 
   const [mallsOption, setMallsOption] = useState([]);
+  const [imagecheck, setImageCheck] = useState(false);
   const [mallsOption2, setMallsOption2] = useState(get_mall_auth_data?.brands);
 
   const [mallWebsite, setMallWebsite] = useState(
@@ -190,7 +191,16 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
     setResetModal(false);
   }
 
-  
+  useEffect(()=>{
+    if(get_mall_auth_data.store_banner_path){
+      setImageCheck(true);
+    }else{
+      setImageCheck(false);
+
+    }
+  },[])
+
+
 
   useEffect(() => {
     console.log("files", files);
@@ -247,17 +257,70 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
 
   const { getRootProps: getRootMapProps, getInputProps: getInputMapProps } =
     useDropzone({
-      onDrop: (acceptedFiles) => {
+      onDrop: async (acceptedFiles) => {
         console.log("acceptedFiles", acceptedFiles);
         SetCondation1(true);
+
+
+        const maxSizeKB = 200; // Maximum size limit in KB
+        const maxSizeBytes = maxSizeKB * 1024; // Convert KB to bytes
+
+        const filteredFiles = await Promise.all(
+          acceptedFiles.map(async (file) => {
+            const isSizeValid = file.size <= maxSizeBytes; // Limit size to 50KB (in bytes)
+            const isImage = file.type.startsWith("image/"); // Check if it's an image file
+  
+            if (!isImage || !isSizeValid) {
+              return null; // Skip files that are not images or exceed size limit
+            }
+  
+            // Load image and wait for it to load
+            const img = new Image();
+            img.src = URL.createObjectURL(file);
+            await new Promise((resolve, reject) => {
+              img.onload = resolve;
+              img.onerror = reject;
+            });
+  
+            // Check image dimensions
+            const isDimensionsValid = img.width == 1050 && img.height == 284;
+
+            console.log('isDimensionsValid',isDimensionsValid)
+            if(isDimensionsValid){
+              setImageCheck(true)
+            }else{
+              setImageCheck(false)
+            }  
+  
+            return isDimensionsValid ? file : null ;  // Return file if dimensions are valid, otherwise skip it
+          })
+        );
+  
+        // Filter out null values (files that were skipped)
+        const validFiles = filteredFiles.filter((file) => file !== null);
         {
           setFiles2(
-            acceptedFiles.map((file) =>
+            validFiles.map((file) =>
               Object.assign(file, {
                 preview: URL.createObjectURL(file),
               })
             )
           );
+
+          if (validFiles.length !== acceptedFiles.length) {
+            if(validFiles.length !== acceptedFiles.length){
+              setImageCheck(false)
+            }else{
+              setImageCheck(true)
+            }
+
+            Notification(
+              "error",
+              "Error!",
+              "Some files exceed the maximum size limit of 200KB or do not meet the dimension requirements of 1050000x284 pixels and will not be uploaded."
+            );
+            
+          }
         }
         if (acceptedFiles.length === 0) {
           window.location.reload(true);
@@ -325,13 +388,13 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
       } else if (retailertype == "" || undefined) {
         Notification("error", "Error", "Please Select Retailer");
         return;
-      }  else if (brandadd == "" || undefined) {
+      } else if (brandadd == "" || undefined) {
         Notification("error", "Error", "Please Enter Brand Address");
         return;
       } else if (mallsOption == "" || undefined) {
         Notification("error", "Error", "Please Select Mall");
         return;
-      }else if (mallWebsite == "" || undefined) {
+      } else if (mallWebsite == "" || undefined) {
         Notification("error", "Error", "Please Enter Website URL");
         return;
       }
@@ -342,10 +405,10 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
       else if (contactPerson == "" || undefined) {
         Notification("error", "Error", "Please Enter Main Contact");
         return;
-      }else if (contactNumber == "" || undefined) {
+      } else if (contactNumber == "" || undefined) {
         Notification("error", "Error", "Please Enter Main Email");
         return;
-      }else {
+      } else {
         const data = await new FormData();
         await data.append("retailer_id", Number(retailertype));
         await data.append("store_type", getmode);
@@ -367,12 +430,12 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
         for (var i = 0; i < mallsOption.length; i++) {
           await data.append("mall_id[" + i + "]", mallsOption[i].value);
         }
-        if(getmode == 2) {
+        if (getmode == 2) {
           for (var i = 0; i < mallsOption2.length; i++) {
             await data.append("brand[" + i + "]", mallsOption2[i].value);
           }
-        }else{}
-      
+        } else { }
+
         await data.append("terms_condition", isAcceptTerm === true ? 1 : 0);
         if (files[0] !== undefined) {
           await data.append("store_logo", files[0]);
@@ -416,7 +479,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   }, [getmalmastername]);
 
   const [getmall, SetMall] = useState("");
-  const [storeMall,SetStoreMall] = useState("");
+  const [storeMall, SetStoreMall] = useState("");
 
 
   const getStoreMall = async () => {
@@ -468,7 +531,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
 
   // Rest Function
 
-  const resetAccountData=()=>{
+  const resetAccountData = () => {
     setMallname('')
     setbrandname('');
     SetBrandAdd('');
@@ -476,7 +539,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
     SetBrandAdd3('');
     SetBrand('');
     setMallWebsite('');
-   
+
     setMallInsta('');
     setMallfb('');
     setContactPerson('');
@@ -487,16 +550,24 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
     SetCondation(true);
     SetCondation1(true);
     // setRetailertypename('');
-   
+
     // setFiles([]);
     // setFiles2([]);
     // setFiles3([]);
     // setFiles4([]);
   }
 
+  console.log("files2",files2);
+  console.log("thumbs2",get_mall_auth_data.store_banner_path);
+
   return (
     <>
-      <div>
+   
+      <div className={`${
+                 imagecheck === true
+                    ? "banner_all_wrap" : "banner_all_wrap_height"
+                    
+                }`}>
         <div className="brand-hero-edit-main-wrapp" {...getRootMapProps()}>
           <input
             {...getInputMapProps()}
@@ -520,8 +591,8 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             <>
               <img
                 src={get_mall_auth_data.store_banner_path}
-                style={{ width: "100%", height: "100%" }}
-                className="img-fluid"
+                style={{ width: "100%", height: "100%", }}
+                className="img-fluid img_fluid_position"
               />
               <img
                 src={images.card_edit}
@@ -662,6 +733,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
               <label htmlFor="" className="mm_form_single_input_cinema_Acc_setting">Retailer<span className="star_require">*</span></label>
               <div className="select-wrapper" style={{ width: "100%" }}>
                 <select
+                disabled={true}
                   className="leaderboard-card-inp"
                   onChange={(e) => {
                     setRetailertype(e.target.value);
@@ -688,13 +760,13 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             {/* single text-input */}
             {getmode == 2 ? <>
               <div className="mm_form_single_input">
-              <label className="mm_form_single_input_cinema_Acc_setting" htmlFor="">
-                Your Cinema  <span className="star_require">*</span><br />{" "}
-                <span style={{ fontWeight: "300", fontSize: "13px" }}>
-                  If applicable
-                </span>
-              </label>
-              {/* <div className="select-wrapper" style={{ width: "100%" }}>
+                <label className="mm_form_single_input_cinema_Acc_setting" htmlFor="">
+                  Your Brand <br />{" "}
+                  <span style={{ fontWeight: "300", fontSize: "13px" }}>
+                    If applicable
+                  </span>
+                </label>
+                {/* <div className="select-wrapper" style={{ width: "100%" }}>
                 <select
                   className="leaderboard-card-inp"
                   onChange={(e) => {
@@ -715,19 +787,19 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                 </select>
               </div> */}
 
-              <Select
-                value={mallsOption2}
-                styles={{ width: "100%", padding: "0px" }}
-                className="leaderboard-card-inp"
-                closeMenuOnSelect={false}
-                components={animatedComponents}
-                // defaultValue={[colourOptions[4], colourOptions[5]]}
+                <Select
+                  value={mallsOption2}
+                  styles={{ width: "100%", padding: "0px" }}
+                  className="leaderboard-card-inp"
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                  // defaultValue={[colourOptions[4], colourOptions[5]]}
 
-                isMulti
-                options={get_brand_data_multiple}
-                onChange={setMallsOption2}
-              />
-            </div>
+                  isMulti
+                  options={get_brand_data_multiple}
+                  onChange={setMallsOption2}
+                />
+              </div>
             </> : <></>}
             {/* <div className="mm_form_single_input">
               <label htmlFor="" className="mm_form_single_input_cinema_Acc_setting">
@@ -924,7 +996,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                 className="input_box"
               />
             </div>
-           
+
             {/* single text-input */}
             <div className="mm_form_single_input">
               <label htmlFor="" className="mm_form_single_input_cinema_Acc_setting">Secondary Email</label>
@@ -940,7 +1012,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
 
             <div className="mm_form_single_input">
               <label htmlFor="" className="mm_form_single_input_cinema_Acc_setting"></label>
-              <span style={{fontSize:"14px",color:"#bbb"}}>*Required Fields including all image uploads.</span>
+              <span style={{ fontSize: "14px", color: "#bbb" }}>*Required Fields including all image uploads.</span>
             </div>
             {/* mm terms condition wrapp */}
             <div
@@ -949,9 +1021,13 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
               <label htmlFor="" className="mm_form_single_input_cinema_Acc_setting"></label>
               <div className="signup_terms_wrapp " style={{ gap: "10px" }}>
                 <label htmlFor="" className="editfac_label mm_form_single_input_cinema_Acc_setting"></label>
-                <input type="checkbox" />
-                <p className="fs-des"  style={{fontSize:"14px",fontWeight:"500"}}>
-                I can confirm that the above information is correct
+                <input type="checkbox"
+                  value={isAcceptTerm}
+                  onChange={handleTermChange}
+                  checked={isAcceptTerm == 1}
+                />
+                <p className="fs-des" style={{ fontSize: "14px", fontWeight: "500" }}>
+                  I can confirm that the above information is correct
                 </p>
               </div>
               {/* <div className="signup_terms_wrapp " style={{ gap: "10px" }}>
@@ -978,12 +1054,14 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
               <div className="mall_upload_btn_wrapp">
                 <button
                   className="btn btn-black"
+                  disabled={isAcceptTerm == 1 ? false : true}
+
                   onClick={() => UpdateMallData()}>
                   Update
                 </button>
                 <button
                   className="btn"
-                  style={{ color: "#777", fontWeight: "600" }} onClick={()=>{setResetModal(true)}}>
+                  style={{ color: "#777", fontWeight: "600" }} onClick={() => { setResetModal(true) }}>
                   Reset
                 </button>
               </div>
@@ -1009,7 +1087,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
               /> */}
                 <h6 className="myprofile_upload_img_card_name">
                   Upload the Brand logo
-                  <br /> (200px x 200px) <br/>(max 40kb)<span className="star_require">*</span>
+                  <br /> (200px x 200px) <br />(max 40kb)<span className="star_require">*</span>
                 </h6>
                 {getcondation === true ? (
                   <>
@@ -1040,7 +1118,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                             style={{
                               marginBottom: "10px",
                               color: "var(--color-orange)",
-                              fontWeight:"600",
+                              fontWeight: "600",
                             }}>
                             {" "}
                             click here
@@ -1086,7 +1164,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                               style={{
                                 marginBottom: "10px",
                                 color: "var(--color-orange)",
-                                fontWeight:"600",
+                                fontWeight: "600",
                               }}>
                               click here
                             </button>
@@ -1168,7 +1246,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
               /> */}
                 <h6 className="myprofile_upload_img_card_name">
                   Upload the Brand banner
-                  <br /> (1050px x 284px)<br/>(max 200kb)<span className="star_require">*</span>
+                  <br /> (1050px x 284px)<br />(max 200kb)<span className="star_require">*</span>
                 </h6>
                 {getcondation1 === true ? (
                   <>
@@ -1199,7 +1277,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                             style={{
                               marginBottom: "10px",
                               color: "var(--color-orange)",
-                              fontWeight:"600",
+                              fontWeight: "600",
                             }}>
                             click here
                           </button>
@@ -1244,7 +1322,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                               style={{
                                 marginBottom: "10px",
                                 color: "var(--color-orange)",
-                                fontWeight:"600",
+                                fontWeight: "600",
                               }}>
                               click here
                             </button>
@@ -1298,9 +1376,9 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                   paddingLeft: "5px",
                   paddingRight: "5px",
                 }}>
-                <button
+                <button 
                   className="btn btn-black cancelbtn"
-                  onClick={() => setFiles2([])}
+                  onClick={() => {setFiles2([]),setImageCheck(false)}}
                   style={{
                     marginBottom: "10px",
                     marginLeft: "10px",
@@ -1372,25 +1450,25 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
         <div className="mm_form_single_input_res_display_none">
           {/* <div className="signup_terms_wrapp" style={{ gap: "0px" }}>
             <label htmlFor="" className=""></label> */}
-            {/* <label htmlFor="" className="editfac_label"></label> */}
-            {/* <input type="checkbox" />
+          {/* <label htmlFor="" className="editfac_label"></label> */}
+          {/* <input type="checkbox" />
             <p className="fs-des">
               I have read and agree to the &nbsp;
               <a className="signup_terms_link">Privacy Policy</a>
             </p>
           </div> */}
 
-           <div className="signup_terms_wrapp" style={{ gap: "0px" }}>
+          <div className="signup_terms_wrapp" style={{ gap: "7px" }}>
             <label htmlFor="" className=""></label>
             {/* <label htmlFor="" className="editfac_label"></label> */}
             <input type="checkbox" />
-            <p className="fs-des" style={{fontSize:"14px",fontWeight:"500"}}>
-            I can confirm that the above information is correct
+            <p className="fs-des" style={{ fontSize: "14px", fontWeight: "500" }}>
+              I can confirm that the above information is correct
             </p>
           </div>
           {/* <div className="signup_terms_wrapp"> */}
-            {/* <label htmlFor="" className="editfac_label"></label> */}
-            {/* <input type="checkbox" />
+          {/* <label htmlFor="" className="editfac_label"></label> */}
+          {/* <input type="checkbox" />
             <p className="fs-des">
               I have read and agree to the{" "}
               <a className="signup_terms_link">Terms and Conditions</a>
@@ -1406,7 +1484,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             onClick={() => UpdateMallData()}>
             Update
           </button>
-          <button className="btn" style={{ fontWeight: "600", color: "#777" }} onClick={()=>{setResetModal(true)}}>
+          <button className="btn" style={{ fontWeight: "600", color: "#777" }} onClick={() => { setResetModal(true) }}>
             Reset
           </button>
         </div>
@@ -1434,7 +1512,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
           {/* edit and delete orange btns end */}
 
           {/* <p>Are you sure you want to Reset all Data</p> */}
-          <p>Are you sure you want to reset the form? <br/>Note that all your data will be cleared from the form by selecting this option</p>
+          <p>Are you sure you want to reset the form? <br />Note that all your data will be cleared from the form by selecting this option</p>
           <div className="delete-modal-btn-box">
             <button onClick={() => {
               // setStore_id(itm.id);
@@ -1450,7 +1528,7 @@ const BrandAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             }} */}
 
             <button onClick={closeModal} className="delete-modal-btn">
-            No
+              No
             </button>
           </div>
         </div>

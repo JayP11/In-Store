@@ -137,5 +137,9 @@ select {
         .cus-nav-logo-after {
             padding-left: 15px !important;
         }
+
+        .mall_rating_pading_resp{
+            padding: 1.2rem !important;
+        }
     }
 }

@@ -58,6 +58,7 @@ const MallEvents = ({ setTab, setEventId, SetEventData }) => {
 
   useEffect(() => {
     EventApi();
+    // console.log("aaaaaaa",eventList);
   }, [page]);
 
   const EventApi = async () => {

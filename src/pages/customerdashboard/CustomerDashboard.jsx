@@ -43,10 +43,11 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { AiOutlineClose } from "react-icons/ai";
 import ReactModal from "react-modal";
+import { CustomerSingleEateriesProducts } from "../../components";
 
 const CustomerDashboard = () => {
   const [gettab, setTab] = useState(1);
-  const [checked, setChecked] = React.useState(false);
+  const [checked, setChecked] = React.useState(true);
   
   function handleChange(e) {
     setChecked(e.target.checked);
@@ -78,6 +79,7 @@ const CustomerDashboard = () => {
 
   const [proid, SetProId] = useState("");
   const [brandid, SetBrandId] = useState("");
+  const [getStoreName, setStoreName] = useState("");
 
   useEffect(() => {
     getMallList();
@@ -88,6 +90,7 @@ const CustomerDashboard = () => {
     console.log("get_customer_data", get_customer_data);
     setCusData(get_customer_data);
     console.log("getsingalmalldata", getsingalmalldata);
+    setIsOpen3(true);
   }, []);
 
   function closeModal3() {
@@ -110,6 +113,11 @@ const CustomerDashboard = () => {
         if (res.data.success == 1) {
           Notification("success", "Success!", "Update Successfully!");
           closeModal3();
+          
+        }
+
+        if(id == 0) {
+          setChecked(false);
         }
       })
       .catch((err) => {
@@ -239,7 +247,7 @@ const CustomerDashboard = () => {
   return (
     <>
       <Helmet>
-        <title>Profile | In-store</title>
+        <title>Customer Dashboard | In-store</title>
       </Helmet>
 
       <div>
@@ -371,13 +379,15 @@ const CustomerDashboard = () => {
                             />
                           </div>
                         </div>
-                        <div style={{ alignSelf: "start", paddingLeft: "9%" }}>
+                        <div style={{ alignSelf: "start", paddingLeft: "9%",width:"300px" }}>
                           <p
-                            className="customer-sidebar-name"
+                            className="customer-sidebar-name customer-sidebar-name-headdd"
                             style={{
                               marginBottom: "10px",
                               whiteSpace: "nowrap",
                               color: gettab === 1 ? "#fff" : "#000",
+                              
+
                             }}>
                             {getsingalmalldata.name}
                           </p>
@@ -399,6 +409,8 @@ const CustomerDashboard = () => {
                             <input
                               value="test"
                               type="checkbox"
+                              checked={checked}
+
                               onChange={handleChange}
                             />
                             {/* {checked === true ? setIsOpen3(true) : <></>} */}
@@ -733,6 +745,7 @@ const CustomerDashboard = () => {
                     SetProId={SetProId}
                     SetBrandId={SetBrandId}
                     navbardata={navbardata}
+                    setStoreName={setStoreName}
                   />
                 )}
                 {gettab === 3 && (
@@ -786,6 +799,7 @@ const CustomerDashboard = () => {
                     proid={proid}
                     brandid={brandid}
                     sidebaropen={sidebaropen}
+                    getStoreName={getStoreName}
                   />
                 )}
                 {gettab === 25 && <MallNearMeSing setTab={setTab} />}
@@ -859,6 +873,15 @@ const CustomerDashboard = () => {
                     setBDetalis={setBDetalis}
                     brandid={brandid}
                     getbdetalis={getbdetalis}
+                  />
+                )}
+                {gettab === 39 && (
+                  <CustomerSingleEateriesProducts
+                    getsingalmalldata={getsingalmalldata}
+                    setTab={setTab}
+                    setEDetalis={setEDetalis}
+                    brandid={brandid}
+                    getedetalis={getedetalis}
                   />
                 )}
               </div>

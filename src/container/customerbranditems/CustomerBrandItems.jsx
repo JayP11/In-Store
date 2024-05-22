@@ -12,6 +12,7 @@ import { BsArrowRight } from "react-icons/bs";
 import {
   ACCEPT_HEADER,
   get_product_customer,
+  product_banner_tiles_customer,
   product_cus_tile,
 } from "../../utils/Constant";
 import axios from "axios";
@@ -20,7 +21,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const CustomerBrandItems = ({ setTab, proid, brandid, sidebaropen }) => {
+const CustomerBrandItems = ({ setTab, proid, brandid, sidebaropen,getStoreName }) => {
   var settings = {
     // dots: true,
     infinite: true,
@@ -58,7 +59,7 @@ const CustomerBrandItems = ({ setTab, proid, brandid, sidebaropen }) => {
 
     const formdata = new FormData();
     formdata.append("mall_id", id);
-    formdata.append("brand_id", brandid);
+    formdata.append("store_id", brandid);
 
     console.log("formdata", id, brandid);
 
@@ -89,6 +90,40 @@ const CustomerBrandItems = ({ setTab, proid, brandid, sidebaropen }) => {
       });
   };
 
+  // const getmovielist = async (id) => {
+  //   setid(id);
+  //   SetLoading(true);
+  //   const token = JSON.parse(localStorage.getItem("is_token"));
+
+  //   const formdata = new FormData();
+  //   formdata.append("mall_id", id);
+  //   formdata.append("brand_id", brandid);
+
+  //   console.log("formdata", id, brandid);
+
+  //   axios
+  //     .post(product_cus_tile, formdata, {
+  //       headers: {
+  //         Accept: ACCEPT_HEADER,
+  //         Authorization: "Bearer " + token,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       console.log("ggg", JSON.stringify(res.data, null, 2));
+  //       if (res.data.success == 1) {
+  //         SetList(res.data.data);
+  //         setBranchArray(res.data.data);
+  //         SetLoading(false);
+  //       } else {
+  //         null;
+  //         SetLoading(false);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log("err11", err);
+  //       SetLoading(false);
+  //     });
+  // };
   const getmovielist = async (id) => {
     setid(id);
     SetLoading(true);
@@ -96,12 +131,12 @@ const CustomerBrandItems = ({ setTab, proid, brandid, sidebaropen }) => {
 
     const formdata = new FormData();
     formdata.append("mall_id", id);
-    formdata.append("brand_id", brandid);
+    formdata.append("store_id", brandid);
 
     console.log("formdata", id, brandid);
 
     axios
-      .post(product_cus_tile, formdata, {
+      .post(product_banner_tiles_customer, formdata, {
         headers: {
           Accept: ACCEPT_HEADER,
           Authorization: "Bearer " + token,
@@ -159,14 +194,15 @@ const CustomerBrandItems = ({ setTab, proid, brandid, sidebaropen }) => {
           : null}
       </Slider>
       <div className="mm_main_wrapp">
-        <div className="edit-brand-back-iconbox" onClick={() => setTab(2)}>
+        <div className="edit-brand-back-iconbox" onClick={() => setTab(2)} style={{paddingLeft:"0.5rem"}}>
           <IoChevronBack className="edit-brand-back-icon" />{" "}
           <p className="edit-brand-back-txt">Back</p>
         </div>
-        <div className="single-brand-product-head">
-          <div className="single-brand-product-head-search-flex">
+        <div className="single-brand-product-head" style={{paddingLeft:"0.5rem"}}>
+          <div className="single-brand-product-head-search-flex" style={{gap:"0.5rem"}}>
             <p className="single-brand-product-head-search-txt">
-              Search GUESS:
+              {/* Search GUESS: */}
+              Search {getStoreName}:
             </p>
             <div className="mall_near_brand_searchbar single-brand-product-searchbar">
               <input
@@ -184,7 +220,7 @@ const CustomerBrandItems = ({ setTab, proid, brandid, sidebaropen }) => {
             </div>
           </div>
           <div className="find-my-way-btn-flex">
-            <button className="find-my-way-btn">Find my way</button>
+            <button className="find-my-way-btn" onClick={()=>{setTab(29)}}>Find my way</button>
             <BsArrowRight className="find-my-way-btn-arrow" />
           </div>
         </div>

@@ -379,18 +379,7 @@ const MallCart2 = ({ setTab}) => {
                   })
                 : null}
 
-                <div style={{ width: "300px" }}>
-                          <button
-                            className="btn btn-orange"
-                            onClick={() => {
-                              CreateLeaderBoardBanner();
-                            }}>
-                            <img src={images.basket_white} alt="basket_white" />
-                            &nbsp; Buy Analytics Bundles
-                          </button>
-                        </div>
-
-                <div style={{ paddingTop: "5rem" }}>
+                <div style={{ paddingTop: "2rem" }}>
                           <p>
                             <span
                               style={{
@@ -402,6 +391,19 @@ const MallCart2 = ({ setTab}) => {
                             &nbsp; apply.
                           </p>
                         </div>
+
+                <div style={{ width: "300px" }}>
+                          <button
+                            className="btn btn-orange"
+                            onClick={() => {
+                              CreateLeaderBoardBanner();
+                            }}>
+                            <img src={images.basket_white} alt="basket_white" />
+                            &nbsp; Buy Analytics Bundles
+                          </button>
+                        </div>
+
+               
 
               {/* 
         {getCartData.map((item)=>{

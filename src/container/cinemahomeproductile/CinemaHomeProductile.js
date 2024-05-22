@@ -135,14 +135,14 @@ const [getIndex,setIndex] = useState(0)
                                 <>
                                 {type === 'mp4' ? <>
                                     <div style={{width:"200px",height:"200px"}}>
-                      <ReactPlayer className="landingpage_video"
-                        url={item.multiple_images[0].image_path}
-                        muted={true}
-                        autoplay={true}
-                        controls={true}
-                        playing={true}
-                        width="200px"
-                        height="200px"
+                                <ReactPlayer className="landingpage_video"
+                                url={item.multiple_images[0].image_path}
+                                muted={true}
+                                autoplay={true}
+                                controls={true}
+                                playing={true}
+                                width="200px"
+                                height="200px"
                   
                       />
                       </div>

@@ -313,7 +313,7 @@ const AddCinemaAnalyticBundleCard = ({
         {/* Leaderboard first part responsive side start */}
         <div className="leaderboard-card-first-resp-main-wrapp">
           <p className="leaderboard-last-part-txt">
-            Service fee will apply if canceled
+            {/* Service fee will apply if canceled */}
           </p>
           {/* <Link className="leaderboard-delete-icon-btn">
                         cancel{" "}
@@ -643,7 +643,7 @@ const AddCinemaAnalyticBundleCard = ({
                         <img src={images.delete_icon} className="leaderboard-delete-icon" />
                     </Link> */}
           <p className="leaderboard-last-part-txt">
-            Service fee will apply if canceled
+            {/* Service fee will apply if canceled */}
           </p>
           {/* <Link className="leaderboard-delete-icon-btn">
                         <span className="leaderboard-extend-txt">Extend</span>{" "}

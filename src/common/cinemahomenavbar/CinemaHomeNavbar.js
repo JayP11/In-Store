@@ -179,7 +179,7 @@ const CinemaHomeNavbar = ({ setTab, get_mall_auth_data }) => {
   };
 
   const token = async () => {
-    console.log("is_token", await localStorage.getItem("is_token"));
+    // console.log("is_token", await localStorage.getItem("is_token"));
 
     const login = await localStorage.getItem("is_token");
     if (login) {
@@ -413,7 +413,7 @@ const CinemaHomeNavbar = ({ setTab, get_mall_auth_data }) => {
         last_name: getlastname,
         terms_condition: isAcceptTerm,
         lat: position.latitude,
-        long: position.longitude
+        log: position.longitude
       };
 
       console.log("-=-=-=->", params);
@@ -844,7 +844,7 @@ const CinemaHomeNavbar = ({ setTab, get_mall_auth_data }) => {
           SetMallArray(res.data.data);
           // Notification("success", "Success!", "Mall Registerated Successfully!");
         } else {
-          null();
+          null;
         }
       })
       .catch((err) => {
@@ -868,7 +868,7 @@ const CinemaHomeNavbar = ({ setTab, get_mall_auth_data }) => {
           SetMallArray2(res.data.data);
           // Notification("success", "Success!", "Brand Registerated Successfully!");
         } else {
-          null();
+          null;
         }
       })
       .catch((err) => {
@@ -1103,7 +1103,7 @@ const CinemaHomeNavbar = ({ setTab, get_mall_auth_data }) => {
                           <Link
                             className="navbar-acc-menu-link"
                             onClick={() => {
-                              setIsOpen3(true); SetsignButn(4); SetboldButn(4);
+                              setIsOpen3(true), SetsignButn(4), SetboldButn(4);
                             }}>
                             {/* onClick={() =>{setIsOpen3(true),SetsignButn(1),SetboldButn(1)}}> */}
                             Login

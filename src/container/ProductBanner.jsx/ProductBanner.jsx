@@ -4,8 +4,12 @@ import { ProductBannerCard, RetailerNavigationBar } from "../../components";
 import images from "../../constants/images";
 import {
   ACCEPT_HEADER,
+  filter_leaderboard,
+  filter_productbanner,
   get_productbanner,
   get_region_mall,
+  get_store_region_authwise,
+  store_mall_from_region,
 } from "../../utils/Constant";
 import { BsChevronDown } from "react-icons/bs";
 import { IoIosArrowDown, IoIosArrowUp, IoIosClose } from "react-icons/io";
@@ -125,8 +129,19 @@ const ProductBanner = ({ get_mall_auth_data, setTab, getTab }) => {
   const perPage = 3;
   const [totalPages, setTotalPages] = useState(1);
   const [page, setPage] = useState(1);
+  const perPage2 = 3;
+  const [totalPages2, setTotalPages2] = useState(1);
+  const [page2, setPage2] = useState(1);
   const [getliast, SetLiast] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const [regionsOption, setregionsOption] = useState([]);
+  const [mallsOption, setMallOptions] = useState([]);
+
+  const [getMallsOptions, setMallsOptions] = useState([]);
+  const [getfilterData, setfilterData] = useState([]);
+  const [getMallsRegion2, setMallsRegion2] = useState([]);
+
   const [mainName, setMainName] = useState(
     get_mall_auth_data &&
       get_mall_auth_data.retailers &&
@@ -141,6 +156,23 @@ const ProductBanner = ({ get_mall_auth_data, setTab, getTab }) => {
   useEffect(() => {
     getPromation();
   }, [page]);
+
+
+  const stateMultipleChange = async (selectedOption) => {
+    setregionsOption(selectedOption);
+
+    await UpdateRegionFilter(selectedOption);
+    await setMallsRegion2(selectedOption);
+    console.log("Selected Option:", selectedOption);
+  };
+
+  const stateMultipleChange2 = async (selectedOption) => {
+    setMallOptions(selectedOption);
+
+    await LeaderboadFilter(selectedOption);
+
+    console.log("Selected Option:", selectedOption);
+  };
 
   const getPromation = async () => {
     const token = await JSON.parse(localStorage.getItem("is_token"));
@@ -159,6 +191,65 @@ const ProductBanner = ({ get_mall_auth_data, setTab, getTab }) => {
         setTotalPages(res.data.last_page);
         SetLiast([...getliast, ...res.data.data]);
         setLoading(false);
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+  };
+
+
+
+
+  const UpdateRegionFilter = async (selectedOption) => {
+    const token = JSON.parse(localStorage.getItem("is_token"));
+
+    const formdata = new FormData();
+    selectedOption.forEach((option, index) => {
+      formdata.append(`region_id[${index}]`, option.value);
+    });
+
+    try {
+      const res = await axios.post(store_mall_from_region, formdata, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      });
+      console.log(JSON.stringify(res, null, 2));
+      setMallsOptions(res.data.data);
+    } catch (err) {
+      console.log("err11", err);
+    }
+  };
+
+
+  const LeaderboadFilter = async (selectedOption) => {
+    const token = await JSON.parse(localStorage.getItem("is_token"));
+    const formdata = new FormData();
+    getMallsRegion2.forEach((option, index) => {
+      formdata.append(`region_id[${index}]`, option.value);
+    });
+    selectedOption.forEach((option, index) => {
+      formdata.append(`mall_id[${index}]`, option.value);
+    });
+
+    setLoading(true);
+    fetch(filter_productbanner + `per_page=${perPage2}&page=${page2}`, {
+      method: "POST",
+      body: formdata,
+      headers: {
+        Accept: ACCEPT_HEADER,
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("ffff", res.data.last_page);
+        setTotalPages2(res.data.last_page);
+        // setProList2([...getfilterData, ...res.data.data]);
+        SetLiast([...getfilterData, ...res.data.data]);
+        setLoading(false);
+        console.log("123",getfilterData);
       })
       .catch((err) => {
         console.log("err", err);
@@ -218,12 +309,14 @@ const ProductBanner = ({ get_mall_auth_data, setTab, getTab }) => {
   };
 
   useEffect(() => {
+    GetRegionFilter();
     GetRegion();
     getCategoryApi();
     getWeekApi();
   }, []);
 
   const [getregion_array, SetRigion_Array] = useState([]);
+  const [getregion_arrayfilter, SetRigion_Arrayfilter] = useState([]);
 
   const GetRegion = async () => {
     const token = JSON.parse(localStorage.getItem("is_token"));
@@ -239,6 +332,27 @@ const ProductBanner = ({ get_mall_auth_data, setTab, getTab }) => {
         console.log("ggg", JSON.stringify(res.data, null, 2));
         if (res.data.success == 1) {
           SetRigion_Array(res.data.data);
+        } else {
+        }
+      })
+      .catch((err) => {
+        console.log("err11", err);
+      });
+  };
+
+  const GetRegionFilter = async () => {
+    const token = JSON.parse(localStorage.getItem("is_token"));
+
+    axios
+      .get(get_store_region_authwise, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((res) => {
+        if (res.data.success == 1) {
+          SetRigion_Arrayfilter(res.data.data);
         } else {
         }
       })
@@ -299,7 +413,7 @@ const ProductBanner = ({ get_mall_auth_data, setTab, getTab }) => {
           <div className="leaderboard-sub-wrapp" style={{ gap: "1rem" }}>
             <RetailerNavigationBar
               title="Account Management"
-              setTabType={getTab == 5 ? "Product Banner" : ""}
+              setTabType={getTab == 5 ? "Brand Banner Slider" : ""}
             />
             {/* LeaderBoard name start */}
             <div
@@ -342,15 +456,24 @@ const ProductBanner = ({ get_mall_auth_data, setTab, getTab }) => {
                   style={{ minWidth: "125px" }}>
                   Filter by region:
                 </label>
-                <div className="select-wrapper" style={{ width: "100%" }}>
-                  <select className="leaderboard-card-inp">
-                    <option selected disabled value="">
-                      Select a Region
-                    </option>
-                    <option value="1">ONE SIZE</option>
-                    <option value="2">TWO SIZE</option>
-                    <option value="3">THREE SIZE</option>
-                  </select>
+                <div
+                  //  className="select-wrapper" 
+                  style={{ width: "100%" }}
+                >
+                  <Select
+
+                    value={regionsOption}
+                    styles={{ width: "100%", padding: "0px", borderRadius: "4px" }}
+                    className="leaderboard-card-inp"
+                    closeMenuOnSelect={false}
+                    components={animatedComponents}
+                    // defaultValue={[colourOptions[4], colourOptions[5]]}
+
+                    isMulti
+                    options={getregion_arrayfilter}
+                    // onChange={setregionsOption}
+                    onChange={stateMultipleChange}
+                  />
                 </div>
               </div>
 
@@ -360,15 +483,35 @@ const ProductBanner = ({ get_mall_auth_data, setTab, getTab }) => {
                   style={{ minWidth: "125px" }}>
                   Filter by mall:
                 </label>
-                <div className="select-wrapper" style={{ width: "100%" }}>
-                  <select className="leaderboard-card-inp">
-                    <option selected disabled value="">
-                      Select mall
-                    </option>
-                    <option value="1">ONE SIZE</option>
-                    <option value="2">TWO SIZE</option>
-                    <option value="3">THREE SIZE</option>
-                  </select>
+                <div
+                  // className="select-wrapper" 
+                  style={{ width: "100%" }}>
+                  <Select
+
+                    value={mallsOption}
+                    styles={{ width: "100%", padding: "0px", borderRadius: "4px" }}
+                    className="leaderboard-card-inp"
+                    closeMenuOnSelect={false}
+                    components={animatedComponents}
+                    // defaultValue={[colourOptions[4], colourOptions[5]]}
+
+                    isMulti
+                    options={getMallsOptions}
+                    // onChange={setregionsOption}
+                    onChange={stateMultipleChange2}
+                  />
+                  {/* <Select
+                value={mallsOption}
+                styles={{ width: "100%", padding: "0px" }}
+                className="leaderboard-card-inp"
+                closeMenuOnSelect={false}
+                components={animatedComponents}
+                // defaultValue={[colourOptions[4], colourOptions[5]]}
+
+                isMulti
+                options={multiple_week_data}
+                onChange={setMallsOption}
+              /> */}
                 </div>
               </div>
             </div>

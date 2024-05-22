@@ -7,12 +7,12 @@ const CustomerEateryHero = ({ getsingalmalldata, getedetalis }) => {
         <div className="mall_hero_main_wrapp">
             <img
                 src={
-                    getedetalis.store_banner_path === null
+                    getedetalis.banner_store_path === null
                         ? images.mall_hero_banner
-                        : getedetalis.store_banner_path
+                        : getedetalis.banner_store_path
                 }
                 alt=""
-                className="mall_hero_banner_img"
+                className="mall_hero_banner_img img_fluid_position"
             />
             <div className="mall_hero_logo_wrapp">
                 <img

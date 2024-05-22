@@ -5,6 +5,10 @@
 
 @media screen and (max-width:500px) {
     .cinema-cart-oro-name{
-        font-size: 14px !important;
+        font-size: 13px !important;
+    }
+
+    .mall_name_wrapp_retailer_cart{
+        flex-direction: row !important;
     }
 }

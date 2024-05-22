@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import "./LeaderBoardCard.css";
 import { useDropzone } from "react-dropzone";
 import ReactPlayer from "react-player";
 
@@ -123,11 +122,11 @@ const RetailLandingPageSquareTileCard = ({
     );
     setCategory(
       item.categorys == null ||
-      item.categorys == "" ||
-      item.categorys.name == null ||
-      item.categorys.name == ""
-      ? ""
-      : item.categorys.name
+        item.categorys == "" ||
+        item.categorys.name == null ||
+        item.categorys.name == ""
+        ? ""
+        : item.categorys.name
     );
     setCategoryId(
       item.categorys == null ||
@@ -245,65 +244,118 @@ const RetailLandingPageSquareTileCard = ({
   const [getuploadnumber, SetUploadNumber] = useState(false);
 
   const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } =
+    // useDropzone({
+    //   maxFiles: 8,
+    //   onDrop: (acceptedFiles) => {
+    //     console.log("accept file are", acceptedFiles);
+    //     SetCondation(true);
+    //     for (let i = 0; i < acceptedFiles.length; i++) {
+    //       if (acceptedFiles.length > 1) {
+    //         if (
+    //           acceptedFiles[i].type === "image/gif" ||
+    //           acceptedFiles[i].type === "video/mp4"
+    //         ) {
+    //           Notification(
+    //             "error",
+    //             "Error!",
+    //             "Please Select maximum 1 gif OR 8 images OR 1 video!"
+    //           );
+
+    //           SetUploadNumber(true);
+    //         } else {
+    //           {
+    //             setFiles(
+    //               acceptedFiles.map((file) =>
+    //                 Object.assign(file, {
+    //                   preview: URL.createObjectURL(file),
+    //                 })
+    //               )
+    //             );
+    //           }
+
+    //           if (acceptedFiles.length === 0) {
+    //             // window.location.reload(true);
+    //             Notification(
+    //               "error",
+    //               "Error!",
+    //               "Please Select maximum 8 images!"
+    //             );
+    //           }
+    //           SetUploadNumber(false);
+    //         }
+    //       } else {
+    //         {
+    //           setFiles(
+    //             acceptedFiles.map((file) =>
+    //               Object.assign(file, {
+    //                 preview: URL.createObjectURL(file),
+    //               })
+    //             )
+    //           );
+    //         }
+    //         if (acceptedFiles.length === 0) {
+    //           // window.location.reload(true);
+    //           Notification(
+    //             "error",
+    //             "Error!",
+    //             "Please Select maximum 8 images!"
+    //           );
+    //         }
+    //         SetUploadNumber(false);
+    //       }
+    //     }
+    //   },
+    // });
     useDropzone({
-      maxFiles: 8,
-      onDrop: (acceptedFiles) => {
-        console.log("accept file are", acceptedFiles);
+      maxFiles: 1,
+      onDrop: async (acceptedFiles) => {
         SetCondation(true);
-        for (let i = 0; i < acceptedFiles.length; i++) {
-          if (acceptedFiles.length > 1) {
-            if (
-              acceptedFiles[i].type === "image/gif" ||
-              acceptedFiles[i].type === "video/mp4"
-            ) {
-              Notification(
-                "error",
-                "Error!",
-                "Please Select maximum 1 gif OR 8 images OR 1 video!"
-              );
 
-              SetUploadNumber(true);
-            } else {
-              {
-                setFiles(
-                  acceptedFiles.map((file) =>
-                    Object.assign(file, {
-                      preview: URL.createObjectURL(file),
-                    })
-                  )
-                );
-              }
+        const maxSizeKB = 50;
+        const maxSizeBytes = maxSizeKB * 1024;
 
-              if (acceptedFiles.length === 0) {
-                // window.location.reload(true);
-                Notification(
-                  "error",
-                  "Error!",
-                  "Please Select maximum 8 images!"
-                );
-              }
-              SetUploadNumber(false);
+        const filteredFiles = await Promise.all(
+          acceptedFiles.map(async (file) => {
+            const isSizeValid = file.size <= maxSizeBytes; // Limit size to 50KB (in bytes)
+            const isImage = file.type.startsWith("image/"); // Check if it's an image file
+
+            if (!isImage || !isSizeValid) {
+              return null;
             }
-          } else {
-            {
-              setFiles(
-                acceptedFiles.map((file) =>
-                  Object.assign(file, {
-                    preview: URL.createObjectURL(file),
-                  })
-                )
-              );
-            }
-            if (acceptedFiles.length === 0) {
-              // window.location.reload(true);
-              Notification(
-                "error",
-                "Error!",
-                "Please Select maximum 8 images!"
-              );
-            }
-            SetUploadNumber(false);
-          }
+
+            const img = new Image();
+            img.src = URL.createObjectURL(file);
+            await new Promise((resolve, reject) => {
+              img.onload = resolve;
+              img.onerror = reject;
+            });
+
+            // Check image dimensions
+            const isDimensionsValid = img.width == 232 && img.height == 232;
+
+            return isDimensionsValid ? file : null; // Return file if dimensions are valid, otherwise skip it
+          })
+        );
+        const validFiles = filteredFiles.filter((file) => file !== null);
+
+        setFiles(
+          validFiles.map((file) =>
+            Object.assign(file, {
+              preview: URL.createObjectURL(file),
+            })
+          )
+        );
+        if (validFiles.length !== acceptedFiles.length) {
+          Notification(
+            "error",
+            "Error!",
+            "Some files exceed the maximum size limit of 50KB or do not meet the dimension requirements of 232x232 pixels and will not be uploaded."
+          );
+        }
+        // SetCondation(false);
+
+        if (acceptedFiles.length === 0) {
+          window.location.reload(true);
         }
       },
     });
@@ -318,8 +370,8 @@ const RetailLandingPageSquareTileCard = ({
             autoplay={true}
             controls={false}
             playing={true}
-            width="75px"
-            height="75px"
+            width="210px"
+            height="210px"
             // autoplay={playing}
             // onReady={handlePlayerReady}
           />
@@ -327,7 +379,7 @@ const RetailLandingPageSquareTileCard = ({
       ) : (
         <img
           src={file.preview}
-          style={{ width: "75px", height: "75px" }}
+          style={{ width: "210px", height: "210px" }}
           className="img-fluidb img-fluid-width"
           alt="file"
         />
@@ -428,10 +480,7 @@ const RetailLandingPageSquareTileCard = ({
   //   }
   // };
 
-
-
   // Deleate Leaderboard Api
-
 
   const UpdateLeaderboard = async () => {
     const { startDate, endDate } = selectedDates;
@@ -446,7 +495,7 @@ const RetailLandingPageSquareTileCard = ({
     } else {
       const formdata = await new FormData();
       await formdata.append("id", item.id);
-     
+
       if (getweekcondation === true) {
         await formdata.append(
           "from_date",
@@ -460,7 +509,7 @@ const RetailLandingPageSquareTileCard = ({
         await formdata.append("from_date", weekname1);
         await formdata.append("to_date", weekname2);
       }
-     
+
       if (files[0] !== undefined) {
         // await formdata.append("image", files[0]);
         for (var j = 0; j < files.length; j++) {
@@ -483,12 +532,8 @@ const RetailLandingPageSquareTileCard = ({
           setTab(1);
           // getLeaderboard();
           // window.location.reload();
-        } else if (data.success === 0){
-          Notification(
-            "error",
-            "Error!",
-            data.message
-          );
+        } else if (data.success === 0) {
+          Notification("error", "Error!", data.message);
         }
       }
     }
@@ -601,7 +646,7 @@ const RetailLandingPageSquareTileCard = ({
         if (res.data.success == 1) {
           SetRigion_Array(res.data.data);
         } else {
-          null;
+          null();
         }
       })
       .catch((err) => {
@@ -646,7 +691,7 @@ const RetailLandingPageSquareTileCard = ({
           {/* Leaderboard first part responsive side start */}
           <div className="leaderboard-card-first-resp-main-wrapp">
             <p className="leaderboard-last-part-txt">
-              Service fee will apply if canceled
+              {/* Service fee will apply if canceled */}
             </p>
             <button className="leaderboard-delete-icon-btn">
               cancel{" "}
@@ -746,132 +791,7 @@ const RetailLandingPageSquareTileCard = ({
                 disabledDate={combine(allowedMaxDays(7), beforeToday())}
               />
             </div>
-            {/* Leaderboard inputbox start */}
-            {/* <div className="leaderboard-card-inpbox-wrapp">
-              <label className="leaderboard-card-lbl">Brand(s):</label>
-              <div className="select-wrapper" style={{ width: "100%" }}>
-                <select
-                  className="leaderboard-card-inp"
-                  onChange={(e) => {
-                    setBrandName(e.target.value);
-                    setBrandId(e.target.value);
-                  }}
-                >
-                  <option selected disabled value="">
-                    {BrandName}
-                  </option>
-                  {get_brand_data &&
-                    get_brand_data.map((item, index) => {
-                      return (
-                        <>
-                          <option value={item.id} key={index}>
-                            {item.name}
-                          </option>
-                        </>
-                      );
-                    })}
-                </select>
-              </div>
-            </div> */}
-
-            {/* <div className="leaderboard-card-inpbox-wrapp">
-              <label className="leaderboard-card-lbl">Categories:</label>
-              <div className="select-wrapper" style={{ width: "100%" }}>
-                <select
-                  className="leaderboard-card-inp cons_select_nav"
-                  onChange={(e) => {
-                    setCategory(e.target.value);
-                    setCategoryId(e.target.value);
-                  }}
-                >
-                  <option selected disabled value="">
-                    {Category}
-                  </option>
-                  {category_data &&
-                    category_data.map((item, index) => {
-                      return (
-                        <>
-                          <option value={item.id} key={index}>
-                            {item.name}
-                          </option>
-                        </>
-                      );
-                    })}
-                </select>
-              </div>
-            </div> */}
-            {/* Leaderboard inputbox end */}
-
-            {/* start date and end date demo start */}
-            {/* <div>
-            <DatePicker
-              selected={startDate}
-              onChange={handleStartDateChange}
-              selectsStart
-              startDate={startDate}
-              endDate={endDate}
-              placeholderText="Select start date (Monday)"
-              filterDate={isMonday}
-              calendarStartDay={1}
-            />
-            <DatePicker
-              selected={endDate}
-              onChange={handleEndDateChange}
-              selectsEnd
-              startDate={startDate}
-              endDate={endDate}
-              minDate={startDate}
-              placeholderText="Select end date (Sunday)"
-              filterDate={isSunday}
-              disabled={!startDate}
-              calendarStartDay={1}
-            />
-          </div> */}
-            {/* start date and end date demo end */}
-
-            {/* Leaderboard inputbox start */}
-            {/* <div className="leaderboard-card-inpbox-wrapp">
-            <label className="leaderboard-card-lbl">Start:</label>
-            <DatePicker
-              selected={startDate}
-              onChange={handleStartDateChange}
-              selectsStart
-              startDate={startDate}
-              endDate={endDate}
-              placeholderText="Select start date (Monday)"
-              filterDate={isMonday}
-              calendarStartDay={1}
-              className="leaderboard-card-inp"
-              dateFormat="dd/MM/yyyy"
-            />
-          </div> */}
-            {/* Leaderboard inputbox end */}
-
-            {/* Leaderboard inputbox start */}
-            {/* <div className="leaderboard-card-inpbox-wrapp">
-            <label className="leaderboard-card-lbl">Until:</label>
-            <DatePicker
-              selected={endDate}
-              onChange={handleEndDateChange}
-              selectsEnd
-              startDate={startDate}
-              endDate={endDate}
-              minDate={startDate}
-              placeholderText="Select end date (Sunday)"
-              filterDate={isSunday}
-              disabled={true}
-              calendarStartDay={1}
-              className="leaderboard-card-inp"
-              dateFormat="dd/MM/yyyy"
-            />
-          </div> */}
-            {/* Leaderboard inputbox end */}
-
-            {/* Leaderboad form end */}
           </div>
-          {/* Leaderboard part first end */}
-
-          {/* Leaderboard part second start */}
           <div className="leaderboard-card-part-sec" {...getRootlogoProps()}>
             <input
               {...getInputlogoProps()}
@@ -882,19 +802,25 @@ const RetailLandingPageSquareTileCard = ({
               <>
                 {files && files.length > 0 ? (
                   <div
-                    className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl"
+                    className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl myprofile_inner_sec2_img_upload_border"
                     style={{
                       display: "flex",
                       alignItems: "center",
                       gap: "5px",
+                      width: "210px",
                       flexWrap: "wrap",
-                    }}
-                  >
+                      height: "210px",
+                    }}>
                     {thumbs}
                   </div>
                 ) : (
-                  <div style={{ width: "100%" }}>
-                    <div className="leaderboard-card-part-sec2">
+                   
+                    <div
+                      className="leaderboard-card-part-sec2"
+                      style={{
+                        width: "210px",
+                        textAlign: "center",
+                      }}>
                       <AiOutlineCloudUpload
                         style={{
                           width: "60px",
@@ -903,8 +829,13 @@ const RetailLandingPageSquareTileCard = ({
                           marginBottom: "10px",
                         }}
                       />
-                      <h4>.PDF .JPG .PNG</h4>
-                      <p>You can also upload file by</p>
+                      <h4 style={{ fontSize: "14px" }}>
+                        .JPG .PNG .GIF (232 x 232 pixels)
+                      </h4>
+                      <p style={{ fontSize: "14px" }}>(max 50kb)</p>
+                      <p style={{ fontSize: "14px" }}>
+                        You can also upload file by
+                      </p>
                       {/* <input
                       {...getInputlogoProps()}
                       accept="image/jpeg, image/jpg, image/png, image/eps"
@@ -912,55 +843,62 @@ const RetailLandingPageSquareTileCard = ({
                       <button
                         type="button"
                         className="click_upload_btn"
-                        style={{ marginBottom: "10px" }}
-                      >
+                        style={{ marginBottom: "10px" }}>
                         click here
                       </button>
                       {/* <a href="">clicking here</a> */}
                     </div>
-                  </div>
+                
                 )}
               </>
             ) : (
               <>
                 {item.multiple_images === null ? (
-                  <div style={{ width: "100%" }}>
-                    <div className="leaderboard-card-part-sec2">
-                      <AiOutlineCloudUpload
-                        style={{
-                          width: "60px",
-                          height: "60px",
-                          color: "var(--color-orange)",
-                          marginBottom: "10px",
-                        }}
-                      />
-                      <h4>.PDF .JPG .PNG</h4>
-                      <p>You can also upload file by</p>
-                      {/* <input
+                  <div
+                    className="leaderboard-card-part-sec2"
+                    style={{
+                      width: "210px",
+                      textAlign: "center",
+                    }}>
+                    <AiOutlineCloudUpload
+                      style={{
+                        width: "60px",
+                        height: "60px",
+                        color: "var(--color-orange)",
+                        marginBottom: "10px",
+                      }}
+                    />
+                    <h4 style={{ fontSize: "14px" }}>
+                      .JPG .PNG .GIF (200 x 200 pixels)
+                    </h4>
+                    <p style={{ fontSize: "14px" }}>(max 100kb)</p>
+                    <p style={{ fontSize: "14px" }}>
+                      You can also upload file by
+                    </p>
+                    {/* <input
                       {...getInputlogoProps()}
                       accept="image/jpeg, image/jpg, image/png, image/eps"
                     /> */}
-                      <button
-                        type="button"
-                        className="click_upload_btn"
-                        style={{ marginBottom: "10px" }}
-                      >
-                        click here
-                      </button>
-                      {/* <a href="">clicking here</a> */}
-                    </div>
+                    <button
+                      type="button"
+                      className="click_upload_btn"
+                      style={{ marginBottom: "10px" }}>
+                      click here
+                    </button>
+                    {/* <a href="">clicking here</a> */}
                   </div>
                 ) : (
                   <>
                     <div
-                      className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl"
+                      className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl myprofile_inner_sec2_img_upload_border"
                       style={{
                         display: "flex",
                         alignItems: "center",
                         gap: "5px",
                         flexWrap: "wrap",
-                      }}
-                    >
+                        width: "210px",
+                        height: "210px",
+                      }}>
                       {item.multiple_images &&
                         item.multiple_images.map((item) => {
                           var type = item.image.split(".")[1];
@@ -974,15 +912,15 @@ const RetailLandingPageSquareTileCard = ({
                                   autoplay={true}
                                   controls={false}
                                   playing={true}
-                                  width="75px"
-                                  height="75px"
+                                  width="210px"
+                                  height="210px"
                                   // autoplay={playing}
                                   // onReady={handlePlayerReady}
                                 />
                               ) : (
                                 <img
                                   src={item.image_path}
-                                  style={{ width: "75px", height: "75px" }}
+                                  style={{ width: "210px", height: "210px" }}
                                   className="img-fluidb img-fluid-width"
                                 />
                               )}
@@ -1005,8 +943,7 @@ const RetailLandingPageSquareTileCard = ({
               onClick={() => {
                 DeleteLeaderboard();
               }}
-              className="leaderboard-delete-icon-btn"
-            >
+              className="leaderboard-delete-icon-btn">
               cancel{" "}
               <img
                 src={images.delete_icon}
@@ -1014,23 +951,23 @@ const RetailLandingPageSquareTileCard = ({
               />
             </button>
             <p className="leaderboard-last-part-txt">
-              Service fee will apply if canceled
+              {/* Service fee will apply if canceled */}
             </p>
-            <div className="leaderboard-btn-box" style={{gap:"0.5rem"}}>
+            <div className="leaderboard-btn-box" style={{ gap: "0.5rem" }}>
               {item.cart_status === 0 ? (
                 <>
-                  <button 
-                    className="btn btn-black" style={{padding:"0.4rem",fontSize:"16px"}}
+                  <button
+                    className="btn btn-black"
+                    style={{ padding: "0.4rem", fontSize: "16px" }}
                     onClick={() => {
                       Addtocart();
                       // window.location.reload(true);
-                    }}
-                  >
+                    }}>
                     Add To Cart
                   </button>
                 </>
               ) : (
-                <button 
+                <button
                   className="btn btn-black"
                   // onClick={() => {
                   //   window.location.reload(true);
@@ -1052,13 +989,12 @@ const RetailLandingPageSquareTileCard = ({
               />
             </button> */}
             <div className="leaderboard-btn-box">
-              <button 
+              <button
                 className="btn btn-orange"
                 disabled={getuploadnumber === true ? true : false}
                 onClick={() => {
                   UpdateLeaderboard();
-                }}
-              >
+                }}>
                 Update
               </button>
             </div>
@@ -1066,21 +1002,24 @@ const RetailLandingPageSquareTileCard = ({
           {/* Leaderboard part third end */}
 
           {/* Leaderboard last part responsive side start */}
-          <div className="leaderboard-card-sec-resp-main-wrapp" style={{gap:"0.5rem"}}>
+          <div
+            className="leaderboard-card-sec-resp-main-wrapp"
+            style={{ gap: "0.5rem" }}>
             <div className="leaderboard-btn-box">
               {item.cart_status === 0 ? (
                 <>
-                  <button style={{width:"165px"}}
+                  <button
+                    style={{ width: "165px" }}
                     className="btn btn-black"
                     onClick={() => {
                       Addtocart();
-                    }}
-                  >
+                    }}>
                     Add To Cart
                   </button>
                 </>
               ) : (
-                <button style={{width:"165px"}}
+                <button
+                  style={{ width: "165px" }}
                   className="btn btn-black"
                   // onClick={() => {
                   //   window.location.reload(true);
@@ -1099,13 +1038,13 @@ const RetailLandingPageSquareTileCard = ({
               />
             </Link> */}
             <div className="leaderboard-btn-box">
-              <button style={{width:"165px"}}
+              <button
+                style={{ width: "165px" }}
                 className="btn btn-orange"
                 disabled={getuploadnumber === true ? true : false}
                 onClick={() => {
                   UpdateLeaderboard();
-                }}
-              >
+                }}>
                 Update
               </button>
             </div>
@@ -1124,8 +1063,7 @@ const RetailLandingPageSquareTileCard = ({
         isOpen={mallMolalOpen}
         // onAfterOpen={afterOpenModal}
         onRequestClose={closeMallModal}
-        style={customStyles}
-      >
+        style={customStyles}>
         <div className="select_mall_main_wrapp">
           <div className="select_mall_base_wrapp">
             {/* mall heading */}
@@ -1181,8 +1119,7 @@ const RetailLandingPageSquareTileCard = ({
                       <button
                         className="select_mall_tag_single_btn"
                         style={{ backgroundColor: "#4FBB10" }}
-                        key={mindx}
-                      >
+                        key={mindx}>
                         {mall}
                       </button>
                     );
@@ -1196,8 +1133,7 @@ const RetailLandingPageSquareTileCard = ({
                   fontSize: "18px",
                   alignSelf: "start",
                   marginBottom: "1rem",
-                }}
-              >
+                }}>
                 Region
               </p>
 
@@ -1207,8 +1143,7 @@ const RetailLandingPageSquareTileCard = ({
                       <div
                         className="bim_accordian_wrapp"
                         style={{ marginBottom: "6px" }}
-                        key={item.region_id}
-                      >
+                        key={item.region_id}>
                         <button
                           className="bim_accordian_btn"
                           onClick={() => {
@@ -1217,16 +1152,14 @@ const RetailLandingPageSquareTileCard = ({
                               item.region_name,
                               item.region_id
                             );
-                          }}
-                        >
+                          }}>
                           <p
                             style={{
                               color:
                                 item.region_id === toggle ? "#ff8b00" : "#000",
                               fontWeight:
                                 item.region_id === toggle ? "500" : "300",
-                            }}
-                          >
+                            }}>
                             {item.region_name}
                           </p>
 
@@ -1247,8 +1180,7 @@ const RetailLandingPageSquareTileCard = ({
                                       display: "flex",
                                       gap: "10px",
                                       marginLeft: "10px",
-                                    }}
-                                  >
+                                    }}>
                                     <input
                                       type="checkbox"
                                       checked={selectedMalls.includes(itm.name)}
@@ -1288,8 +1220,7 @@ const RetailLandingPageSquareTileCard = ({
                 onClick={() => {
                   closeMallModal();
                   SetTrue(true);
-                }}
-              >
+                }}>
                 Submit
               </button>
             </div>

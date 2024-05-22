@@ -319,7 +319,7 @@ const CinemaPage = () => {
         last_name: getlastname,
         terms_condition: isAcceptTerm,
         lat: position.latitude,
-        long: position.longitude
+        log: position.longitude
       };
 
       console.log("-=-=-=->", params);
@@ -835,7 +835,7 @@ const CinemaPage = () => {
       ) : (
         <>
           <Helmet>
-            <title>Cinema Home Screen</title>
+            <title>Cinema Home Page</title>
           </Helmet>
           {/* <Navbar
       // setCustomerDropdown={setCustomerDropdown}

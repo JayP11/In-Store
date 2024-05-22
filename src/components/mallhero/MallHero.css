@@ -4,15 +4,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 30vh;
-  /* height: 250px; */
+  /* height: 30vh; */
+  /* height: 275px; */
+  height: 100%;
   z-index: -1;
 }
 
 .mall_hero_banner_img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  /* object-fit: cover;
+  object-position: top; */
+  /* object-fit: cover; */
 }
 
 .mall_hero_logo_wrapp {
@@ -35,10 +38,21 @@
     height: 140px;
     width: 140px;
     border-radius: 140px;
-    bottom: -25%;
+    bottom: -28%;
   }
 
   .mall_hero_banner_img {
     object-position: top;
   }
+}
+
+@media screen and (max-width:600px) {
+    .mall_hero_main_wrapp {
+      /* height: 130px; */
+      height: 100%;
+    }
+
+    .mall_hero_logo_wrapp {
+      bottom: -45%;
+    }
 }

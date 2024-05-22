@@ -30,6 +30,7 @@ const CustomerPromotionBanner = ({
   SetProId,
   SetBrandId,
   navbardata,
+  setStoreName,
 }) => {
   useEffect(() => {
     LederboadnApi();
@@ -202,7 +203,7 @@ const CustomerPromotionBanner = ({
             <div className="mm_main_wrapp">
             {proList.length <=0 ? 
             <><p style={{color:"var(--color-black)",fontWeight:"600",fontSize:"22px"}}>There are currently no promotions available.
-</p></> : <>
+            </p></> : <>
               <div className="cust-promotional-main-wrapp">
              
               {proList.map((x, i) => {
@@ -212,6 +213,7 @@ const CustomerPromotionBanner = ({
                       setTab={setTab}
                       SetProId={SetProId}
                       SetBrandId={SetBrandId}
+                      setStoreName={setStoreName}
                     />
                   );
                 })}

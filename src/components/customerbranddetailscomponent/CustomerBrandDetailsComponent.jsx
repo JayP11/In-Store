@@ -53,7 +53,7 @@ const CustomerBrandDetailsComponent = ({ getbdetalis, setTab }) => {
                         </div>
                     </div>
                     <div className="find-my-way-btn-flex">
-                        <button className="find-my-way-btn">Find my way</button>
+                        <button className="find-my-way-btn" onClick={()=>{setTab(29)}}>Find my way</button>
                         <BsArrowRight className="find-my-way-btn-arrow" />
                     </div>
                 </div>

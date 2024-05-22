@@ -55,7 +55,7 @@ const AboutInStorePage = () => {
       ) : (
         <>
           <Helmet>
-            <title>About In-store</title>
+            <title>About | In-store</title>
           </Helmet>
           <Navbar
           // setCustomerDropdown={setCustomerDropdown}

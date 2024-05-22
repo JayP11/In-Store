@@ -524,7 +524,7 @@ const CinemaAnalyticsBundleCard = ({
               {/* Leaderboard first part responsive side start */}
               <div className="leaderboard-card-first-resp-main-wrapp">
                 <p className="leaderboard-last-part-txt">
-                  Service fee will apply if canceled
+                  {/* Service fee will apply if canceled */}
                 </p>
                 <button className="leaderboard-delete-icon-btn">
                   cancel{" "}
@@ -906,7 +906,7 @@ const CinemaAnalyticsBundleCard = ({
                   />
                 </button>
                 <p className="leaderboard-last-part-txt">
-                  Service fee will apply if canceled
+                  {/* Service fee will apply if canceled */}
                 </p>
                 <div className="leaderboard-btn-box">
                   {item.cart_status === 0 ? (

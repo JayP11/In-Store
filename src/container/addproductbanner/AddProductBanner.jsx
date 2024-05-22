@@ -249,7 +249,7 @@ const AddProductBanner = ({ get_mall_auth_data, setTab }) => {
                 <div className="mall_name_wrapp mall_name_wrapp-spacebetween" style={{ paddingLeft: "0px" }}>
                     <div className="leaderboard-inner-namebox">
                         <p className="mall_name_heading">{mainName}:</p>
-                        <span className="leaderboard-span" style={{ fontWeight: "600" }}>Add Product Banners</span>
+                        <span className="leaderboard-span" style={{ fontWeight: "600" }}>Add Brand Banners Slider</span>
                     </div>
                     {/* <button onClick={() => setTab(20)} className="leaderboard-btn">
                         Add new{" "}

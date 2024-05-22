@@ -36,7 +36,13 @@ const BrandCartCard = ({ item, toggle, Get_cart, setToggle }) => {
 
   return (
     <div className="brandcc_main_wrapp">
-      <div className="brandcc_sec1">
+      <div
+      //  className="brandcc_sec1" 
+       className={`${
+                  toggle == 7 ?
+                     "brandcc_sec1_protile_brand"
+                    : "brandcc_sec1"
+                }`}>
         {toggle == 1 ? (
           <img
             src={item.landingpagetiles ? item.landingpagetiles?.image_path : ""}
@@ -87,7 +93,7 @@ const BrandCartCard = ({ item, toggle, Get_cart, setToggle }) => {
             }
           />
         ) : toggle == 7 ? (
-          <img
+          <img style={{width:"100%",height:"100%"}}
             src={item.productbannertiles ? item.productbannertiles.image_path : ""}
           />
         ) : null}

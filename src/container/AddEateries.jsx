@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { AiOutlineCloudUpload } from "react-icons/ai";
-import { ACCEPT_HEADER, get_category, mall_create_eatery } from "../utils/Constant";
+import { ACCEPT_HEADER, get_brand_multiple, get_category, get_eatery_category, mall_create_eatery } from "../utils/Constant";
 import axios from "axios";
 import Notification from "../utils/Notification"
 import { IoChevronBack } from "react-icons/io5";
 import { MallHero } from "../components";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
+
+const animatedComponents = makeAnimated();
+
 
 
 const AddEateries = ({ get_mall_auth_data, setTab }) => {
@@ -22,7 +27,13 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
   const [getcontactNo, setContactNo] = useState();
   const [email, setEmail] = useState("");
   const [getstoreDes, setStoreDes] = useState("");
+  const [retailerType, setRetailerType] = useState(1);
+
   const [getstoreContactPerson, setStoreContactPerson] = useState("");
+  const [mallsOption, setMallsOption] = useState([]);
+  const [getMultipleBrand, setMultipleBrand] = useState([]);
+
+
 
   // tranding times
   const [monFromTime, setMonFromTime] = useState("");
@@ -108,7 +119,8 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
 
       formdata.append("store_no", getstoreNo);
       formdata.append("store_level", getstoreLevel);
-      formdata.append("number", getcontactNo);
+      // formdata.append("number", getcontactNo);
+      formdata.append("contact_no", getcontactNo);
       await formdata.append("contact_person", getstoreContactPerson);
 
       formdata.append("email", email);
@@ -117,6 +129,8 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
       if (files && files.length > 0) {
         formdata.append("store_logo", files[0]);
       }
+
+      
 
       if (files2 && files2.length > 0) {
         formdata.append("banner_store", files2[0]);
@@ -130,6 +144,8 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
       formdata.append("sun_to_time", sunToTime);
       formdata.append("holiday_from_time", holidayFromTime);
       formdata.append("holiday_to_time", holidayToTime);
+      await formdata.append("type", retailerType);
+
       formdata.append("terms_condition", isAcceptTerm);
       formdata.append("privacy_policy", isAcceptTerm2);
 
@@ -144,8 +160,7 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
         if (response.data.success == 1) {
           Notification("success", "Success!", "Eatery Added Successfully!");
           setTab(4);
-          console.log("mall_create_eatery", response.data);
-        }
+         }
         return response.data;
       } catch (error) {
         console.log("error", error);
@@ -163,7 +178,7 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
     const token = JSON.parse(localStorage.getItem("is_token"));
 
     axios
-      .get(get_category, {
+      .get(get_eatery_category, {
         headers: {
           Accept: ACCEPT_HEADER,
           Authorization: "Bearer " + token,
@@ -186,6 +201,10 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
   useEffect(() => {
     console.log("files2", files2);
   }, [files2]);
+
+  useEffect(() => {
+    console.log("eatery category",catarray);
+  }, []);
 
   const { getRootProps: getRootLogoProps, getInputProps: getInputLogoProps } = useDropzone({
     onDrop: (acceptedFiles) => {
@@ -244,7 +263,31 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
 
   useEffect(() => {
     console.log("time", time);
+    getMutipleBrand();
   }, []);
+
+  const getMutipleBrand = async () => {
+    const token = JSON.parse(localStorage.getItem("is_token"));
+
+    axios
+        .get(get_brand_multiple, {
+            headers: {
+                Accept: ACCEPT_HEADER,
+                Authorization: "Bearer " + token,
+            },
+        })
+        .then((res) => {
+            console.log("get multiple brand data", JSON.stringify(res.data, null, 2));
+            if (res.data.success == 1) {
+                setMultipleBrand(res.data.data);
+            } else {
+                null;
+            }
+        })
+        .catch((err) => {
+            console.log("err11", err);
+        });
+};
 
   return (
     <>
@@ -266,6 +309,45 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
           {/* text-input wrapp start */}
           <div className="mm_form_input_wrapp">
             {/* single text-input */}
+
+            <div className="signup_terms_wrapp indep-side">
+                            <div className="mm_form_single_input">
+                                <label htmlFor="" style={{ minWidth: "162px" }}>Retailer type</label>
+
+                                <div className="radio-btn-flex-brand radio-btn-flex-brand-mall">
+                                    <div className="radio-btn-inner-flex">
+                                        <input
+                                            type="radio"
+                                            id="Online"
+                                            name="gender"
+                                            value="1"
+                                            onChange={(e) => { setRetailerType(e.target.value); console.log("-->", retailerType); }}
+                                        // onChange={(e) => { setRetailerType(1); console.log("-->", retailerType); }}
+
+                                        />
+                                        <label className="course-form-txt" for="male">
+                                            Independent Retailer
+                                        </label>
+                                    </div>
+
+                                    <div className="radio-btn-inner-flex">
+                                        <input
+                                            type="radio"
+                                            id="In-Person"
+                                            name="gender"
+                                            value="2"
+                                            onChange={(e) => { setRetailerType(e.target.value); console.log("-->", retailerType); }}
+                                        />
+                                        <label className="course-form-txt" for="specifyColor">
+                                            Group Retailer
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
             <div className="mm_form_single_input">
               <label htmlFor="" style={{ minWidth: "162px" }}>Eatery Name<span className="star_require">*</span></label>
               <input
@@ -277,6 +359,25 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
                 className="input_box"
               />
             </div>
+
+            {retailerType == 2 ? <>
+                            <div className="mm_form_single_input">
+                                <label htmlFor="" className="" style={{ minWidth: "162px" }}>Select Brands</label>
+
+                                <Select
+                                    value={mallsOption}
+                                    styles={{ width: "100%", padding: "0px" }}
+                                    className="leaderboard-card-inp"
+                                    closeMenuOnSelect={false}
+                                    components={animatedComponents}
+                                    // defaultValue={[colourOptions[4], colourOptions[5]]}
+
+                                    isMulti
+                                    options={getMultipleBrand}
+                                    onChange={setMallsOption}
+                                />
+                            </div>
+                        </> : <></>}
 
             {/* single text-input */}
             <div className="mm_form_single_input">
@@ -674,7 +775,7 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
                           marginBottom: "10px",
                         }}
                       />
-                      <h4>.PDF .JPG .PNG</h4>
+                      <h4>.JPG .PNG</h4>
                       <p>You can also upload file by</p>
                       <input
                         {...getInputLogoProps()}
@@ -729,7 +830,7 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
                           marginBottom: "10px",
                         }}
                       />
-                      <h4>.PDF .JPG .PNG</h4>
+                      <h4>.JPG .PNG</h4>
                       <p>You can also upload file by</p>
                       <input
                         {...getInputBannerProps()}
@@ -769,6 +870,7 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
             type="checkbox"
             value={isAcceptTerm}
             onChange={handleTermChange}
+            
             checked={isAcceptTerm}
           />
 
@@ -792,9 +894,11 @@ const AddEateries = ({ get_mall_auth_data, setTab }) => {
           </p>
 
         </div>
-        <div className="mm_form_single_input mb_8">
+        <div className="mm_form_single_input mb_8 btn_eatery_res">
           <label htmlFor="" style={{ minWidth: "235px" }}></label>
           <button
+                            disabled={isAcceptTerm == 1 && isAcceptTerm2 ==1 ? false : true}
+
             style={{ marginTop: "20px", width: "200px" }}
             className="btn btn-black add-eatery-resp"
             onClick={() => {

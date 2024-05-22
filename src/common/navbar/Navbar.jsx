@@ -430,7 +430,7 @@ const Navbar = (
         last_name: getlastname,
         terms_condition: isAcceptTerm,
         lat: position.latitude,
-        long: position.longitude
+        log: position.longitude
       };
 
       console.log("-=-=-=->", params);
@@ -1761,7 +1761,7 @@ const Navbar = (
         }}
         style={customStyles}>
         <div className="model_sizing">
-          <div style={{ backgroundColor: "#dad9d8" }}>
+          <div style={{ backgroundColor: "var(--color-bg)" }}>
             <div style={{ height: "25px" }}>
               <button
                 className="signup_modal_close"
@@ -1773,7 +1773,7 @@ const Navbar = (
                 <IoClose />
               </button>
             </div>
-            <div className="tab_btn_main">
+            <div className="tab_btn_main" style={{height:"0px"}}>
             {signButn == 3 ? null : <button
                 onClick={() => {
                   SetregButn(1);
@@ -2701,7 +2701,7 @@ const Navbar = (
         onRequestClose={closeModal3}
         style={customStyles}>
         <div className="model_sizing">
-          <div style={{ backgroundColor: "#dad9d8" }}>
+          <div style={{ backgroundColor: "var(--color-bg)" }}>
             <div style={{ height: "25px" }}>
               <button
                 className="signup_modal_close"
@@ -2711,7 +2711,7 @@ const Navbar = (
                 <IoClose />
               </button>
             </div>
-            <div className="tab_btn_main">
+            <div className="tab_btn_main" style={{height:"0px"}}>
             {signButn == 3 ? null : <button
                 onClick={() => {
                   SetsignButn(1);

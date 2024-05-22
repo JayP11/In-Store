@@ -12,7 +12,7 @@ const CustomerBrandHero = ({ getsingalmalldata }) => {
                         : getsingalmalldata.banner_mall_path
                 }
                 alt=""
-                className="mall_hero_banner_img"
+                className="mall_hero_banner_img img_fluid_position"
             />
             <div className="mall_hero_logo_wrapp">
                 <img

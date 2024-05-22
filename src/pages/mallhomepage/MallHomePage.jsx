@@ -358,7 +358,7 @@ const MallHomePage = () => {
       //   last_name: getlastname,
       //   terms_condition: isAcceptTerm,
       //   lat: position.latitude,
-      //   long: position.longitude,
+      //   log: position.longitude,
       //   company_reg_document:files[0],
       //   vat_document:files2[0],
       // };
@@ -383,7 +383,7 @@ const MallHomePage = () => {
       await formdata.append("region_id", getregion);
       await formdata.append("terms_condition", isAcceptTerm);
       await formdata.append("lat",position.latitude);
-      await formdata.append("long",position.longitude);
+      await formdata.append("log",position.longitude);
       await formdata.append("company_reg_document",files[0]);
       await formdata.append("vat_document",files2[0]);
 
@@ -808,7 +808,7 @@ const MallHomePage = () => {
       ) : (
         <>
           <Helmet>
-            <title>Mall Home Screen</title>
+            <title>Mall Home Page</title>
           </Helmet>
           {/* <Navbar
       // setCustomerDropdown={setCustomerDropdown}
@@ -1530,7 +1530,7 @@ const MallHomePage = () => {
                   login here
                 </span>
               </p> */}
-
+              <div style={{paddingBottom:"1rem", width: "100%",}}>
               <button
                 className="btn btn-orange mb_16"
                 onClick={() => {
@@ -1538,8 +1538,9 @@ const MallHomePage = () => {
                   SetsignButn(1);
                 }}
               >
-                Sugn In
+                Sign In
               </button>
+              </div>
             </div>
           ) : regButn == 2 ? (
             <div className="home_model_4wrapp">
@@ -2233,7 +2234,10 @@ const MallHomePage = () => {
         style={customStyles}
       >
         <div className="model_sizing">
-          <div style={{ backgroundColor: "#dad9d8" }}>
+          <div style={{ 
+            // backgroundColor: "#dad9d8"
+            backgroundColor: "var(--color-bg)"
+           }}>
             <div style={{ height: "25px" }}>
               <button
                 className="signup_modal_close"
@@ -2244,7 +2248,7 @@ const MallHomePage = () => {
                 <IoClose />
               </button>
             </div>
-            <div className="tab_btn_main">
+            <div className="tab_btn_main" style={{height:"0px"}}>
               {signButn == 1 ? (
                 <button
                   onClick={() => {

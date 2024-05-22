@@ -25,7 +25,7 @@ const PrivacyPolicy = () => {
                 setPrivacyPolicyData(res.data.data);
               setLoading(false);
             } else {
-              null;
+              null();
             }
           })
           .catch((err) => {

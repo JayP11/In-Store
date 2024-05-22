@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 // import "./AddProductTilesBannerCard.css"
-import "./AddCinemaProductTileBannerCard.css";
+import "./AddCinemaProductTileBannerCard.css"
 import { useDropzone } from "react-dropzone";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { Link } from "react-router-dom";
@@ -49,12 +49,12 @@ const AddCinemaProductTileBannerCard = ({
   const [agearray, SetAgeArray] = useState([]);
 
   const [Category, setCategory] = useState("");
-  //   const [Price, setPrice] = useState("");
-  //   const [Description, setDiscription] = useState("");
+//   const [Price, setPrice] = useState("");
+//   const [Description, setDiscription] = useState("");
   const [Week, setWeek] = useState("");
   const [Region, setRegion] = useState([]);
   const [mallsOption, setMallsOption] = useState([]);
-  //   const [getTag, setTag] = useState("");
+//   const [getTag, setTag] = useState("");
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   // const [Category, setCategory] = useState("");
@@ -90,99 +90,128 @@ const AddCinemaProductTileBannerCard = ({
   // const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } =
   //   useDropzone({
   //     onDrop: (acceptedFiles) => {
-  //       setCondition(true);
+  //       console.log("file type", files[0]);
+  //       console.log("acceptedFiles", acceptedFiles[0].File);
+  //       const filteredFiles = acceptedFiles.filter(file => file.size <= 50000); // Limit size to 200KB (in bytes)
 
-  //       const filteredFiles = acceptedFiles.filter((file) => {
-  //         const isSizeValid = file.size <= 50000; // Limit size to 50KB (in bytes)
+  //       {
+  //         setFiles(
+  //           filteredFiles.map((file) =>
+  //             Object.assign(file, {
+  //               preview: URL.createObjectURL(file),
+  //             })
+  //           )
+  //         );
+  //         if (filteredFiles.length !== acceptedFiles.length) {
+  //           Notification("error", "Error!", "Some files exceed the maximum size limit of 50KB and will not be uploaded.");
+  //         }
+  //       }
+  //       setCondition(true);
+  //       if (acceptedFiles.length === 0) {
+  //         window.location.reload(true);
+  //       }
+  //     },
+  //   });
+
+  // const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } = useDropzone({
+  //   onDrop: (acceptedFiles) => {
+  //     setCondition(true);
+  
+  //     const filteredFiles = acceptedFiles.filter(file => {
+  //       const isSizeValid = file.size <= 50000; // Limit size to 50KB (in bytes)
+  //       const isImage = file.type.startsWith('image/'); // Check if it's an image file
+  //       let isDimensionsValid = false; // Assume dimensions are valid by default
+  
+  //       // Check image dimensions
+  //       if (isImage) {
+  //         const img = new Image();
+  //         img.src = URL.createObjectURL(file);
+  //         img.onload = () => {
+  //           if (img.width <= 100 && img.height <= 100) {
+  //             isDimensionsValid = true;
+  //           }
+  //         };
+  //       }
+  
+  //       return isSizeValid && isImage && isDimensionsValid;
+  //     });
+  
+  //     setFiles(
+  //       filteredFiles.map((file) =>
+  //         Object.assign(file, {
+  //           preview: URL.createObjectURL(file),
+  //         })
+  //       )
+  //     );
+  
+  //     if (filteredFiles.length !== acceptedFiles.length) {
+  //       Notification("error", "Error!", "Some files exceed the maximum size limit of 50KB or do not meet the dimension requirements of 100x100 pixels and will not be uploaded.");
+  //     }
+  
+  //     if (acceptedFiles.length === 0) {
+  //       window.location.reload(true);
+  //     }
+  //   },
+  // });
+  
+  
+ 
+  
+
+  // const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } =
+  // useDropzone({
+  //   onDrop: async (acceptedFiles) => {
+  //     setCondition(true);
+
+  //     const filteredFiles = await Promise.all(
+  //       acceptedFiles.map(async (file) => {
+  //         const isSizeValid = file.size <= 4000; // Limit size to 50KB (in bytes)
   //         const isImage = file.type.startsWith("image/"); // Check if it's an image file
-  //         let isDimensionsValid = true; // Assume dimensions are valid by default
+
+  //         if (!isImage || !isSizeValid) {
+  //           return null; // Skip files that are not images or exceed size limit
+  //         }
+
+  //         // Load image and wait for it to load
+  //         const img = new Image();
+  //         img.src = URL.createObjectURL(file);
+  //         await new Promise((resolve, reject) => {
+  //           img.onload = resolve;
+  //           img.onerror = reject;
+  //         });
 
   //         // Check image dimensions
-  //         if (isImage) {
-  //           const img = new Image();
-  //           img.src = URL.createObjectURL(file);
-  //           img.onload = () => {
-  //             if (img.width <= 100 && img.height <= 100) {
-  //               isDimensionsValid = false;
-  //             }
-  //           };
-  //         }
-  //         return isSizeValid && isImage && isDimensionsValid;
-  //       });
-  //       setFiles(
-  //         filteredFiles.map((file) =>
-  //           Object.assign(file, {
-  //             preview: URL.createObjectURL(file),
-  //           })
-  //         )
-  //       );
+  //         const isDimensionsValid = img.width <= 100 && img.height <= 100;
 
-  //       if (filteredFiles.length !== acceptedFiles.length) {
-  //         Notification(
-  //           "error",
-  //           "Error!",
-  //           "Some files exceed the maximum size limit of 50KB or do not meet the dimension requirements of 100x100 pixels and will not be uploaded."
-  //         );
-  //       }
+  //         return isDimensionsValid ? file : null; // Return file if dimensions are valid, otherwise skip it
+  //       })
+  //     );
 
-  //       if (acceptedFiles.length === 0) {
-  //         window.location.reload(true);
-  //       }
-  //     },
-  //   });
-  // const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } =
-  //   useDropzone({
-  //     onDrop: async (acceptedFiles) => {
-  //       setCondition(true);
+  //     // Filter out null values (files that were skipped)
+  //     const validFiles = filteredFiles.filter((file) => file !== null);
 
-  //       const filteredFiles = await Promise.all(
-  //         acceptedFiles.map(async (file) => {
-  //           const isSizeValid = file.size <= 4100; // Limit size to 50KB (in bytes)
-  //           const isImage = file.type.startsWith("image/"); // Check if it's an image file
-
-  //           if (!isImage || !isSizeValid) {
-  //             return null; // Skip files that are not images or exceed size limit
-  //           }
-
-  //           // Load image and wait for it to load
-  //           const img = new Image();
-  //           img.src = URL.createObjectURL(file);
-  //           await new Promise((resolve, reject) => {
-  //             img.onload = resolve;
-  //             img.onerror = reject;
-  //           });
-
-  //           // Check image dimensions
-  //           const isDimensionsValid = img.width <= 100 && img.height <= 100;
-
-  //           return isDimensionsValid ? file : null; // Return file if dimensions are valid, otherwise skip it
+  //     setFiles(
+  //       validFiles.map((file) =>
+  //         Object.assign(file, {
+  //           preview: URL.createObjectURL(file),
   //         })
+  //       )
+  //     );
+
+  //     if (validFiles.length !== acceptedFiles.length) {
+  //       Notification(
+  //         "error",
+  //         "Error!",
+  //         "Some files exceed the maximum size limit of 50KB or do not meet the dimension requirements of 100x100 pixels and will not be uploaded."
   //       );
+  //     }
 
-  //       // Filter out null values (files that were skipped)
-  //       const validFiles = filteredFiles.filter((file) => file !== null);
+  //     if (acceptedFiles.length === 0) {
+  //       window.location.reload(true);
+  //     }
+  //   },
+  // });
 
-  //       setFiles(
-  //         validFiles.map((file) =>
-  //           Object.assign(file, {
-  //             preview: URL.createObjectURL(file),
-  //           })
-  //         )
-  //       );
-
-  //       if (validFiles.length !== acceptedFiles.length) {
-  //         Notification(
-  //           "error",
-  //           "Error!",
-  //           "Some files exceed the maximum size limit of 50KB or do not meet the dimension requirements of 100x100 pixels and will not be uploaded."
-  //         );
-  //       }
-
-  //       if (acceptedFiles.length === 0) {
-  //         window.location.reload(true);
-  //       }
-  //     },
-  //   });
   const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } =
     useDropzone({
       onDrop: async (acceptedFiles) => {
@@ -209,7 +238,7 @@ const AddCinemaProductTileBannerCard = ({
             });
 
             // Check image dimensions
-            const isDimensionsValid = img.width <= 100 && img.height <= 100;
+            const isDimensionsValid = img.width == 418 && img.height == 590;
 
             return isDimensionsValid ? file : null; // Return file if dimensions are valid, otherwise skip it
           })
@@ -230,7 +259,7 @@ const AddCinemaProductTileBannerCard = ({
           Notification(
             "error",
             "Error!",
-            "Some files exceed the maximum size limit of 50KB or do not meet the dimension requirements of 100x100 pixels and will not be uploaded."
+            "Some files exceed the maximum size limit of 50KB or do not meet the dimension requirements of 418x590 pixels and will not be uploaded."
           );
         }
 
@@ -239,7 +268,7 @@ const AddCinemaProductTileBannerCard = ({
         }
       },
     });
-
+  
   const thumbs = files.map((file) => (
     <img
       src={file.preview}
@@ -270,19 +299,19 @@ const AddCinemaProductTileBannerCard = ({
       return;
     } else if (regionidarray == "" || undefined) {
       Notification("error", "Error!", "Please Select Region!");
-    }
+    } 
     // else if (BrandName == "" || undefined) {
     //   Notification("error", "Error!", "Please Select Brand!");
-    // }
+    // } 
     else if (ageId == "" || undefined) {
-      Notification("error", "Error!", "Please Select Age!");
-    } else if (files == "" || undefined) {
-      Notification("error", "Error", "Please Upload Image");
-      return;
-    } else {
+        Notification("error", "Error!", "Please Select Age!");
+      }  else if (files == "" || undefined) {
+        Notification("error", "Error", "Please Upload Image");
+        return;
+      }  else {
       const formdata = await new FormData();
       await formdata.append("title", title);
-      await formdata.append("booking_url", bookingUrl);
+      await formdata.append("booking_url",bookingUrl);
       await formdata.append("age_restriction_id", ageId);
       for (var i = 0; i < regionidarray.length; i++) {
         await formdata.append("region_id[" + i + "]", regionidarray[i].id);
@@ -292,17 +321,14 @@ const AddCinemaProductTileBannerCard = ({
       }
       // await formdata.append("brand_id", BrandName);
       await formdata.append("cinema_category_id", Category);
-      //   await formdata.append("price", Price);
-      //   await formdata.append("description", Description);
-      //   await formdata.append("tag", getTag);
+    //   await formdata.append("price", Price);
+    //   await formdata.append("description", Description);
+    //   await formdata.append("tag", getTag);
       await formdata.append(
         "from_date",
         moment(startDate[0]).format("YYYY-MM-DD")
       );
-      await formdata.append(
-        "to_date",
-        moment(startDate[1]).format("YYYY-MM-DD")
-      );
+      await formdata.append("to_date", moment(startDate[1]).format("YYYY-MM-DD"));
       await formdata.append("region_child_id[0]", "");
       if (files[0] !== undefined) {
         await formdata.append("image", files[0]);
@@ -358,30 +384,30 @@ const AddCinemaProductTileBannerCard = ({
     getAge();
 
     console.log("cinema category data", cinema_category_data);
-  }, []);
+  },[]);
 
   const getAge = async () => {
     const token = JSON.parse(localStorage.getItem("is_token"));
 
     axios
-      .get(get_age_restriction, {
-        headers: {
-          Accept: ACCEPT_HEADER,
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((res) => {
-        console.log("ggg", JSON.stringify(res.data, null, 2));
-        if (res.data.success == 1) {
-          SetAgeArray(res.data.data);
-        } else {
-          null;
-        }
-      })
-      .catch((err) => {
-        console.log("err11", err);
-      });
-  };
+        .get(get_age_restriction, {
+            headers: {
+                Accept: ACCEPT_HEADER,
+                Authorization: "Bearer " + token,
+            },
+        })
+        .then((res) => {
+            console.log("ggg", JSON.stringify(res.data, null, 2));
+            if (res.data.success == 1) {
+                SetAgeArray(res.data.data);
+            } else {
+                null;
+            }
+        })
+        .catch((err) => {
+            console.log("err11", err);
+        });
+};
   return (
     <div className="leaderboard-card-main-wrapp product-tiles-card-main-wrapp">
       {/* Leaderboard flex start */}
@@ -389,7 +415,7 @@ const AddCinemaProductTileBannerCard = ({
         {/* Leaderboard first part responsive side start */}
         <div className="leaderboard-card-first-resp-main-wrapp">
           <p className="leaderboard-last-part-txt">
-            Service fee will apply if canceled
+            {/* Service fee will apply if canceled */}
           </p>
           <button
             className="leaderboard-delete-icon-btn"
@@ -409,11 +435,7 @@ const AddCinemaProductTileBannerCard = ({
 
           {/* Leaderboard inputbox start */}
           <div className="leaderboard-card-inpbox-wrapp">
-            <label
-              className="leaderboard-card-lbl"
-              style={{ minWidth: "130px" }}>
-              Title:<span className="star_require">*</span>
-            </label>
+            <label className="leaderboard-card-lbl" style={{minWidth:"130px"}}>Title:<span className="star_require">*</span></label>
             <input
               type="text"
               className="leaderboard-card-inp"
@@ -426,28 +448,27 @@ const AddCinemaProductTileBannerCard = ({
 
           {/* Leaderboard inputbox start */}
           <div className="leaderboard-card-inpbox-wrapp">
-            <label
-              className="leaderboard-card-lbl"
-              style={{ minWidth: "130px" }}>
-              Mall(s):
-            </label>
+            <label className="leaderboard-card-lbl" 
+            
+            
+            
+            style={{minWidth:"130px"}}>Mall(s):</label>
             <div
               onClick={() => openMallModal()}
               className="leaderboard-card-inp"
               style={{ display: "flex", gap: "5px", flexWrap: "wrap" }}>
               {selectedMalls && selectedMalls.length > 0
                 ? selectedMalls.map((mall, mindx) => {
-                    return <p className="mall-lib-font">{mall}</p>;
-                  })
+                  return <p className="mall-lib-font">{mall}</p>;
+                })
                 : null}
+           
             </div>
+            
           </div>
           {/* Leaderboard inputbox end */}
           <div className="leaderboard-card-inpbox-wrapp">
-            <label
-              className="leaderboard-card-lbl"
-              style={{ minWidth: "130px" }}
-              htmlFor="">
+            <label className="leaderboard-card-lbl" style={{minWidth:"130px"}} htmlFor="" >
               Week:<span className="star_require">*</span>
             </label>
             {/* <input
@@ -473,17 +494,18 @@ const AddCinemaProductTileBannerCard = ({
                             className="leaderboard-card-inp"
                             placeholderText="Select your week"
                         /> */}
-            <DateRangePicker
-              oneTap
-              hoverRange="week"
-              isoWeek
-              placeholder="Select your Week"
-              className="leaderboard-card-inp DateRangePicker_LeaderboardCard"
-              startDate={selectedDates.startDate} // Set the initial start date
-              endDate={selectedDates.endDate}
-              onChange={handleDateChange}
-              disabledDate={combine(allowedMaxDays(7), beforeToday())}
-            />
+                        <DateRangePicker
+                oneTap
+                hoverRange="week"
+                isoWeek
+                placeholder="Select your Week"
+
+                className="leaderboard-card-inp DateRangePicker_LeaderboardCard"
+                startDate={selectedDates.startDate} // Set the initial start date
+                endDate={selectedDates.endDate}
+                onChange={handleDateChange}
+                disabledDate={combine(allowedMaxDays(7), beforeToday())}
+              />
           </div>
           {/* Leaderboard inputbox start */}
           {/* <div className="leaderboard-card-inpbox-wrapp">
@@ -516,11 +538,7 @@ const AddCinemaProductTileBannerCard = ({
           {/* Leaderboard inputbox start */}
 
           <div className="leaderboard-card-inpbox-wrapp">
-            <label
-              className="leaderboard-card-lbl"
-              style={{ minWidth: "130px" }}>
-              Categories:<span className="star_require">*</span>
-            </label>
+            <label className="leaderboard-card-lbl" style={{minWidth:"130px"}}>Categories:<span className="star_require">*</span></label>
             <div className="select-wrapper" style={{ width: "100%" }}>
               <select
                 className="leaderboard-card-inp"
@@ -532,7 +550,7 @@ const AddCinemaProductTileBannerCard = ({
                   Select Category
                 </option>
                 {cinema_category_data &&
-                  cinema_category_data.map((item, index) => {
+                    cinema_category_data.map((item, index) => {
                     return (
                       <>
                         <option value={item.id} key={index}>
@@ -572,43 +590,35 @@ const AddCinemaProductTileBannerCard = ({
 
           {/* Leaderboard inputbox start */}
           <div className="leaderboard-card-inpbox-wrapp">
-            <label
-              className="leaderboard-card-lbl"
-              style={{ minWidth: "130px" }}>
-              Age restriction:<span className="star_require">*</span>
-            </label>
-            <div className="select-wrapper" style={{ width: "100%" }}>
-              <select
+              <label className="leaderboard-card-lbl" style={{minWidth:"130px"}}>Age restriction:<span className="star_require">*</span></label>
+              <div className="select-wrapper" style={{ width: "100%" }}>
+                <select
                 placeholder="Select age restriction"
-                className="leaderboard-card-inp"
-                onChange={(e) => {
-                  setAge(e.target.value);
-                  setAgeId(e.target.value);
-                }}>
-                <option selected disabled value="">
-                  {age}
-                </option>
-                {agearray &&
-                  agearray.map((item, index) => {
-                    return (
-                      <>
-                        <option value={item.id} key={index}>
-                          {item.name}
-                        </option>
-                      </>
-                    );
-                  })}
-              </select>
+                  className="leaderboard-card-inp"
+                  onChange={(e) => {
+                    setAge(e.target.value);
+                    setAgeId(e.target.value);
+                  }}>
+                  <option selected disabled value="">
+                    {age}
+                  </option>
+                  {agearray &&
+                    agearray.map((item, index) => {
+                      return (
+                        <>
+                          <option value={item.id} key={index}>
+                            {item.name}
+                          </option>
+                        </>
+                      );
+                    })}
+                </select>
+              </div>
             </div>
-          </div>
           {/* Leaderboard inputbox end */}
 
           <div className="leaderboard-card-inpbox-wrapp">
-            <label
-              className="leaderboard-card-lbl"
-              style={{ minWidth: "130px" }}>
-              Booking URL:<span className="star_require">*</span>
-            </label>
+            <label className="leaderboard-card-lbl" style={{minWidth:"130px"}}>Booking URL:<span className="star_require">*</span></label>
             <input
               type="text"
               className="leaderboard-card-inp"
@@ -632,7 +642,7 @@ const AddCinemaProductTileBannerCard = ({
         {/* Leaderboard part second start */}
 
         <div
-          className="leaderboard-card-part-sec product-tiles-card-sec-part leaderboard-card-part-sec-chng"
+          className="leaderboard-card-part-sec product-tiles-card-sec-part leaderboard-card-part-sec-chng cinema_pro_tile_sec"
           style={{ width: "235px", height: "200px" }}
           {...getRootlogoProps()}>
           <input
@@ -642,19 +652,12 @@ const AddCinemaProductTileBannerCard = ({
           {getcondition === true ? (
             <>
               {files && files.length > 0 ? (
-                <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl leaderboard-card-part-img-upl-cinema">
+                <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl leaderboard-card-part-img-upl-cinema myprofile_inner_sec2_img_upload_border">
                   {thumbs}
                 </div>
               ) : (
                 <div style={{ width: "100%" }}>
-                  <div
-                    className="leaderboard-card-part-sec2"
-                    style={{
-                      height: "255px",
-                      textAlign: "center",
-                      paddingLeft: "1.1rem",
-                      paddingRight: "1.1rem",
-                    }}>
+                  <div className="leaderboard-card-part-sec2"style={{height:"255px",textAlign:"center",paddingLeft:"1.1rem",paddingRight:"1.1rem"}}>
                     <AiOutlineCloudUpload
                       style={{
                         width: "60px",
@@ -663,22 +666,18 @@ const AddCinemaProductTileBannerCard = ({
                         marginBottom: "10px",
                       }}
                     />
-                    <h4 style={{ fontSize: "14px" }}>
-                      .JPG .PNG .GIF (418 x 590 pixels)
-                    </h4>
-                    <p style={{ fontSize: "14px" }}>(max 50kb)</p>
+                    <h4 style={{ fontSize: "14px" }}>.JPG .PNG .GIF (418 x 590 pixels)</h4>
                     <p style={{ fontSize: "14px" }}>
-                      You can also upload file by
+                      (max 50kb)
+                    </p>
+                    <p style={{ fontSize: "14px" }}>
+                    You can also upload file by
                     </p>
 
                     <button
                       type="button"
                       className="click_upload_btn"
-                      style={{
-                        marginBottom: "10px",
-                        fontWeight: "600",
-                        color: "var(--color-orange)",
-                      }}>
+                      style={{ marginBottom: "10px",fontWeight:"600",color:"var(--color-orange)" }}>
                       click here
                     </button>
                   </div>
@@ -713,7 +712,7 @@ const AddCinemaProductTileBannerCard = ({
                   </div>
                 </div>
               ) : (
-                <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl leaderboard-card-part-img-upl-cinema">
+                <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl leaderboard-card-part-img-upl-cinema myprofile_inner_sec2_img_upload_border">
                   <img
                     src={item.image_path}
                     style={{ width: "100%", height: "100%" }}
@@ -735,12 +734,7 @@ const AddCinemaProductTileBannerCard = ({
                         apply if canceled</p>
                     <Link className='leaderboard-delete-icon-btn'><span className='leaderboard-extend-txt'>Extend</span> <img src={images.extend_icon} className='leaderboard-delete-icon' /></Link> */}
           <div className="leaderboard-btn-box">
-            <button
-              style={{
-                backgroundColor: "#ff8b00",
-                fontSize: "16px",
-                padding: "0.4rem",
-              }}
+            <button style={{ backgroundColor: "#ff8b00",fontSize:"16px",padding:"0.4rem" }}
               className="btn btn-orange"
               onClick={() => AddProductTilesBanner()}>
               Publish

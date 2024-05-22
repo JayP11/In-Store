@@ -22,6 +22,8 @@ const CustomerSingleBrandProductCard = ({
 }) => {
   const [getlist, SetList] = useState([]);
   const [loading, SetLoading] = useState(false);
+  const [getQrValue, setQrValue] = useState();
+  const [getQrDiscount, setQrDiscount] = useState();
 
   const getmovielist = async () => {
     SetLoading(true);
@@ -157,9 +159,12 @@ const CustomerSingleBrandProductCard = ({
         <button
           className="disc10_btn"
           onClick={() => {
+            setQrValue(data.qr_image_path ? data.qr_image_path : "");
+            setQrDiscount(data.qr_discount ? data.qr_discount : "");
             setIsOpen(true);
+            
           }}>
-          10% Discount QR Code
+          {data.qr_discount ? data.qr_discount : ""} Discount QR Code
         </button>
       </div>
       <Modal
@@ -180,11 +185,16 @@ const CustomerSingleBrandProductCard = ({
               fontWeight: "600",
               fontSize:"18px"
             }}>
-            Scan QR code to receive your In-store 10% discount!
+            Scan QR code to receive your In-store {getQrDiscount} discount!
           </div>
           <div>
-            <img
+            {/* <img
               src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg"
+              alt=""
+              style={{ height: "150px" }}
+            /> */}
+            <img
+              src={getQrValue}
               alt=""
               style={{ height: "150px" }}
             />

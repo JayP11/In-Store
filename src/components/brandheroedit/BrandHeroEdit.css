@@ -5,7 +5,7 @@
     align-items: center;
     justify-content: space-evenly;
     height: fit-content;
-    max-height: 300px;
+    /* max-height: 300px; */
     /* z-index: -1; */
     background-color: #dedede;
 }
@@ -24,7 +24,7 @@
 .band-inn-logo-wrapp {
     position: absolute;
     left: 25%;
-    top: 14%;
+    top: 17%;
     width: 165px;
     height: 165px;
     background: var(--color-white);
@@ -42,6 +42,10 @@
     .brand-hero-edit-icon {
         transform: translate(325px, -60px);
     }
+
+    .img_fluid_position{
+        object-position: left !important;
+    }
 }
 
 @media screen and (max-width:975px) {
@@ -58,7 +62,7 @@
 
 @media screen and (max-width:768px) {
     .brand-hero-edit-main-wrapp {
-        height: 20vh;
+        /* height: 20vh; */
     }
 
     .edit-icon-positon-resp {

@@ -69,8 +69,7 @@ const MallsNearMeCard = ({ setTab, item, SetSingalMallData, getMallList }) => {
         // getMallList();
         window.location.reload(true);
 
-        console.log("mall_rating", response.data);
-      }
+       }
       return response.data;
     } catch (error) {
       console.log("error", error);
@@ -126,10 +125,10 @@ const MallsNearMeCard = ({ setTab, item, SetSingalMallData, getMallList }) => {
           </Link>
 
 
-          <div className="mallnearme-card-rating-main" onClick={() => setIsOpen3(true)}>
+          {/* <div className="mallnearme-card-rating-main" onClick={() => setIsOpen3(true)}>
             <p className="mallnearme-card-rating-digit">{item.avg_rating === null ? 1 : (item.avg_rating).toFixed(1)}</p>
             <p className="mallnearme-card-rating-txt">Rating</p>
-          </div>
+          </div> */}
           <div className="mallnearme-card-inner-darkbox">
             <IoLocationSharp className="mallnearme-card-icon" />
             <p className="mallnearme-card-inner-darkbox-txt">3 km</p>

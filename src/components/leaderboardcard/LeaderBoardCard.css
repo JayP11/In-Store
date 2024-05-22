@@ -16,7 +16,7 @@
 }
 
 .leaderboard-card-part-sec {
-    width: 39%;
+    width: 40%;
     /* width: 100%; */
     display: flex;
     flex-direction: column;
@@ -40,6 +40,10 @@
 
 .leaderboard_tile_sec_part_height{
     height: 285px;
+}
+
+.myprofile_inner_sec2_img_upload_border{
+    border: #c0c0c0 2px solid !important;
 }
 
 .leaderboard-card-part-third {
@@ -72,7 +76,8 @@
 }
 
 .leaderboard-card-part-img-upl {
-    height: 185px;
+    /* height: 185px; */
+    height: 100%;
 }
 
 .mall-lib-font {
@@ -163,7 +168,12 @@
     }
 
     .leaderboard-card-part-sec-half{
-        width: 100% !important;
+        /* width: 100% !important; */
+        align-self: center;
+    }
+
+    .leaderboard-card-part-sec-chng{
+        /* width: 100% !important; */
     }
 
     
@@ -231,6 +241,16 @@
     .leaderboard-card-part-first-half {
         width: 285px !important;
     }
+
+    .mall_Select_wrapp{
+        width: 87% !important;
+    }
+
+    .select_mall_heading {
+        font-size: 18px !important;
+        text-align: center !important;
+    }
+
 
 }
 

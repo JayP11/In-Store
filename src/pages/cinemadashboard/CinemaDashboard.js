@@ -176,46 +176,10 @@ const CinemaDashboard = () => {
     // console.log("getsingleStoreData", getsingleStoreData);
     // window.location.reload(true);
   }, []);
-
-  // console.log("edit store is is", getstore_is);
-
-  // Mall Event Api Start
-
-  // const [eventList, setEventList] = useState([]);
-  // const [loading, setLoading] = useState(false);
-  // const perPage = 3;
-  // const [totalPages, setTotalPages] = useState(1);
-  // const [page, setPage] = useState(1);
-
+ 
+   
   const [getbranddata, SetBrandData] = useState("");
-
-  // const EventApi = async () => {
-  //   console.log("event checked");
-  //   const token = await JSON.parse(localStorage.getItem("is_token"));
-  //   setLoading(true);
-  //   fetch(get_mall_event + ?per_page=${perPage}&page=${page}, {
-  //     method: "GET",
-  //     headers: {
-  //       Accept: ACCEPT_HEADER,
-  //       Authorization: "Bearer " + token,
-  //     },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((res) => {
-  //       console.log("event_list", res.data.last_page);
-  //       setTotalPages(res.data.last_page);
-  //       setEventList([...eventList, ...res.data.data]);
-  //       setLoading(false);
-  //     })
-  //     .catch((err) => {
-  //       console.log("err", err);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   EventApi();
-  // }, [page]);
-
+ 
   useEffect(() => {
     window.history.pushState(null, document.title, window.location.href);
     window.addEventListener("popstate", handlePopstate);
@@ -271,7 +235,7 @@ const CinemaDashboard = () => {
         </div>
       )}
       <Helmet>
-        <title>Profile | In-Store</title>
+        <title>Cinema Dashboard | In-Store</title>
       </Helmet>
 
       <div>
@@ -369,9 +333,9 @@ const CinemaDashboard = () => {
                     </button>
                     <button
                       style={{
-                        background: gettab === 40 ? "#ff8b00" : "#fff",
-                        color: gettab === 40 ? "#fff" : "#000",
-                        fontWeight: gettab === 40 ? "700" : "500",
+                        background: gettab === 40 || gettab === 41 ? "#ff8b00" : "#fff",
+                        color: gettab === 40 || gettab === 41? "#fff" : "#000",
+                        fontWeight: gettab === 40 || gettab === 41 ? "700" : "500",
                         width: sidebaropen ? "275px" : "0px",
                         overflow: "hidden",
                         transition: "width 1s ease",
@@ -386,9 +350,9 @@ const CinemaDashboard = () => {
                     </button>
                     <button
                       style={{
-                        background: gettab === 46 ? "#ff8b00" : "#fff",
-                        color: gettab === 46 ? "#fff" : "#000",
-                        fontWeight: gettab === 46 ? "700" : "500",
+                        background: gettab === 46 || gettab === 47 ? "#ff8b00" : "#fff",
+                        color: gettab === 46 || gettab === 47? "#fff" : "#000",
+                        fontWeight: gettab === 46 || gettab === 47 ? "700" : "500",
                         width: sidebaropen ? "275px" : "0px",
                         overflow: "hidden",
                         transition: "width 1s ease",
@@ -403,9 +367,9 @@ const CinemaDashboard = () => {
                     </button>
                     <button
                       style={{
-                        background: gettab === 42 ? "#ff8b00" : "#fff",
-                        color: gettab === 42 ? "#fff" : "#000",
-                        fontWeight: gettab === 42 ? "700" : "500",
+                        background: gettab === 42 || gettab === 43 ? "#ff8b00" : "#fff",
+                        color: gettab === 42 || gettab === 43 ? "#fff" : "#000",
+                        fontWeight: gettab === 42 || gettab === 43 ? "700" : "500",
                         width: sidebaropen ? "275px" : "0px",
                         overflow: "hidden",
                         transition: "width 1s ease",
@@ -420,9 +384,9 @@ const CinemaDashboard = () => {
                     </button>
                     <button
                       style={{
-                        background: gettab === 35 ? "#ff8b00" : "#fff",
-                        color: gettab === 35 ? "#fff" : "#000",
-                        fontWeight: gettab === 35 ? "700" : "500",
+                        background: gettab === 35 || gettab === 36 ? "#ff8b00" : "#fff",
+                        color: gettab === 35 || gettab === 36 ? "#fff" : "#000",
+                        fontWeight: gettab === 35 || gettab === 36 ? "700" : "500",
                         width: sidebaropen ? "275px" : "0px",
                         overflow: "hidden",
                         transition: "width 1s ease",
@@ -437,9 +401,9 @@ const CinemaDashboard = () => {
                     </button>
                     <button
                       style={{
-                        background: gettab === 37 ? "#ff8b00" : "#fff",
-                        color: gettab === 37 ? "#fff" : "#000",
-                        fontWeight: gettab === 37 ? "700" : "500",
+                        background: gettab === 37 || gettab === 38 ? "#ff8b00" : "#fff",
+                        color: gettab === 37 || gettab === 38  ? "#fff" : "#000",
+                        fontWeight: gettab === 37 || gettab === 38  ? "700" : "500",
                         width: sidebaropen ? "275px" : "0px",
                         overflow: "hidden",
                         transition: "width 1s ease",
@@ -454,10 +418,10 @@ const CinemaDashboard = () => {
                     </button>
                     <button
                       style={{
-                        background: gettab === 3 ? "#ff8b00" : "#fff",
-                        color: gettab === 3 ? "#fff" : "#000",
+                        background: gettab === 3 || gettab === 39 ? "#ff8b00" : "#fff",
+                        color: gettab === 3 || gettab === 39 ? "#fff" : "#000",
                         fontWeight:
-                          gettab === 3 || gettab === 9 || gettab === 10
+                          gettab === 3 || gettab === 9 || gettab === 10 || gettab === 39
                             ? "700"
                             : "500",
                         width: sidebaropen ? "275px" : "0px",
@@ -474,7 +438,7 @@ const CinemaDashboard = () => {
                   <FiChevronLeft color="#fff" size={20} />
                 </div> */}
                     </button>
-                    <button
+                    {/* <button
                       style={{
                         background: gettab === 44 ? "#ff8b00" : "#fff",
                         color: gettab === 44 ? "#fff" : "#000",
@@ -489,13 +453,10 @@ const CinemaDashboard = () => {
                       }}
                       onClick={() => setTab(44)}
                       className="profile_sidebar_sig_btn cinema_sidebar_sig_btn profile_sidebar_sig_btn_padding">
-                      {/* &nbsp;&nbsp;&nbsp; - Eateries */}
                       - Cinema <br />
                       Analytics Bundles
-                      {/* <div className="profile_sidebar_sig_btn_right_arrow">
-                  <FiChevronLeft color="#fff" size={20} />
-                </div> */}
-                    </button>
+                     
+                    </button> */}
                     <button
                       style={{
                         background: gettab === 4 ? "#ff8b00" : "#fff",

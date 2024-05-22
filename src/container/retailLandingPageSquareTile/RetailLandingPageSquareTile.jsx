@@ -152,9 +152,8 @@ const RetailLandingPageSquareTile = ({
       : ""
   );
 
-
-
-  const { getCategoryApi, getWeekApi,getCinemaCategoryApi } = useStoreContext();
+  const { getCategoryApi, getWeekApi, getCinemaCategoryApi } =
+    useStoreContext();
 
   function closeMallModal() {
     setMallModalIsOpen(false);
@@ -228,7 +227,7 @@ const RetailLandingPageSquareTile = ({
         if (res.data.success == 1) {
           SetRigion_Array(res.data.data);
         } else {
-          null;
+          null();
         }
       })
       .catch((err) => {
@@ -429,11 +428,19 @@ const RetailLandingPageSquareTile = ({
                         regionidarray={regionidarray}
                         mallidarray={mallidarray}
                         selectedMalls={selectedMalls}
-                      />
+                      /> 
                     );
                   })
                 : null}
-                <span style={{fontSize:"14px",color:"#bbb",alignSelf:"flex-start",marginBottom:"0.7rem"}}>*Required Fields including all image uploads.</span>
+              <span
+                style={{
+                  fontSize: "14px",
+                  color: "#bbb",
+                  alignSelf: "flex-start",
+                  marginBottom: "0.7rem",
+                }}>
+                *Required Fields including all image uploads.
+              </span>
               {totalPages !== page && (
                 <button
                   className="view_more_btn"
@@ -446,7 +453,7 @@ const RetailLandingPageSquareTile = ({
 
               {/* LeaderBoard Add New Button start */}
 
-                {/* <button onClick={() => setTab(47)} className="leaderboard-btn">
+              {/* <button onClick={() => setTab(47)} className="leaderboard-btn">
                   Add new
                   <img
                     src={images.add_new}
@@ -455,14 +462,14 @@ const RetailLandingPageSquareTile = ({
                   />
                 </button> */}
               {/* {getliast.length > 0 ? ( */}
-                <button onClick={() => setTab(47)} className="leaderboard-btn">
-                  Add new{" "}
-                  <img
-                    src={images.add_new}
-                    alt=""
-                    className="leaderboard-btn-icon"
-                  />
-                </button>
+              <button onClick={() => setTab(47)} className="leaderboard-btn">
+                Add new{" "}
+                <img
+                  src={images.add_new}
+                  alt=""
+                  className="leaderboard-btn-icon"
+                />
+              </button>
               {/* ) : null} */}
 
               {/* LeaderBoard Add New Button end */}

@@ -216,6 +216,7 @@ import cons_wel_event_icon from "../assets/images/cons_wel_event_icon.png";
 import cons_wel_cart_icon from "../assets/images/cons_wel_cart_icon.png";
 import cons_wel_promotion_icon from "../assets/images/cons_wel_promotion_icon.png";
 import cons_wel_facility_icon from "../assets/images/cons_wel_facility_icon.png";
+import check_promotion from "../assets/images/maxresdefault.jpg";
 
 
 
@@ -419,5 +420,6 @@ export default {
   cons_wel_event_icon,
   cons_wel_cart_icon,
   cons_wel_promotion_icon,
-  cons_wel_facility_icon
+  cons_wel_facility_icon,
+  check_promotion
 };

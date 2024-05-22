@@ -98,8 +98,7 @@ const EditFacilities = ({
     const data = await UpdataFacilityApi(formdata);
     if (data) {
       if (data.success === 1) {
-        console.log("facility-data", data);
-        Notification("success", "Success!", "Facility Updated Successfully!");
+         Notification("success", "Success!", "Facility Updated Successfully!");
         setTab(6);
         // getFacilityApi();
       }
@@ -314,7 +313,7 @@ const EditFacilities = ({
                   className="mm_form_single_input mb_8"
                   style={{ flexDirection: "column", gap: "0px" }}>
                   <div className="signup_terms_wrapp">
-                    <label htmlFor="" className="editfac_label"></label>
+                    <label htmlFor="" className="editfac_label" style={{minWidth:"162px"}}></label>
                     <input
                                       type="checkbox"
 
@@ -328,7 +327,7 @@ const EditFacilities = ({
                     </p>
                   </div>
                   <div className="signup_terms_wrapp">
-                    <label htmlFor="" className="editfac_label"></label>
+                    <label htmlFor="" className="editfac_label" style={{minWidth:"162px"}}></label>
                     <input
                                       type="checkbox"
 
@@ -349,6 +348,8 @@ const EditFacilities = ({
                 <div className="mm_form_single_input">
                   <label htmlFor="" className="editfac_label"></label>
                   <button
+                                    disabled={isAcceptTerm == 1 && isAcceptTerm2 ==1 ? false : true}
+
                     className="btn btn-black"
                     style={{ alignSelf: "start", maxWidth: "150px" }}
                     onClick={() => updateFacilityData()}>

@@ -42,6 +42,9 @@ const customStyles = {
   },
 };
 
+const togglePasswordVisibility = () => {
+  setPasswordVisible(!passwordVisible);
+};
 
 const CinemaNavbar = ({
   setTab,
@@ -59,12 +62,9 @@ const CinemaNavbar = ({
   const [modalIsOpen3, setIsOpen3] = useState(false);
   const [modalIsOpen4, setIsOpen4] = useState(false);
   const [modalIsOpenBrand, setModalIsOpenBrand] = useState(false);
-  const [passwordVisible, setPasswordVisible] = useState(false);
-  const [getmall, SetMall] = useState("");
 
   const [getcustomerDropdown, setCustomerDropdown] = useState(false);
   const [getregisterCustomerOpen, setRegisterCustomerOpen] = useState(false);
-  const [retailertype, setRetailertype] = useState("");
 
   const { retailer_data } = useStoreContext();
   const [getmallarray2, SetMallArray2] = useState([]);
@@ -91,6 +91,7 @@ const CinemaNavbar = ({
   const [getvat_no, setvat_no] = useState("");
   const [getearh_no, setearh_no] = useState("");
   const [signButn, SetsignButn] = useState(1);
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const [catarray, SetArray] = useState([]);
   const [getcatid, SetCatId] = useState();
@@ -98,13 +99,10 @@ const CinemaNavbar = ({
   const [searchValue, setSearchValue] = useState();
   const [getCartCount, setCartCount] = useState("");
 
+
   const { setMallRegister, is_login, is_token, logoutUser, role } =
     useMallContext();
 
-    
-const togglePasswordVisibility = () => {
-  setPasswordVisible(!passwordVisible);
-};
   const mallLoginModalOpen = () => {
     setIsOpen(false);
     setIsOpen3(true);
@@ -112,16 +110,7 @@ const togglePasswordVisibility = () => {
 
   const { setLogin } = useAuthContext();
 
-  const {
-    getCategoryApi,
-    getWeekApi,
-    category_data,
-    cinema_mall_data,
-    setRegisterCinema,
-    getCinemaNameApi,
-    store_cart_count,
-    getRetailerApi,
-  } = useStoreContext();
+  const { getCategoryApi, getWeekApi, category_data,cinema_mall_data,setRegisterCinema,getCinemaNameApi,store_cart_count } = useStoreContext();
 
   let navigate = useNavigate();
   // const redirect = location.search ? location.search.split("=")[1] : "/";
@@ -362,7 +351,7 @@ const togglePasswordVisibility = () => {
         if (res.data.success == 1) {
           SetArray(res.data.data);
         } else {
-          // null;
+          null;
         }
       })
       .catch((err) => {
@@ -486,9 +475,7 @@ const togglePasswordVisibility = () => {
                           <Link
                             className="navbar-acc-menu-link"
                             onClick={() => {
-                              setIsOpen3(true);
-                              SetsignButn(4);
-                              SetboldButn(4);
+                              setIsOpen3(true), SetsignButn(4), SetboldButn(4);
                             }}>
                             Login / Sign Up
                           </Link>
@@ -513,7 +500,7 @@ const togglePasswordVisibility = () => {
 
                         {/* {is_login === true ? (<><Link onClick={logout}>Logout</Link></>) : (<></>)} */}
                         {login === "true" ? (
-                          <button
+                          <button className="navbar-acc-menu-link"
                             style={{ textAlign: "start" }}
                             onClick={logout}>
                             Logout
@@ -532,16 +519,10 @@ const togglePasswordVisibility = () => {
 
                 {login === "true" && getrole == 6 ? (
                   <div style={{ position: "relative" }}>
-                    <Link
-                      to=""
-                      onClick={() => {
-                        setTab(5);
-                      }}>
+                    <Link to="" onClick={()=>{setTab(5)}}>
                       <img src={images.cart_black} className="cart-icon-img" />
                     </Link>
-                    <div className="cart-digit-main">
-                      {store_cart_count ? store_cart_count : "0"}
-                    </div>
+                    <div className="cart-digit-main">{store_cart_count ? store_cart_count : "0"}</div>
                   </div>
                 ) : null}
               </div>
@@ -561,24 +542,12 @@ const togglePasswordVisibility = () => {
             </div>
             {getsidebarOpen && (
               <div className="nav_sidebar_wrapp">
-                {login === "true" && getrole == 6 ? (
-                  <div
-                    style={{
-                      position: "relative",
-                      alignSelf: "flex-end",
-                      marginRight: "15px",
-                    }}>
-                    <Link
-                      to=""
-                      onClick={() => {
-                        setTab(5);
-                        setSidebarOpen(!getsidebarOpen);
-                      }}>
+              {login === "true" && getrole == 6 ? (
+                  <div style={{ position: "relative",alignSelf:"flex-end",marginRight:"15px" }}>
+                    <Link to="" onClick={()=>{setTab(5);setSidebarOpen(!getsidebarOpen);}}>
                       <img src={images.cart_black} className="cart-icon-img" />
                     </Link>
-                    <div className="cart-digit-main">
-                      {store_cart_count ? store_cart_count : "0"}
-                    </div>
+                    <div className="cart-digit-main">{store_cart_count ? store_cart_count : "0"}</div>
                   </div>
                 ) : null}
                 <Link to="/">Home</Link>
@@ -660,7 +629,7 @@ const togglePasswordVisibility = () => {
                         setTab(21);
                         setSidebarOpen(!getsidebarOpen);
                       }}>
-                      Product Rate Card
+                       Product Rate Card
                     </Link>
                     <Link
                       to=""
@@ -671,6 +640,42 @@ const togglePasswordVisibility = () => {
                       Cinema Product Tiles
                     </Link>
                     <Link
+                        onClick={() => {
+                          setTab(40);
+                          setSidebarOpen(!getsidebarOpen);
+                        }}>
+                        - Landing page 1/2 Page Tile
+                      </Link>
+
+                      <Link
+                        onClick={() => {
+                          setTab(46);
+                          setSidebarOpen(!getsidebarOpen);
+                        }}>
+                        - Landing Page Square Tiles
+                      </Link>
+                      <Link
+                        onClick={() => {
+                          setTab(42);
+                          setSidebarOpen(!getsidebarOpen);
+                        }}>
+                        - Landing Page Leaderboard Banner
+                      </Link>
+                      <Link
+                        onClick={() => {
+                          setTab(35);
+                          setSidebarOpen(!getsidebarOpen);
+                        }}>
+                        - In Mall Leaderboard Banners
+                      </Link>
+                      <Link
+                        onClick={() => {
+                          setTab(37);
+                          setSidebarOpen(!getsidebarOpen);
+                        }}>
+                        - In Mall Promotional Banners
+                      </Link>
+                    <Link
                       to=""
                       onClick={() => {
                         setTab(4);
@@ -678,7 +683,7 @@ const togglePasswordVisibility = () => {
                       }}>
                       Track Analytics
                     </Link>
-
+                   
                     <Link
                       to=""
                       onClick={() => {
@@ -701,8 +706,9 @@ const togglePasswordVisibility = () => {
                         setTab(22);
                         setSidebarOpen(!getsidebarOpen);
                       }}>
-                      FAQ
+                       FAQ
                     </Link>
+                    
 
                     <Link>Help</Link>
                     {login === "true" ? (
@@ -1016,6 +1022,8 @@ const togglePasswordVisibility = () => {
                 </select>
               </div>
 
+              
+
               <div className="sign_input_wrapp sign_input_wrapp_padding_less">
                 <label htmlFor="first-name">Brands (if applicable)</label>
                 <select
@@ -1176,9 +1184,7 @@ const togglePasswordVisibility = () => {
                   <a className="signup_terms_link">Terms and Conditions</a>
                 </p>
               </div>
-              <div
-                className="signup_terms_wrapp mb_16"
-                style={{ marginTop: "0rem" }}>
+              <div className="signup_terms_wrapp mb_16" style={{marginTop:"0rem"}}>
                 <input
                   type="checkbox"
                   value={isAcceptTerm2}

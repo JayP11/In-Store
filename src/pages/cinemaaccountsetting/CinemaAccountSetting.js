@@ -87,11 +87,22 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   const [files, setFiles] = useState([]);
   const [files2, setFiles2] = useState([]);
   const [files3, setFiles3] = useState([]);
+  const [imagecheck, setImageCheck] = useState(false);
+
 
   useEffect(() => {
     console.log("get-store-data", get_mall_auth_data);
     getRetailerApi(getmallmasterid);
   }, []);
+
+  useEffect(()=>{
+    if(get_mall_auth_data.store_banner_path){
+      setImageCheck(true);
+    }else{
+      setImageCheck(false);
+
+    }
+  },[])
 
   const [mallsOption, setMallsOption] = useState([]);
   const [mallsOption2, setMallsOption2] = useState(get_mall_auth_data?.brands);
@@ -180,11 +191,14 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   );
 
   const [mainName, setMainName] = useState(
+    // get_mall_auth_data &&
+    //   get_mall_auth_data.retailers &&
+    //   get_mall_auth_data.retailers.name !== null
+    //   ? get_mall_auth_data.retailers.name
+    //   : ""
     get_mall_auth_data &&
-      get_mall_auth_data.retailers &&
-      get_mall_auth_data.retailers.name !== null
-      ? get_mall_auth_data.retailers.name
-      : ""
+      get_mall_auth_data.name &&
+      get_mall_auth_data.name
   );
 
   const [getcondation, SetCondation] = useState(false);
@@ -249,17 +263,65 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
 
   const { getRootProps: getRootMapProps, getInputProps: getInputMapProps } =
     useDropzone({
-      onDrop: (acceptedFiles) => {
+      onDrop: async (acceptedFiles) => {
         console.log("acceptedFiles", acceptedFiles);
         SetCondation1(true);
+        const maxSizeKB = 200; // Maximum size limit in KB
+        const maxSizeBytes = maxSizeKB * 1024; // Convert KB to bytes
+
+        const filteredFiles = await Promise.all(
+          acceptedFiles.map(async (file) => {
+            const isSizeValid = file.size <= maxSizeBytes; // Limit size to 50KB (in bytes)
+            const isImage = file.type.startsWith("image/"); // Check if it's an image file
+  
+            if (!isImage || !isSizeValid) {
+              return null; // Skip files that are not images or exceed size limit
+            }
+  
+            // Load image and wait for it to load
+            const img = new Image();
+            img.src = URL.createObjectURL(file);
+            await new Promise((resolve, reject) => {
+              img.onload = resolve;
+              img.onerror = reject;
+            });
+  
+            // Check image dimensions
+            const isDimensionsValid = img.width == 1050 && img.height == 284;
+            console.log('isDimensionsValid',isDimensionsValid)
+            if(isDimensionsValid){
+              setImageCheck(true)
+            }else{
+              setImageCheck(false)
+            }  
+  
+            return isDimensionsValid ? file : null; // Return file if dimensions are valid, otherwise skip it
+          })
+        );
+  
+        // Filter out null values (files that were skipped)
+        const validFiles = filteredFiles.filter((file) => file !== null);
         {
           setFiles2(
-            acceptedFiles.map((file) =>
+            validFiles.map((file) =>
               Object.assign(file, {
                 preview: URL.createObjectURL(file),
               })
             )
           );
+
+          if (validFiles.length !== acceptedFiles.length) {
+            if(validFiles.length !== acceptedFiles.length){
+              setImageCheck(false)
+            }else{
+              setImageCheck(true)
+            }
+            Notification(
+              "error",
+              "Error!",
+              "Some files exceed the maximum size limit of 200KB or do not meet the dimension requirements of 1050x284 pixels and will not be uploaded."
+            );
+          }
         }
         if (acceptedFiles.length === 0) {
           window.location.reload(true);
@@ -304,7 +366,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   const thumbs2 = files2.map((file) => (
     <img
       src={file.preview}
-      style={{ width: "100%", height: "100%", 
+      style={{ width: "100%", height: "100%", objectFit:"cover",objectPosition:"top" 
       // maxHeight: "175px"
        }}
       className="img-fluid"
@@ -535,9 +597,15 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
     // setFiles4([]);
   }
 
+  console.log("files2",files2);
+
   return (
     <div>
-      <div>
+      <div  className={`${
+                 imagecheck === true
+                    ? "banner_all_wrap" : "banner_all_wrap_height"
+                    
+                }`} >
         <div className="brand-hero-edit-main-wrapp" {...getRootMapProps()}>
           <input
             {...getInputMapProps()}
@@ -561,8 +629,8 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             <>
               <img
                 src={get_mall_auth_data.store_banner_path}
-                style={{ width: "100%", height: "100%" }}
-                className="img-fluid"
+                style={{ width: "100%", height: "100%", }}
+                className="img-fluid img_fluid_position"
               />
               <img
                 src={images.card_edit}
@@ -711,6 +779,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
               <label className="mm_form_single_input_cinema_Acc_setting" htmlFor="">Cinema <span className="star_require">*</span></label>
               <div className="select-wrapper" style={{ width: "100%" }}>
                 <select
+                disabled={true}
                   className="leaderboard-card-inp"
                   onChange={(e) => {
                     setRetailertype(e.target.value);
@@ -740,7 +809,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                     {getmode == 2 ? <>
                       <div className="mm_form_single_input">
               <label className="mm_form_single_input_cinema_Acc_setting" htmlFor="">
-                Your Cinema  <span className="star_require">*</span><br />{" "}
+                Your Cinema <br />{" "}
                 <span style={{ fontWeight: "300", fontSize: "13px" }}>
                   If applicable
                 </span>
@@ -1013,7 +1082,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
               <div className="mall_upload_btn_wrapp">
                 <button
                   className="btn btn-orange"
-                  disabled={isAcceptTerm == 1 ? false : true}
+                  disabled={isAcceptTerm == 1 && isAcceptTerm2 ==1 ? false : true}
                   onClick={() => UpdateMallData()}
                 >
                   Update
@@ -1316,7 +1385,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                 }}>
                 <button
                   className="btn btn-black"
-                  onClick={() => setFiles2([])}
+                  onClick={() => {setFiles2([]),setImageCheck(false)}}
                   style={{
                     marginBottom: "10px",
                     marginLeft: "10px",
@@ -1406,7 +1475,7 @@ const CinemaAccountSetting = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             <div className="cinema_upload_btn_inner_resp">
               <button
                 className="btn btn-orange"
-                disabled={isAcceptTerm == 1 ? false : true}
+                disabled={isAcceptTerm == 1 && isAcceptTerm2 == 1 ? false : true}
                 onClick={() => UpdateMallData()}>
                 Update
               </button>

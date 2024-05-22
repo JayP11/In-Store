@@ -4,6 +4,7 @@ import { MallNearMeSingNavbar, MallsNearMeCard } from "../../components";
 import { BsChevronDown } from "react-icons/bs";
 import {
   ACCEPT_HEADER,
+  add_rating,
   get_location_popup,
   get_mall_customer,
   get_notification_url,
@@ -17,24 +18,48 @@ import Notification from "../../utils/Notification";
 
 import ReactModal from "react-modal";
 import axios from "axios";
+import Rating from "react-rating";
+import images from "../../constants/images";
+import { useLocation } from "react-router-dom";
+import { Helmet } from "react-helmet";
 const MallNearMeSing = ({ setTab }) => {
   const [mallList, setMallList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [getsingalmalldata, SetSingalMallData] = useState({});
+  const [getsingalmalldata2, SetSingalMallData2] = useState({});
   // const [gettab, setTab] = useState();
-  const { getCustomer } = useCustomerContext();
+  const { getCustomer,get_customer_data } = useCustomerContext();
   const perPage = 3;
   const [totalPages, setTotalPages] = useState(1);
   const [page, setPage] = useState(1);
   const [modalIsOpen3, setIsOpen3] = useState(false);
   const [isAcceptTerm, setIsAcceptTerm] = useState(true);
-  const [getrating, setRating] = useState();
+  const [getrating, setRating] = useState("");
+  const [modalIsOpen5, setIsOpen5] = useState(false);
+
   const [getPopupData, setPopupData] = useState();
   const [position, setPosition] = useState({ latitude: null, longitude: null });
 
   const handleTermChange = (event) => {
     setIsAcceptTerm((current) => !current);
   };
+
+
+  useEffect(() => {
+    // console.log("loaction----->", loaction.state);
+    console.log("get_customer_data",get_customer_data);
+    showModal();
+  }, []);
+
+  const showModal  = async () => {
+    const data = JSON.parse(localStorage.getItem("malldata"));
+    if(data) {
+      setIsOpen5(true);
+      SetSingalMallData2(data);
+    }else{
+      setIsOpen5(false);
+    }
+  }
 
   // useEffect(() => {
   //   // window.location.reload(true)
@@ -49,6 +74,8 @@ const MallNearMeSing = ({ setTab }) => {
   //     console.log("Geolocation is not available in your browser.");
   //   }
   // }, []);
+
+  // console.log("mall data are",getsingalmalldata2);
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -83,6 +110,49 @@ const MallNearMeSing = ({ setTab }) => {
     }
   }, []);
 
+ 
+
+ 
+
+
+  // Add Rating Api
+
+  const addRating = async () => {
+    const token = await JSON.parse(localStorage.getItem("is_token"));
+
+    if (getrating == "" || undefined) {
+      Notification("error","Error!", "Please give rating");
+    }else{
+    const formdata = await new FormData();
+    formdata.append("mall_id",getsingalmalldata2.id);
+    formdata.append("rating", getrating);
+
+
+    try {
+      const response = await axios.post(add_rating, formdata, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      if (response.data.success == 1) {
+        // setTab(4);
+        setIsOpen5(false);
+        localStorage.removeItem("malldata");
+        // logout();
+        // getMallList();
+        // window.location.reload(true);
+
+        console.log("mall_rating", response.data);
+      }
+      return response.data;
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+}
+
 
   
 
@@ -111,7 +181,12 @@ const MallNearMeSing = ({ setTab }) => {
   useEffect(() => {
     // getLocationcheck();
     getLocationPopupApi();
-    setIsOpen3(true);
+    if(get_customer_data.location === 0) {
+      setIsOpen3(true);
+    }else{
+      setIsOpen3(false);
+    }
+    
 
   }, []);
 
@@ -143,7 +218,7 @@ const MallNearMeSing = ({ setTab }) => {
   const Locationapi = async (id) => {
    
     const token = await JSON.parse(localStorage.getItem("is_token"));
-    console.log("lat,long",position.latitude, position.longitude);
+    console.log("lat,log",position.latitude, position.longitude);
 
     const formdata = new FormData();
     await formdata.append("lat", position.latitude);
@@ -227,6 +302,9 @@ const MallNearMeSing = ({ setTab }) => {
 
   function closeModal3() {
     setIsOpen3(false);
+  }
+  function closeModal5() {
+    setIsOpen5(false);
   }
 
   const getMallList = async () => {
@@ -345,6 +423,9 @@ const MallNearMeSing = ({ setTab }) => {
       </div>
     ) : (
     <>
+    <Helmet>
+            <title>Malls Near Me</title>
+          </Helmet>
       <MallNearMeSingNavbar setTab={setTab} />
       
         <div className="mall-near-me-main-wraapp">
@@ -463,6 +544,75 @@ const MallNearMeSing = ({ setTab }) => {
           >
             {getPopupData ? getPopupData.cancel_button : ""}
           </button>
+        </div>
+      </ReactModal>
+
+         {/* Rating Modal */}
+
+         <ReactModal
+        isOpen={modalIsOpen5}
+        // onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal5}
+        style={customStyles}
+      >
+        <div className="home_login_model_1sec_inner home_login_model_1sec_inner_cus_rating mall_rating_pading_resp" style={{padding:"2rem"}}>
+          <button className="signup_modal_close" onClick={closeModal5}>
+            {/* <span
+              style={{ fontSize: "16px" }}
+              className="brand-lable-radio-btn-txt"
+            >
+              Cancel
+            </span>{" "} */}
+            <AiOutlineClose color="black" />
+          </button>
+          <div className="f-b900 fs-22 mb_16 signup_headign" style={{ marginTop: "40px",fontSize:"23px",textAlign:"center" }}>How was the {getsingalmalldata2?.name}?</div>
+          <p style={{ textAlign: "center", width: "100%",fontSize:"17px" }}>We would really appreciate your feedback!</p>
+
+
+          <div className="rating-star-box">
+            {/* <AiFillStar className="rating-star-icon" key={index}
+              onClick={() => handleRatingClick(index + 1)}
+              color={index + 1 <= rating ? '#ffc107' : '#e4e5e9'} /> */}
+            {/* <AiFillStar className="rating-star-icon" />
+            <AiFillStar className="rating-star-icon" />
+            <AiFillStar className="rating-star-icon" />
+            <AiFillStar className="rating-star-iconn" /> */}
+            <Rating
+              emptySymbol={<img src={images.graystar} className="icon" style={{marginRight:"20px"}} />}
+              fullSymbol={<img src={images.orangestar} className="icon" style={{marginRight:"20px"}}/>}
+              onClick={(e) => {
+                console.log('hhh', e);
+                setRating(e)
+              }}
+            />
+          </div>
+          <div className="sign_input_wrapp">
+
+            {/* <div className="signup_terms_wrapp">
+              <input
+                type="checkbox"
+                value={isAcceptTerm}
+                onChange={handleTermChange}
+                checked={isAcceptTerm}
+              />
+              <p className="fs-des">
+                I have read and agree to the{" "}
+                <a className="signup_terms_link">Terms and Conditions</a> &{" "}
+                <a className="signup_terms_link">Privacy Policy</a>
+              </p>
+            </div> */}
+            <div style={{ height: "1px", background: "#aaa", width: '100%', marginTop: "20px", marginBottom: "20px" }}></div>
+
+            {/* <button className="signup_model_forgate">Forgot password?</button> */}
+          </div>
+          <button
+            className="btn btn-orange mb_16"
+            onClick={() => addRating()}
+            // disabled={isAcceptTerm ? false : true}
+          >
+            Submit
+          </button>
+
         </div>
       </ReactModal>
 

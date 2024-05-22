@@ -312,6 +312,19 @@ const BrandAnalytics = ({ setTab,get_mall_auth_data }) => {
                   })
                 : null}
 
+                <div style={{ paddingTop: "1.5rem" }}>
+                          <p>
+                            <span
+                              style={{
+                                color: "var(--color-orange)",
+                                fontWeight: "800",
+                              }}>
+                              Terms and Conditions
+                            </span>
+                            &nbsp; apply.
+                          </p>
+                        </div>
+
                              <div style={{ width: "300px" }}>
                           <button
                             className="btn btn-orange"

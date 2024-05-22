@@ -56,8 +56,7 @@ export const AuthProvider = ({ children }) => {
         },
       });
       const regiondata = response.data;
-      console.log("region-data", response.data);
-      if (regiondata.success == 1) {
+       if (regiondata.success == 1) {
         dispatch({ type: GET_REGION_SUCCESS, payload: regiondata });
       }
       return response.data;
@@ -77,8 +76,7 @@ export const AuthProvider = ({ children }) => {
           //   Authorization: "Bearer " + is_token,
         },
       });
-      console.log("responce", response.data.success);
-      const registercustomerdata = response.data.data;
+       const registercustomerdata = response.data.data;
       if (response.data.success === 1) {
         dispatch({
           type: REGISTER_CUSTOMER_SUCCESS,
@@ -175,10 +173,16 @@ export const AuthProvider = ({ children }) => {
             JSON.stringify(logindata.user.cus_profile_path)
           );
         }else if(logindata.user.role == 3 ||logindata.user.role ==='3' ){
+         
           localStorage.setItem(
             "cusimg",
             JSON.stringify(logindata.user.store_logo_path)
           );
+          localStorage.setItem(
+            "iseatery",
+            JSON.stringify(logindata.user.is_eatery)
+          );
+         
         }else if(logindata.user.role == 2 ||logindata.user.role ==='2' ){
           localStorage.setItem(
             "cusimg",

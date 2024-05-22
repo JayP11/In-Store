@@ -9,7 +9,7 @@
   }
   
   .retailer-display-none5 {
-    padding-top: 3rem !important;
+    padding-top: 5.5rem !important;
     padding-left: 5rem !important;
     margin: 0px !important;
   }
@@ -55,7 +55,7 @@
     .band-inn-logo-wrapp {
       position: absolute;
       left: 5%;
-      top: 19%;
+      top: 17%;
       width: 140px;
       height: 140px;
       background: var(--color-white);
@@ -72,7 +72,7 @@
   
   @media screen and (max-width: 520px) {
     .retailer-display-none5 {
-      padding-left: 3rem !important;
+      padding-left: 2rem !important;
     }
   }
   

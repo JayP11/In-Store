@@ -53,8 +53,7 @@ const FacalityCard = ({ item, setTab, setfacility_id, getsinglefacilitydata, set
     const data = await DeleteFacilityApi(formdata);
     if (data) {
       if (data.success == 1) {
-        console.log("facility-data", data);
-        Notification("success", "Success!", "Facility Deleted Successfully!");
+         Notification("success", "Success!", "Facility Deleted Successfully!");
 
         getFacilityApi();
 

@@ -165,7 +165,7 @@ const BrandCart = ({ setTab, get_mall_auth_data }) => {
       ) : (
         <div className="mm_main_wrapp brand_carttt">
           <div
-            className="mall_name_wrapp mall_name_wrapp_retailer_cart"
+            className="mall_name_wrapp_retailer_cart"
             style={{ paddingLeft: "0px", fontWeight: "600" }}
           >
             <p className="mall_name_heading">
@@ -174,7 +174,7 @@ const BrandCart = ({ setTab, get_mall_auth_data }) => {
                 get_mall_auth_data.retailers.name}
               :{" "}
             </p>
-            <span style={{fontWeight:"600"}}>My Cart</span>
+            <span className="retailer_cart_span" style={{fontWeight:"600",}}>My Cart</span>
           </div>
           <div className="mm_horizontal_line"></div>
 

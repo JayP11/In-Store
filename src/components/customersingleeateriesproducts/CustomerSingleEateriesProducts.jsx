@@ -45,7 +45,7 @@ const BrandData = [
     },
 ];
 
-const CustomerSingleBrandProducts = ({ getsingalmalldata, setTab, setBDetalis, brandid, getbdetalis }) => {
+const CustomerSingleEateriesProducts = ({ getsingalmalldata, setTab, setEDetalis, brandid, getedetalis }) => {
     const { get_mall_auth_data, get_mall_store_data } = useMallContext();
     const [brandModalOpen, setBrandModalClose] = useState(false);
     const [getbranddata, SetBrandData] = useState("");
@@ -90,7 +90,7 @@ const CustomerSingleBrandProducts = ({ getsingalmalldata, setTab, setBDetalis, b
 
 
     useEffect(() => {
-        console.log("single brand product ===>", getbdetalis);
+        console.log("single brand product ===>", getedetalis);
         SingleBrandProductApi();
     }, []);
 
@@ -107,7 +107,7 @@ const CustomerSingleBrandProducts = ({ getsingalmalldata, setTab, setBDetalis, b
         const formdata = new FormData();
         // await formdata.append("search", "");
         await formdata.append("mall_id", getsingalmalldata.id);
-        await formdata.append("store_id", getbdetalis.stores.id);
+        await formdata.append("store_id", getedetalis.stores.id);
 
         fetch(product_banner_tiles_customer, {
             method: "POST",
@@ -190,8 +190,8 @@ const CustomerSingleBrandProducts = ({ getsingalmalldata, setTab, setBDetalis, b
 
         const formdata = new FormData();
         formdata.append("mall_id", id);
-        formdata.append("store_id", getbdetalis.stores?.id);
-        // formdata.append("brand_id", getbdetalis.brand_id);
+        formdata.append("store_id", getedetalis.stores?.id);
+        // formdata.append("brand_id", getedetalis.brand_id);
 
         console.log("formdata", id, brandid);
 
@@ -241,9 +241,9 @@ const CustomerSingleBrandProducts = ({ getsingalmalldata, setTab, setBDetalis, b
                 <div className="mall_nearme_brand_main_wrapp">
                     {/* <CustomerHero getsingalmalldata={getsingalmalldata} /> */}
                     {/* <CustomerHeroSecond getsingalmalldata={getsingalmalldata} /> */}
-                    <CustomerHero getsingalmalldata={getsingalmalldata} getbdetalis={getbdetalis} />
+                    <CustomerHero getsingalmalldata={getsingalmalldata} getbdetalis={getedetalis} />
 
-                    {/* <CustomerHeroSecond getsingalmalldata={getbdetalis} /> */}
+                    {/* <CustomerHeroSecond getsingalmalldata={getedetalis} /> */}
                     <div className="mm_main_wrapp" style={{ marginTop: "3.2rem" }}>
                         <div className="customer_brands_wrapp">
                             {getlist && getlist.length > 0
@@ -362,4 +362,4 @@ const CustomerSingleBrandProducts = ({ getsingalmalldata, setTab, setBDetalis, b
     );
 };
 
-export default CustomerSingleBrandProducts;
+export default CustomerSingleEateriesProducts;

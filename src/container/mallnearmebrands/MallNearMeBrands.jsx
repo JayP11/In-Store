@@ -47,6 +47,9 @@ const MallNearMeBrands = ({ getsingalmalldata, setTab, setBDetalis }) => {
   const { get_mall_auth_data, get_mall_store_data } = useMallContext();
   const [brandModalOpen, setBrandModalClose] = useState(false);
   const [getbranddata, SetBrandData] = useState("");
+  const [getValue,setValue] = useState(false);
+
+  console.log("getvalue321",getValue);
 
   function closeModal() {
     setBrandModalClose(false);
@@ -73,9 +76,12 @@ const MallNearMeBrands = ({ getsingalmalldata, setTab, setBDetalis }) => {
 
   const perPage = 3;
   const [totalPages, setTotalPages] = useState(1);
+  const [totalPages2, setTotalPages2] = useState(1);
   const [page, setPage] = useState(1);
+  const [page2, setPage2] = useState(1);
 
   const [proList, setProList] = useState([]);
+  const [proList2, setProList2] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -83,6 +89,10 @@ const MallNearMeBrands = ({ getsingalmalldata, setTab, setBDetalis }) => {
   }, [page]);
 
   const BrandApi = async () => {
+    setValue(false);
+    console.log("------> 1");
+
+
     const token = await JSON.parse(localStorage.getItem("is_token"));
     const formdata = new FormData();
     // await formdata.append("search", "");
@@ -98,7 +108,7 @@ const MallNearMeBrands = ({ getsingalmalldata, setTab, setBDetalis }) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log("Brand_list", res.data.last_page);
+        console.log("Brand_list", res.data);
         setTotalPages(res.data.last_page);
         setProList([...proList, ...res.data.data]);
         setLoading(false);
@@ -109,6 +119,9 @@ const MallNearMeBrands = ({ getsingalmalldata, setTab, setBDetalis }) => {
   };
 
   const BrandApiserch = async (value) => {
+    setValue(false);
+    console.log("------> 2");
+
     console.log("value", value);
     const token = await JSON.parse(localStorage.getItem("is_token"));
     const formdata = new FormData();
@@ -128,6 +141,37 @@ const MallNearMeBrands = ({ getsingalmalldata, setTab, setBDetalis }) => {
         console.log("Brand_list", res.data);
         // setTotalPages(res.data.last_page);
         setProList([...proList, ...res.data.data]);
+        // setLoading(false);
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+  };
+
+  const FilterApiserch = async (value) => {
+    console.log("value", value);
+    console.log("------> 3");
+
+    setValue(true);
+    console.log("getvalue",getValue);
+    const token = await JSON.parse(localStorage.getItem("is_token"));
+    const formdata = new FormData();
+    await formdata.append("orderBy", value);
+    await formdata.append("mall_id", getsingalmalldata.id);
+    // setLoading(true);
+    fetch(get_mall_customer_Brand + `per_page2=3&page2=1`, {
+      method: "POST",
+      body: formdata,
+      headers: {
+        Accept: ACCEPT_HEADER,
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("Brand_list", res.data);
+        setTotalPages2(res.data.last_page);
+        setProList2([...proList2, ...res.data.data]);
         // setLoading(false);
       })
       .catch((err) => {
@@ -160,10 +204,10 @@ const MallNearMeBrands = ({ getsingalmalldata, setTab, setBDetalis }) => {
           <div className="mm_main_wrapp" style={{ marginTop: "3.2rem" }}>
             {/* heading */}
             <div className="profile_head_center cus-brand-headd" >
-              <h4 className="h3" style={{ textTransform: "capitalize",fontWeight:"600" }}>
+              <h4 className="h3" style={{ textTransform: "capitalize", fontWeight: "600" }}>
                 {getsingalmalldata.name}
               </h4>{" "}
-              <span className="h3" style={{fontWeight:"600"}}>Brands</span>
+              <span className="h3" style={{ fontWeight: "600" }}>Brands</span>
             </div>
             {/* filter */}
             <div className="mall_near_brand_filter_sec_wrap" style={{ marginTop: "40px" }}>
@@ -185,14 +229,87 @@ const MallNearMeBrands = ({ getsingalmalldata, setTab, setBDetalis }) => {
 
                 <p className="mallnearme-brands-filter" style={{ width: "initial" }}>Filer by :</p>
 
-                <select className="mall_near_brand_selectbox" style={{ paddingLeft: "10px", paddingRight: "10px", width: "80%" }}>
+                {/* <select className="mall_near_brand_selectbox" style={{ paddingLeft: "10px", paddingRight: "10px", width: "80%" }}>
                   <option value="" selected disabled>
-                    Select Category
+\                    A-Z
                   </option>
+                  <option value="" onChange={() => {
+                     BrandApi();
+                  }}>
+                    A-Z
+                  </option>
+                  <option value= "1" onChange={(e) => {
+                    FilterApiserch(e.target,value),
+                        setProList([]),
+                        setPage(1);
+                        console.log("1122",e.target.value);
+
+                  }}>
+                    Z-A
+                  </option>
+                </select> */}
+
+                <select
+                  className="mall_near_brand_selectbox"
+                  style={{ paddingLeft: "10px", paddingRight: "10px", width: "80%" }}
+                  defaultValue="" // Use defaultValue instead of selected
+                  onChange={(e) => {
+                    if (e.target.value === "1") {
+                      // Call FilterApiserch with value "1"
+                       FilterApiserch("1");
+                      setProList2([]); // Clear the proList
+                      setPage2(1);
+                      setProList([]); // Clear the proList
+                      setPage(1);
+                     
+
+                    } else if (e.target.value === "") {
+                      // Call BrandApi
+
+                      setProList2([]); // Clear the proList
+                      setPage2(1);
+                      setProList([]); // Clear the proList
+                      setPage(1);
+                      BrandApi();
+
+
+                    }
+                  }}
+                >
+                  <option value="" disabled>
+                    A-Z
+                  </option>
+                  <option value="" disabled={getValue === true ? false : true}>A-Z</option>
+                  <option value="1"  disabled={getValue === false ? false : true}>Z-A</option> {/* No need for onChange here */}
                 </select>
               </div>
             </div>
             {/* brands */}
+           
+            {getValue === true ? <>
+              <div className="mall_near_brand_list_wrapp">
+              {proList2 && proList2.length > 0
+                ? proList2.map((brndItm) => {
+                  return (
+                    <button
+                      onClick={() => {
+                        // setBrandModalClose(true);
+                        SetBrandData(brndItm);
+                        setBDetalis(brndItm);
+                        setTab(26);
+                      }}
+                    >
+                      <BrandItmCard
+                        img={brndItm.store_logo_path}
+                        key={brndItm.id}
+
+                      />
+                    </button>
+                  );
+                })
+                : null}
+            </div>
+            </> : <>
             <div className="mall_near_brand_list_wrapp">
               {proList && proList.length > 0
                 ? proList.map((brndItm) => {
@@ -215,7 +332,20 @@ const MallNearMeBrands = ({ getsingalmalldata, setTab, setBDetalis }) => {
                 })
                 : null}
             </div>
+            </>}
+           
             {/* loadmore btn */}
+            {getValue === true ? <>
+              {totalPages !== page2 && (
+              <button
+                className="view_more_btn"
+                onClick={() => setPage(page + 1)}
+              >
+                {loading ? "Loading..." : " Load More Brands"}
+                <BsChevronDown />
+              </button>
+            )}
+            </> : <>
             {totalPages !== page && (
               <button
                 className="view_more_btn"
@@ -225,6 +355,8 @@ const MallNearMeBrands = ({ getsingalmalldata, setTab, setBDetalis }) => {
                 <BsChevronDown />
               </button>
             )}
+            </>}
+            
           </div>
         </div>
       )}

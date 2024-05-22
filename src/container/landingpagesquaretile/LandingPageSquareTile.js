@@ -2,7 +2,15 @@ import React, { useEffect, useState } from "react";
 // import "./LeaderBoard.css";
 import { Link } from "react-router-dom";
 import images from "../../constants/images";
-import { CinemaHero, CinemaLandingPageTileCard, CinemaLeaderBoardCrad, CinemaNavigationBar, LandingPageSquareTileCard, LeaderBoardCard, RetailerNavigationBar } from "../../components";
+import {
+  CinemaHero,
+  CinemaLandingPageTileCard,
+  CinemaLeaderBoardCrad,
+  CinemaNavigationBar,
+  LandingPageSquareTileCard,
+  LeaderBoardCard,
+  RetailerNavigationBar,
+} from "../../components";
 import ReactModal from "react-modal";
 import { GrFormSearch } from "react-icons/gr";
 import { BiSearch } from "react-icons/bi";
@@ -132,11 +140,12 @@ const LandingPageSquareTile = ({ get_mall_auth_data, setTab, gettab }) => {
   const [mallMolalOpen, setMallModalIsOpen] = useState(false);
   const [getweek, setWeek] = useState("");
   const [mainName, setMainName] = useState(
-    get_mall_auth_data &&
-      get_mall_auth_data.retailers &&
-      get_mall_auth_data.retailers.name !== null
-      ? get_mall_auth_data.retailers.name
-      : ""
+    // get_mall_auth_data &&
+    //   get_mall_auth_data.retailers &&
+    //   get_mall_auth_data.retailers.name !== null
+    //   ? get_mall_auth_data.retailers.name
+    //   : ""
+    get_mall_auth_data && get_mall_auth_data.name && get_mall_auth_data.name
   );
 
   const { getCategoryApi, getWeekApi } = useStoreContext();
@@ -194,7 +203,6 @@ const LandingPageSquareTile = ({ get_mall_auth_data, setTab, gettab }) => {
     GetRegion();
     getCategoryApi();
     getWeekApi();
-
   }, []);
 
   const [getregion_array, SetRigion_Array] = useState([]);
@@ -268,11 +276,9 @@ const LandingPageSquareTile = ({ get_mall_auth_data, setTab, gettab }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-
     getLandingpageTile();
     var customerimg = localStorage.getItem("cusimg");
     localStorage.setItem("cusimg", customerimg);
-
   }, [page]);
 
   const getLandingpageTile = async () => {
@@ -309,53 +315,57 @@ const LandingPageSquareTile = ({ get_mall_auth_data, setTab, gettab }) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-          }}
-        >
+          }}>
           <div className="loader"></div>
         </div>
       ) : (
         <>
-        <CinemaHero get_mall_auth_data={get_mall_auth_data} />
+          <CinemaHero get_mall_auth_data={get_mall_auth_data} />
 
-       
-        <div className="mm_main_wrapp">
-          <div className="leaderboard-sub-wrapp leaderboard-sub-wrapp-cinema">
-          <CinemaNavigationBar title="Product Rate Card" setTabType={gettab == 46 ? "Landing Page Square Tile " : ""} />
+          <div className="mm_main_wrapp">
+            <div className="leaderboard-sub-wrapp leaderboard-sub-wrapp-cinema">
+              <CinemaNavigationBar
+                title="Product Rate Card"
+                setTabType={gettab == 46 ? "Landing Page Square Tile " : ""}
+              />
 
-            {/* LeaderBoard name start */}
-            <div
-              className="mall_name_wrapp mall_name_wrapp-spacebetween mall_name_wrapp_direction_reverse"
-              style={{ marginTop: "0px",paddingLeft:"0rem" }}
-            >
-              <div className="leaderboard-inner-namebox">
-                <p className="mall_name_heading">{mainName}:</p>
-                <span className="leaderboard-span" style={{ fontWeight: "600" }}>Landing Square Tile</span>
-              </div>
-              {/* <button onClick={() => setTab(47)} className="leaderboard-btn">
+              {/* LeaderBoard name start */}
+              <div
+                className="mall_name_wrapp mall_name_wrapp-spacebetween mall_name_wrapp_direction_reverse"
+                style={{ marginTop: "0px", paddingLeft: "0rem" }}>
+                <div className="leaderboard-inner-namebox">
+                  <p className="mall_name_heading">{mainName}:</p>
+                  <span
+                    className="leaderboard-span"
+                    style={{ fontWeight: "600" }}>
+                    Landing Square Tile
+                  </span>
+                </div>
+                {/* <button onClick={() => setTab(47)} className="leaderboard-btn">
                 Add new{" "}
                 <img src={images.add_new} className="leaderboard-btn-icon" />
               </button> */}
-            </div>
-            <div className="mm_horizontal_line"></div>
-            {/* LeaderBoard  name end */}
+              </div>
+              <div className="mm_horizontal_line"></div>
+              {/* LeaderBoard  name end */}
 
-            {/* LeaderBoard subheading start */}
+              {/* LeaderBoard subheading start */}
 
-            {/* <p className="leaderboard-sub-heading">
+              {/* <p className="leaderboard-sub-heading">
               Purchase marketing space through our Leaderboard Banners below
               (max 1 Leaderboard Banner per Reteiler per mall). There is a
               limited amount of 5 banners per mall. Fist come, first serve.
             </p> */}
-            <p className="leaderboard-sub-heading">
-              {/* Purchase marketing space through our Leaderboard Banners below
+              <p className="leaderboard-sub-heading">
+                {/* Purchase marketing space through our Leaderboard Banners below
               (max 1 Leaderboard Banner per Reteiler per mall). There is a
               limited amount of 5 banners per mall. Fist come, first serve. */}
-            </p>
+              </p>
 
-            {/* LeaderBoard subheading end */}
+              {/* LeaderBoard subheading end */}
 
-            {/* Leaderboard Filter Start */}
-            {/* <div className="leaderboard-filter-main-wrapp">
+              {/* Leaderboard Filter Start */}
+              {/* <div className="leaderboard-filter-main-wrapp">
               <div className="leaderboard-filter-part-first">
                 <label
                   className="leaderboard-card-lbl"
@@ -394,82 +404,88 @@ const LandingPageSquareTile = ({ get_mall_auth_data, setTab, gettab }) => {
                 </div>
               </div>
             </div> */}
-            {/* Leaderboard Filter End */}
+              {/* Leaderboard Filter End */}
 
-            {/* LeaderBoard Card Component start */}
-            {getliast && getliast.length > 0
-              ? getliast.map((mall, mindx) => {
-                return (
-                  <LandingPageSquareTileCard
-                    openMallModal={openMallModal}
-                    item={mall}
-                    mindx={mindx}
-                    getLeaderboard={getLandingpageTile}
-                    setTab={setTab}
-                    peopleInfo={peopleInfo}
-                    setPeopleInfo={setPeopleInfo}
-                    getweek={getweek}
-                    seteweek={setWeek}
-                    regionidarray={regionidarray}
-                    mallidarray={mallidarray}
-                    selectedMalls={selectedMalls}
-                  />
-                );
-              })
-              : null}
-              <span style={{fontSize:"14px",color:"#bbb",alignSelf:"flex-start",marginBottom:"0.7rem"}}>*Required Fields including all image uploads.</span>
-            {totalPages !== page && (
-              <button
-                className="view_more_btn"
-                onClick={() => setPage(page + 1)}
-              >
-                {loading ? "Loading..." : " Load More LeaderBoard"}
-                <BsChevronDown />
-              </button>
-            )}
-            {/* LeaderBoard Card Component end */}
+              {/* LeaderBoard Card Component start */}
+              {getliast && getliast.length > 0
+                ? getliast.map((mall, mindx) => {
+                    return (
+                      <LandingPageSquareTileCard
+                        openMallModal={openMallModal}
+                        item={mall}
+                        mindx={mindx}
+                        getLeaderboard={getLandingpageTile}
+                        setTab={setTab}
+                        peopleInfo={peopleInfo}
+                        setPeopleInfo={setPeopleInfo}
+                        getweek={getweek}
+                        seteweek={setWeek}
+                        regionidarray={regionidarray}
+                        mallidarray={mallidarray}
+                        selectedMalls={selectedMalls}
+                      />
+                    );
+                  })
+                : null}
+              <span
+                style={{
+                  fontSize: "14px",
+                  color: "#bbb",
+                  alignSelf: "flex-start",
+                  marginBottom: "0.7rem",
+                }}>
+                *Required Fields including all image uploads.
+              </span>
+              {totalPages !== page && (
+                <button
+                  className="view_more_btn"
+                  onClick={() => setPage(page + 1)}>
+                  {loading ? "Loading..." : " Load More LeaderBoard"}
+                  <BsChevronDown />
+                </button>
+              )}
+              {/* LeaderBoard Card Component end */}
 
-            {/* LeaderBoard Add New Button start */}
+              {/* LeaderBoard Add New Button start */}
 
-            {getliast.length >= 0 ? (
-              <button onClick={() => setTab(47)} className="leaderboard-btn">
-                Add new{" "}
-                <img src={images.add_new} className="leaderboard-btn-icon" />
-              </button>
-            ) : null}
+              {getliast.length >= 0 ? (
+                <button onClick={() => setTab(47)} className="leaderboard-btn">
+                  Add new{" "}
+                  <img src={images.add_new} className="leaderboard-btn-icon" />
+                </button>
+              ) : null}
 
-            {/* LeaderBoard Add New Button end */}
-          </div>
+              {/* LeaderBoard Add New Button end */}
+            </div>
 
-          {/* select mall modal start */}
-          <ReactModal
-            isOpen={mallMolalOpen}
-            // onAfterOpen={afterOpenModal}
-            onRequestClose={closeMallModal}
-            style={customStyles}
-          >
-            <div className="select_mall_main_wrapp">
-              <div className="select_mall_base_wrapp">
-                {/* mall heading */}
-                <p className="select_mall_heading">
-                  Select the malls that your brand features in:
-                </p>
+            {/* select mall modal start */}
+            <ReactModal
+              isOpen={mallMolalOpen}
+              // onAfterOpen={afterOpenModal}
+              onRequestClose={closeMallModal}
+              style={customStyles}>
+              <div className="select_mall_main_wrapp">
+                <div className="select_mall_base_wrapp">
+                  {/* mall heading */}
+                  <p className="select_mall_heading">
+                    Select the malls that your brand features in:
+                  </p>
 
-                {/* mall search */}
-                <div className="select_mall_serch_wrapp">
-                  <input
-                    type="search"
-                    placeholder="Search"
-                    className="input_box"
-                  />
-                  <BiSearch
-                    className="select_mall_search_icon"
-                    size={25}
-                    color="var(--color-orange)"
-                  />
-                </div>
+                  {/* mall search */}
+                  <div className="select_mall_serch_wrapp">
+                    <input
+                      type="search"
+                      placeholder="Search"
+                      className="input_box"
+                    />
+                    <BiSearch
+                      className="select_mall_search_icon"
+                      size={25}
+                      color="var(--color-orange)"
+                    />
+                  </div>
 
-                {/* <Select
+                  {/* <Select
                   closeMenuOnSelect={false}
                   components={animatedComponents}
                   // defaultValue={[colourOptions[4], colourOptions[5]]}
@@ -478,7 +494,7 @@ const LandingPageSquareTile = ({ get_mall_auth_data, setTab, gettab }) => {
                   styles={{ width: '100%' }}
                 /> */}
 
-                {/* <div
+                  {/* <div
                   className="leaderboard-card-inpbox-wrapp"
                   style={{ alignItems: "center" }}
                 >
@@ -508,151 +524,145 @@ const LandingPageSquareTile = ({ get_mall_auth_data, setTab, gettab }) => {
                   
                 </div> */}
 
-
-
-                {/* mall selected tag */}
-                <div className="select_mall_tag_btns_wrapp">
-                  {selectedMalls && selectedMalls.length > 0
-                    ? selectedMalls.map((mall, mindx) => {
-                      // console.log("gggg", mall);
-                      return (
-                        <button
-                          className="select_mall_tag_single_btn"
-                          style={{ backgroundColor: "#4FBB10" }}
-                          key={mindx}
-                        // onClick={() => {
-                        //   handleMallChange(mall);
-                        //   // setPeopleInfo(
-                        //   //   peopleInfo.filter(
-                        //   //     (people) => people.name !== mall.name
-                        //   //   )
-                        //   // );
-                        // }}
-                        >
-                          {mall}
-                          {/* <IoIosClose className="select_mall_tag_single_btn_close" /> */}
-                        </button>
-                      );
-                    })
-                    : null}
-                </div>
-
-                <div className="mall_Select_wrapp">
-                  <p
-                    style={{
-                      fontSize: "18px",
-                      alignSelf: "start",
-                      marginBottom: "1rem",
-                    }}
-                  >
-                    Region
-                  </p>
-
-                  {getregion_array && getregion_array.length > 0
-                    ? getregion_array.map((item, index) => {
-                      return (
-                        <div
-                          className="bim_accordian_wrapp"
-                          style={{ marginBottom: "6px" }}
-                          key={item.region_id}
-                        >
-                          <button
-                            className="bim_accordian_btn"
-                            onClick={() => {
-                              setToggle(item.region_id);
-                              handleRegionChange(
-                                item.region_name,
-                                item.region_id
-                              );
-                            }}
-                          >
-                            <p
-                              style={{
-                                color:
-                                  item.region_id === toggle
-                                    ? "#ff8b00"
-                                    : "#000",
-                                fontWeight:
-                                  item.region_id === toggle ? "500" : "300",
-                              }}
+                  {/* mall selected tag */}
+                  <div className="select_mall_tag_btns_wrapp">
+                    {selectedMalls && selectedMalls.length > 0
+                      ? selectedMalls.map((mall, mindx) => {
+                          // console.log("gggg", mall);
+                          return (
+                            <button
+                              className="select_mall_tag_single_btn"
+                              style={{ backgroundColor: "#4FBB10" }}
+                              key={mindx}
+                              // onClick={() => {
+                              //   handleMallChange(mall);
+                              //   // setPeopleInfo(
+                              //   //   peopleInfo.filter(
+                              //   //     (people) => people.name !== mall.name
+                              //   //   )
+                              //   // );
+                              // }}
                             >
-                              {item.region_name}
-                            </p>
+                              {mall}
+                              {/* <IoIosClose className="select_mall_tag_single_btn_close" /> */}
+                            </button>
+                          );
+                        })
+                      : null}
+                  </div>
 
-                            {item.region_id == toggle ? (
-                              <IoIosArrowUp size={20} color="#ff8b00" />
-                            ) : (
-                              <IoIosArrowDown size={20} />
-                            )}
-                          </button>
-                          {item.region_id == toggle ? (
-                            <div className="bim_accordian_mall_wrapp">
-                              {item.malls.map((itm, ind) => {
-                                return (
-                                  <>
-                                    <div
-                                      key={itm.id}
-                                      style={{
-                                        display: "flex",
-                                        gap: "10px",
-                                        marginLeft: "10px",
-                                      }}
-                                    >
-                                      <input
-                                        type="checkbox"
-                                        checked={selectedMalls.includes(
-                                          itm.name
-                                        )}
-                                        // value={peopleInfo}
-                                        onChange={(e) => {
-                                          // handleCheckboxChange(e, itm, ind);
-                                          handleMallChange(itm.name, itm.id);
-                                        }}
+                  <div className="mall_Select_wrapp">
+                    <p
+                      style={{
+                        fontSize: "18px",
+                        alignSelf: "start",
+                        marginBottom: "1rem",
+                      }}>
+                      Region
+                    </p>
 
-                                      // type="checkbox"
-                                      // checked={
-                                      //   getcheck[(itm, ind, "", item.region_id)]
-                                      // }
-                                      // onChange={(e) => {
-                                      //   check(itm, ind, "", item.region_id);
-                                      // }}
-                                      // value={peopleInfo}
-                                      />
-                                      <label htmlFor={itm.id}>
-                                        {itm.name}
-                                      </label>
-                                    </div>
-                                  </>
-                                );
-                              })}
+                    {getregion_array && getregion_array.length > 0
+                      ? getregion_array.map((item, index) => {
+                          return (
+                            <div
+                              className="bim_accordian_wrapp"
+                              style={{ marginBottom: "6px" }}
+                              key={item.region_id}>
+                              <button
+                                className="bim_accordian_btn"
+                                onClick={() => {
+                                  setToggle(item.region_id);
+                                  handleRegionChange(
+                                    item.region_name,
+                                    item.region_id
+                                  );
+                                }}>
+                                <p
+                                  style={{
+                                    color:
+                                      item.region_id === toggle
+                                        ? "#ff8b00"
+                                        : "#000",
+                                    fontWeight:
+                                      item.region_id === toggle ? "500" : "300",
+                                  }}>
+                                  {item.region_name}
+                                </p>
+
+                                {item.region_id == toggle ? (
+                                  <IoIosArrowUp size={20} color="#ff8b00" />
+                                ) : (
+                                  <IoIosArrowDown size={20} />
+                                )}
+                              </button>
+                              {item.region_id == toggle ? (
+                                <div className="bim_accordian_mall_wrapp">
+                                  {item.malls.map((itm, ind) => {
+                                    return (
+                                      <>
+                                        <div
+                                          key={itm.id}
+                                          style={{
+                                            display: "flex",
+                                            gap: "10px",
+                                            marginLeft: "10px",
+                                          }}>
+                                          <input
+                                            type="checkbox"
+                                            checked={selectedMalls.includes(
+                                              itm.name
+                                            )}
+                                            // value={peopleInfo}
+                                            onChange={(e) => {
+                                              // handleCheckboxChange(e, itm, ind);
+                                              handleMallChange(
+                                                itm.name,
+                                                itm.id
+                                              );
+                                            }}
+
+                                            // type="checkbox"
+                                            // checked={
+                                            //   getcheck[(itm, ind, "", item.region_id)]
+                                            // }
+                                            // onChange={(e) => {
+                                            //   check(itm, ind, "", item.region_id);
+                                            // }}
+                                            // value={peopleInfo}
+                                          />
+                                          <label htmlFor={itm.id}>
+                                            {itm.name}
+                                          </label>
+                                        </div>
+                                      </>
+                                    );
+                                  })}
+                                </div>
+                              ) : (
+                                ""
+                              )}
                             </div>
-                          ) : (
-                            ""
-                          )}
-                        </div>
-                      );
-                    })
-                    : null}
-                </div>
+                          );
+                        })
+                      : null}
+                  </div>
 
-                <div className="leaderboard-btn-box">
-                  <button
-                    className="btn btn-orange"
-                    onClick={() => {
-                      closeMallModal();
-                      console.log("mallidarray", mallidarray);
-                      console.log("regionidarray", regionidarray);
-                    }}
-                  >
-                    Submit
-                  </button>
+                  <div className="leaderboard-btn-box">
+                    <button
+                      className="btn btn-orange"
+                      onClick={() => {
+                        closeMallModal();
+                        console.log("mallidarray", mallidarray);
+                        console.log("regionidarray", regionidarray);
+                      }}>
+                      Submit
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </ReactModal>
-          {/* select mall modal end */}
-        </div>
-
+            </ReactModal>
+            {/* select mall modal end */}
+          </div>
         </>
       )}
     </div>

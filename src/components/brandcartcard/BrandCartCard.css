@@ -13,8 +13,35 @@
 
 .brandcc_sec1 {
   width: 25%;
-  min-width: 200px;
+  min-width: 202px;
+  max-width: 200px;
+  max-height:105px;
   min-height: 85px;
+  border: 1px solid var(--color-gray);
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brandcc_sec1_protile{
+  width: 25%;
+  min-width: 198px;
+  max-width: 198px;
+  max-height:278px;
+  min-height: 278px;
+  border: 1px solid var(--color-gray);
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.brandcc_sec1_protile_brand{
+  width: 25%;
+  min-width: 175px;
+  max-width: 175px;
+  max-height:175px;
+  min-height: 175px;
   border: 1px solid var(--color-gray);
   height: 100px;
   display: flex;
@@ -47,7 +74,7 @@
 .brandcc_dates {
   font-size: 14px;
   font-weight: 400;
-  color: var(--color-red);
+  color: var(--color-red);  
 }
 
 .brandcc_sec3 {
@@ -111,7 +138,7 @@
 
   .brandcc_sec2 {
     min-height: none;
-    width: 100%;
+    width: 100% !important;
   }
 
   .brandcc_sec3 {
@@ -158,6 +185,7 @@
 @media screen and (max-width:500px) {
   .brandcc_sec1 {
     width: 60%;
+    margin-top: 2rem;
   }
 
   .cart-card-delete-icon {

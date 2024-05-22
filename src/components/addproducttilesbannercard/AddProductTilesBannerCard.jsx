@@ -28,11 +28,15 @@ const AddProductTilesBannerCard = ({
   regionidarray,
   selectedMalls,
 }) => {
+
+  const eateryvalue = JSON.parse(localStorage.getItem("iseatery"));
+
   const {
     DeleteProductTileApi,
     category_data,
     CreateProductTileApi,
     multiple_week_data,
+    category_eatery_data,
   } = useStoreContext();
   const { get_brand_data, get_mall_data } = useMallContext();
 
@@ -50,6 +54,8 @@ const AddProductTilesBannerCard = ({
   const [endDate, setEndDate] = useState();
   const [size, setSize] = useState("");
   const [filesqr, setFilesQr] = useState([]);
+  const [qrDiscount, setQrDiscount] = useState("");
+
 
 
   // const [Category, setCategory] = useState("");
@@ -79,33 +85,90 @@ const AddProductTilesBannerCard = ({
 
   // logo dropzon
 
+  // const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } =
+  //   useDropzone({
+  //     onDrop: (acceptedFiles) => {
+  //       console.log("file type", files[0]);
+  //       console.log("acceptedFiles", acceptedFiles[0].File);
+  //       const filteredFiles = acceptedFiles.filter(file => file.size <= 50000); // Limit size to 200KB (in bytes)
+
+  //       {
+  //         setFiles(
+  //           filteredFiles.map((file) =>
+  //             Object.assign(file, {
+  //               preview: URL.createObjectURL(file),
+  //             })
+  //           )
+  //         );
+
+  //         if (filteredFiles.length !== acceptedFiles.length) {
+  //           // Notification('');
+  //           Notification("error","Error!", "Some files exceed the maximum size limit of 50KB and will not be uploaded.");
+  //         }
+  //       }
+  //       setCondition(true);
+  //       if (acceptedFiles.length === 0) {
+  //         window.location.reload(true);
+  //       }
+  //     },
+  //   });
+
   const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } =
-    useDropzone({
-      onDrop: (acceptedFiles) => {
-        console.log("file type", files[0]);
-        console.log("acceptedFiles", acceptedFiles[0].File);
-        const filteredFiles = acceptedFiles.filter(file => file.size <= 50000); // Limit size to 200KB (in bytes)
+  useDropzone({
+    onDrop: async (acceptedFiles) => {
+      setCondition(true);
 
-        {
-          setFiles(
-            filteredFiles.map((file) =>
-              Object.assign(file, {
-                preview: URL.createObjectURL(file),
-              })
-            )
-          );
+      const maxSizeKB = 100; // Maximum size limit in KB
+      const maxSizeBytes = maxSizeKB * 1024; // Convert KB to bytes
 
-          if (filteredFiles.length !== acceptedFiles.length) {
-            // Notification('');
-            Notification("error","Error!", "Some files exceed the maximum size limit of 50KB and will not be uploaded.");
+      const filteredFiles = await Promise.all(
+        acceptedFiles.map(async (file) => {
+          const isSizeValid = file.size <= maxSizeBytes; // Limit size to 50KB (in bytes)
+          const isImage = file.type.startsWith("image/"); // Check if it's an image file
+
+          if (!isImage || !isSizeValid) {
+            return null; // Skip files that are not images or exceed size limit
           }
-        }
-        setCondition(true);
-        if (acceptedFiles.length === 0) {
-          window.location.reload(true);
-        }
-      },
-    });
+
+          // Load image and wait for it to load
+          const img = new Image();
+          img.src = URL.createObjectURL(file);
+          await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+          });
+
+          // Check image dimensions
+          const isDimensionsValid = img.width == 354 && img.height == 350;
+
+          return isDimensionsValid ? file : null; // Return file if dimensions are valid, otherwise skip it
+        })
+      );
+
+      // Filter out null values (files that were skipped)
+      const validFiles = filteredFiles.filter((file) => file !== null);
+
+      setFiles(
+        validFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        )
+      );
+
+      if (validFiles.length !== acceptedFiles.length) {
+        Notification(
+          "error",
+          "Error!",
+          "Some files exceed the maximum size limit of 50KB or do not meet the dimension requirements of 354x350 pixels and will not be uploaded."
+        );
+      }
+
+      if (acceptedFiles.length === 0) {
+        window.location.reload(true);
+      }
+    },
+  });
 
   const thumbs = files.map((file) => (
     <img
@@ -118,22 +181,79 @@ const AddProductTilesBannerCard = ({
 
   // QR Code
 
+  // const { getRootProps: getRootlogoPropsQr, getInputProps: getInputlogoPropsQr } =
+  // useDropzone({
+  //   onDrop: (acceptedFiles) => {
+  //     {
+  //       setFilesQr(
+  //         acceptedFiles.map((file) =>
+  //           Object.assign(file, {
+  //             preview: URL.createObjectURL(file),
+  //           })
+  //         )
+  //       );
+  //     }
+  //     // setCondition(true);
+  //     // if (acceptedFiles.length === 0) {
+  //     //   window.location.reload(true);
+  //     // }
+  //   },
+  // });
+
   const { getRootProps: getRootlogoPropsQr, getInputProps: getInputlogoPropsQr } =
   useDropzone({
-    onDrop: (acceptedFiles) => {
-      {
-        setFilesQr(
-          acceptedFiles.map((file) =>
-            Object.assign(file, {
-              preview: URL.createObjectURL(file),
-            })
-          )
+    onDrop: async (acceptedFiles) => {  
+      // setCondition2(true);
+
+      const maxSizeKB = 50; // Maximum size limit in KB
+      const maxSizeBytes = maxSizeKB * 1024; // Convert KB to bytes
+
+      const filteredFiles = await Promise.all(
+        acceptedFiles.map(async (file) => {
+          const isSizeValid = file.size <= maxSizeBytes; // Limit size to 50KB (in bytes)
+          const isImage = file.type.startsWith("image/"); // Check if it's an image file
+
+          if (!isImage || !isSizeValid) {
+            return null; // Skip files that are not images or exceed size limit
+          }
+
+          // Load image and wait for it to load
+          const img = new Image();
+          img.src = URL.createObjectURL(file);
+          await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+          });
+
+          // Check image dimensions
+          const isDimensionsValid = img.width == 150 && img.height == 150;
+
+          return isDimensionsValid ? file : null; // Return file if dimensions are valid, otherwise skip it
+        })
+      );
+
+      // Filter out null values (files that were skipped)
+      const validFiles = filteredFiles.filter((file) => file !== null);
+
+      setFilesQr(
+        validFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        )
+      );
+
+      if (validFiles.length !== acceptedFiles.length) {
+        Notification(
+          "error",
+          "Error!",
+          "Some files exceed the maximum size limit of 50KB or do not meet the dimension requirements of 150x150 pixels and will not be uploaded."
         );
       }
-      // setCondition(true);
-      // if (acceptedFiles.length === 0) {
-      //   window.location.reload(true);
-      // }
+
+      if (acceptedFiles.length === 0) {
+        window.location.reload(true);
+      }
     },
   });
 
@@ -159,7 +279,17 @@ const thumbsqr = filesqr.map((file) => (
     } else if (mallidarray == "" || undefined) {
       Notification("error", "Error!", "Please Select Mall!");
       return;
-    } else if (startDate == "" || startDate == undefined) {
+    } else if (Category == "" || undefined) {
+      Notification("error", "Error!", "Please Select Category!");
+    } else if (Price == "" || undefined) {
+      Notification("error", "Error!", "Please Enter Price!");
+      return;
+    }else if (Description == "" || undefined) {
+      Notification("error", "Error!", "Please Enter Description!");
+      return;
+    }  else if (getTag == "" || undefined) {
+      Notification("error", "Error!", "Please  Enter Tag!");
+    }else if (startDate == "" || startDate == undefined) {
       Notification("error", "Error", "Please Enter Start Date");
       return;
     } else if (endDate == "" || endDate == undefined) {
@@ -167,25 +297,23 @@ const thumbsqr = filesqr.map((file) => (
       return;
     } else if (regionidarray == "" || undefined) {
       Notification("error", "Error!", "Please Select Region!");
-    } else if (BrandName == "" || undefined) {
-      Notification("error", "Error!", "Please Select Brand!");
-    } else if (Price == "" || undefined) {
-      Notification("error", "Error!", "Please Enter Price!");
-      return;
-    } else if (Description == "" || undefined) {
-      Notification("error", "Error!", "Please Enter Description!");
-      return;
-    } else {
+    } 
+    // else if (BrandName == "" || undefined) {
+    //   Notification("error", "Error!", "Please Select Brand!");
+    // } 
+     else {
       const formdata = await new FormData();
       // await formdata.append("id", item.id)
       await formdata.append("title", title);
+      await formdata.append("qr_discount", qrDiscount);
+
       for (var i = 0; i < regionidarray.length; i++) {
         await formdata.append("region_id[" + i + "]", regionidarray[i].id);
       }
       for (var i = 0; i < mallidarray.length; i++) {
         await formdata.append("mall_id[" + i + "]", mallidarray[i].id);
       }
-      await formdata.append("brand_id", BrandName);
+      // await formdata.append("brand_id", BrandName);
       await formdata.append("category_id", Category);
       await formdata.append("price", Price);
       await formdata.append("description", Description);
@@ -202,6 +330,9 @@ const thumbsqr = filesqr.map((file) => (
       await formdata.append("region_child_id[0]", "");
       if (files[0] !== undefined) {
         await formdata.append("image", files[0]);
+      }
+      if (filesqr[0] !== undefined) {
+        await formdata.append("qr_code_image", filesqr[0]);
       }
 
       console.log("-=-=-=->", formdata);
@@ -277,7 +408,8 @@ const thumbsqr = filesqr.map((file) => (
 
           {/* Leaderboard inputbox start */}
           <div className="leaderboard-card-inpbox-wrapp">
-            <label className="leaderboard-card-lbl">Title:</label>
+            <label className="leaderboard-card-lbl" style={{minWidth:"125px"}}>Title:<span className="star_require">*</span>
+</label>
             <input
               type="text"
               className="leaderboard-card-inp"
@@ -290,7 +422,8 @@ const thumbsqr = filesqr.map((file) => (
 
           {/* Leaderboard inputbox start */}
           <div className="leaderboard-card-inpbox-wrapp">
-            <label className="leaderboard-card-lbl">Mall(s):</label>
+            <label className="leaderboard-card-lbl" style={{minWidth:"125px"}}>Mall(s):<span className="star_require">*</span>
+</label>
             <div
               onClick={() => openMallModal()}
               className="leaderboard-card-inp"
@@ -301,34 +434,15 @@ const thumbsqr = filesqr.map((file) => (
                     return <p className="mall-lib-font">{mall}</p>;
                   })
                 : null}
-              {/* <p className="">abc</p>
-              <p className="">abc</p>
-              <p className="">abc</p> */}
+      
             </div>
-            {/* <Select
-                            value={mallsOption}
-                            styles={{ width: "100%", padding: "0px" }}
-                            className="leaderboard-card-inp"
-                            closeMenuOnSelect={false}
-                            components={animatedComponents}
-                            // defaultValue={[colourOptions[4], colourOptions[5]]}
-
-                            isMulti
-                            options={multiple_week_data}
-                            onChange={setMallsOption}
-                        /> */}
-            {/* <button
-              className="leaderboard-card-inp"
-              style={{ color: "rgb(129 128 128)", textAlign: "start" }}
-              onClick={() => openMallModal()}
-            >
-              Select Mall
-            </button> */}
+           
           </div>
 
           {/* Categories */}
           <div className="leaderboard-card-inpbox-wrapp">
-            <label className="leaderboard-card-lbl">Categories:</label>
+            <label className="leaderboard-card-lbl" style={{minWidth:"125px"}}>Categories:<span className="star_require">*</span>
+</label>
             <div className="select-wrapper" style={{ width: "100%" }}>
               <select
                 className="leaderboard-card-inp cons_select_nav"
@@ -339,7 +453,20 @@ const thumbsqr = filesqr.map((file) => (
               >
                 <option selected disabled value="">
                   Select Category
+
                 </option>
+                {eateryvalue == 1 ? <>
+                  {category_eatery_data &&
+                    category_eatery_data.map((item, index) => {
+                    return (
+                      <>
+                        <option value={item.id} key={index}>
+                          {item.name}
+                        </option>
+                      </>
+                    );
+                  })}
+                </> : <>
                 {category_data &&
                   category_data.map((item, index) => {
                     return (
@@ -350,12 +477,14 @@ const thumbsqr = filesqr.map((file) => (
                       </>
                     );
                   })}
+                </>}
+                
               </select>
             </div>
           </div>
           {/* Categories end*/}
 
-          <div className="leaderboard-card-inpbox-wrapp">
+          {/* <div className="leaderboard-card-inpbox-wrapp">
             <label className="leaderboard-card-lbl">Brand(s):</label>
             <div className="select-wrapper" style={{ width: "100%" }}>
               <select
@@ -379,11 +508,12 @@ const thumbsqr = filesqr.map((file) => (
                   })}
               </select>
             </div>
-          </div>
+          </div> */}
 
           {/* Price */}
           <div className="leaderboard-card-inpbox-wrapp">
-            <label className="leaderboard-card-lbl">Price:</label>
+            <label className="leaderboard-card-lbl" style={{minWidth:"125px"}}>Price:<span className="star_require">*</span>
+</label>
             <input
               type="text"
               className="leaderboard-card-inp"
@@ -396,7 +526,8 @@ const thumbsqr = filesqr.map((file) => (
 
           {/* Desc */}
           <div className="leaderboard-card-inpbox-wrapp">
-            <label className="leaderboard-card-lbl">Description:</label>
+            <label className="leaderboard-card-lbl" style={{minWidth:"125px"}}>Description:<span className="star_require">*</span>
+</label>
             <textarea
               style={{ height: "30px" }}
               className="leaderboard-card-inp"
@@ -408,8 +539,8 @@ const thumbsqr = filesqr.map((file) => (
           {/* Desc end */}
           {/* Tags */}
           <div className="leaderboard-card-inpbox-wrapp">
-            <label className="leaderboard-card-lbl">
-              Tags:
+            <label className="leaderboard-card-lbl" style={{minWidth:"125px"}}>
+              Tags:<span className="star_require">*</span>
               <br />
               <span style={{ fontSize: "9px" }}>[seperated by commas]</span>
             </label>
@@ -425,7 +556,7 @@ const thumbsqr = filesqr.map((file) => (
 
           {/* Size */}
           <div className="leaderboard-card-inpbox-wrapp">
-            <label className="leaderboard-card-lbl">Sizes:</label>
+            <label className="leaderboard-card-lbl" style={{minWidth:"125px"}}>Sizes:</label>
             <input
               style={{ height: "30px" }}
               className="leaderboard-card-inp"
@@ -437,8 +568,9 @@ const thumbsqr = filesqr.map((file) => (
           {/* Size end */}
           {/* Duration */}
           <div className="leaderboard-card-inpbox-wrapp">
-            <label className="leaderboard-card-lbl" htmlFor="">
-              Duration
+            <label className="leaderboard-card-lbl" htmlFor="" style={{minWidth:"125px"}}>
+              Duration<span className="star_require">*</span>
+
             </label>
 
             <DateRangePicker
@@ -453,19 +585,19 @@ const thumbsqr = filesqr.map((file) => (
           </div>
           {/* Duration  end */}
           <div className="leaderboard-card-inpbox-wrapp">
-              <label className="leaderboard-card-lbl" htmlFor="">
+              <label className="leaderboard-card-lbl" htmlFor="" style={{minWidth:"125px"}}>
                 Discount QR Code:
               </label>
               <input
                 type="text"
                 className="leaderboard-card-inp"
                 placeholder="10% Discount"
-                // value={Price}
-                // onChange={(e) => setPrice(e.target.value)}
+                value={qrDiscount}
+                onChange={(e) => setQrDiscount(e.target.value)}
               />
             </div>
             <div className="leaderboard-card-inpbox-wrapp">
-              <label className="leaderboard-card-lbl" htmlFor="">
+              <label className="leaderboard-card-lbl" htmlFor="" style={{minWidth:"125px"}}>
                 {/* Discount QR Code::<span className="star_require">*</span> */}
               </label>
               <div  {...getRootlogoPropsQr()}>
@@ -516,7 +648,7 @@ const thumbsqr = filesqr.map((file) => (
           {getcondition === true ? (
             <>
               {files && files.length > 0 ? (
-                <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl">
+                <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl myprofile_inner_sec2_img_upload_border">
                   {thumbs}
                 </div>
               ) : (
@@ -578,7 +710,7 @@ const thumbsqr = filesqr.map((file) => (
                   </div>
                 </div>
               ) : (
-                <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl">
+                <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl myprofile_inner_sec2_img_upload_border">
                   <img
                     alt=""
                     src={item.image_path}

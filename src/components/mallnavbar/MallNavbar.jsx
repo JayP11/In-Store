@@ -464,7 +464,7 @@ const MallNavbar = ({ setTab, get_mall_auth_data }) => {
       //   last_name: getlastname,
       //   terms_condition: isAcceptTerm,
       //   lat: position.latitude,
-      //   long: position.longitude
+      //   log: position.longitude
       // };
 
       const formdata = await new FormData();
@@ -487,7 +487,7 @@ const MallNavbar = ({ setTab, get_mall_auth_data }) => {
       await formdata.append("region_id", getregion);
       await formdata.append("terms_condition", isAcceptTerm);
       await formdata.append("lat",position.latitude);
-      await formdata.append("long",position.longitude);
+      await formdata.append("log",position.longitude);
       await formdata.append("company_reg_document",files[0]);
       await formdata.append("vat_document",files2[0]);
 
@@ -2083,6 +2083,7 @@ const MallNavbar = ({ setTab, get_mall_auth_data }) => {
                   login here
                 </span>
               </p> */}
+              <div style={{paddingBottom:"1rem", width: "100%",}}>
               <button
                 className="btn btn-orange mb_16"  
                 style={{marginBottom:"1rem"}}
@@ -2090,8 +2091,9 @@ const MallNavbar = ({ setTab, get_mall_auth_data }) => {
                     mallLoginModalOpen();
                     SetsignButn(1);
                   }}>
-                Sugn In
+                Sign In
               </button>
+              </div>
             </div>
           ) : regButn == 2 ? (
             <div className="home_model_4wrapp">
@@ -2786,7 +2788,7 @@ const MallNavbar = ({ setTab, get_mall_auth_data }) => {
         onRequestClose={closeModal3}
         style={customStyles}>
         <div className="model_sizing">
-          <div style={{ backgroundColor: "#dad9d8" }}>
+          <div style={{ backgroundColor: "var(--color-bg)" }}>
             <div style={{ height: "25px" }}>
               <button
                 className="signup_modal_close"
@@ -2796,7 +2798,7 @@ const MallNavbar = ({ setTab, get_mall_auth_data }) => {
                 <IoClose />
               </button>
             </div>
-            <div className="tab_btn_main">
+            <div className="tab_btn_main" style={{height:"0px"}}>
             {signButn == 1 ?  <button
                 onClick={() => {
                   SetsignButn(1);

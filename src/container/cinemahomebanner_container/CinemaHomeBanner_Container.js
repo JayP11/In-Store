@@ -549,7 +549,7 @@ const CinemaHomeBanner_Container = ({getHomeData}) => {
         last_name: getlastname,
         terms_condition: isAcceptTerm,
         lat: position.latitude,
-        long: position.longitude
+        log: position.longitude
       };
 
       console.log("-=-=-=->", params);

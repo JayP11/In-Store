@@ -93,7 +93,7 @@ const BrandDashboard = () => {
   return (
     <>
       <Helmet>
-        <title>Profile | In-store</title>
+        <title>Brand Dashboard | In-store</title>
       </Helmet>
 
       {/* {get_store_data == "" || get_store_data == null || get_store_data == undefined ? setLoadng(true) : setLoadng(false)} */}

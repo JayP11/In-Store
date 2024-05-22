@@ -715,7 +715,7 @@ const AfterLoginPage = () => {
         last_name: getlastname,
         terms_condition: isAcceptTerm,
         lat: position.latitude,
-        long: position.longitude,
+        log: position.longitude,
       };
 
       // console.log("-=-=-=->", params);
@@ -834,7 +834,7 @@ const AfterLoginPage = () => {
       ) : (
         <>
           <Helmet>
-            <title>Home Screen</title>
+            <title>Brand Home Page</title>
           </Helmet>
           {/* <Navbar
       // setCustomerDropdown={setCustomerDropdown}
@@ -2891,7 +2891,7 @@ const AfterLoginPage = () => {
         style={customStyles}
       >
         <div className="model_sizing">
-          <div style={{ backgroundColor: "#dad9d8" }}>
+          <div style={{ backgroundColor: "var(--color-bg)" }}>
             <div style={{ height: "25px" }}>
               <button
                 className="signup_modal_close"
@@ -2902,7 +2902,7 @@ const AfterLoginPage = () => {
                 <IoClose />
               </button>
             </div>
-            <div className="tab_btn_main">
+            <div className="tab_btn_main" style={{height:"0px"}}>
               {signButn == 2 ? null : (
                 <button
                   onClick={() => {

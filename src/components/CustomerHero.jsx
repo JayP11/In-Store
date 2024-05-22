@@ -2,7 +2,7 @@ import React from "react";
 import images from "../constants/images";
 
 const CustomerHero = ({ getsingalmalldata, getbdetalis }) => {
-  console.log("aaaaaa", getsingalmalldata);
+  console.log("aaaaaa", getbdetalis);
   return (
     <div className="mall_hero_main_wrapp">
       <img
@@ -12,7 +12,7 @@ const CustomerHero = ({ getsingalmalldata, getbdetalis }) => {
             : getbdetalis.banner_store_path
         }
         alt=""
-        className="mall_hero_banner_img"
+        className="mall_hero_banner_img img_fluid_position"
       />
       <div className="mall_hero_logo_wrapp">
         <img

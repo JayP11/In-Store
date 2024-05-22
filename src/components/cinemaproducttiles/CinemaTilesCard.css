@@ -38,6 +38,13 @@
     .product-tiles-card-cinema-sec-part {
       align-self: center;
     }
+
+    .cinema_pro_tile_sec{
+      height: 100% !important;
+      width: 230px !important;
+      padding-left: 0rem !important;
+      padding-right: 0rem !important;
+    }
   }
   
  
@@ -57,7 +64,7 @@
 
   @media screen and (max-width:500px) {
     .product-tiles-card-main-wrapp-cinema{
-      width: 90% !important;
+      width: 100% !important;
     }
 
     .leaderboard-delete-icon{

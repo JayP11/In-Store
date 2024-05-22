@@ -3,7 +3,7 @@
 }
 
 .leaderboard-card-part-sec-chng{
-    width: 41%;
+    /* width: 41%; */
 }
 
 .leaderboard-card-part-first-half{
@@ -11,7 +11,7 @@
 }
 
 .leaderboard-card-part-sec-half{
-    width: 350px;
+    width: 375px;
 }
 
 .leaderboard-card-part-third-half{
@@ -21,4 +21,10 @@
 .leaderboard-card-flex-wrapp-half{
     gap: 2%;
     justify-content: space-between;
+}
+
+@media screen and (max-width:500px) {
+    .leaderboard-card-part-sec-half{
+        width: 100%;
+    }
 }

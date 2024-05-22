@@ -162,7 +162,7 @@ const CinemaCart = ({ setTab, get_mall_auth_data }) => {
         </div>
       ) : (
         <div className="mm_main_wrapp mm_main_wrapp_cinema_checkout mm_main_wrapp_cinema_checkoutt">
-          <div className="mall_name_wrapp" style={{ paddingLeft: "0rem" }}>
+          <div className="mall_name_wrapp mall_name_wrapp_retailer_cart" style={{ paddingLeft: "0rem" }}>
             <p className="mall_name_heading">
               {get_mall_auth_data &&
                 get_mall_auth_data.name &&

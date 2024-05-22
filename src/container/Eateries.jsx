@@ -372,7 +372,7 @@ const Eateries = ({
                     <div className="sd_model_sec2" style={{ marginTop: "12px", flexDirection: "column", gap: "8px" }}>
                       <div className="sd_model_sec2_sigle">
                         <FaPhone color="var(--color-orange)" size={16} />
-                        <p style={{ fontSize: "14px",fontWeight: "400" }}>+{getsingleStoreData.number}</p>
+                        <p style={{ fontSize: "14px",fontWeight: "400" }}>+{getsingleStoreData.contact_no}</p>
                       </div>
                       <div className="sd_model_sec2_sigle">
                         <img src={images.send} alt="" />

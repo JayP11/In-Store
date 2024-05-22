@@ -27,7 +27,7 @@ const RegisterMall = ({ getStoreData }) => {
             />
             <img
               style={{ width: "155px", height: "46px" }}
-              src={getStoreData ? getStoreData.app_store_img_path : ""}
+              src={getStoreData ? getStoreData.app_store_img_path : ""}       
               alt="app store logo"
             />
           </div>
@@ -38,11 +38,11 @@ const RegisterMall = ({ getStoreData }) => {
             src={getStoreData ? getStoreData.details_image_3_path : ""}
             alt=""
           />
-          <img
+          {/* <img
             src={images.registermall_vector}
             alt=""
             className="registermall_sec2_vector"
-          />
+          /> */}
 
           {/* <img
             src={getStoreData ? getStoreData.details_image_3_path : ""}

@@ -124,15 +124,14 @@
   min-width: 470px;
   max-width: 470px;
   background: var(--color-bg);
-
   display: flex;
   align-items: flex-start;
   justify-content: center;
   flex-direction: column;
 
-  /* padding: 2rem; */
+  padding: 2rem 3rem;
   padding: 2rem 3rem 2rem 3rem;
-  /* gap: 1rem; */
+ 
 
   color: var(--color-black);
   position: relative;
@@ -167,6 +166,7 @@
 
 .signup_terms_wrapp > p {
   font-size: 13px;
+  /* width: 279px; */
 }
 
 .signup_terms_link {

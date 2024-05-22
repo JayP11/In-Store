@@ -132,11 +132,14 @@ const CinemaLandingPageLeaderboard = ({ get_mall_auth_data, setTab, getTab,getta
   const [mallMolalOpen, setMallModalIsOpen] = useState(false);
   const [getweek, setWeek] = useState("");
   const [mainName, setMainName] = useState(
+    // get_mall_auth_data &&
+    //   get_mall_auth_data.retailers &&
+    //   get_mall_auth_data.retailers.name !== null
+    //   ? get_mall_auth_data.retailers.name
+    //   : ""
     get_mall_auth_data &&
-      get_mall_auth_data.retailers &&
-      get_mall_auth_data.retailers.name !== null
-      ? get_mall_auth_data.retailers.name
-      : ""
+      get_mall_auth_data.name &&
+      get_mall_auth_data.name
   );
 
 

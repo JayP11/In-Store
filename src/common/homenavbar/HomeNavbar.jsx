@@ -653,7 +653,7 @@ const HomeNavbar = (
         last_name: getlastname,
         terms_condition: isAcceptTerm,
         lat: position.latitude,
-        long: position.longitude
+        log: position.longitude
       };
 
       console.log("-=-=-=->", params);
@@ -2106,7 +2106,10 @@ const HomeNavbar = (
         // onAfterOpen={afterOpenModal}
         onRequestClose={closeModalBrand}
         style={customStyles}>
-        <div style={{ backgroundColor: "#dad9d8" }}>
+        <div style={{ 
+            // backgroundColor: "#dad9d8"
+            backgroundColor: "var(--color-bg)"
+           }}>
           <div style={{ height: "30px" }}>
             <button
               className="signup_modal_close"
@@ -2117,7 +2120,7 @@ const HomeNavbar = (
               <IoClose />
             </button>
           </div>
-          <div className="tab_btn_main">
+          <div className="tab_btn_main" style={{height:"0px"}}>
             <button
               onClick={() => {
                 SetsignButn(1);
@@ -2361,7 +2364,10 @@ const HomeNavbar = (
         // onAfterOpen={afterOpenModal}
         onRequestClose={closeModalRegisterNavbar}
         style={customStyles}>
-        <div style={{ backgroundColor: "#dad9d8" }}>
+        <div style={{ 
+            // backgroundColor: "#dad9d8"
+            backgroundColor: "var(--color-bg)"
+           }}>
           <div style={{ height: "30px" }}>
             <button
               className="signup_modal_close"
@@ -2372,7 +2378,7 @@ const HomeNavbar = (
               <IoClose />
             </button>
           </div>
-          <div className="tab_btn_main">
+          <div className="tab_btn_main" style={{height:"0px"}}>
             <button
               onClick={() => {
                 SetsignButn(1);
@@ -2645,7 +2651,10 @@ const HomeNavbar = (
         }}
         style={customStyles}>
         <div className="model_sizing">
-          <div style={{ backgroundColor: "#dad9d8" }}>
+          <div style={{ 
+            // backgroundColor: "#dad9d8"
+            backgroundColor: "var(--color-bg)"
+           }}>
             <div style={{ height: "25px" }}>
               <button
                 className="signup_modal_close"
@@ -2657,7 +2666,7 @@ const HomeNavbar = (
                 <IoClose />
               </button>
             </div>
-            <div className="tab_btn_main">
+            <div className="tab_btn_main" style={{height:"0px"}}>
             {signButn == 3 ? null : <button 
           
           onClick={() => {
@@ -3576,7 +3585,10 @@ const HomeNavbar = (
         onRequestClose={closeModal3}
         style={customStyles}>
         <div className="model_sizing">
-          <div style={{ backgroundColor: "#dad9d8" }}>
+          <div style={{ 
+            // backgroundColor: "#dad9d8"
+            backgroundColor: "var(--color-bg)"
+           }}>
             <div style={{ height: "25px" }}>
               <button
                 className="signup_modal_close"
@@ -3586,7 +3598,7 @@ const HomeNavbar = (
                 <IoClose />
               </button>
             </div>
-            <div className="tab_btn_main">
+            <div className="tab_btn_main" style={{height:"0px"}}>
             {signButn == 3 ? null : <button 
                 onClick={() => {
                   SetsignButn(1);
@@ -3600,7 +3612,8 @@ const HomeNavbar = (
                 Mall Login / Sign Up
               </button>}
               
-              {signButn == 3 ? null :  <button
+              {signButn == 3 ? null :  
+              <button
                 onClick={() => {
                   SetsignButn(2);
                   SetboldButn(2);

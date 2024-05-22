@@ -5,8 +5,11 @@ import { ProductTilesCard, RetailerNavigationBar } from "../../components";
 import "./ProductTiles.css";
 import {
   ACCEPT_HEADER,
+  filter_producttilesbanner,
   get_producttilesbanner,
   get_region_mall,
+  get_store_region_authwise,
+  store_mall_from_region,
 } from "../../utils/Constant";
 import { BsChevronDown } from "react-icons/bs";
 import Select from "react-select";
@@ -128,6 +131,11 @@ const ProductTiles = ({ get_mall_auth_data, setTab, getTab }) => {
   const perPage = 3;
   const [totalPages, setTotalPages] = useState(1);
   const [page, setPage] = useState(1);
+
+  const perPage2 = 3;
+  const [totalPages2, setTotalPages2] = useState(1);
+  const [page2, setPage2] = useState(1);
+
   const [getliast, SetLiast] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -161,6 +169,87 @@ const ProductTiles = ({ get_mall_auth_data, setTab, getTab }) => {
         setTotalPages(res.data.last_page);
         SetLiast([...getliast, ...res.data.data]);
         setLoading(false);
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+  };
+
+  const UpdateRegionFilter = async (selectedOption) => {
+    const token = JSON.parse(localStorage.getItem("is_token"));
+
+    const formdata = new FormData();
+    selectedOption.forEach((option, index) => {
+      formdata.append(`region_id[${index}]`, option.value);
+    });
+
+    try {
+      const res = await axios.post(store_mall_from_region , formdata, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      });
+      console.log(JSON.stringify(res, null, 2));
+      setMallsOptions(res.data.data);
+    } catch (err) {
+      console.log("err11", err);
+    }
+  };
+
+
+  // const LeaderboadFilter = async (selectedOption) => {
+  //   const token = JSON.parse(localStorage.getItem("is_token"));
+
+  //   const formdata = new FormData();
+  //   getMallsRegion2.forEach((option, index) => {
+  //     formdata.append(`region_id[${index}]`, option.value);
+  //   });
+  //   selectedOption.forEach((option, index) => {
+  //     formdata.append(`mall_id[${index}]`, option.value);
+  //   });
+
+  //   try {
+  //     const res = await axios.post(filter_leaderboard, formdata, {
+  //       headers: {
+  //         Accept: ACCEPT_HEADER,
+  //         Authorization: "Bearer " + token,
+  //       },
+  //     });
+  //     console.log(JSON.stringify(res, null, 2));
+  //     setfilterData(res.data.data);
+  //   } catch (err) {
+  //     console.log("err11", err);
+  //   }
+  // };
+
+  const LeaderboadFilter = async (selectedOption) => {
+    const token = await JSON.parse(localStorage.getItem("is_token"));
+    const formdata = new FormData();
+    getMallsRegion2.forEach((option, index) => {
+      formdata.append(`region_id[${index}]`, option.value);
+    });
+    selectedOption.forEach((option, index) => {
+      formdata.append(`mall_id[${index}]`, option.value);
+    });
+
+    setLoading(true);
+    fetch(filter_producttilesbanner + `per_page=${perPage2}&page=${page2}`, {
+      method: "POST",
+      body: formdata,
+      headers: {
+        Accept: ACCEPT_HEADER,
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("ffff", res.data.last_page);
+        setTotalPages2(res.data.last_page);
+        // setProList2([...getfilterData, ...res.data.data]);
+        SetLiast([...getfilterData, ...res.data.data]);
+        setLoading(false);
+        console.log("123",getfilterData);
       })
       .catch((err) => {
         console.log("err", err);
@@ -224,9 +313,11 @@ const ProductTiles = ({ get_mall_auth_data, setTab, getTab }) => {
   useEffect(() => {
     GetRegion();
     getCategoryApi();
+    GetRegionFilter();
   }, []);
 
   const [getregion_array, SetRigion_Array] = useState([]);
+  const [getregion_arrayfilter, SetRigion_Arrayfilter] = useState([]);
 
   const GetRegion = async () => {
     const token = JSON.parse(localStorage.getItem("is_token"));
@@ -251,11 +342,53 @@ const ProductTiles = ({ get_mall_auth_data, setTab, getTab }) => {
       });
   };
 
+  const GetRegionFilter = async () => {
+    const token = JSON.parse(localStorage.getItem("is_token"));
+
+    axios
+      .get(get_store_region_authwise, {
+        headers: {
+          Accept: ACCEPT_HEADER,
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((res) => {
+        if (res.data.success == 1) {
+          SetRigion_Arrayfilter(res.data.data);
+        } else {
+        }
+      })
+      .catch((err) => {
+        console.log("err11", err);
+      });
+  };
+
+  const stateMultipleChange = async (selectedOption) => {
+    setregionsOption(selectedOption);
+
+    await UpdateRegionFilter(selectedOption);
+    await setMallsRegion2(selectedOption);
+    console.log("Selected Option:", selectedOption);
+  };
+
+  const stateMultipleChange2 = async (selectedOption) => {
+    setMallOptions(selectedOption);
+
+    await LeaderboadFilter(selectedOption);
+
+    console.log("Selected Option:", selectedOption);
+  };
+
   const [selectedRegions, setSelectedRegions] = useState([]);
   const [selectedMalls, setSelectedMalls] = useState([]);
+  const [regionsOption, setregionsOption] = useState([]);
+  const [mallsOption, setMallOptions] = useState([]);
 
   const [mallidarray, SetMallidarray] = useState([]);
   const [regionidarray, SetRegionidarray] = useState([]);
+  const [getMallsOptions, setMallsOptions] = useState([]);
+  const [getfilterData, setfilterData] = useState([]);
+  const [getMallsRegion2, setMallsRegion2] = useState([]);
 
   const handleRegionChange = (regionName, id) => {
     const updatedSelectedRegions = [...selectedRegions];
@@ -343,17 +476,24 @@ const ProductTiles = ({ get_mall_auth_data, setTab, getTab }) => {
                   style={{ minWidth: "125px" }}>
                   Filter by region:
                 </label>
-                <div className="select-wrapper" style={{ width: "100%" }}>
-                  <select
+                <div
+                  //  className="select-wrapper" 
+                  style={{ width: "100%" }}
+                >
+                  <Select
+
+                    value={regionsOption}
+                    styles={{ width: "100%", padding: "0px", borderRadius: "4px" }}
                     className="leaderboard-card-inp"
-                    style={{ borderRadius: "6px" }}>
-                    <option selected disabled value="">
-                      Select a Region
-                    </option>
-                    <option value="1">ONE SIZE</option>
-                    <option value="2">TWO SIZE</option>
-                    <option value="3">THREE SIZE</option>
-                  </select>
+                    closeMenuOnSelect={false}
+                    components={animatedComponents}
+                    // defaultValue={[colourOptions[4], colourOptions[5]]}
+
+                    isMulti
+                    options={getregion_arrayfilter}
+                    // onChange={setregionsOption}
+                    onChange={stateMultipleChange}
+                  />
                 </div>
               </div>
 
@@ -363,20 +503,39 @@ const ProductTiles = ({ get_mall_auth_data, setTab, getTab }) => {
                   style={{ minWidth: "125px" }}>
                   Filter by mall:
                 </label>
-                <div className="select-wrapper" style={{ width: "100%" }}>
-                  <select
+                <div
+                  // className="select-wrapper" 
+                  style={{ width: "100%" }}>
+                  <Select
+
+                    value={mallsOption}
+                    styles={{ width: "100%", padding: "0px", borderRadius: "4px" }}
                     className="leaderboard-card-inp"
-                    style={{ borderRadius: "6px" }}>
-                    <option selected disabled value="">
-                      Select mall
-                    </option>
-                    <option value="1">ONE SIZE</option>
-                    <option value="2">TWO SIZE</option>
-                    <option value="3">THREE SIZE</option>
-                  </select>
+                    closeMenuOnSelect={false}
+                    components={animatedComponents}
+                    // defaultValue={[colourOptions[4], colourOptions[5]]}
+
+                    isMulti
+                    options={getMallsOptions}
+                    // onChange={setregionsOption}
+                    onChange={stateMultipleChange2}
+                  />
+                  {/* <Select
+                value={mallsOption}
+                styles={{ width: "100%", padding: "0px" }}
+                className="leaderboard-card-inp"
+                closeMenuOnSelect={false}
+                components={animatedComponents}
+                // defaultValue={[colourOptions[4], colourOptions[5]]}
+
+                isMulti
+                options={multiple_week_data}
+                onChange={setMallsOption}
+              /> */}
                 </div>
               </div>
             </div>
+
             {/* <button className="leaderboard-btn" onClick={() => setTab(23)}>
               Add new{" "}
               <img
@@ -411,6 +570,16 @@ const ProductTiles = ({ get_mall_auth_data, setTab, getTab }) => {
                 {loading ? "Loading..." : " Load More LeaderBoard"}
                 <BsChevronDown />
               </button>
+            )}
+
+            {totalPages2 !== page2 && (
+              <button
+                className="view_more_btn"
+                onClick={() => setPage(page2 + 1)}>
+                {loading ? "Loading..." : " Load More LeaderBoard"}
+                <BsChevronDown />
+              </button>
+              
             )}
             {/* LeaderBoard Card Component end */}
 

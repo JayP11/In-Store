@@ -12,8 +12,6 @@ import { ACCEPT_HEADER, get_region_mall } from "../../utils/Constant";
 import axios from "axios";
 import { IoChevronBack } from "react-icons/io5";
 
-
-
 const customStyles = {
   content: {
     top: "50%",
@@ -111,8 +109,8 @@ const AccordionData = [
 const RetailerAddLandingPageSquareTile = ({ get_mall_auth_data, setTab }) => {
   const [mallMolalOpen, setMallModalIsOpen] = useState(false);
   const [gatweek, setWeek] = useState("");
-  const { getCategoryApi, getWeekApi,getCinemaCategoryApi } = useStoreContext();
-
+  const { getCategoryApi, getWeekApi, getCinemaCategoryApi } =
+    useStoreContext();
 
   const { week_data } = useStoreContext();
 
@@ -136,8 +134,6 @@ const RetailerAddLandingPageSquareTile = ({ get_mall_auth_data, setTab }) => {
 
   // select chackbox functionality
   const [peopleInfo, setPeopleInfo] = useState([]);
-
-  
 
   useEffect(() => {
     GetRegion();
@@ -259,7 +255,15 @@ const RetailerAddLandingPageSquareTile = ({ get_mall_auth_data, setTab }) => {
           mallidarray={mallidarray}
           selectedMalls={selectedMalls}
         />
-        <span style={{fontSize:"14px",color:"#bbb",alignSelf:"flex-start",marginBottom:"0.7rem"}}>*Required Fields including all image uploads.</span>
+        <span
+          style={{
+            fontSize: "14px",
+            color: "#bbb",
+            alignSelf: "flex-start",
+            marginBottom: "0.7rem",
+          }}>
+          *Required Fields including all image uploads.
+        </span>
         {/* <CalenderTesting /> */}
         {/* Add Leaderboard card end */}
         {/* select mall modal start */}
@@ -289,40 +293,6 @@ const RetailerAddLandingPageSquareTile = ({ get_mall_auth_data, setTab }) => {
                 />
               </div>
 
-              {/* <div
-                            className="leaderboard-card-inpbox-wrapp"
-                            style={{ alignItems: "center" }}
-                        >
-                            <label className="leaderboard-card-lbl">Slect Weeks:</label>
-                            <select
-                                className="leaderboard-card-inp"
-                                // value={MallName}
-                                onChange={(e) => {
-                                    setWeek(e.target.value);
-                                    console.log(e.target.value);
-                                }}
-                            >
-                                <option selected disabled value="">
-                                    Select Week
-                                </option>
-
-                                {week_data &&
-                                    week_data.map((item, index) => {
-                                        return (
-                                            <>
-                                              
-                                                <option value={item.id} key={index}>
-                                                    {item.name} &nbsp;&nbsp;&nbsp; {item.from_date}{" "}
-                                                    &nbsp;&nbsp;&nbsp; {item.to_date}
-                                                </option>
-                                            </>
-                                        );
-                                    })}
-                            </select>
-     
-                        </div> */}
-
-              {/* mall selected tag */}
               <div className="select_mall_tag_btns_wrapp">
                 {selectedMalls && selectedMalls.length > 0
                   ? selectedMalls.map((mall, mindx) => {
@@ -331,16 +301,7 @@ const RetailerAddLandingPageSquareTile = ({ get_mall_auth_data, setTab }) => {
                         <button
                           className="select_mall_tag_single_btn"
                           style={{ backgroundColor: "#4FBB10" }}
-                          key={mindx}
-                          // onClick={() => {
-                          //   handleMallChange(mall);
-                          //   // setPeopleInfo(
-                          //   //   peopleInfo.filter(
-                          //   //     (people) => people.name !== mall.name
-                          //   //   )
-                          //   // );
-                          // }}
-                        >
+                          key={mindx}>
                           {mall}
                           {/* <IoIosClose className="select_mall_tag_single_btn_close" /> */}
                         </button>

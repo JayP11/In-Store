@@ -40,4 +40,9 @@
 .checkout-head-sub-part-cinema{
     font-size: 13px;
 }
+
+.mm_main_wrapp_cinema_checkout{
+    margin-left: 1rem !important;
+    margin-right: 1rem !important;
+}
 }

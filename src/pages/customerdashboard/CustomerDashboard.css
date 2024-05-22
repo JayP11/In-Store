@@ -112,7 +112,7 @@
 }
 
 .cus_slider_gray_color_main{
-  width: 17.5%;
+  width: 19.5%;
   transition: 1s ease,
 }
 
@@ -129,11 +129,16 @@
   gap: 0.5rem;
   padding-bottom: 1rem;
 }
+
+.customer-sidebar-name-headdd{
+  text-wrap: wrap !important;
+}
+
 /* new added csss for account tab sidebar */
 
 @media screen and (max-width:1560px) {
   .cus_slider_gray_color_main{
-    width: 19.5% !important;
+    width: 22.5% !important;
     transition: 1s ease,
 
   }
@@ -147,7 +152,8 @@
 
 @media screen and (max-width:1400px) {
   .cus_slider_gray_color_main{
-    width: 21.5% !important;
+    /* width: 21.5% !important; */
+    width: 24.5% !important;
     /* display: none; */
   }
 

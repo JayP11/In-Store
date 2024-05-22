@@ -35,7 +35,7 @@ const CustomerEateriesDetails = ({ getsingalmalldata, getedetalis, setTab }) => 
                             </h4>
                             {/* &nbsp;&nbsp; <span className="h3">Eateries</span> */}
                         </div>
-                        <CustomerEateriesDetailsComponent getedetalis={getedetalis} />
+                        <CustomerEateriesDetailsComponent getedetalis={getedetalis} setTab={setTab} />
                     </div>
                 </div>
             </div>

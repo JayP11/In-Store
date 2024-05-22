@@ -63,6 +63,9 @@ const ProductBannerCard = ({
 
   getweek,
 }) => {
+
+  const eateryvalue = JSON.parse(localStorage.getItem("iseatery"));
+
   useEffect(() => {
     GetRegion();
   }, []);
@@ -145,6 +148,7 @@ const ProductBannerCard = ({
   const {
     UpdateProductBoardApi,
     category_data,
+    category_eatery_data,
     deleteProductBannerApi,
     multiple_week_data,
     week_data,
@@ -213,30 +217,87 @@ const ProductBannerCard = ({
 
   // logo dropzon
 
-  const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } =
-    useDropzone({
-      onDrop: (acceptedFiles) => {
-        const filteredFiles = acceptedFiles.filter(file => file.size <= 200000); // Limit size to 200KB (in bytes)
+  // const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } =
+  //   useDropzone({
+  //     onDrop: (acceptedFiles) => {
+  //       const filteredFiles = acceptedFiles.filter(file => file.size <= 200000); // Limit size to 200KB (in bytes)
 
-        {
-          setFiles(
-            filteredFiles.map((file) =>
-              Object.assign(file, {
-                preview: URL.createObjectURL(file),
-              })
-            )
-          );
-          if (filteredFiles.length !== acceptedFiles.length) {
-            // Notification('');
-            Notification("error","Error!", "Some files exceed the maximum size limit of 200KB and will not be uploaded.");
+  //       {
+  //         setFiles(
+  //           filteredFiles.map((file) =>
+  //             Object.assign(file, {
+  //               preview: URL.createObjectURL(file),
+  //             })
+  //           )
+  //         );
+  //         if (filteredFiles.length !== acceptedFiles.length) {
+  //           // Notification('');
+  //           Notification("error","Error!", "Some files exceed the maximum size limit of 200KB and will not be uploaded.");
+  //         }
+  //       }
+  //       setCondition(true);
+  //       if (acceptedFiles.length === 0) {
+  //         window.location.reload(true);
+  //       }
+  //     },
+  //   });
+
+  const { getRootProps: getRootlogoProps, getInputProps: getInputlogoProps } =
+  useDropzone({
+    onDrop: async (acceptedFiles) => {
+      setCondition(true);
+
+      const maxSizeKB = 200; // Maximum size limit in KB
+      const maxSizeBytes = maxSizeKB * 1024; // Convert KB to bytes
+
+      const filteredFiles = await Promise.all(
+        acceptedFiles.map(async (file) => {
+          const isSizeValid = file.size <= maxSizeBytes; // Limit size to 50KB (in bytes)
+          const isImage = file.type.startsWith("image/"); // Check if it's an image file
+
+          if (!isImage || !isSizeValid) {
+            return null; // Skip files that are not images or exceed size limit
           }
-        }
-        setCondition(true);
-        if (acceptedFiles.length === 0) {
-          window.location.reload(true);
-        }
-      },
-    });
+
+          // Load image and wait for it to load
+          const img = new Image();
+          img.src = URL.createObjectURL(file);
+          await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+          });
+
+          // Check image dimensions
+          const isDimensionsValid = img.width == 2176 && img.height == 590;
+
+          return isDimensionsValid ? file : null; // Return file if dimensions are valid, otherwise skip it
+        })
+      );
+
+      // Filter out null values (files that were skipped)
+      const validFiles = filteredFiles.filter((file) => file !== null);
+
+      setFiles(
+        validFiles.map((file) =>
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        )
+      );
+
+      if (validFiles.length !== acceptedFiles.length) {
+        Notification(
+          "error",
+          "Error!",
+          "Some files exceed the maximum size limit of 200KB or do not meet the dimension requirements of 2176x590 pixels and will not be uploaded."
+        );
+      }
+
+      if (acceptedFiles.length === 0) {
+        window.location.reload(true);
+      }
+    },
+  });
 
   const thumbs = files.map((file) => (
     <img
@@ -548,7 +609,7 @@ const ProductBannerCard = ({
           {/* Leaderboard first part responsive side start */}
           <div className="leaderboard-card-first-resp-main-wrapp">
             <p className="leaderboard-last-part-txt">
-              Service fee will apply if canceled
+              {/* Service fee will apply if canceled */}
             </p>
             <button className="leaderboard-delete-icon-btn">
               cancel{" "}
@@ -689,6 +750,18 @@ const ProductBannerCard = ({
                   <option selected disabled value="">
                     {Category}
                   </option>
+                  {eateryvalue == 1 ? <>
+                    {category_eatery_data &&
+                      category_eatery_data.map((item, index) => {
+                      return (
+                        <>
+                          <option value={item.id} key={index}>
+                            {item.name}
+                          </option>
+                        </>
+                      );
+                    })}
+                  </> : <>
                   {category_data &&
                     category_data.map((item, index) => {
                       return (
@@ -699,6 +772,8 @@ const ProductBannerCard = ({
                         </>
                       );
                     })}
+                  </>}
+                 
                 </select>
               </div>
             </div>
@@ -783,7 +858,7 @@ const ProductBannerCard = ({
             {getcondition === true ? (
               <>
                 {files && files.length > 0 ? (
-                  <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl">
+                  <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl myprofile_inner_sec2_img_upload_border">
                     {thumbs}
                   </div>
                 ) : (
@@ -840,7 +915,7 @@ const ProductBannerCard = ({
                     </div>
                   </div>
                 ) : (
-                  <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl">
+                  <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl myprofile_inner_sec2_img_upload_border">
                     <img
                       alt=""
                       src={item.image_path}
@@ -872,7 +947,7 @@ const ProductBannerCard = ({
               />
             </button>
             <p className="leaderboard-last-part-txt">
-              Service fee will apply if canceled
+              {/* Service fee will apply if canceled */}
             </p>
             <div className="leaderboard-btn-box">
               {item.cart_status === 0 ? (

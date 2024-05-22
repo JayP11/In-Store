@@ -245,6 +245,10 @@ const MallAddStore = ({
                         Notification("success", "Success!", "Brand Added Successfully!");
                         setTab(3);
                         getStoreList();
+                    } else if (res.data.success == 0) {
+                        Notification("error", "Error!", res.data.message);
+                        // setTab(3);
+                        // getStoreList();
                     } else {
                         null;
                     }
@@ -958,6 +962,8 @@ const MallAddStore = ({
                                     className="btn btn-black"
                                     onClick={() => AddStoreNallData()}
                                     style={{ width: "200px" }}
+                                    disabled={isAcceptTerm == 1 && isAcceptTerm2 ==1 ? false : true}
+
                                 >
                                     Submit
                                 </button>
@@ -988,7 +994,7 @@ const MallAddStore = ({
                                                     marginBottom: "10px",
                                                 }}
                                             />
-                                            <h4>.PDF .JPG .PNG</h4>
+                                            <h4>.JPG .PNG</h4>
                                             <p>You can also upload file by</p>
                                             <input
                                                 {...getInputLogoProps()}
@@ -1030,8 +1036,8 @@ const MallAddStore = ({
                         <div className="mm_img_upload_wrapp" style={{ width: "100%" }}>
                             {/* single upload image */}
                             <div className="myprofile_inner_sec2">
-                                <h4 style={{ marginBottom: "10px",fontSize:"14px",fontWeight:"600" }}>Upload the brand banner <br />
-                                    (200 x 200 pixels)</h4>
+                            <h5 style={{ marginBottom: "10px",fontSize:"14px",fontWeight:"600" }}>Upload black and white <br />
+                                Brand banner <br/> (2560 x 475 pixels) <br/> (max 200kb)<span className="star_require">*</span></h5>
                                 {files2 && files2.length > 0 ? (
                                     <div className="myprofile_inner_sec2_img_upload">{thumbs2}</div>
                                 ) : (
@@ -1048,7 +1054,7 @@ const MallAddStore = ({
                                                     marginBottom: "10px",
                                                 }}
                                             />
-                                            <h4>.PDF .JPG .PNG</h4>
+                                            <h4>.JPG .PNG</h4>
                                             <p>You can also upload file by</p>
                                             <input
                                                 {...getInputBannerProps()}
@@ -1126,7 +1132,7 @@ const MallAddStore = ({
 
                     <p className="fs-des" style={{ fontWeight: "400", fontSize: "14px" }}>
                         I have read and agree to the{" "}
-                        <a className="signup_terms_link">Terms and Conditions</a> &{" "}
+                        <a className="signup_terms_link">Terms and Conditions</a>{" "}
                     </p>
 
                 </div>
@@ -1135,6 +1141,8 @@ const MallAddStore = ({
                     <button
                         className="btn btn-black"
                         onClick={() => AddStoreNallData()}
+                        disabled={isAcceptTerm == 1 && isAcceptTerm2 ==1 ? false : true}
+
                         style={{ width: "200px" }}
                     >
                         Submit
