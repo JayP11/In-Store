@@ -723,7 +723,7 @@ const thumbsqr = filesqr.map((file) => (
           )}
         </div>
 
-        <div
+        {/* <div
               className="leaderboard-card-part-sec2"
               style={{
                 width: "200px",
@@ -743,7 +743,43 @@ const thumbsqr = filesqr.map((file) => (
                  {thumbsqr}
                 </div>
               
-            </div>
+            </div> */}
+
+            <>
+              {filesqr && filesqr.length > 0 ? (
+                <div className="myprofile_inner_sec2_img_upload leaderboard-card-part-img-upl myprofile_inner_sec2_img_upload_border" style={{height:"200px"}}>
+                  {thumbsqr}
+                </div>
+              ) : (
+                <div style={{ width: "100%" }}>
+                  <div className="leaderboard-card-part-sec2" style={{paddingLeft:"0.3rem",paddingRight:"0.3rem",textAlign:"center"}}>
+                    <AiOutlineCloudUpload
+                      style={{
+                        width: "60px",
+                        height: "60px",
+                        color: "var(--color-orange)",
+                        marginBottom: "10px",
+                      }}
+                    />
+                    <h4 style={{ fontSize: "14px" }}>.JPG .PNG(150 x 150 pixels)</h4>
+                    <p style={{ fontSize: "14px" }}>
+                    (max 50kb)
+                    </p>
+                    {/* <p style={{ fontSize: "14px" }}>
+                      You can also upload file by
+                    </p> */}
+
+                    {/* <button
+                      type="button"
+                      className="click_upload_btn"
+                      style={{ marginBottom: "10px",color:"var(--color-orange)",fontWeight:"600" }}
+                    >
+                      click here
+                    </button> */}
+                  </div>
+                </div>
+              )}
+            </>
         </div>
         {/* Leaderboard part second end */}
 

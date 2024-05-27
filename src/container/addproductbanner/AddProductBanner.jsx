@@ -174,6 +174,8 @@ const AddProductBanner = ({ get_mall_auth_data, setTab }) => {
 
     const [getregion_array, SetRigion_Array] = useState([]);
 
+    console.log("getregion_array",getregion_array);
+
     const GetRegion = async () => {
         const token = JSON.parse(localStorage.getItem("is_token"));
 

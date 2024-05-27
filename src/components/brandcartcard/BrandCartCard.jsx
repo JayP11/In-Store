@@ -39,7 +39,7 @@ const BrandCartCard = ({ item, toggle, Get_cart, setToggle }) => {
       <div
       //  className="brandcc_sec1" 
        className={`${
-                  toggle == 7 ?
+                  toggle == 7 || toggle == 2 ?
                      "brandcc_sec1_protile_brand"
                     : "brandcc_sec1"
                 }`}>
@@ -65,7 +65,7 @@ const BrandCartCard = ({ item, toggle, Get_cart, setToggle }) => {
                   return (
                     <img
                       src={item.image_path}
-                      style={{ width: "40px", height: "40px" }}
+                      style={{ width: "100%", height: "100%" }}
                     />
                   );
                 })}

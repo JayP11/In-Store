@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { AiOutlineCloudUpload } from "react-icons/ai";
-import { ACCEPT_HEADER, get_brand_multiple, get_category, get_eatery_category, mall_update_eatery } from "../utils/Constant";
+import {
+  ACCEPT_HEADER,
+  get_brand_multiple,
+  get_category,
+  get_eatery_category,
+  mall_update_eatery,
+} from "../utils/Constant";
 import axios from "axios";
 import { useMallContext } from "../context/mall_context";
 import Notification from "../utils/Notification";
@@ -11,7 +17,6 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
 const animatedComponents = makeAnimated();
-
 
 const EditEateriesDetails = ({
   getsingleStoreData,
@@ -37,18 +42,22 @@ const EditEateriesDetails = ({
     getsingleStoreData.store_no ? getsingleStoreData.store_no : ""
   );
 
-  const [storeCategory, setStoreCategory] = useState(getsingleStoreData.categorys == null ||
-    getsingleStoreData.categorys == "" ||
-    getsingleStoreData.categorys.id == null ||
-    getsingleStoreData.categorys.id == ""
-    ? ""
-    : getsingleStoreData.categorys.id);
-  const [categoryName, setCategoryName] = useState(getsingleStoreData.categorys == null ||
-    getsingleStoreData.categorys == "" ||
-    getsingleStoreData.categorys.name == null ||
-    getsingleStoreData.categorys.name == ""
-    ? ""
-    : getsingleStoreData.categorys.name)
+  const [storeCategory, setStoreCategory] = useState(
+    getsingleStoreData.categorys == null ||
+      getsingleStoreData.categorys == "" ||
+      getsingleStoreData.categorys.id == null ||
+      getsingleStoreData.categorys.id == ""
+      ? ""
+      : getsingleStoreData.categorys.id
+  );
+  const [categoryName, setCategoryName] = useState(
+    getsingleStoreData.categorys == null ||
+      getsingleStoreData.categorys == "" ||
+      getsingleStoreData.categorys.name == null ||
+      getsingleStoreData.categorys.name == ""
+      ? ""
+      : getsingleStoreData.categorys.name
+  );
   const [getcontactNo, setContactNo] = useState(
     getsingleStoreData.contact_no ? getsingleStoreData.contact_no : ""
   );
@@ -56,7 +65,9 @@ const EditEateriesDetails = ({
     getsingleStoreData.store_level ? getsingleStoreData.store_level : ""
   );
 
-  const [getstoreContactPerson, setStoreContactPerson] = useState(getsingleStoreData.contact_person ? getsingleStoreData.contact_person : "");
+  const [getstoreContactPerson, setStoreContactPerson] = useState(
+    getsingleStoreData.contact_person ? getsingleStoreData.contact_person : ""
+  );
 
   const [getemail, setEmail] = useState(
     getsingleStoreData.email ? getsingleStoreData.email : ""
@@ -95,19 +106,20 @@ const EditEateriesDetails = ({
   const [mallsOption, setMallsOption] = useState(
     getsingleStoreData.brands ? getsingleStoreData.brands : ""
   );
-  const [retailerType, setRetailerType] = useState(getsingleStoreData.type && getsingleStoreData.type);
+  const [retailerType, setRetailerType] = useState(
+    getsingleStoreData.type && getsingleStoreData.type
+  );
 
   const [termsCond, setTermsCond] = useState(1);
   const [getcondition, setcondition] = useState(false);
   const [getcondition2, setcondition2] = useState(false);
   const [catarray, SetArray] = useState([]);
-  
+  const [imagecheck, setImageCheck] = useState(false);
 
   const [isAcceptTerm, setIsAcceptTerm] = useState(0);
   const [isAcceptTerm2, setIsAcceptTerm2] = useState(0);
 
   const [getMultipleBrand, setMultipleBrand] = useState([]);
-
 
   const handleTermChange = (e) => {
     setIsAcceptTerm(1);
@@ -118,10 +130,9 @@ const EditEateriesDetails = ({
     console.log("e.targate.value");
   };
 
-
   useEffect(() => {
     getcat();
-  }, [])
+  }, []);
 
   const onHandleEmailChange = (e) => {
     let email = e.target.value;
@@ -155,7 +166,6 @@ const EditEateriesDetails = ({
         console.log("ggg", JSON.stringify(res.data, null, 2));
         if (res.data.success == 1) {
           SetArray(res.data.data);
-
         } else {
           null;
         }
@@ -169,13 +179,17 @@ const EditEateriesDetails = ({
     if (getstoreName == "" || undefined) {
       Notification("error", "Error", "Please Enter Eatery Name");
       return;
-    }  else if (retailerType == "" || undefined) {
+    } else if (retailerType == "" || undefined) {
       Notification("error", "Error!", "Please Select any one retailer type!");
       return;
     } else if (mallsOption.length <= 0 && retailerType == 2) {
-      Notification("error", "Error!", "Please Select any Brand otherwise select Independent Retailer!");
+      Notification(
+        "error",
+        "Error!",
+        "Please Select any Brand otherwise select Independent Retailer!"
+      );
       return;
-    }else if (storeCategory == "" || undefined) {
+    } else if (storeCategory == "" || undefined) {
       Notification("error", "Error!", "Please Select Eatery Category!");
       return;
     } else if (getstoreNo == "" || undefined) {
@@ -185,7 +199,7 @@ const EditEateriesDetails = ({
     // else if (getstoreLevel == "" || undefined) {
     //   Notification("error", "Error", "Please Enter Eatery Level");
     //   return;
-    // } 
+    // }
     // else if (getstoreContactPerson == "" || undefined) {
     //   Notification("error", "Error", "Please Enter Contact Person");
     //   return;
@@ -264,16 +278,62 @@ const EditEateriesDetails = ({
 
   const { getRootProps: getRootLogoProps, getInputProps: getInputLogoProps } =
     useDropzone({
-      onDrop: (acceptedFiles) => {
+      onDrop: async (acceptedFiles) => {
         console.log("acceptedFiles", acceptedFiles);
         {
-          setFiles(
-            acceptedFiles.map((file) =>
-              Object.assign(file, {
-                preview: URL.createObjectURL(file),
-              })
-            )
+          const maxSizeKB = 40; // Maximum size limit in KB
+          const maxSizeBytes = maxSizeKB * 1024; // Convert KB to bytes
+
+          const filteredFiles = await Promise.all(
+            acceptedFiles.map(async (file) => {
+              const isSizeValid = file.size <= maxSizeBytes; // Limit size to 50KB (in bytes)
+              const isImage = file.type.startsWith("image/"); // Check if it's an image file
+
+              if (!isImage || !isSizeValid) {
+                return null; // Skip files that are not images or exceed size limit
+              }
+
+              // Load image and wait for it to load
+              const img = new Image();
+              img.src = URL.createObjectURL(file);
+              await new Promise((resolve, reject) => {
+                img.onload = resolve;
+                img.onerror = reject;
+              });
+
+              // Check image dimensions
+              const isDimensionsValid = img.width == 200 && img.height == 200;
+              if (isDimensionsValid) {
+                setImageCheck(true);
+              } else {
+                setImageCheck(false);
+              }
+              return isDimensionsValid ? file : null; // Return file if dimensions are valid, otherwise skip it
+            })
           );
+
+          const validFiles = filteredFiles.filter((file) => file !== null);
+          {
+            setFiles(
+              validFiles.map((file) =>
+                Object.assign(file, {
+                  preview: URL.createObjectURL(file),
+                })
+              )
+            );
+            if (validFiles.length !== acceptedFiles.length) {
+              if (validFiles.length !== acceptedFiles.length) {
+                setImageCheck(false);
+              } else {
+                setImageCheck(true);
+              }
+              Notification(
+                "error",
+                "Error!",
+                "Some files exceed the maximum size limit of 40KB or do not meet the dimension requirements of 200x200 pixels and will not be uploaded."
+              );
+            }
+          }
         }
         setcondition(true);
         if (acceptedFiles.length === 0) {
@@ -286,16 +346,62 @@ const EditEateriesDetails = ({
     getRootProps: getRootBannerProps,
     getInputProps: getInputBannerProps,
   } = useDropzone({
-    onDrop: (acceptedFiles) => {
+    onDrop: async (acceptedFiles) => {
       console.log("acceptedFiles", acceptedFiles);
       {
-        setFiles2(
-          acceptedFiles.map((file) =>
-            Object.assign(file, {
-              preview: URL.createObjectURL(file),
-            })
-          )
+        const maxSizeKB = 200; // Maximum size limit in KB
+        const maxSizeBytes = maxSizeKB * 1024; // Convert KB to bytes
+
+        const filteredFiles = await Promise.all(
+          acceptedFiles.map(async (file) => {
+            const isSizeValid = file.size <= maxSizeBytes; // Limit size to 50KB (in bytes)
+            const isImage = file.type.startsWith("image/"); // Check if it's an image file
+
+            if (!isImage || !isSizeValid) {
+              return null; // Skip files that are not images or exceed size limit
+            }
+
+            // Load image and wait for it to load
+            const img = new Image();
+            img.src = URL.createObjectURL(file);
+            await new Promise((resolve, reject) => {
+              img.onload = resolve;
+              img.onerror = reject;
+            });
+
+            // Check image dimensions
+            const isDimensionsValid = img.width == 1050 && img.height == 284;
+            if (isDimensionsValid) {
+              setImageCheck(true);
+            } else {
+              setImageCheck(false);
+            }
+            return isDimensionsValid ? file : null; // Return file if dimensions are valid, otherwise skip it
+          })
         );
+        const validFiles = filteredFiles.filter((file) => file !== null);
+
+        {
+          setFiles2(
+            validFiles.map((file) =>
+              Object.assign(file, {
+                preview: URL.createObjectURL(file),
+              })
+            )
+          );
+          if (validFiles.length !== acceptedFiles.length) {
+            if (validFiles.length !== acceptedFiles.length) {
+              setImageCheck(false);
+            } else {
+              setImageCheck(true);
+            }
+            Notification(
+              "error",
+              "Error!",
+              "Some files exceed the maximum size limit of 200KB or do not meet the dimension requirements of 1050x284 pixels and will not be uploaded."
+            );
+          }
+        }
       }
       setcondition2(true);
       if (acceptedFiles.length === 0) {
@@ -307,7 +413,12 @@ const EditEateriesDetails = ({
   const thumbs = files.map((file) => (
     <img
       src={file.preview}
-      style={{ width: "100%", height: "100%", maxHeight: "175px", filter: "grayscale(100%)" }}
+      style={{
+        width: "100%",
+        height: "100%",
+        maxHeight: "175px",
+        filter: "grayscale(100%)",
+      }}
       className="img-fluid"
       alt="file"
     />
@@ -324,9 +435,9 @@ const EditEateriesDetails = ({
 
   console.log("test", getstoreName);
 
-  useEffect(()=>{
+  useEffect(() => {
     getMutipleBrand();
-  },[])
+  }, []);
 
   const getMutipleBrand = async () => {
     const token = JSON.parse(localStorage.getItem("is_token"));
@@ -339,7 +450,10 @@ const EditEateriesDetails = ({
         },
       })
       .then((res) => {
-        console.log("get multiple brand data", JSON.stringify(res.data, null, 2));
+        console.log(
+          "get multiple brand data",
+          JSON.stringify(res.data, null, 2)
+        );
         if (res.data.success == 1) {
           setMultipleBrand(res.data.data);
         } else {
@@ -362,8 +476,14 @@ const EditEateriesDetails = ({
         </div>
         {/* mall management name start */}
         <div className="mall_name_wrapp mm_form_wrapp_name_padding mall_mall_name_wrapp mall_mall_name_wrapp_2">
-          <p className="mall_name_heading mall_mall_name_heading ">{get_mall_auth_data.name}:</p>
-          <span className="mall_mall_name_heading" style={{ fontWeight: "600" }}>Edit Eatery </span>
+          <p className="mall_name_heading mall_mall_name_heading ">
+            {get_mall_auth_data.name}:
+          </p>
+          <span
+            className="mall_mall_name_heading"
+            style={{ fontWeight: "600" }}>
+            Edit Eatery{" "}
+          </span>
         </div>
         {/* <div className="mm_horizontal_line"></div> */}
         <div className="" style={{ marginBottom: "2rem" }}></div>
@@ -373,10 +493,11 @@ const EditEateriesDetails = ({
         <div className="mm_form_wrapp mm_form_wrapp_add_brand_mall mm_form_wrapp_padding">
           {/* text-input wrapp start */}
           <div className="mm_form_input_wrapp">
-
-          <div className="signup_terms_wrapp indep-side">
+            <div className="signup_terms_wrapp indep-side">
               <div className="mm_form_single_input">
-                <label htmlFor="" style={{ minWidth: "162px" }}>Retailer type</label>
+                <label htmlFor="" style={{ minWidth: "162px" }}>
+                  Retailer type
+                </label>
 
                 <div className="radio-btn-flex-brand">
                   <div className="radio-btn-inner-flex">
@@ -386,9 +507,11 @@ const EditEateriesDetails = ({
                       name="gender"
                       value="1"
                       checked={retailerType == 1}
-                      onChange={(e) => { setRetailerType(e.target.value); console.log("-->", retailerType); }}
-                    // onChange={(e) => { setRetailerType(1); console.log("-->", retailerType); }}
-
+                      onChange={(e) => {
+                        setRetailerType(e.target.value);
+                        console.log("-->", retailerType);
+                      }}
+                      // onChange={(e) => { setRetailerType(1); console.log("-->", retailerType); }}
                     />
                     <label className="course-form-txt" for="male">
                       Independent Retailer
@@ -402,7 +525,10 @@ const EditEateriesDetails = ({
                       name="gender"
                       value="2"
                       checked={retailerType == 2}
-                      onChange={(e) => { setRetailerType(e.target.value); console.log("-->", retailerType); }}
+                      onChange={(e) => {
+                        setRetailerType(e.target.value);
+                        console.log("-->", retailerType);
+                      }}
                     />
                     <label className="course-form-txt" for="specifyColor">
                       Group Retailer
@@ -410,7 +536,6 @@ const EditEateriesDetails = ({
                   </div>
                 </div>
               </div>
-
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
@@ -428,27 +553,35 @@ const EditEateriesDetails = ({
             </div>
             {/* single text-input */}
 
-            {retailerType == 2 ? <>
-              <div className="mm_form_single_input">
-                <label htmlFor="" className="" style={{ minWidth: "162px" }}>Select Brands</label>
+            {retailerType == 2 ? (
+              <>
+                <div className="mm_form_single_input">
+                  <label htmlFor="" className="" style={{ minWidth: "162px" }}>
+                    Select Brands
+                  </label>
 
-                <Select
-                  value={mallsOption}
-                  styles={{ width: "100%", padding: "0px" }}
-                  className="leaderboard-card-inp"
-                  closeMenuOnSelect={false}
-                  components={animatedComponents}
-                  // defaultValue={[getBrandList]}
-                  // defaultValue={getBrandList}                
-                  isMulti
-                  options={getMultipleBrand}
-                  onChange={setMallsOption}
-                />
-              </div>
-            </> : <></>}
+                  <Select
+                    value={mallsOption}
+                    styles={{ width: "100%", padding: "0px" }}
+                    className="leaderboard-card-inp"
+                    closeMenuOnSelect={false}
+                    components={animatedComponents}
+                    // defaultValue={[getBrandList]}
+                    // defaultValue={getBrandList}
+                    isMulti
+                    options={getMultipleBrand}
+                    onChange={setMallsOption}
+                  />
+                </div>
+              </>
+            ) : (
+              <></>
+            )}
 
             <div className="mm_form_single_input">
-              <label htmlFor="" style={{ minWidth: "162px" }}>Category<span className="star_require">*</span></label>
+              <label htmlFor="" style={{ minWidth: "162px" }}>
+                Category<span className="star_require">*</span>
+              </label>
               <div className="select-wrapper" style={{ width: "100%" }}>
                 <select
                   className="leaderboard-card-inp cons_select_nav"
@@ -456,9 +589,10 @@ const EditEateriesDetails = ({
                     setStoreCategory(e.target.value);
                     setCategoryName(e.target.value);
                     console.log(e.target.value);
-                  }}
-                >
-                  <option defaultValue value="">{categoryName}</option>
+                  }}>
+                  <option defaultValue value="">
+                    {categoryName}
+                  </option>
                   {catarray &&
                     catarray.map((item, index) => {
                       return (
@@ -514,7 +648,9 @@ const EditEateriesDetails = ({
 
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="" style={{ minWidth: "162px" }}>Contact Person</label>
+              <label htmlFor="" style={{ minWidth: "162px" }}>
+                Contact Person
+              </label>
               <input
                 type="text"
                 value={getstoreContactPerson}
@@ -561,8 +697,7 @@ const EditEateriesDetails = ({
                   fontWeight: "400",
                   minWidth: "162px",
                 }}
-                htmlFor=""
-              >
+                htmlFor="">
                 Trading Hours<span className="star_require">*</span>
               </label>
               <div className="tranding_times_wrapp">
@@ -574,11 +709,12 @@ const EditEateriesDetails = ({
                       fontWeight: "400",
                       minWidth: "162px",
                     }}
-                    htmlFor=""
-                  >
+                    htmlFor="">
                     Monday - Friday
                   </label>
-                  <div className="tranding_sigle_time_wrapp" style={{ gap: "0px", width: "138px" }}>
+                  <div
+                    className="tranding_sigle_time_wrapp"
+                    style={{ gap: "0px", width: "138px" }}>
                     {/* <select className="input_box">
                     <option value="1">09:00</option>
                   </select> */}
@@ -594,12 +730,11 @@ const EditEateriesDetails = ({
                       style={{
                         fontSize: "16px",
                         fontWeight: "400",
-                      }}
-                    >
-
-                    </p>
+                      }}></p>
                   </div>
-                  <div className="tranding_sigle_time_wrapp" style={{ gap: "0px", width: "138px" }}>
+                  <div
+                    className="tranding_sigle_time_wrapp"
+                    style={{ gap: "0px", width: "138px" }}>
                     {/* <select className="input_box">
                     <option value="1">21:00</option>
                   </select> */}
@@ -615,10 +750,7 @@ const EditEateriesDetails = ({
                       style={{
                         fontSize: "16px",
                         fontWeight: "400",
-                      }}
-                    >
-
-                    </p>
+                      }}></p>
                   </div>
                 </div>
                 {/* single time */}
@@ -629,11 +761,12 @@ const EditEateriesDetails = ({
                       fontWeight: "400",
                       minWidth: "162px",
                     }}
-                    htmlFor=""
-                  >
+                    htmlFor="">
                     Saturday
                   </label>
-                  <div className="tranding_sigle_time_wrapp" style={{ gap: "0px", width: "138px" }}>
+                  <div
+                    className="tranding_sigle_time_wrapp"
+                    style={{ gap: "0px", width: "138px" }}>
                     {/* <select className="input_box">
                     <option value="1">09:00</option>
                   </select> */}
@@ -649,12 +782,11 @@ const EditEateriesDetails = ({
                       style={{
                         fontSize: "16px",
                         fontWeight: "400",
-                      }}
-                    >
-
-                    </p>
+                      }}></p>
                   </div>
-                  <div className="tranding_sigle_time_wrapp" style={{ gap: "0px", width: "138px" }}>
+                  <div
+                    className="tranding_sigle_time_wrapp"
+                    style={{ gap: "0px", width: "138px" }}>
                     <input
                       type="time"
                       name=""
@@ -667,10 +799,7 @@ const EditEateriesDetails = ({
                       style={{
                         fontSize: "16px",
                         fontWeight: "400",
-                      }}
-                    >
-
-                    </p>
+                      }}></p>
                   </div>
                 </div>
                 {/* single time */}
@@ -681,11 +810,12 @@ const EditEateriesDetails = ({
                       fontWeight: "400",
                       minWidth: "162px",
                     }}
-                    htmlFor=""
-                  >
+                    htmlFor="">
                     Sunday
                   </label>
-                  <div className="tranding_sigle_time_wrapp" style={{ gap: "0px", width: "138px" }}>
+                  <div
+                    className="tranding_sigle_time_wrapp"
+                    style={{ gap: "0px", width: "138px" }}>
                     <input
                       type="time"
                       name=""
@@ -698,12 +828,11 @@ const EditEateriesDetails = ({
                       style={{
                         fontSize: "16px",
                         fontWeight: "400",
-                      }}
-                    >
-
-                    </p>
+                      }}></p>
                   </div>
-                  <div className="tranding_sigle_time_wrapp" style={{ gap: "0px", width: "138px" }}>
+                  <div
+                    className="tranding_sigle_time_wrapp"
+                    style={{ gap: "0px", width: "138px" }}>
                     <input
                       type="time"
                       name=""
@@ -716,10 +845,7 @@ const EditEateriesDetails = ({
                       style={{
                         fontSize: "16px",
                         fontWeight: "400",
-                      }}
-                    >
-
-                    </p>
+                      }}></p>
                   </div>
                 </div>
                 {/* single time */}
@@ -730,11 +856,12 @@ const EditEateriesDetails = ({
                       fontWeight: "400",
                       minWidth: "162px",
                     }}
-                    htmlFor=""
-                  >
+                    htmlFor="">
                     Public Holidays
                   </label>
-                  <div className="tranding_sigle_time_wrapp" style={{ gap: "0px", width: "138px" }}>
+                  <div
+                    className="tranding_sigle_time_wrapp"
+                    style={{ gap: "0px", width: "138px" }}>
                     <input
                       type="time"
                       name=""
@@ -747,12 +874,11 @@ const EditEateriesDetails = ({
                       style={{
                         fontSize: "16px",
                         fontWeight: "400",
-                      }}
-                    >
-
-                    </p>
+                      }}></p>
                   </div>
-                  <div className="tranding_sigle_time_wrapp" style={{ gap: "0px", width: "138px" }}>
+                  <div
+                    className="tranding_sigle_time_wrapp"
+                    style={{ gap: "0px", width: "138px" }}>
                     <input
                       type="time"
                       name=""
@@ -765,10 +891,7 @@ const EditEateriesDetails = ({
                       style={{
                         fontSize: "16px",
                         fontWeight: "400",
-                      }}
-                    >
-
-                    </p>
+                      }}></p>
                   </div>
                 </div>
               </div>
@@ -778,8 +901,7 @@ const EditEateriesDetails = ({
             {/* text-area sec start */}
             <div
               className="mm_form_single_input"
-              style={{ alignItems: "flex-start" }}
-            >
+              style={{ alignItems: "flex-start" }}>
               <label htmlFor="" style={{ minWidth: "162px" }}>
                 Eatery Description<span className="star_require">*</span>
               </label>
@@ -795,12 +917,11 @@ const EditEateriesDetails = ({
             </div>
             <div
               className="mm_form_single_input"
-              style={{ alignItems: "flex-start" }}
-            >
-              <label htmlFor="" style={{ minWidth: "162px" }}>
-
-              </label>
-              <span style={{ fontSize: "14px", color: "#bbb" }}>*Required Fields including all image uploads.</span>
+              style={{ alignItems: "flex-start" }}>
+              <label htmlFor="" style={{ minWidth: "162px" }}></label>
+              <span style={{ fontSize: "14px", color: "#bbb" }}>
+                *Required Fields including all image uploads.
+              </span>
             </div>
             <div className="mm_form_single_input mb_8">
               <label htmlFor="" style={{ minWidth: "162px" }}></label>
@@ -820,7 +941,9 @@ const EditEateriesDetails = ({
             </div>
             <div className="mm_form_single_input mb_8">
               <label htmlFor="" style={{ minWidth: "162px" }}></label>
-              <div className="signup_terms_wrapp indep-side" style={{ marginTop: "-12px" }}>
+              <div
+                className="signup_terms_wrapp indep-side"
+                style={{ marginTop: "-12px" }}>
                 <input
                   type="checkbox"
                   value={isAcceptTerm2}
@@ -842,24 +965,38 @@ const EditEateriesDetails = ({
             <div className="mm_img_upload_wrapp" style={{ width: "100%" }}>
               {/* single upload image */}
               <div className="img-upl-border">
-
-                <div className="myprofile_inner_sec2" {...getRootLogoProps()} style={{ border: "none", paddingBottom: "0px", maxWidth: "250px" }}>
+                <div
+                  className="myprofile_inner_sec2"
+                  {...getRootLogoProps()}
+                  style={{
+                    border: "none",
+                    paddingBottom: "0px",
+                    maxWidth: "250px",
+                  }}>
                   {/* <input
                 {...getInputlogoProps()}
                 accept="image/jpeg, image/jpg, image/png, image/eps"
               /> */}
-                  <h4 style={{ marginBottom: "10px", fontSize: "14px", fontWeight: "600" }} className="myprofile_upload_img_card_name">
+                  <h4
+                    style={{
+                      marginBottom: "10px",
+                      fontSize: "14px",
+                      fontWeight: "600",
+                    }}
+                    className="myprofile_upload_img_card_name">
                     Upload black and white <br />
                     Eatery logo <br />
                     (200 x 200 pixels) <br />
                     (max 40kb)<span className="star_require">*</span>
                   </h4>
-                  {getcondition === true ?
-
+                  {getcondition === true ? (
                     <>
-                      {files && files.length > 0 ? <div className="myprofile_inner_sec2_img_upload">{thumbs}</div> :
-
-                        <div style={{ width: "100%" }}  >
+                      {files && files.length > 0 ? (
+                        <div className="myprofile_inner_sec2_img_upload">
+                          {thumbs}
+                        </div>
+                      ) : (
+                        <div style={{ width: "100%" }}>
                           <div className="myprofile_inner_sec2_img_upload">
                             <AiOutlineCloudUpload
                               style={{
@@ -875,7 +1012,10 @@ const EditEateriesDetails = ({
                               {...getRootLogoProps()}
                               accept="image/jpeg, image/jpg, image/png, image/eps"
                             /> */}
-                            <button type="button" className="click_upload_btn" style={{ marginBottom: "10px" }}>
+                            <button
+                              type="button"
+                              className="click_upload_btn"
+                              style={{ marginBottom: "10px" }}>
                               click here
                             </button>
                             {/* <a href="">clicking here</a> */}
@@ -886,18 +1026,16 @@ const EditEateriesDetails = ({
                               type="button"
                               onClick={() => {
                                 // setFiles([]);
-                              }}
-                            >
+                              }}>
                               Upload File
                             </button>
                           </div>
                         </div>
-                      }
-
+                      )}
                     </>
-                    :
+                  ) : (
                     <>
-                      {getsingleStoreData.store_logo_path === null ?
+                      {getsingleStoreData.store_logo_path === null ? (
                         <>
                           <div style={{ width: "100%" }}>
                             <div className="myprofile_inner_sec2_img_upload">
@@ -915,7 +1053,10 @@ const EditEateriesDetails = ({
                                 {...getRootLogoProps()}
                                 accept="image/jpeg, image/jpg, image/png, image/eps"
                               /> */}
-                              <button type="button" className="click_upload_btn" style={{ marginBottom: "10px" }}>
+                              <button
+                                type="button"
+                                className="click_upload_btn"
+                                style={{ marginBottom: "10px" }}>
                                 click here
                               </button>
                               {/* <a href="">clicking here</a> */}
@@ -926,27 +1067,24 @@ const EditEateriesDetails = ({
                                 type="button"
                                 onClick={() => {
                                   // setFiles([]);
-                                }}
-                              >
+                                }}>
                                 Upload File
                               </button>
                             </div>
                           </div>
-
                         </>
-
-                        :
+                      ) : (
                         <>
                           <div className="myprofile_inner_sec2_img_upload">
-
-
                             <img
                               src={getsingleStoreData.store_logo_path}
-                              style={{ width: "100%", height: "100%",filter:"grayscale(100%)" }}
+                              style={{
+                                width: "100%",
+                                height: "100%",
+                                filter: "grayscale(100%)",
+                              }}
                               className="img-fluidb"
                             />
-
-
                           </div>
                           <div className="btnn-main" style={{ width: "100%" }}>
                             <button
@@ -954,49 +1092,75 @@ const EditEateriesDetails = ({
                               type="button"
                               onClick={() => {
                                 // setFiles([]);
-                              }}
-                            >
+                              }}>
                               Upload File
                             </button>
                           </div>
-
                         </>
-
-                      }
-
-
+                      )}
                     </>
-
-                  }
+                  )}
                 </div>
-                <div style={{ display: "flex", alingitem: "center", paddingLeft: "5px", paddingRight: "5px" }}>
-                  <button className="btn" onClick={() => setFiles([])} style={{ marginBottom: "10px", marginLeft: "10px", marginRight: "10px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alingitem: "center",
+                    paddingLeft: "5px",
+                    paddingRight: "5px",
+                  }}>
+                  <button
+                    className="btn"
+                    onClick={() => setFiles([])}
+                    style={{
+                      marginBottom: "10px",
+                      marginLeft: "10px",
+                      marginRight: "10px",
+                    }}>
                     Cancel
                   </button>
                 </div>
               </div>
             </div>
             {/* upload images wrapp end */}
-            <p className="upload_img_instr">All Brand logo’s to be uploaded <br />
+            <p className="upload_img_instr">
+              All Brand logo’s to be uploaded <br />
               in black and white format <br />
-              (no colour logo’s)</p>
+              (no colour logo’s)
+            </p>
             {/* upload images wrapp start */}
             <div className="mm_img_upload_wrapp" style={{ width: "100%" }}>
               {/* single upload image */}
               <div className="img-upl-border">
-
-                <div className="myprofile_inner_sec2" {...getRootBannerProps()} style={{ border: "none", paddingBottom: "0px", maxWidth: "250px" }}>
+                <div
+                  className="myprofile_inner_sec2"
+                  {...getRootBannerProps()}
+                  style={{
+                    border: "none",
+                    paddingBottom: "0px",
+                    maxWidth: "250px",
+                  }}>
                   {/* <input
                 {...getInputlogoProps()}
                 accept="image/jpeg, image/jpg, image/png, image/eps"
               /> */}
-              <h4 style={{ marginBottom: "10px", fontSize: "14px", fontWeight: "600" }} className="myprofile_upload_img_card_name">Upload the Eatery banner  <br />
-                  (1050px x 284px) <br /> (max 200kb)<span className="star_require">*</span></h4>
-                  {getcondition2 === true ?
-
+                  <h4
+                    style={{
+                      marginBottom: "10px",
+                      fontSize: "14px",
+                      fontWeight: "600",
+                    }}
+                    className="myprofile_upload_img_card_name">
+                    Upload the Eatery banner <br />
+                    (1050px x 284px) <br /> (max 200kb)
+                    <span className="star_require">*</span>
+                  </h4>
+                  {getcondition2 === true ? (
                     <>
-                      {files2 && files2.length > 0 ? <div className="myprofile_inner_sec2_img_upload">{thumbs2}</div> :
-
+                      {files2 && files2.length > 0 ? (
+                        <div className="myprofile_inner_sec2_img_upload">
+                          {thumbs2}
+                        </div>
+                      ) : (
                         <div style={{ width: "100%" }}>
                           <div className="myprofile_inner_sec2_img_upload">
                             <AiOutlineCloudUpload
@@ -1013,7 +1177,10 @@ const EditEateriesDetails = ({
                               {...getRootLogoProps()}
                               accept="image/jpeg, image/jpg, image/png, image/eps"
                             /> */}
-                            <button type="button" className="click_upload_btn" style={{ marginBottom: "10px" }}>
+                            <button
+                              type="button"
+                              className="click_upload_btn"
+                              style={{ marginBottom: "10px" }}>
                               click here
                             </button>
                             {/* <a href="">clicking here</a> */}
@@ -1024,18 +1191,16 @@ const EditEateriesDetails = ({
                               type="button"
                               onClick={() => {
                                 // setFiles([]);
-                              }}
-                            >
+                              }}>
                               Upload File
                             </button>
                           </div>
                         </div>
-                      }
-
+                      )}
                     </>
-                    :
+                  ) : (
                     <>
-                      {getsingleStoreData.banner_store_path === null ?
+                      {getsingleStoreData.banner_store_path === null ? (
                         <>
                           <div style={{ width: "100%" }}>
                             <div className="myprofile_inner_sec2_img_upload">
@@ -1053,7 +1218,10 @@ const EditEateriesDetails = ({
                                 {...getRootBannerProps()}
                                 accept="image/jpeg, image/jpg, image/png, image/eps"
                               /> */}
-                              <button type="button" className="click_upload_btn" style={{ marginBottom: "10px" }}>
+                              <button
+                                type="button"
+                                className="click_upload_btn"
+                                style={{ marginBottom: "10px" }}>
                                 click here
                               </button>
                               {/* <a href="">clicking here</a> */}
@@ -1064,8 +1232,7 @@ const EditEateriesDetails = ({
                                 type="button"
                                 onClick={() => {
                                   // setFiles([]);
-                                }}
-                              >
+                                }}>
                                 Upload File
                               </button>
                             </div>
@@ -1074,19 +1241,14 @@ const EditEateriesDetails = ({
                             Cancel
                           </button> */}
                         </>
-
-                        :
+                      ) : (
                         <>
                           <div className="myprofile_inner_sec2_img_upload">
-
-
                             <img
                               src={getsingleStoreData.banner_store_path}
                               style={{ width: "100%", height: "100%" }}
                               className="img-fluidb"
                             />
-
-
                           </div>
                           <div className="btnn-main" style={{ width: "100%" }}>
                             <button
@@ -1094,23 +1256,30 @@ const EditEateriesDetails = ({
                               type="button"
                               onClick={() => {
                                 // setFiles([]);
-                              }}
-                            >
+                              }}>
                               Upload File
                             </button>
                           </div>
-
                         </>
-
-                      }
-
-
+                      )}
                     </>
-
-                  }
+                  )}
                 </div>
-                <div style={{ display: "flex", alingitem: "center", paddingLeft: "5px", paddingRight: "5px" }}>
-                  <button className="btn" onClick={() => setFiles2([])} style={{ marginBottom: "10px", marginLeft: "10px", marginRight: "10px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alingitem: "center",
+                    paddingLeft: "5px",
+                    paddingRight: "5px",
+                  }}>
+                  <button
+                    className="btn"
+                    onClick={() => setFiles2([])}
+                    style={{
+                      marginBottom: "10px",
+                      marginLeft: "10px",
+                      marginRight: "10px",
+                    }}>
                     Cancel
                   </button>
                 </div>
@@ -1131,7 +1300,6 @@ const EditEateriesDetails = ({
             I have read and agree to the{" "}
             <a className="signup_terms_link">Privacy Policy</a>
           </p>
-
         </div>
         <div className="signup_terms_wrapp indep-side-show">
           <input
@@ -1145,22 +1313,18 @@ const EditEateriesDetails = ({
             I have read and agree to the{" "}
             <a className="signup_terms_link">Terms and Conditions</a>
           </p>
-
         </div>
         <div className="mm_form_single_input mb_8 btn_eatery_res">
           <label htmlFor="" style={{ minWidth: "234px" }}></label>
           <button
-                            disabled={isAcceptTerm == 1 && isAcceptTerm2 ==1 ? false : true}
-
+            disabled={isAcceptTerm == 1 && isAcceptTerm2 == 1 ? false : true}
             style={{ marginTop: "20px", width: "200px" }}
             className="btn btn-black"
             onClick={() => {
-
               // addEateries();
               editEateries();
               console.log("smnbsmdb");
-            }}
-          >
+            }}>
             Update
           </button>
         </div>

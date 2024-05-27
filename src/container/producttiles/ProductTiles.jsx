@@ -184,7 +184,7 @@ const ProductTiles = ({ get_mall_auth_data, setTab, getTab }) => {
     });
 
     try {
-      const res = await axios.post(store_mall_from_region , formdata, {
+      const res = await axios.post(store_mall_from_region, formdata, {
         headers: {
           Accept: ACCEPT_HEADER,
           Authorization: "Bearer " + token,
@@ -196,7 +196,6 @@ const ProductTiles = ({ get_mall_auth_data, setTab, getTab }) => {
       console.log("err11", err);
     }
   };
-
 
   // const LeaderboadFilter = async (selectedOption) => {
   //   const token = JSON.parse(localStorage.getItem("is_token"));
@@ -249,7 +248,7 @@ const ProductTiles = ({ get_mall_auth_data, setTab, getTab }) => {
         // setProList2([...getfilterData, ...res.data.data]);
         SetLiast([...getfilterData, ...res.data.data]);
         setLoading(false);
-        console.log("123",getfilterData);
+        console.log("123", getfilterData);
       })
       .catch((err) => {
         console.log("err", err);
@@ -454,7 +453,6 @@ const ProductTiles = ({ get_mall_auth_data, setTab, getTab }) => {
                   In Mall Product Tiles
                 </span>
               </div>
-             
             </div>
             {/* <p>
               Purchase marketing space through our Leaderboard Banners below
@@ -477,13 +475,15 @@ const ProductTiles = ({ get_mall_auth_data, setTab, getTab }) => {
                   Filter by region:
                 </label>
                 <div
-                  //  className="select-wrapper" 
-                  style={{ width: "100%" }}
-                >
+                  //  className="select-wrapper"
+                  style={{ width: "100%" }}>
                   <Select
-
                     value={regionsOption}
-                    styles={{ width: "100%", padding: "0px", borderRadius: "4px" }}
+                    styles={{
+                      width: "100%",
+                      padding: "0px",
+                      borderRadius: "4px",
+                    }}
                     className="leaderboard-card-inp"
                     closeMenuOnSelect={false}
                     components={animatedComponents}
@@ -504,12 +504,15 @@ const ProductTiles = ({ get_mall_auth_data, setTab, getTab }) => {
                   Filter by mall:
                 </label>
                 <div
-                  // className="select-wrapper" 
+                  // className="select-wrapper"
                   style={{ width: "100%" }}>
                   <Select
-
                     value={mallsOption}
-                    styles={{ width: "100%", padding: "0px", borderRadius: "4px" }}
+                    styles={{
+                      width: "100%",
+                      padding: "0px",
+                      borderRadius: "4px",
+                    }}
                     className="leaderboard-card-inp"
                     closeMenuOnSelect={false}
                     components={animatedComponents}
@@ -562,7 +565,15 @@ const ProductTiles = ({ get_mall_auth_data, setTab, getTab }) => {
                   );
                 })
               : null}
-              <span style={{fontSize:"14px",color:"#bbb",alignSelf:"flex-start",marginBottom:"0.7rem"}}>*Required Fields including all image uploads.</span>
+            <span
+              style={{
+                fontSize: "14px",
+                color: "#bbb",
+                alignSelf: "flex-start",
+                marginBottom: "0.7rem",
+              }}>
+              *Required Fields including all image uploads.
+            </span>
             {totalPages !== page && (
               <button
                 className="view_more_btn"
@@ -579,20 +590,19 @@ const ProductTiles = ({ get_mall_auth_data, setTab, getTab }) => {
                 {loading ? "Loading..." : " Load More LeaderBoard"}
                 <BsChevronDown />
               </button>
-              
             )}
             {/* LeaderBoard Card Component end */}
 
             {/* LeaderBoard Add New Button start */}
             {/* {getliast.length > 0 ? ( */}
-              <button onClick={() => setTab(23)} className="leaderboard-btn">
-                Add new{" "}
-                <img
-                  src={images.add_new}
-                  alt=""
-                  className="leaderboard-btn-icon"
-                />
-              </button>
+            <button onClick={() => setTab(23)} className="leaderboard-btn">
+              Add new{" "}
+              <img
+                src={images.add_new}
+                alt=""
+                className="leaderboard-btn-icon"
+              />
+            </button>
             {/* ) : null} */}
 
             {/* LeaderBoard Add New Button end */}

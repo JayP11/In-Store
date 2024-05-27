@@ -774,6 +774,35 @@ const AddLandingPageSquareTileCard = ({
             return isDimensionsValid ? file : null; // Return file if dimensions are valid, otherwise skip it
           })
         );
+
+        // const filteredFiles = await Promise.all(
+        //   acceptedFiles.map(async (file) => {
+        //     console.log("file type:", file.type);
+        //     if (file.type === "image/jpeg") {
+        //       const isSizeValid = file.size <= maxSizeBytes;
+        //       const isImage = file.type.startsWith("image/");
+    
+        //       if (!isImage || !isSizeValid) {
+        //         return null;
+        //       }
+    
+        //       const img = new Image();
+        //       img.src = URL.createObjectURL(file);
+        //       await new Promise((resolve, reject) => {
+        //         img.onload = resolve;
+        //         img.onerror = reject;
+        //       });
+    
+        //       // Check image dimensions
+        //       const isDimensionsValid = img.width === 232 && img.height === 232;
+    
+        //       return isDimensionsValid ? file : null;
+        //     } else {
+        //       // For non-image files, just return them as is
+        //       return file;
+        //     }
+        //   })
+        // );
         const validFiles = filteredFiles.filter((file) => file !== null);
 
         setFiles(
@@ -938,8 +967,8 @@ const AddLandingPageSquareTileCard = ({
                 alignItems: "center",
                 gap: "5px",
                 flexWrap: "wrap",
-                height: "210px",
-                width: "210px",
+                height: "216px",
+                width: "216px",
               }}>
               {thumbs}
             </div>
@@ -954,8 +983,8 @@ const AddLandingPageSquareTileCard = ({
                     marginBottom: "10px",
                   }}
                 />
-                <h4 style={{ fontSize: "14px" }}>
-                  .JPG .PNG .GIF (232 x 232 px)
+                <h4 style={{ fontSize: "14px",textAlign:"center" }}>
+                  .JPG .PNG .GIF .WEBM <br/> (232 x 232 px)
                 </h4>
                 <p style={{ fontSize: "14px" }}>(max 50kb)</p>
 

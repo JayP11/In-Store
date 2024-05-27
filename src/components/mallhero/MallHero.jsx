@@ -3,6 +3,7 @@ import "./MallHero.css";
 import images from "../../constants/images";
 
 const MallHero = ({ get_mall_auth_data }) => {
+  console.log("2522",get_mall_auth_data);
   return (
     <div className={`${
       get_mall_auth_data.banner_mall_path 
@@ -11,7 +12,7 @@ const MallHero = ({ get_mall_auth_data }) => {
      }`}>
     <div className="mall_hero_main_wrapp">
       <img
-        src={get_mall_auth_data ? get_mall_auth_data.banner_mall_path : images.mall_hero_banner}
+        src={get_mall_auth_data ? get_mall_auth_data?.banner_mall_path : images.mall_hero_banner}
         alt=""
         className="mall_hero_banner_img"
       />

@@ -25,6 +25,8 @@ const CustomerSingleBrandProductCard = ({
   const [getQrValue, setQrValue] = useState();
   const [getQrDiscount, setQrDiscount] = useState();
 
+  console.log("data are",data);
+
   const getmovielist = async () => {
     SetLoading(true);
     const token = JSON.parse(localStorage.getItem("is_token"));
@@ -134,7 +136,8 @@ const CustomerSingleBrandProductCard = ({
                   onClick={() => {
                     getmovielist(getid);
                   }}>
-                  <FiHeart size={20} />
+                  {/* <FiHeart size={20} /> */}
+                  <img src={images.heart_img}  style={{width:"18px",height:"18px"}}/>
                 </button>
               )}
             </>
@@ -156,6 +159,7 @@ const CustomerSingleBrandProductCard = ({
           {data.stores ? (data.stores.name ? data.stores.name : "") : ""}
         </p>
         <p className="cbc_des">Only Available In Store</p>
+        {data?.qr_discount == null ? <></> : <> 
         <button
           className="disc10_btn"
           onClick={() => {
@@ -165,7 +169,8 @@ const CustomerSingleBrandProductCard = ({
             
           }}>
           {data.qr_discount ? data.qr_discount : ""} Discount QR Code
-        </button>
+        </button></> }
+       
       </div>
       <Modal
         isOpen={modalIsOpen}

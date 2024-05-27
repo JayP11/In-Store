@@ -113,7 +113,8 @@ const CustomerBrandCard = ({
                   onClick={() => {
                     getmovielist(getid);
                   }}>
-                  <FiHeart size={20} />
+                  {/* <FiHeart size={20} /> */}
+                  <img src={images.heart_img}  style={{width:"18px",height:"18px"}}/>
                 </button>
               )}
             </>

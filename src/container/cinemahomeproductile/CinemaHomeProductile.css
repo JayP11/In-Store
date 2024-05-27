@@ -37,9 +37,9 @@
     display: none;
   }
 
-  .home-slider-main-img:hover .slider-main-home{
+  /* .home-slider-main-img:hover .slider-main-home{
     display: block;
-  }
+  } */
 
   .slider_inner_sing_img_main{
     width: 200px;

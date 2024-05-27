@@ -314,15 +314,44 @@ const RetailLandingPageSquareTileCard = ({
         const maxSizeKB = 50;
         const maxSizeBytes = maxSizeKB * 1024;
 
+        // const filteredFiles = await Promise.all(
+        //   acceptedFiles.map(async (file) => {
+        //     console.log("file type:", file.type);
+        //     if (file.type === "image/jpeg") {
+        //       const isSizeValid = file.size <= maxSizeBytes;
+        //       const isImage = file.type.startsWith("image/");
+    
+        //       if (!isImage || !isSizeValid) {
+        //         return null;
+        //       }
+    
+        //       const img = new Image();
+        //       img.src = URL.createObjectURL(file);
+        //       await new Promise((resolve, reject) => {
+        //         img.onload = resolve;
+        //         img.onerror = reject;
+        //       });
+    
+        //       // Check image dimensions
+        //       const isDimensionsValid = img.width === 232 && img.height === 232;
+    
+        //       return isDimensionsValid ? file : null;
+        //     } else {
+        //       // For non-image files, just return them as is
+        //       return file;
+        //     }
+        //   })
+        // );
+
         const filteredFiles = await Promise.all(
           acceptedFiles.map(async (file) => {
             const isSizeValid = file.size <= maxSizeBytes; // Limit size to 50KB (in bytes)
             const isImage = file.type.startsWith("image/"); // Check if it's an image file
 
             if (!isImage || !isSizeValid) {
-              return null;
-            }
+              return null;             }
 
+            // Load image and wait for it to load
             const img = new Image();
             img.src = URL.createObjectURL(file);
             await new Promise((resolve, reject) => {
@@ -336,8 +365,9 @@ const RetailLandingPageSquareTileCard = ({
             return isDimensionsValid ? file : null; // Return file if dimensions are valid, otherwise skip it
           })
         );
+    
         const validFiles = filteredFiles.filter((file) => file !== null);
-
+    
         setFiles(
           validFiles.map((file) =>
             Object.assign(file, {
@@ -345,6 +375,7 @@ const RetailLandingPageSquareTileCard = ({
             })
           )
         );
+    
         if (validFiles.length !== acceptedFiles.length) {
           Notification(
             "error",
@@ -352,6 +383,24 @@ const RetailLandingPageSquareTileCard = ({
             "Some files exceed the maximum size limit of 50KB or do not meet the dimension requirements of 232x232 pixels and will not be uploaded."
           );
         }
+      
+        
+        // const validFiles = filteredFiles.filter((file) => file !== null);
+
+        // setFiles(
+        //   validFiles.map((file) =>
+        //     Object.assign(file, {
+        //       preview: URL.createObjectURL(file),
+        //     })
+        //   )
+        // );
+        // if (validFiles.length !== acceptedFiles.length) {
+        //   Notification(
+        //     "error",
+        //     "Error!",
+        //     "Some files exceed the maximum size limit of 50KB or do not meet the dimension requirements of 232x232 pixels and will not be uploaded."
+        //   );
+        // }
         // SetCondation(false);
 
         if (acceptedFiles.length === 0) {
@@ -807,9 +856,9 @@ const RetailLandingPageSquareTileCard = ({
                       display: "flex",
                       alignItems: "center",
                       gap: "5px",
-                      width: "210px",
+                      width: "216px",
                       flexWrap: "wrap",
-                      height: "210px",
+                      height: "216px",
                     }}>
                     {thumbs}
                   </div>
@@ -830,7 +879,7 @@ const RetailLandingPageSquareTileCard = ({
                         }}
                       />
                       <h4 style={{ fontSize: "14px" }}>
-                        .JPG .PNG .GIF (232 x 232 pixels)
+                        .JPG .PNG .GIF .WEBM <br/>(232 x 232 pixels)
                       </h4>
                       <p style={{ fontSize: "14px" }}>(max 50kb)</p>
                       <p style={{ fontSize: "14px" }}>
@@ -869,7 +918,7 @@ const RetailLandingPageSquareTileCard = ({
                       }}
                     />
                     <h4 style={{ fontSize: "14px" }}>
-                      .JPG .PNG .GIF (200 x 200 pixels)
+                      .JPG .PNG .GIF .WEBM <br/>(200 x 200 pixels)
                     </h4>
                     <p style={{ fontSize: "14px" }}>(max 100kb)</p>
                     <p style={{ fontSize: "14px" }}>
@@ -896,8 +945,8 @@ const RetailLandingPageSquareTileCard = ({
                         alignItems: "center",
                         gap: "5px",
                         flexWrap: "wrap",
-                        width: "210px",
-                        height: "210px",
+                        width: "216px",
+                        height: "216px",
                       }}>
                       {item.multiple_images &&
                         item.multiple_images.map((item) => {

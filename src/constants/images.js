@@ -36,6 +36,7 @@ import movies_card2 from "../assets/images/movies_card2.png";
 import movies_card3 from "../assets/images/movies_card3.png";
 import movies_card4 from "../assets/images/movies_card4.png";
 import movies_card5 from "../assets/images/home/play_store_logo.png";
+import heart_img from "../assets/images/heart.png";
 
 // about
 
@@ -287,6 +288,7 @@ export default {
   checkout_payment_method2,
   checkout_payment_method3,
   checkout_payment_method4,
+  heart_img,
 
   // store
 

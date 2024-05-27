@@ -3,12 +3,10 @@ import "./MallManagement.css";
 import { useDropzone } from "react-dropzone";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { useMallContext } from "../../context/mall_context";
-import { MallHeroEdit } from "../../components";
-import images from "../../constants/images";
+ import images from "../../constants/images";
 import { ACCEPT_HEADER, get_mall_master } from "../../utils/Constant";
 import Notification from "../../utils/Notification";
 import ReactModal from "react-modal";
-
 
 import axios from "axios";
 
@@ -38,20 +36,17 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   const [files2, setFiles2] = useState([]);
   const [files3, setFiles3] = useState([]);
   const [files4, setFiles4] = useState([]);
-    const [imagecheck, setImageCheck] = useState(false);
-
-
+  const [imagecheck, setImageCheck] = useState(false);
 
   // console.log("check get_mall_auth_data", get_mall_auth_data);
 
-  useEffect(()=>{
-    if(get_mall_auth_data.banner_mall_path){
+  useEffect(() => {
+    if (get_mall_auth_data.banner_mall_path) {
       setImageCheck(true);
-    }else{
+    } else {
       setImageCheck(false);
-
     }
-  },[])
+  }, []);
 
   useEffect(() => {
     console.log(
@@ -105,12 +100,14 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
     get_mall_auth_data.ho_email ? get_mall_auth_data.ho_email : ""
   );
   const [getLeaseNumber, setLeaseNumber] = useState(
-    get_mall_auth_data.lease_request_number ? get_mall_auth_data.lease_request_number : ""
-
+    get_mall_auth_data.lease_request_number
+      ? get_mall_auth_data.lease_request_number
+      : ""
   );
   const [getLeaseEmail, setLeaseEmail] = useState(
-    get_mall_auth_data.lease_request_email ? get_mall_auth_data.lease_request_email : ""
-
+    get_mall_auth_data.lease_request_email
+      ? get_mall_auth_data.lease_request_email
+      : ""
   );
   // const [contactNumber, setContactNumber] = useState(
   //   get_mall_auth_data.number && get_mall_auth_data.number
@@ -191,28 +188,28 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
 
   const resetAccountData = () => {
     // setMallName('');
-    setMallDescription('');
-    setPhysicalAddress('');
-    SetMapUrl('');
-    SetMapCode('');
-    setMallWebsite('');
+    setMallDescription("");
+    setPhysicalAddress("");
+    SetMapUrl("");
+    SetMapCode("");
+    setMallWebsite("");
     // setMallEmail('');
-    setMallInsta('');
-    setMallfb('');
-    setMallTwitter('');
-    setHoNumber('');
-    setHoEmail('');
-    setLeaseNumber('');
-    setLeaseEmail('');
-    setEmail('');
-    setMonFromTime('');
-    setMonToTime('');
-    setSatFromTime('');
-    setSatToTime('');
-    setSunFromTime('');
-    setSunToTime('');
-    setHolidayFromTime('');
-    setHolidayToTime('');
+    setMallInsta("");
+    setMallfb("");
+    setMallTwitter("");
+    setHoNumber("");
+    setHoEmail("");
+    setLeaseNumber("");
+    setLeaseEmail("");
+    setEmail("");
+    setMonFromTime("");
+    setMonToTime("");
+    setSatFromTime("");
+    setSatToTime("");
+    setSunFromTime("");
+    setSunToTime("");
+    setHolidayFromTime("");
+    setHolidayToTime("");
     SetCondation(true);
     SetCondation1(true);
     SetCondation2(true);
@@ -221,7 +218,7 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
     // setFiles2([]);
     // setFiles3([]);
     // setFiles4([]);
-  }
+  };
 
   // logo dropzon
 
@@ -262,11 +259,11 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
           acceptedFiles.map(async (file) => {
             const isSizeValid = file.size <= maxSizeBytes; // Limit size to 50KB (in bytes)
             const isImage = file.type.startsWith("image/"); // Check if it's an image file
-  
+
             if (!isImage || !isSizeValid) {
               return null; // Skip files that are not images or exceed size limit
             }
-  
+
             // Load image and wait for it to load
             const img = new Image();
             img.src = URL.createObjectURL(file);
@@ -274,18 +271,18 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
               img.onload = resolve;
               img.onerror = reject;
             });
-  
+
             // Check image dimensions
             const isDimensionsValid = img.width == 1050 && img.height == 284;
-            if(isDimensionsValid){
-              setImageCheck(true)
-            }else{
-              setImageCheck(false)
-            }  
+            if (isDimensionsValid) {
+              setImageCheck(true);
+            } else {
+              setImageCheck(false);
+            }
             return isDimensionsValid ? file : null; // Return file if dimensions are valid, otherwise skip it
           })
         );
-  
+
         // Filter out null values (files that were skipped)
         const validFiles = filteredFiles.filter((file) => file !== null);
         {
@@ -298,10 +295,10 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
           );
 
           if (validFiles.length !== acceptedFiles.length) {
-            if(validFiles.length !== acceptedFiles.length){
-              setImageCheck(false)
-            }else{
-              setImageCheck(true)
+            if (validFiles.length !== acceptedFiles.length) {
+              setImageCheck(false);
+            } else {
+              setImageCheck(true);
             }
             Notification(
               "error",
@@ -325,7 +322,7 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   } = useDropzone({
     onDrop: async (acceptedFiles) => {
       console.log("acceptedFiles", acceptedFiles);
-      
+
       const maxSizeKB = 200; // Maximum size limit in KB
       const maxSizeBytes = maxSizeKB * 1024; // Convert KB to bytes
 
@@ -452,7 +449,7 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   const thumbs2 = files2.map((file) => (
     <img
       src={file.preview}
-      style={{ width: "100%", height: "100%", }}
+      style={{ width: "100%", height: "100%" }}
       className="img-fluid"
       alt="file"
     />
@@ -482,41 +479,41 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   // update mall api
 
   const UpdateMallData = async () => {
-    if(malldescription === ""){
+    if (malldescription === "") {
       Notification("error", "Error!", "Please Enter Mall Description !");
-    }else if(physicalAddress == ""){
+    } else if (physicalAddress == "") {
       Notification("error", "Error!", "Please Enter Address !");
-    }else if(mapurl == ""){
+    } else if (mapurl == "") {
       Notification("error", "Error!", "Please Enter Map URL !");
-    }else if(mallWebsite == ""){
+    } else if (mallWebsite == "") {
       Notification("error", "Error!", "Please Enter Website !");
-    }else if(mallEmail == ""){
+    } else if (mallEmail == "") {
       Notification("error", "Error!", "Please Enter Mall Email !");
-    }else if(monFromTime == ""){
+    } else if (monFromTime == "") {
       Notification("error", "Error!", "Please Enter Trading Hours !");
-    }else if(monToTime == ""){
+    } else if (monToTime == "") {
       Notification("error", "Error!", "Please Enter Trading Hours !");
-    }else if(satFromTime == ""){
+    } else if (satFromTime == "") {
       Notification("error", "Error!", "Please Enter Trading Hours !");
-    }else if(satToTime == ""){
+    } else if (satToTime == "") {
       Notification("error", "Error!", "Please Enter Trading Hours !");
-    }else if(sunFromTime == ""){
+    } else if (sunFromTime == "") {
       Notification("error", "Error!", "Please Enter Trading Hours !");
-    }else if(sunToTime == ""){
+    } else if (sunToTime == "") {
       Notification("error", "Error!", "Please Enter Trading Hours !");
-    }else if(holidayFromTime == ""){
+    } else if (holidayFromTime == "") {
       Notification("error", "Error!", "Please Enter Trading Hours !");
-    }else if(holidayToTime == ""){
+    } else if (holidayToTime == "") {
       Notification("error", "Error!", "Please Enter Trading Hours !");
-    }else if(gethoEmail == ""){
+    } else if (gethoEmail == "") {
       Notification("error", "Error!", "Please Enter Head Office Email !");
-    }else if(gethoNumber == ""){
+    } else if (gethoNumber == "") {
       Notification("error", "Error!", "Please Enter Head Office Number !");
-    }else if(getLeaseEmail == ""){
+    } else if (getLeaseEmail == "") {
       Notification("error", "Error!", "Please Enter Lease request email !");
-    }else if(getLeaseNumber == ""){
+    } else if (getLeaseNumber == "") {
       Notification("error", "Error!", "Please Enter Lease request number !");
-    }else{
+    } else {
       const formdata = await new FormData();
       await formdata.append("mall_master_id", mallid);
       await formdata.append("description", malldescription);
@@ -608,10 +605,13 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
       const data = await UpdateMall(formdata);
       if (data) {
         if (data.success === 1) {
-          Notification("success", "Success!", "Account Setting Updated Successfully!");
+          Notification(
+            "success",
+            "Success!",
+            "Account Setting Updated Successfully!"
+          );
           setTab(1);
           console.log("mall-data", data);
-
         }
       }
     }
@@ -650,11 +650,10 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
   return (
     <>
       {/* <MallHeroEdit thumbs={thumbs} /> */}
-      <div className={`${
-                 imagecheck === true
-                    ? "banner_all_wrap" : "banner_all_wrap_height"
-                    
-                }`}>
+      <div
+        className={`${
+          imagecheck === true ? "banner_all_wrap" : "banner_all_wrap_height"
+        }`}>
         <div className="brand-hero-edit-main-wrapp" {...getRootMapProps()}>
           <input
             {...getInputMapProps()}
@@ -679,16 +678,24 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             <>
               <img
                 src={get_mall_auth_data.banner_mall_path}
-                style={{ width: "100%", height: "100%"}}
+                style={{ width: "100%", height: "100%" }}
                 className="img-fluid img_fluid_position"
               />
-              <img src={images.card_edit} alt="" style={{ position: "absolute", top: "105px", right: "100px" }} className="mall-hero-edit-icon edit-icon-positon-resp" />
+              <img
+                src={images.card_edit}
+                alt=""
+                style={{ position: "absolute", top: "105px", right: "100px" }}
+                className="mall-hero-edit-icon edit-icon-positon-resp"
+              />
             </>
           )}
         </div>
 
         {/* logo wrapp */}
-        <div className="band-inn-logo-wrapp" style={{ left: sidebaropen === false ? "5%" : "" }} {...getRootlogoProps()}>
+        <div
+          className="band-inn-logo-wrapp"
+          style={{ left: sidebaropen === false ? "5%" : "" }}
+          {...getRootlogoProps()}>
           {/* <div style={{ width: '100%' }} {...getRootlogoProps()}> */}
           <input
             {...getInputlogoProps()}
@@ -714,7 +721,11 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                 style={{ width: "100%", height: "100%", maxHeight: "175px" }}
                 className="img-fluid"
               />
-              <img src={images.card_edit} alt="" style={{ position: "absolute", top: "25px", right: "20px" }} />
+              <img
+                src={images.card_edit}
+                alt=""
+                style={{ position: "absolute", top: "25px", right: "20px" }}
+              />
             </>
           )}
           {/* </div> */}
@@ -724,8 +735,14 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
       <div className="mm_main_wrapp">
         {/* mall management name start */}
         <div className="mall_name_wrapp mall_mall_name_wrapp">
-          <p className="mall_name_heading mall_mall_name_heading">{get_mall_auth_data.name}:</p>
-          <span className="mall_mall_name_heading" style={{ fontWeight: "600" }}>Account Settings</span>
+          <p className="mall_name_heading mall_mall_name_heading">
+            {get_mall_auth_data.name}:
+          </p>
+          <span
+            className="mall_mall_name_heading"
+            style={{ fontWeight: "600" }}>
+            Account Settings
+          </span>
         </div>
         {/* <div className="mm_horizontal_line"></div> */}
         <div style={{ paddingBottom: "2rem" }}></div>
@@ -814,15 +831,16 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
               </select>
             </div> */}
             <div className="mm_form_single_input">
-              <label className="leaderboard-card-lbl mm_form_single_input_mall_Acc_setting required">Mall Name <span className="star_require">*</span></label>{" "}
+              <label className="leaderboard-card-lbl mm_form_single_input_mall_Acc_setting required">
+                Mall Name <span className="star_require">*</span>
+              </label>{" "}
               <input
                 type="text"
                 disabled={true}
                 value={mallName}
                 className="input_box"
-              // placeholder="Auto fill from databse"
+                // placeholder="Auto fill from databse"
               />
-
               {/* <select
                 className="leaderboard-card-inp"
                 onChange={(e) => {
@@ -849,9 +867,12 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             {/* single text-input */}
             <div
               className="mm_form_single_input"
-              style={{ alignItems: "flex-start" }}
-            >
-              <label htmlFor="" className="mm_form_single_input_mall_Acc_setting">Mall Description <span className="star_require">*</span></label>
+              style={{ alignItems: "flex-start" }}>
+              <label
+                htmlFor=""
+                className="mm_form_single_input_mall_Acc_setting">
+                Mall Description <span className="star_require">*</span>
+              </label>
               <textarea
                 type="text"
                 value={malldescription}
@@ -864,7 +885,11 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="" className="mm_form_single_input_mall_Acc_setting">Physical Address <span className="star_require">*</span></label>
+              <label
+                htmlFor=""
+                className="mm_form_single_input_mall_Acc_setting">
+                Physical Address <span className="star_require">*</span>
+              </label>
               <input
                 type="text"
                 value={physicalAddress}
@@ -873,13 +898,17 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                 id=""
                 placeholder="Auto fill from database"
                 className="input_box"
-              // placeholder="Auto fill from databse"
+                // placeholder="Auto fill from databse"
               />
             </div>
 
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="" className="mm_form_single_input_mall_Acc_setting">Google Maps URL <span className="star_require">*</span></label>
+              <label
+                htmlFor=""
+                className="mm_form_single_input_mall_Acc_setting">
+                Google Maps URL <span className="star_require">*</span>
+              </label>
               <input
                 type="text"
                 value={mapurl}
@@ -893,14 +922,10 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             {/* single text-input */}
             <div
               className="mm_form_single_input"
-              style={{ alignItems: "flex-start" }}
-            >
+              style={{ alignItems: "flex-start" }}>
               <label
                 htmlFor=""
-
-                className="cus-acc-man-live-map width-resp-live-map mm_form_single_input_mall_Acc_setting"
-
-              >
+                className="cus-acc-man-live-map width-resp-live-map mm_form_single_input_mall_Acc_setting">
                 Live map embeded short code (optional)
               </label>
               <textarea
@@ -928,7 +953,11 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
           </div> */}
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="" className="mm_form_single_input_mall_Acc_setting">Website URL <span className="star_require">*</span></label>
+              <label
+                htmlFor=""
+                className="mm_form_single_input_mall_Acc_setting">
+                Website URL <span className="star_require">*</span>
+              </label>
               <input
                 type="text"
                 value={mallWebsite}
@@ -941,7 +970,11 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="" className="mm_form_single_input_mall_Acc_setting">Mall Email <span className="star_require">*</span></label>
+              <label
+                htmlFor=""
+                className="mm_form_single_input_mall_Acc_setting">
+                Mall Email <span className="star_require">*</span>
+              </label>
               <input
                 type="text"
                 onChange={(e) => setMallEmail(e.target.value)}
@@ -962,8 +995,7 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                   minWidth: "162px",
                 }}
                 htmlFor=""
-                className="mm_form_single_input_mall_Acc_setting"
-              >
+                className="mm_form_single_input_mall_Acc_setting">
                 Trading Hours <span className="star_require">*</span>
               </label>
               <div className="tranding_times_wrapp">
@@ -975,8 +1007,7 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                       fontWeight: "400",
                       minWidth: "127px",
                     }}
-                    htmlFor=""
-                  >
+                    htmlFor="">
                     Monday - Friday
                   </label>
                   <div className="tranding_sigle_time_wrapp tranding_sigle_time_wrapp-mall-management">
@@ -996,10 +1027,7 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                       style={{
                         fontSize: "16px",
                         fontWeight: "400",
-                      }}
-                    >
-
-                    </p>
+                      }}></p>
                   </div>
                   <div className="tranding_sigle_time_wrapp tranding_sigle_time_wrapp-mall-management">
                     {/* <select className="input_box">
@@ -1018,10 +1046,7 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                       style={{
                         fontSize: "16px",
                         fontWeight: "400",
-                      }}
-                    >
-
-                    </p>
+                      }}></p>
                   </div>
                 </div>
                 {/* single time */}
@@ -1032,8 +1057,7 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                       fontWeight: "400",
                       minWidth: "127px",
                     }}
-                    htmlFor=""
-                  >
+                    htmlFor="">
                     Saturday
                   </label>
                   <div className="tranding_sigle_time_wrapp tranding_sigle_time_wrapp-mall-management">
@@ -1053,10 +1077,7 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                       style={{
                         fontSize: "16px",
                         fontWeight: "400",
-                      }}
-                    >
-
-                    </p>
+                      }}></p>
                   </div>
                   <div className="tranding_sigle_time_wrapp tranding_sigle_time_wrapp-mall-management">
                     <input
@@ -1072,10 +1093,7 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                       style={{
                         fontSize: "16px",
                         fontWeight: "400",
-                      }}
-                    >
-
-                    </p>
+                      }}></p>
                   </div>
                 </div>
                 {/* single time */}
@@ -1086,8 +1104,7 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                       fontWeight: "400",
                       minWidth: "127px",
                     }}
-                    htmlFor=""
-                  >
+                    htmlFor="">
                     Sunday
                   </label>
                   <div className="tranding_sigle_time_wrapp tranding_sigle_time_wrapp-mall-management">
@@ -1104,10 +1121,7 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                       style={{
                         fontSize: "16px",
                         fontWeight: "400",
-                      }}
-                    >
-
-                    </p>
+                      }}></p>
                   </div>
                   <div className="tranding_sigle_time_wrapp tranding_sigle_time_wrapp-mall-management">
                     <input
@@ -1123,10 +1137,7 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                       style={{
                         fontSize: "16px",
                         fontWeight: "400",
-                      }}
-                    >
-
-                    </p>
+                      }}></p>
                   </div>
                 </div>
                 {/* single time */}
@@ -1137,8 +1148,7 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                       fontWeight: "400",
                       minWidth: "127px",
                     }}
-                    htmlFor=""
-                  >
+                    htmlFor="">
                     Public Holidays
                   </label>
                   <div className="tranding_sigle_time_wrapp tranding_sigle_time_wrapp-mall-management">
@@ -1155,10 +1165,7 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                       style={{
                         fontSize: "16px",
                         fontWeight: "400",
-                      }}
-                    >
-
-                    </p>
+                      }}></p>
                   </div>
                   <div className="tranding_sigle_time_wrapp tranding_sigle_time_wrapp-mall-management">
                     <input
@@ -1174,10 +1181,7 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                       style={{
                         fontSize: "16px",
                         fontWeight: "400",
-                      }}
-                    >
-
-                    </p>
+                      }}></p>
                   </div>
                 </div>
               </div>
@@ -1186,7 +1190,11 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
 
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="" className="mm_form_single_input_mall_Acc_setting">Instagram URL</label>
+              <label
+                htmlFor=""
+                className="mm_form_single_input_mall_Acc_setting">
+                Instagram URL
+              </label>
               <input
                 type="text"
                 value={mallInsta}
@@ -1198,7 +1206,11 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="" className="mm_form_single_input_mall_Acc_setting">Facebook URL</label>
+              <label
+                htmlFor=""
+                className="mm_form_single_input_mall_Acc_setting">
+                Facebook URL
+              </label>
               <input
                 type="text"
                 value={mallfb}
@@ -1210,7 +1222,9 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label htmlFor="" className="mm_form_single_input_mall_Acc_setting">
+              <label
+                htmlFor=""
+                className="mm_form_single_input_mall_Acc_setting">
                 Twitter URL
               </label>
               <input
@@ -1224,14 +1238,14 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label className="mm_form_single_input_mall_Acc_setting"
+              <label
+                className="mm_form_single_input_mall_Acc_setting"
                 htmlFor=""
                 style={{
                   fontSize: "16px",
                   fontWeight: "400",
                   minWidth: "162px",
-                }}
-              >
+                }}>
                 Head Office Email
                 <span className="star_require">*</span>
               </label>
@@ -1247,14 +1261,14 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label className="mm_form_single_input_mall_Acc_setting"
+              <label
+                className="mm_form_single_input_mall_Acc_setting"
                 htmlFor=""
                 style={{
                   fontSize: "16px",
                   fontWeight: "400",
                   minWidth: "162px",
-                }}
-              >
+                }}>
                 Head Office Number
                 <span className="star_require">*</span>
               </label>
@@ -1271,14 +1285,14 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
 
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label className="mm_form_single_input_mall_Acc_setting"
+              <label
+                className="mm_form_single_input_mall_Acc_setting"
                 htmlFor=""
                 style={{
                   fontSize: "16px",
                   fontWeight: "400",
                   minWidth: "162px",
-                }}
-              >
+                }}>
                 Lease request email
                 <span className="star_require">*</span>
               </label>
@@ -1289,19 +1303,19 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                 name=""
                 id=""
                 className="input_box"
-              // placeholder="Auto fill from databse"
+                // placeholder="Auto fill from databse"
               />
             </div>
             {/* single text-input */}
             <div className="mm_form_single_input">
-              <label className="mm_form_single_input_mall_Acc_setting"
+              <label
+                className="mm_form_single_input_mall_Acc_setting"
                 htmlFor=""
                 style={{
                   fontSize: "16px",
                   fontWeight: "400",
                   minWidth: "162px",
-                }}
-              >
+                }}>
                 Lease request number
                 <span className="star_require">*</span>
               </label>
@@ -1312,25 +1326,22 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                 name=""
                 id=""
                 className="input_box"
-              // placeholder="Auto fill from databse"
+                // placeholder="Auto fill from databse"
               />
-
             </div>
 
             <div className="mm_form_single_input">
-              <label className="mm_form_single_input_mall_Acc_setting"
+              <label
+                className="mm_form_single_input_mall_Acc_setting"
                 htmlFor=""
                 style={{
                   fontSize: "16px",
                   fontWeight: "400",
                   minWidth: "162px",
-                }}
-              >
-
-
-              </label>
-              <span style={{ fontSize: "14px", color: "#bbb" }}>*Required Fields including all image uploads.</span>
-
+                }}></label>
+              <span style={{ fontSize: "14px", color: "#bbb" }}>
+                *Required Fields including all image uploads.
+              </span>
             </div>
 
             {/* single text-input */}
@@ -1346,7 +1357,9 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             </div> */}
             {/* mm terms condition wrapp */}
             <div className="mm_form_single_input fs-des-resp">
-              <label htmlFor="" className="mm_form_single_input_mall_Acc_setting"></label>
+              <label
+                htmlFor=""
+                className="mm_form_single_input_mall_Acc_setting"></label>
               <div className="signup_terms_wrapp">
                 <input
                   type="checkbox"
@@ -1361,8 +1374,12 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
               </div>
             </div>
 
-            <div className="mm_form_single_input fs-des-resp" style={{ marginTop: "-10px" }}>
-              <label htmlFor="" className="mm_form_single_input_mall_Acc_setting"></label>
+            <div
+              className="mm_form_single_input fs-des-resp"
+              style={{ marginTop: "-10px" }}>
+              <label
+                htmlFor=""
+                className="mm_form_single_input_mall_Acc_setting"></label>
               <div className="signup_terms_wrapp">
                 <input
                   type="checkbox"
@@ -1380,16 +1397,26 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
 
             {/* upload button */}
             <div className="mm_form_single_input">
-              <label htmlFor="" className="mm_form_single_input_mall_Acc_setting"></label>
+              <label
+                htmlFor=""
+                className="mm_form_single_input_mall_Acc_setting"></label>
               <div className="mall_upload_btn_wrapp">
                 <button
                   className="btn btn-black"
-                  disabled={isAcceptTerm == 1 && isAcceptTerm2 ==1 ? false : true}
-                  onClick={() => UpdateMallData()}
-                >
+                  disabled={
+                    isAcceptTerm == 1 && isAcceptTerm2 == 1 ? false : true
+                  }
+                  onClick={() => UpdateMallData()}>
                   Update
                 </button>
-                <button className="btn" style={{ fontWeight: "600", color: "#777" }} onClick={() => { setResetModal(true) }}>Reset</button>
+                <button
+                  className="btn"
+                  style={{ fontWeight: "600", color: "#777" }}
+                  onClick={() => {
+                    setResetModal(true);
+                  }}>
+                  Reset
+                </button>
               </div>
             </div>
           </div>
@@ -1399,21 +1426,26 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
           <div className="mm_img_upload_wrapp mall-acc-manager-upl-img-part">
             {/* single upload image */}
             <div className="img-upl-border">
-
-              <div className="myprofile_inner_sec2" {...getRootlogoProps()} style={{ border: "none", paddingBottom: "0px" }}>
+              <div
+                className="myprofile_inner_sec2"
+                {...getRootlogoProps()}
+                style={{ border: "none", paddingBottom: "0px" }}>
                 {/* <input
                 {...getInputlogoProps()}
                 accept="image/jpeg, image/jpg, image/png, image/eps"
               /> */}
                 <h6 className="myprofile_upload_img_card_name">
-                  Upload the Shopping centre logo (200px x 200px)<br /> (max 40kb)<span className="star_require">*</span>
+                  Upload the Shopping centre logo (200px x 200px)
+                  <br /> (max 40kb)<span className="star_require">*</span>
                 </h6>
-                {getcondation === true ?
-
+                {getcondation === true ? (
                   <>
-                    {files && files.length > 0 ? <div className="myprofile_inner_sec2_img_upload">{thumbs}</div> :
-
-                      <div style={{ width: "100%" }}  >
+                    {files && files.length > 0 ? (
+                      <div className="myprofile_inner_sec2_img_upload">
+                        {thumbs}
+                      </div>
+                    ) : (
+                      <div style={{ width: "100%" }}>
                         <div className="myprofile_inner_sec2_img_upload">
                           <AiOutlineCloudUpload
                             style={{
@@ -1429,7 +1461,14 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                             {...getInputlogoProps()}
                             accept="image/jpeg, image/jpg, image/png, image/eps"
                           />
-                          <button type="button" className="click_upload_btn" style={{marginBottom: "10px", color: "var(--color-orange)",fontWeight:"600"}}>
+                          <button
+                            type="button"
+                            className="click_upload_btn"
+                            style={{
+                              marginBottom: "10px",
+                              color: "var(--color-orange)",
+                              fontWeight: "600",
+                            }}>
                             click here
                           </button>
                           {/* <a href="">clicking here</a> */}
@@ -1440,20 +1479,19 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                             type="button"
                             onClick={() => {
                               // setFiles([]);
-                            }}
-                          >
+                            }}>
                             Upload File
                           </button>
                         </div>
                       </div>
-                    }
-
+                    )}
                   </>
-                  :
+                ) : (
                   <>
-                    {get_mall_auth_data.shopping_center_logo_mall_path === null ?
+                    {get_mall_auth_data.shopping_center_logo_mall_path ===
+                    null ? (
                       <>
-                        <div style={{ width: "100%" }}  {...getRootlogoProps()}>
+                        <div style={{ width: "100%" }} {...getRootlogoProps()}>
                           <div className="myprofile_inner_sec2_img_upload">
                             <AiOutlineCloudUpload
                               style={{
@@ -1469,7 +1507,14 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                               {...getInputlogoProps()}
                               accept="image/jpeg, image/jpg, image/png, image/eps"
                             />
-                            <button type="button" className="click_upload_btn" style={{ marginBottom: "10px", color: "var(--color-orange)",fontWeight:"600" }}>
+                            <button
+                              type="button"
+                              className="click_upload_btn"
+                              style={{
+                                marginBottom: "10px",
+                                color: "var(--color-orange)",
+                                fontWeight: "600",
+                              }}>
                               click here
                             </button>
                             {/* <a href="">clicking here</a> */}
@@ -1480,8 +1525,7 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                               type="button"
                               onClick={() => {
                                 // setFiles([]);
-                              }}
-                            >
+                              }}>
                               Upload File
                             </button>
                           </div>
@@ -1490,19 +1534,16 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                           Cancel
                         </button> */}
                       </>
-
-                      :
+                    ) : (
                       <>
                         <div className="myprofile_inner_sec2_img_upload">
-
-
                           <img
-                            src={get_mall_auth_data.shopping_center_logo_mall_path}
+                            src={
+                              get_mall_auth_data.shopping_center_logo_mall_path
+                            }
                             style={{ width: "100%", height: "100%" }}
                             className="img-fluidb"
                           />
-
-
                         </div>
                         <div className="btnn-main" style={{ width: "100%" }}>
                           <button
@@ -1510,45 +1551,56 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                             type="button"
                             onClick={() => {
                               // setFiles([]);
-                            }}
-                          >
+                            }}>
                             Upload File
                           </button>
                         </div>
-
                       </>
-
-                    }
-
-
+                    )}
                   </>
-
-                }
+                )}
               </div>
-              <div style={{ display: "flex", alingitem: "center", paddingLeft: "5px", paddingRight: "5px" }}>
-                <button className="btn" onClick={() => setFiles([])} style={{ marginBottom: "10px", marginLeft: "10px", marginRight: "10px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alingitem: "center",
+                  paddingLeft: "5px",
+                  paddingRight: "5px",
+                }}>
+                <button
+                  className="btn"
+                  onClick={() => setFiles([])}
+                  style={{
+                    marginBottom: "10px",
+                    marginLeft: "10px",
+                    marginRight: "10px",
+                  }}>
                   Cancel
                 </button>
               </div>
             </div>
             {/* single upload image */}
             <div className="img-upl-border">
-
-              <div className="myprofile_inner_sec2" {...getRootMapProps()} style={{ border: "none", paddingBottom: "0px" }}>
+              <div
+                className="myprofile_inner_sec2"
+                {...getRootMapProps()}
+                style={{ border: "none", paddingBottom: "0px" }}>
                 {/* <input
                 {...getInputlogoProps()}
                 accept="image/jpeg, image/jpg, image/png, image/eps"
               /> */}
                 <h6 className="myprofile_upload_img_card_name">
-                  Upload the Shopping centre
-                  Banner (1050px x 284px) <br /> (max 200kb)<span className="star_require">*</span>
+                  Upload the Shopping centre Banner (1050px x 284px) <br /> (max
+                  200kb)<span className="star_require">*</span>
                 </h6>
-                {getcondation1 === true ?
-
+                {getcondation1 === true ? (
                   <>
-                    {files2 && files2.length > 0 ? <div className="myprofile_inner_sec2_img_upload">{thumbs2}</div> :
-
-                      <div style={{ width: "100%" }}  >
+                    {files2 && files2.length > 0 ? (
+                      <div className="myprofile_inner_sec2_img_upload">
+                        {thumbs2}
+                      </div>
+                    ) : (
+                      <div style={{ width: "100%" }}>
                         <div className="myprofile_inner_sec2_img_upload">
                           <AiOutlineCloudUpload
                             style={{
@@ -1564,7 +1616,14 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                             {...getInputMapProps()}
                             accept="image/jpeg, image/jpg, image/png, image/eps"
                           />
-                          <button type="button" className="click_upload_btn" style={{ marginBottom: "10px", color: "var(--color-orange)",fontWeight:"600" }}>
+                          <button
+                            type="button"
+                            className="click_upload_btn"
+                            style={{
+                              marginBottom: "10px",
+                              color: "var(--color-orange)",
+                              fontWeight: "600",
+                            }}>
                             click here
                           </button>
                           {/* <a href="">clicking here</a> */}
@@ -1575,20 +1634,18 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                             type="button"
                             onClick={() => {
                               // setFiles([]);
-                            }}
-                          >
+                            }}>
                             Upload File
                           </button>
                         </div>
                       </div>
-                    }
-
+                    )}
                   </>
-                  :
+                ) : (
                   <>
-                    {get_mall_auth_data.banner_mall_path === null ?
+                    {get_mall_auth_data.banner_mall_path === null ? (
                       <>
-                        <div style={{ width: "100%" }}  {...getRootMapProps()}>
+                        <div style={{ width: "100%" }} {...getRootMapProps()}>
                           <div className="myprofile_inner_sec2_img_upload">
                             <AiOutlineCloudUpload
                               style={{
@@ -1604,7 +1661,14 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                               {...getInputlogoProps()}
                               accept="image/jpeg, image/jpg, image/png, image/eps"
                             />
-                            <button type="button" className="click_upload_btn" style={{ marginBottom: "10px", color: "var(--color-orange)",fontWeight:"600" }}>
+                            <button
+                              type="button"
+                              className="click_upload_btn"
+                              style={{
+                                marginBottom: "10px",
+                                color: "var(--color-orange)",
+                                fontWeight: "600",
+                              }}>
                               click here
                             </button>
                             {/* <a href="">clicking here</a> */}
@@ -1615,8 +1679,7 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                               type="button"
                               onClick={() => {
                                 // setFiles([]);
-                              }}
-                            >
+                              }}>
                               Upload File
                             </button>
                           </div>
@@ -1625,19 +1688,14 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                           Cancel
                         </button> */}
                       </>
-
-                      :
+                    ) : (
                       <>
                         <div className="myprofile_inner_sec2_img_upload">
-
-
                           <img
                             src={get_mall_auth_data.banner_mall_path}
                             style={{ width: "100%", height: "100%" }}
                             className="img-fluidb"
                           />
-
-
                         </div>
                         <div className="btnn-main" style={{ width: "100%" }}>
                           <button
@@ -1645,23 +1703,32 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                             type="button"
                             onClick={() => {
                               // setFiles([]);
-                            }}
-                          >
+                            }}>
                             Upload File
                           </button>
                         </div>
-
                       </>
-
-                    }
-
-
+                    )}
                   </>
-
-                }
+                )}
               </div>
-              <div style={{ display: "flex", alingitem: "center", paddingLeft: "5px", paddingRight: "5px" }}>
-                <button className="btn" onClick={() =>{ setFiles2([]),setImageCheck(false)}} style={{ marginBottom: "10px", marginLeft: "10px", marginRight: "10px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alingitem: "center",
+                  paddingLeft: "5px",
+                  paddingRight: "5px",
+                }}>
+                <button
+                  className="btn"
+                  onClick={() => {
+                    setFiles2([]), setImageCheck(false);
+                  }}
+                  style={{
+                    marginBottom: "10px",
+                    marginLeft: "10px",
+                    marginRight: "10px",
+                  }}>
                   Cancel
                 </button>
               </div>
@@ -1669,23 +1736,26 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
             {/* single upload image */}
             {/* single upload image */}
             <div className="img-upl-border">
-
-              <div className="myprofile_inner_sec2" {...getRootBannerProps()} style={{ border: "none", paddingBottom: "0px" }}>
+              <div
+                className="myprofile_inner_sec2"
+                {...getRootBannerProps()}
+                style={{ border: "none", paddingBottom: "0px" }}>
                 {/* <input
                 {...getInputlogoProps()}
                 accept="image/jpeg, image/jpg, image/png, image/eps"
               /> */}
                 <h6 className="myprofile_upload_img_card_name">
-                  Upload the Shopping centre
-                  thumbnail (720px x 200px) <br />
+                  Upload the Shopping centre thumbnail (720px x 200px) <br />
                   (max 00mb)<span className="star_require">*</span>
                 </h6>
-                {getcondation2 === true ?
-
+                {getcondation2 === true ? (
                   <>
-                    {files3 && files3.length > 0 ? <div className="myprofile_inner_sec2_img_upload">{thumbs3}</div> :
-
-                      <div style={{ width: "100%" }}  >
+                    {files3 && files3.length > 0 ? (
+                      <div className="myprofile_inner_sec2_img_upload">
+                        {thumbs3}
+                      </div>
+                    ) : (
+                      <div style={{ width: "100%" }}>
                         <div className="myprofile_inner_sec2_img_upload">
                           <AiOutlineCloudUpload
                             style={{
@@ -1701,7 +1771,14 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                             {...getRootBannerProps()}
                             accept="image/jpeg, image/jpg, image/png, image/eps"
                           /> */}
-                          <button type="button" className="click_upload_btn" style={{ marginBottom: "10px", color: "var(--color-orange)",fontWeight:"600" }}>
+                          <button
+                            type="button"
+                            className="click_upload_btn"
+                            style={{
+                              marginBottom: "10px",
+                              color: "var(--color-orange)",
+                              fontWeight: "600",
+                            }}>
                             click here
                           </button>
                           {/* <a href="">clicking here</a> */}
@@ -1712,20 +1789,21 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                             type="button"
                             onClick={() => {
                               // setFiles([]);
-                            }}
-                          >
+                            }}>
                             Upload File
                           </button>
                         </div>
                       </div>
-                    }
-
+                    )}
                   </>
-                  :
+                ) : (
                   <>
-                    {get_mall_auth_data.shopping_center_thumbnail_mall_path === null ?
+                    {get_mall_auth_data.shopping_center_thumbnail_mall_path ===
+                    null ? (
                       <>
-                        <div style={{ width: "100%" }}  {...getRootBannerProps()}>
+                        <div
+                          style={{ width: "100%" }}
+                          {...getRootBannerProps()}>
                           <div className="myprofile_inner_sec2_img_upload">
                             <AiOutlineCloudUpload
                               style={{
@@ -1741,7 +1819,14 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                               {...getInputlogoProps()}
                               accept="image/jpeg, image/jpg, image/png, image/eps"
                             /> */}
-                            <button type="button" className="click_upload_btn" style={{ marginBottom: "10px", color: "var(--color-orange)",fontWeight:"600" }}>
+                            <button
+                              type="button"
+                              className="click_upload_btn"
+                              style={{
+                                marginBottom: "10px",
+                                color: "var(--color-orange)",
+                                fontWeight: "600",
+                              }}>
                               click here
                             </button>
                             {/* <a href="">clicking here</a> */}
@@ -1752,8 +1837,7 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                               type="button"
                               onClick={() => {
                                 // setFiles([]);
-                              }}
-                            >
+                              }}>
                               Upload File
                             </button>
                           </div>
@@ -1762,19 +1846,16 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                           Cancel
                         </button> */}
                       </>
-
-                      :
+                    ) : (
                       <>
                         <div className="myprofile_inner_sec2_img_upload">
-
-
                           <img
-                            src={get_mall_auth_data.shopping_center_thumbnail_mall_path}
+                            src={
+                              get_mall_auth_data.shopping_center_thumbnail_mall_path
+                            }
                             style={{ width: "100%", height: "100%" }}
                             className="img-fluidb"
                           />
-
-
                         </div>
                         <div className="btnn-main" style={{ width: "100%" }}>
                           <button
@@ -1782,45 +1863,56 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                             type="button"
                             onClick={() => {
                               // setFiles([]);
-                            }}
-                          >
+                            }}>
                             Upload File
                           </button>
                         </div>
-
                       </>
-
-                    }
-
-
+                    )}
                   </>
-
-                }
+                )}
               </div>
-              <div style={{ display: "flex", alingitem: "center", paddingLeft: "5px", paddingRight: "5px" }}>
-                <button className="btn" onClick={() => setFiles3([])} style={{ marginBottom: "10px", marginLeft: "10px", marginRight: "10px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alingitem: "center",
+                  paddingLeft: "5px",
+                  paddingRight: "5px",
+                }}>
+                <button
+                  className="btn"
+                  onClick={() => setFiles3([])}
+                  style={{
+                    marginBottom: "10px",
+                    marginLeft: "10px",
+                    marginRight: "10px",
+                  }}>
                   Cancel
                 </button>
               </div>
             </div>
             {/* single upload image */}
             <div className="img-upl-border">
-
-              <div className="myprofile_inner_sec2" {...getRootProps()} style={{ border: "none", paddingBottom: "0px" }}>
+              <div
+                className="myprofile_inner_sec2"
+                {...getRootProps()}
+                style={{ border: "none", paddingBottom: "0px" }}>
                 {/* <input
                 {...getInputlogoProps()}
                 accept="image/jpeg, image/jpg, image/png, image/eps"
               /> */}
                 <h6 className="myprofile_upload_img_card_name">
-                  Upload the Shopping centre
-                  map (1900 x 780 pixels)<br/> (max 800kb)<span className="star_require">*</span>
+                  Upload the Shopping centre map (1900 x 780 pixels)
+                  <br /> (max 800kb)<span className="star_require">*</span>
                 </h6>
-                {getcondation3 === true ?
-
+                {getcondation3 === true ? (
                   <>
-                    {files4 && files4.length > 0 ? <div className="myprofile_inner_sec2_img_upload">{thumbs4}</div> :
-
-                      <div style={{ width: "100%" }}  >
+                    {files4 && files4.length > 0 ? (
+                      <div className="myprofile_inner_sec2_img_upload">
+                        {thumbs4}
+                      </div>
+                    ) : (
+                      <div style={{ width: "100%" }}>
                         <div className="myprofile_inner_sec2_img_upload">
                           <AiOutlineCloudUpload
                             style={{
@@ -1836,7 +1928,14 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                             {...getRootProps()}
                             accept="image/jpeg, image/jpg, image/png, image/eps"
                           /> */}
-                          <button type="button" className="click_upload_btn" style={{ marginBottom: "10px", color: "var(--color-orange)",fontWeight:"600" }}>
+                          <button
+                            type="button"
+                            className="click_upload_btn"
+                            style={{
+                              marginBottom: "10px",
+                              color: "var(--color-orange)",
+                              fontWeight: "600",
+                            }}>
                             click here
                           </button>
                           {/* <a href="">clicking here</a> */}
@@ -1847,18 +1946,17 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                             type="button"
                             onClick={() => {
                               // setFiles([]);
-                            }}
-                          >
+                            }}>
                             Upload File
                           </button>
                         </div>
                       </div>
-                    }
-
+                    )}
                   </>
-                  :
+                ) : (
                   <>
-                    {get_mall_auth_data.shopping_center_map_mall_path === null ?
+                    {get_mall_auth_data.shopping_center_map_mall_path ===
+                    null ? (
                       <>
                         <div style={{ width: "100%" }}>
                           <div className="myprofile_inner_sec2_img_upload">
@@ -1876,7 +1974,14 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                               {...getRootProps()}
                               accept="image/jpeg, image/jpg, image/png, image/eps"
                             /> */}
-                            <button type="button" className="click_upload_btn" style={{ marginBottom: "10px", color: "var(--color-orange)",fontWeight:"600" }}>
+                            <button
+                              type="button"
+                              className="click_upload_btn"
+                              style={{
+                                marginBottom: "10px",
+                                color: "var(--color-orange)",
+                                fontWeight: "600",
+                              }}>
                               click here
                             </button>
                             {/* <a href="">clicking here</a> */}
@@ -1887,8 +1992,7 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                               type="button"
                               onClick={() => {
                                 // setFiles([]);
-                              }}
-                            >
+                              }}>
                               Upload File
                             </button>
                           </div>
@@ -1897,19 +2001,16 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                           Cancel
                         </button> */}
                       </>
-
-                      :
+                    ) : (
                       <>
                         <div className="myprofile_inner_sec2_img_upload">
-
-
                           <img
-                            src={get_mall_auth_data.shopping_center_map_mall_path}
+                            src={
+                              get_mall_auth_data.shopping_center_map_mall_path
+                            }
                             style={{ width: "100%", height: "100%" }}
                             className="img-fluidb"
                           />
-
-
                         </div>
                         <div className="btnn-main" style={{ width: "100%" }}>
                           <button
@@ -1917,23 +2018,30 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                             type="button"
                             onClick={() => {
                               // setFiles([]);
-                            }}
-                          >
+                            }}>
                             Upload File
                           </button>
                         </div>
-
                       </>
-
-                    }
-
-
+                    )}
                   </>
-
-                }
+                )}
               </div>
-              <div style={{ display: "flex", alingitem: "center", paddingLeft: "5px", paddingRight: "5px" }}>
-                <button className="btn" onClick={() => setFiles4([])} style={{ marginBottom: "10px", marginLeft: "10px", marginRight: "10px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alingitem: "center",
+                  paddingLeft: "5px",
+                  paddingRight: "5px",
+                }}>
+                <button
+                  className="btn"
+                  onClick={() => setFiles4([])}
+                  style={{
+                    marginBottom: "10px",
+                    marginLeft: "10px",
+                    marginRight: "10px",
+                  }}>
                   Cancel
                 </button>
               </div>
@@ -1947,7 +2055,9 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                 onChange={handleTermChange}
                 checked={isAcceptTerm == 1}
               />
-              <p className="fs-des" style={{ fontWeight: "400", fontSize: "14px" }}>
+              <p
+                className="fs-des"
+                style={{ fontWeight: "400", fontSize: "14px" }}>
                 I have read and agree to the{" "}
                 <a className="signup_terms_link">Privacy Policy</a>
               </p>
@@ -1960,7 +2070,9 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
                 onChange={handleTermChange2}
                 checked={isAcceptTerm2 == 1}
               />
-              <p className="fs-des" style={{ fontWeight: "400", fontSize: "14px" }}>
+              <p
+                className="fs-des"
+                style={{ fontWeight: "400", fontSize: "14px" }}>
                 I have read and agree to the{" "}
                 <a className="signup_terms_link">Terms and Conditions</a>
               </p>
@@ -1970,46 +2082,52 @@ const MallManagement = ({ get_mall_auth_data, sidebaropen, setTab }) => {
           <div className="mall_upload_btn_wrapp-resp">
             <button
               className="btn btn-black"
-              disabled={isAcceptTerm == 1 && isAcceptTerm2 ==1 ? false : true}
-              onClick={() => UpdateMallData()}
-            >
+              disabled={isAcceptTerm == 1 && isAcceptTerm2 == 1 ? false : true}
+              onClick={() => UpdateMallData()}>
               Update
             </button>
-            <button className="btn" style={{ fontWeight: "600", color: "#777" }} onClick={() => { setResetModal(true) }}>Reset</button>
+            <button
+              className="btn"
+              style={{ fontWeight: "600", color: "#777" }}
+              onClick={() => {
+                setResetModal(true);
+              }}>
+              Reset
+            </button>
           </div>
         </div>
         {/* mall management form end */}
-      </div >
+      </div>
 
       <ReactModal
         isOpen={resetmodal}
         // onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         style={customStyles}
-        contentLabel="Example Modal"
-      >
-        <div className="sd_model_wrapp sd_model_wrapp-delete" >
+        contentLabel="Example Modal">
+        <div className="sd_model_wrapp sd_model_wrapp-delete">
           {/* edit and delete orange btns start */}
           <div className="sd_model_edit_wrap">
-
-
-
-
             <button onClick={closeModal}>
               <img src={images.close} alt="" />
             </button>
-
           </div>
           {/* edit and delete orange btns end */}
 
           {/* <p>Are you sure you want to Reset all Data</p> */}
-          <p>Are you sure you want to reset the form? <br />Note that all your data will be cleared from the form by selecting this option</p>
+          <p>
+            Are you sure you want to reset the form? <br />
+            Note that all your data will be cleared from the form by selecting
+            this option
+          </p>
           <div className="delete-modal-btn-box">
-            <button onClick={() => {
-              // setStore_id(itm.id);
-              resetAccountData();
-              setResetModal(false);
-            }} className="delete-modal-btn">
+            <button
+              onClick={() => {
+                // setStore_id(itm.id);
+                resetAccountData();
+                setResetModal(false);
+              }}
+              className="delete-modal-btn">
               Yes
             </button>
             {/* onClick={() => {
